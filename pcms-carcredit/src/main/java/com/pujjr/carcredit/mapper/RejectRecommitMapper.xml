@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.RejectRecommitMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RejectRecommit" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="REJECT_REASON" property="rejectReason" jdbcType="VARCHAR" />
+    <result column="RECOMMIT_REASON" property="recommitReason" jdbcType="VARCHAR" />
+    <result column="RECOMMIT_COMMENT" property="recommitComment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, REJECT_REASON, RECOMMIT_REASON, RECOMMIT_COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_reject_recommit
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_reject_recommit
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
+    insert into t_reject_recommit (ID, APP_ID, REJECT_REASON, 
+      RECOMMIT_REASON, RECOMMIT_COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{rejectReason,jdbcType=VARCHAR}, 
+      #{recommitReason,jdbcType=VARCHAR}, #{recommitComment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
+    insert into t_reject_recommit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="rejectReason != null" >
+        REJECT_REASON,
+      </if>
+      <if test="recommitReason != null" >
+        RECOMMIT_REASON,
+      </if>
+      <if test="recommitComment != null" >
+        RECOMMIT_COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recommitReason != null" >
+        #{recommitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recommitComment != null" >
+        #{recommitComment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
+    update t_reject_recommit
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="rejectReason != null" >
+        REJECT_REASON = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recommitReason != null" >
+        RECOMMIT_REASON = #{recommitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="recommitComment != null" >
+        RECOMMIT_COMMENT = #{recommitComment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
+    update t_reject_recommit
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      REJECT_REASON = #{rejectReason,jdbcType=VARCHAR},
+      RECOMMIT_REASON = #{recommitReason,jdbcType=VARCHAR},
+      RECOMMIT_COMMENT = #{recommitComment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

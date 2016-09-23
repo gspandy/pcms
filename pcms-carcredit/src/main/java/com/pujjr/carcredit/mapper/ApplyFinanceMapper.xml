@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.ApplyFinanceMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplyFinanceVo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="CAR_STYLE_ID" jdbcType="VARCHAR" property="carStyleId" />
+    <result column="SALE_PRICE" jdbcType="DOUBLE" property="salePrice" />
+    <result column="INIT_PAY_PERCENT" jdbcType="DOUBLE" property="initPayPercent" />
+    <result column="IS_FINANCE_GPS" jdbcType="BIT" property="isFinanceGps" />
+    <result column="GPS_LVL_ID" jdbcType="VARCHAR" property="gpsLvlId" />
+    <result column="GPS_FEE" jdbcType="DOUBLE" property="gpsFee" />
+    <result column="IS_PURCHASE_TAX" jdbcType="BIT" property="isPurchaseTax" />
+    <result column="PURCHASE_TAX" jdbcType="DOUBLE" property="purchaseTax" />
+    <result column="IS_SERVICE_FEE" jdbcType="BIT" property="isServiceFee" />
+    <result column="SERVICE_FEE" jdbcType="DOUBLE" property="serviceFee" />
+    <result column="IS_INSURANCE_FEE" jdbcType="BIT" property="isInsuranceFee" />
+    <result column="INSURANCE_FEE" jdbcType="DOUBLE" property="insuranceFee" />
+    <result column="IS_DELAY_INSURANCE_FEE" jdbcType="BIT" property="isDelayInsuranceFee" />
+    <result column="DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="delayInsuranceFee" />
+    <result column="IS_TRANSFER_FEE" jdbcType="BIT" property="isTransferFee" />
+    <result column="TRANSFER_FEE" jdbcType="DOUBLE" property="transferFee" />
+    <result column="IS_ADDON_FEE" jdbcType="BIT" property="isAddonFee" />
+    <result column="ADDON_FEE" jdbcType="DOUBLE" property="addonFee" />
+    <result column="ASSESS_FEE" jdbcType="DOUBLE" property="assessFee" />
+    <result column="CAR_COLOR" jdbcType="VARCHAR" property="carColor" />
+    <result column="CAR_MANU" jdbcType="VARCHAR" property="carManu" />
+    <result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+    <result column="CAR_ENGINE_NO" jdbcType="VARCHAR" property="carEngineNo" />
+    <result column="ASSESS_PRICE" jdbcType="DOUBLE" property="assessPrice" />
+    <result column="COLLATERAL" jdbcType="DOUBLE" property="collateral" />
+    <result column="INIT_PAY_AMOUNT" jdbcType="DOUBLE" property="initPayAmount" />
+    <result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+    <result column="FINANCE_FEE" jdbcType="DOUBLE" property="financeFee" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, SEQ, CAR_STYLE_ID, SALE_PRICE, INIT_PAY_PERCENT, IS_FINANCE_GPS, GPS_LVL_ID, 
+    GPS_FEE, IS_PURCHASE_TAX, PURCHASE_TAX, IS_SERVICE_FEE, SERVICE_FEE, IS_INSURANCE_FEE, 
+    INSURANCE_FEE, IS_DELAY_INSURANCE_FEE, DELAY_INSURANCE_FEE, IS_TRANSFER_FEE, TRANSFER_FEE, 
+    IS_ADDON_FEE, ADDON_FEE, ASSESS_FEE, CAR_COLOR, CAR_MANU, CAR_VIN, CAR_ENGINE_NO, 
+    ASSESS_PRICE, COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, FINANCE_FEE
+  </sql>
+  
+  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from t_apply_finance
+    where app_id = #{appId,jdbcType=VARCHAR}
+    order by seq
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_finance
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_apply_finance
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
+    insert into t_apply_finance (ID, APP_ID, SEQ, 
+      CAR_STYLE_ID, SALE_PRICE, INIT_PAY_PERCENT, 
+      IS_FINANCE_GPS, GPS_LVL_ID, GPS_FEE, 
+      IS_PURCHASE_TAX, PURCHASE_TAX, IS_SERVICE_FEE, 
+      SERVICE_FEE, IS_INSURANCE_FEE, INSURANCE_FEE, 
+      IS_DELAY_INSURANCE_FEE, DELAY_INSURANCE_FEE, IS_TRANSFER_FEE, 
+      TRANSFER_FEE, IS_ADDON_FEE, ADDON_FEE, 
+      ASSESS_FEE, CAR_COLOR, CAR_MANU, 
+      CAR_VIN, CAR_ENGINE_NO, ASSESS_PRICE, 
+      COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, 
+      FINANCE_FEE)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{carStyleId,jdbcType=VARCHAR}, #{salePrice,jdbcType=DOUBLE}, #{initPayPercent,jdbcType=DOUBLE}, 
+      #{isFinanceGps,jdbcType=BIT}, #{gpsLvlId,jdbcType=VARCHAR}, #{gpsFee,jdbcType=DOUBLE}, 
+      #{isPurchaseTax,jdbcType=BIT}, #{purchaseTax,jdbcType=DOUBLE}, #{isServiceFee,jdbcType=BIT}, 
+      #{serviceFee,jdbcType=DOUBLE}, #{isInsuranceFee,jdbcType=BIT}, #{insuranceFee,jdbcType=DOUBLE}, 
+      #{isDelayInsuranceFee,jdbcType=BIT}, #{delayInsuranceFee,jdbcType=DOUBLE}, #{isTransferFee,jdbcType=BIT}, 
+      #{transferFee,jdbcType=DOUBLE}, #{isAddonFee,jdbcType=BIT}, #{addonFee,jdbcType=DOUBLE}, 
+      #{assessFee,jdbcType=DOUBLE}, #{carColor,jdbcType=VARCHAR}, #{carManu,jdbcType=VARCHAR}, 
+      #{carVin,jdbcType=VARCHAR}, #{carEngineNo,jdbcType=VARCHAR}, #{assessPrice,jdbcType=DOUBLE}, 
+      #{collateral,jdbcType=DOUBLE}, #{initPayAmount,jdbcType=DOUBLE}, #{financeAmount,jdbcType=DOUBLE}, 
+      #{financeFee,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
+    insert into t_apply_finance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="carStyleId != null">
+        CAR_STYLE_ID,
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE,
+      </if>
+      <if test="initPayPercent != null">
+        INIT_PAY_PERCENT,
+      </if>
+      <if test="isFinanceGps != null">
+        IS_FINANCE_GPS,
+      </if>
+      <if test="gpsLvlId != null">
+        GPS_LVL_ID,
+      </if>
+      <if test="gpsFee != null">
+        GPS_FEE,
+      </if>
+      <if test="isPurchaseTax != null">
+        IS_PURCHASE_TAX,
+      </if>
+      <if test="purchaseTax != null">
+        PURCHASE_TAX,
+      </if>
+      <if test="isServiceFee != null">
+        IS_SERVICE_FEE,
+      </if>
+      <if test="serviceFee != null">
+        SERVICE_FEE,
+      </if>
+      <if test="isInsuranceFee != null">
+        IS_INSURANCE_FEE,
+      </if>
+      <if test="insuranceFee != null">
+        INSURANCE_FEE,
+      </if>
+      <if test="isDelayInsuranceFee != null">
+        IS_DELAY_INSURANCE_FEE,
+      </if>
+      <if test="delayInsuranceFee != null">
+        DELAY_INSURANCE_FEE,
+      </if>
+      <if test="isTransferFee != null">
+        IS_TRANSFER_FEE,
+      </if>
+      <if test="transferFee != null">
+        TRANSFER_FEE,
+      </if>
+      <if test="isAddonFee != null">
+        IS_ADDON_FEE,
+      </if>
+      <if test="addonFee != null">
+        ADDON_FEE,
+      </if>
+      <if test="assessFee != null">
+        ASSESS_FEE,
+      </if>
+      <if test="carColor != null">
+        CAR_COLOR,
+      </if>
+      <if test="carManu != null">
+        CAR_MANU,
+      </if>
+      <if test="carVin != null">
+        CAR_VIN,
+      </if>
+      <if test="carEngineNo != null">
+        CAR_ENGINE_NO,
+      </if>
+      <if test="assessPrice != null">
+        ASSESS_PRICE,
+      </if>
+      <if test="collateral != null">
+        COLLATERAL,
+      </if>
+      <if test="initPayAmount != null">
+        INIT_PAY_AMOUNT,
+      </if>
+      <if test="financeAmount != null">
+        FINANCE_AMOUNT,
+      </if>
+      <if test="financeFee != null">
+        FINANCE_FEE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="carStyleId != null">
+        #{carStyleId,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="initPayPercent != null">
+        #{initPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="isFinanceGps != null">
+        #{isFinanceGps,jdbcType=BIT},
+      </if>
+      <if test="gpsLvlId != null">
+        #{gpsLvlId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsFee != null">
+        #{gpsFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isPurchaseTax != null">
+        #{isPurchaseTax,jdbcType=BIT},
+      </if>
+      <if test="purchaseTax != null">
+        #{purchaseTax,jdbcType=DOUBLE},
+      </if>
+      <if test="isServiceFee != null">
+        #{isServiceFee,jdbcType=BIT},
+      </if>
+      <if test="serviceFee != null">
+        #{serviceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isInsuranceFee != null">
+        #{isInsuranceFee,jdbcType=BIT},
+      </if>
+      <if test="insuranceFee != null">
+        #{insuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isDelayInsuranceFee != null">
+        #{isDelayInsuranceFee,jdbcType=BIT},
+      </if>
+      <if test="delayInsuranceFee != null">
+        #{delayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isTransferFee != null">
+        #{isTransferFee,jdbcType=BIT},
+      </if>
+      <if test="transferFee != null">
+        #{transferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isAddonFee != null">
+        #{isAddonFee,jdbcType=BIT},
+      </if>
+      <if test="addonFee != null">
+        #{addonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="assessFee != null">
+        #{assessFee,jdbcType=DOUBLE},
+      </if>
+      <if test="carColor != null">
+        #{carColor,jdbcType=VARCHAR},
+      </if>
+      <if test="carManu != null">
+        #{carManu,jdbcType=VARCHAR},
+      </if>
+      <if test="carVin != null">
+        #{carVin,jdbcType=VARCHAR},
+      </if>
+      <if test="carEngineNo != null">
+        #{carEngineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="assessPrice != null">
+        #{assessPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="collateral != null">
+        #{collateral,jdbcType=DOUBLE},
+      </if>
+      <if test="initPayAmount != null">
+        #{initPayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="financeAmount != null">
+        #{financeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="financeFee != null">
+        #{financeFee,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
+    update t_apply_finance
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="carStyleId != null">
+        CAR_STYLE_ID = #{carStyleId,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        SALE_PRICE = #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="initPayPercent != null">
+        INIT_PAY_PERCENT = #{initPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="isFinanceGps != null">
+        IS_FINANCE_GPS = #{isFinanceGps,jdbcType=BIT},
+      </if>
+      <if test="gpsLvlId != null">
+        GPS_LVL_ID = #{gpsLvlId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsFee != null">
+        GPS_FEE = #{gpsFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isPurchaseTax != null">
+        IS_PURCHASE_TAX = #{isPurchaseTax,jdbcType=BIT},
+      </if>
+      <if test="purchaseTax != null">
+        PURCHASE_TAX = #{purchaseTax,jdbcType=DOUBLE},
+      </if>
+      <if test="isServiceFee != null">
+        IS_SERVICE_FEE = #{isServiceFee,jdbcType=BIT},
+      </if>
+      <if test="serviceFee != null">
+        SERVICE_FEE = #{serviceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isInsuranceFee != null">
+        IS_INSURANCE_FEE = #{isInsuranceFee,jdbcType=BIT},
+      </if>
+      <if test="insuranceFee != null">
+        INSURANCE_FEE = #{insuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isDelayInsuranceFee != null">
+        IS_DELAY_INSURANCE_FEE = #{isDelayInsuranceFee,jdbcType=BIT},
+      </if>
+      <if test="delayInsuranceFee != null">
+        DELAY_INSURANCE_FEE = #{delayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isTransferFee != null">
+        IS_TRANSFER_FEE = #{isTransferFee,jdbcType=BIT},
+      </if>
+      <if test="transferFee != null">
+        TRANSFER_FEE = #{transferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="isAddonFee != null">
+        IS_ADDON_FEE = #{isAddonFee,jdbcType=BIT},
+      </if>
+      <if test="addonFee != null">
+        ADDON_FEE = #{addonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="assessFee != null">
+        ASSESS_FEE = #{assessFee,jdbcType=DOUBLE},
+      </if>
+      <if test="carColor != null">
+        CAR_COLOR = #{carColor,jdbcType=VARCHAR},
+      </if>
+      <if test="carManu != null">
+        CAR_MANU = #{carManu,jdbcType=VARCHAR},
+      </if>
+      <if test="carVin != null">
+        CAR_VIN = #{carVin,jdbcType=VARCHAR},
+      </if>
+      <if test="carEngineNo != null">
+        CAR_ENGINE_NO = #{carEngineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="assessPrice != null">
+        ASSESS_PRICE = #{assessPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="collateral != null">
+        COLLATERAL = #{collateral,jdbcType=DOUBLE},
+      </if>
+      <if test="initPayAmount != null">
+        INIT_PAY_AMOUNT = #{initPayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="financeAmount != null">
+        FINANCE_AMOUNT = #{financeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="financeFee != null">
+        FINANCE_FEE = #{financeFee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
+    update t_apply_finance
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      CAR_STYLE_ID = #{carStyleId,jdbcType=VARCHAR},
+      SALE_PRICE = #{salePrice,jdbcType=DOUBLE},
+      INIT_PAY_PERCENT = #{initPayPercent,jdbcType=DOUBLE},
+      IS_FINANCE_GPS = #{isFinanceGps,jdbcType=BIT},
+      GPS_LVL_ID = #{gpsLvlId,jdbcType=VARCHAR},
+      GPS_FEE = #{gpsFee,jdbcType=DOUBLE},
+      IS_PURCHASE_TAX = #{isPurchaseTax,jdbcType=BIT},
+      PURCHASE_TAX = #{purchaseTax,jdbcType=DOUBLE},
+      IS_SERVICE_FEE = #{isServiceFee,jdbcType=BIT},
+      SERVICE_FEE = #{serviceFee,jdbcType=DOUBLE},
+      IS_INSURANCE_FEE = #{isInsuranceFee,jdbcType=BIT},
+      INSURANCE_FEE = #{insuranceFee,jdbcType=DOUBLE},
+      IS_DELAY_INSURANCE_FEE = #{isDelayInsuranceFee,jdbcType=BIT},
+      DELAY_INSURANCE_FEE = #{delayInsuranceFee,jdbcType=DOUBLE},
+      IS_TRANSFER_FEE = #{isTransferFee,jdbcType=BIT},
+      TRANSFER_FEE = #{transferFee,jdbcType=DOUBLE},
+      IS_ADDON_FEE = #{isAddonFee,jdbcType=BIT},
+      ADDON_FEE = #{addonFee,jdbcType=DOUBLE},
+      ASSESS_FEE = #{assessFee,jdbcType=DOUBLE},
+      CAR_COLOR = #{carColor,jdbcType=VARCHAR},
+      CAR_MANU = #{carManu,jdbcType=VARCHAR},
+      CAR_VIN = #{carVin,jdbcType=VARCHAR},
+      CAR_ENGINE_NO = #{carEngineNo,jdbcType=VARCHAR},
+      ASSESS_PRICE = #{assessPrice,jdbcType=DOUBLE},
+      COLLATERAL = #{collateral,jdbcType=DOUBLE},
+      INIT_PAY_AMOUNT = #{initPayAmount,jdbcType=DOUBLE},
+      FINANCE_AMOUNT = #{financeAmount,jdbcType=DOUBLE},
+      FINANCE_FEE = #{financeFee,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

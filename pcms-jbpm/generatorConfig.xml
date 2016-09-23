@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		
+	
+	<context id="mysqlMybatis"  defaultModelType="conditional" >
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt2?characterEncoding=UTF-8" userId="asd"
+			password="asd" />
+		<!-- 工作流相关表生成配置开始-->
+		<javaModelGenerator targetPackage="com.pujjr.jbpm.domain"
+			targetProject="pcms-jbpm/src/main/java" />
+		<sqlMapGenerator targetPackage="com.pujjr.jbpm.mapper"
+			targetProject="pcms-jbpm/src/main/java" />
+		<javaClientGenerator targetPackage="com.pujjr.jbpm.dao"
+			targetProject="pcms-jbpm/src/main/java" type="XMLMAPPER" />
+		<!-- 
+		<table tableName="T_WORKFLOW_TYPE" domainObjectName="WorkflowType" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WORKFLOW_DEFINE" domainObjectName="WorkflowDefine" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WORKFLOW_VERSION" domainObjectName="WorkflowVersion" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		 
+		<table tableName="T_WORKFLOW_RUNPATH" domainObjectName="WorkflowRunPath" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<!--  
+		<table tableName="T_WORKFLOW_GLOBAL_PARAM" domainObjectName="WorkflowGlobalParam" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WORKFLOW_NODES" domainObjectName="WorkflowNodes" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WORKFLOW_GATEWAY_PARAM" domainObjectName="WorkflowGateWayParam" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WORKFLOW_NODE_FORM" domainObjectName="WorkflowNodeForm" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		
+		<table tableName="act_ge_bytearray" domainObjectName="ActGeBytearray" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="T_WORKFLOW_NODE_ASSIGNEE" domainObjectName="WorkflowNodeAssignee" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_WORKFLOW_NODE_PARAM" domainObjectName="WorkflowNodeParam" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<!-- 工作流相关表生成配置结束-->
+	</context>
+</generatorConfiguration>

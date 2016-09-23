@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.SysWorkgroupAccountMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysWorkgroupAccountKey" >
+    <id column="SYSACCOUNT_ID" property="sysaccountId" jdbcType="VARCHAR" />
+    <id column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.pujjr.base.domain.SysWorkgroupAccountKey" >
+    delete from sys_workgroup_account
+    where SYSACCOUNT_ID = #{sysaccountId,jdbcType=VARCHAR}
+      and WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysWorkgroupAccountKey" >
+    insert into sys_workgroup_account (SYSACCOUNT_ID, WORKGROUP_ID)
+    values (#{sysaccountId,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysWorkgroupAccountKey" >
+    insert into sys_workgroup_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sysaccountId != null" >
+        SYSACCOUNT_ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sysaccountId != null" >
+        #{sysaccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.GpsLvlMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.GpsLvl" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="LVL_NAME" property="lvlName" jdbcType="VARCHAR" />
+    <result column="SALE_PRICE" property="salePrice" jdbcType="DOUBLE" />
+    <result column="COST_PRICE" property="costPrice" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LVL_NAME, SALE_PRICE, COST_PRICE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_gps_lvl
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_gps_lvl
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.GpsLvl" >
+    insert into t_gps_lvl (ID, LVL_NAME, SALE_PRICE, 
+      COST_PRICE)
+    values (#{id,jdbcType=VARCHAR}, #{lvlName,jdbcType=VARCHAR}, #{salePrice,jdbcType=DOUBLE}, 
+      #{costPrice,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.GpsLvl" >
+    insert into t_gps_lvl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="lvlName != null" >
+        LVL_NAME,
+      </if>
+      <if test="salePrice != null" >
+        SALE_PRICE,
+      </if>
+      <if test="costPrice != null" >
+        COST_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="lvlName != null" >
+        #{lvlName,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null" >
+        #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="costPrice != null" >
+        #{costPrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.GpsLvl" >
+    update t_gps_lvl
+    <set >
+      <if test="lvlName != null" >
+        LVL_NAME = #{lvlName,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null" >
+        SALE_PRICE = #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="costPrice != null" >
+        COST_PRICE = #{costPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.GpsLvl" >
+    update t_gps_lvl
+    set LVL_NAME = #{lvlName,jdbcType=VARCHAR},
+      SALE_PRICE = #{salePrice,jdbcType=DOUBLE},
+      COST_PRICE = #{costPrice,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByBranchIdAndRuleId" resultMap="BaseResultMap">
+  	select * from T_BRANCH_GPS_RULE a
+  	left join t_gps_lvl b on a.GPS_LVL_ID = b.id
+  	where 1=1 
+  	<if test="branchId != null and branchId!=''">
+  		and a.branch_id = #{branchId} 
+  	</if>
+  	<if test="gpsRuleId != null and gpsRuleId!=''">
+  		and a.gps_rule_id = #{gpsRuleId}
+  	</if>
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_gps_lvl 
+  </select>
+  <delete id="deleteGpsLvlByBranchId">
+  	delete from t_branch_gps_rule where branch_id = #{branchId}
+  </delete>
+</mapper>

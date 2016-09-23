@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.CarStyleMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.CarStyle">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CAR_SERIAL_ID" jdbcType="VARCHAR" property="carSerialId" />
+    <result column="CAR_STYLE_NAME" jdbcType="VARCHAR" property="carStyleName" />
+    <result column="DISPLACEMENT" jdbcType="DOUBLE" property="displacement" />
+    <result column="GUIDE_PRICE" jdbcType="DOUBLE" property="guidePrice" />
+    <association property="carBrand" column="CAR_SERIAL_ID" select="selectCarBrand"></association>
+    <association property="carSerial" column="CAR_SERIAL_ID" select="selectCarSerial"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CAR_SERIAL_ID, CAR_STYLE_NAME, DISPLACEMENT, GUIDE_PRICE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_car_style
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_car_style
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.CarStyle">
+    insert into t_car_style (ID, CAR_SERIAL_ID, CAR_STYLE_NAME, 
+      DISPLACEMENT, GUIDE_PRICE)
+    values (#{id,jdbcType=VARCHAR}, #{carSerialId,jdbcType=VARCHAR}, #{carStyleName,jdbcType=VARCHAR}, 
+      #{displacement,jdbcType=DOUBLE}, #{guidePrice,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.CarStyle">
+    insert into t_car_style
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="carSerialId != null">
+        CAR_SERIAL_ID,
+      </if>
+      <if test="carStyleName != null">
+        CAR_STYLE_NAME,
+      </if>
+      <if test="displacement != null">
+        DISPLACEMENT,
+      </if>
+      <if test="guidePrice != null">
+        GUIDE_PRICE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="carSerialId != null">
+        #{carSerialId,jdbcType=VARCHAR},
+      </if>
+      <if test="carStyleName != null">
+        #{carStyleName,jdbcType=VARCHAR},
+      </if>
+      <if test="displacement != null">
+        #{displacement,jdbcType=DOUBLE},
+      </if>
+      <if test="guidePrice != null">
+        #{guidePrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.CarStyle">
+    update t_car_style
+    <set>
+      <if test="carSerialId != null">
+        CAR_SERIAL_ID = #{carSerialId,jdbcType=VARCHAR},
+      </if>
+      <if test="carStyleName != null">
+        CAR_STYLE_NAME = #{carStyleName,jdbcType=VARCHAR},
+      </if>
+      <if test="displacement != null">
+        DISPLACEMENT = #{displacement,jdbcType=DOUBLE},
+      </if>
+      <if test="guidePrice != null">
+        GUIDE_PRICE = #{guidePrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.CarStyle">
+    update t_car_style
+    set CAR_SERIAL_ID = #{carSerialId,jdbcType=VARCHAR},
+      CAR_STYLE_NAME = #{carStyleName,jdbcType=VARCHAR},
+      DISPLACEMENT = #{displacement,jdbcType=DOUBLE},
+      GUIDE_PRICE = #{guidePrice,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllByCarSerialId" resultMap="BaseResultMap">
+  	select * from t_car_style where CAR_SERIAL_ID = #{carSerialId}
+  </select>
+  <!-- 关联查询车辆品牌信息-->
+  <resultMap id="CarBrandResultMap" type="com.pujjr.base.domain.CarBrand">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
+    <result column="PREFIX_LETTER" jdbcType="VARCHAR" property="prefixLetter" />
+  </resultMap>
+  <select id="selectCarBrand" parameterType="String" resultMap="CarBrandResultMap">  	
+	select a.* from t_car_brand a 
+	left join t_car_serial b on a.id = b.car_brand_id 
+	where b.id = #{CAR_SERIAL_ID}
+  </select>
+  <!-- 关联查询车辆系列信息 -->
+  <resultMap id="CarSerialResultMap" type="com.pujjr.base.domain.CarSerial">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CAR_BRAND_ID" jdbcType="VARCHAR" property="carBrandId" />
+    <result column="CAR_SERIAL_GROUP" jdbcType="VARCHAR" property="carSerialGroup" />
+    <result column="CAR_SERIAL_NAME" jdbcType="VARCHAR" property="carSerialName" />
+  </resultMap>
+  <select id="selectCarSerial" parameterType="String" resultMap="CarSerialResultMap">
+  	select * from t_car_serial where id =#{CAR_SERIAL_ID}
+  </select>
+</mapper>

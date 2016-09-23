@@ -1,0 +1,11 @@
+.settings/*
+target/*
+/target/
+pcms-auth/target/*
+pcms-base/target/*
+pcms-jbpm/target/*
+pcms-utils/target/*
+pcms-carcredit/target/*
+pcms-web/target/*
+db/*
+/db/

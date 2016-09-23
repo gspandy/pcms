@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.TaskMapper">
+	<resultMap id="ToDoTaskResultMap" type="com.pujjr.carcredit.po.ToDoTaskPo">
+		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
+		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="assignee" property="assignee" jdbcType="VARCHAR" />
+		<result column="businessKey" property="businessKey" jdbcType="VARCHAR" />
+		<result column="procInstId" property="procInstId" jdbcType="VARCHAR" />
+		<result column="procDefId" property="procDefId" jdbcType="VARCHAR" />
+		<result column="procDefKey" property="procDefKey" jdbcType="VARCHAR" />
+		<result column="runPathId" property="runPathId" jdbcType="VARCHAR" />
+		<result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
+		<result column="inJumpType" property="inJumpType" jdbcType="VARCHAR" />
+		<result column="parentAssignee" property="parentAssignee" jdbcType="VARCHAR" />
+		<result column="taskRouter" property="taskRouter" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectToDoTaskListByAccountId" resultMap="ToDoTaskResultMap">
+		select
+		task.ID_ as taskId,
+		task.NAME_ as taskName,
+		task.ASSIGNEE_ as assignee,
+		exec.BUSINESS_KEY_ as businessKey,
+		task.PROC_INST_ID_ as procInstId,
+		task.PROC_DEF_ID_ as procDefId,
+		def.KEY_ as procDefKey,
+		runpath.ID as runPathId,
+		runpath.START_TIME as startTime,
+		runpath.IN_JUMP_TYPE as inJumpType,
+		prunpath.ASSIGNEE as parentAssignee,
+		form.form_name as taskRouter
+		from act_ru_task task
+		left join act_ru_execution exec on task.EXECUTION_ID_ = exec.ID_
+		left join act_re_procdef def on task.PROC_DEF_ID_ = def.ID_
+		left join t_workflow_runpath runpath on runpath.PROC_INST_ID =
+		task.PROC_INST_ID_ and runpath.ACT_ID = task.TASK_DEF_KEY_
+		left join t_workflow_runpath prunpath on runpath.PARENT_PATH_ID =
+		prunpath.ID
+		left join t_workflow_version flowversion on
+		flowversion.activiti_procdef_id = task.PROC_DEF_ID_
+		left join t_workflow_node_form form on form.workflow_version_id =
+		flowversion.id and task.TASK_DEF_KEY_ = form.node_id
+		where
+		task.ASSIGNEE_ = #{accountId}
+	</select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		
+	
+	<context id="mysqlMybatis"  defaultModelType="conditional" >
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt2?characterEncoding=UTF-8" userId="asd"
+			password="asd" />
+		
+		<javaModelGenerator targetPackage="com.pujjr.base.domain"
+			targetProject="pcms-base/src/main/java" />
+		<sqlMapGenerator targetPackage="com.pujjr.base.mapper"
+			targetProject="pcms-base/src/main/java" />
+		<javaClientGenerator targetPackage="com.pujjr.base.dao"
+			targetProject="pcms-base/src/main/java" type="XMLMAPPER" />
+		<!--  
+		<table tableName="SYS_AREA" domainObjectName="SysArea" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_BRANCH" domainObjectName="SysBranch" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="SYS_JOB" domainObjectName="SysJob" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="SYS_WORKGROUP_ACCOUNT" domainObjectName="SysWorkgroupAccount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_WORKGROUP" domainObjectName="SysWorkgroup" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="SYS_DICT_TYPE" domainObjectName="SysDictType" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_DICT_DATA" domainObjectName="SysDictData" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_ACCOUNT" domainObjectName="SysAccount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_PRODUCT_TYPE" domainObjectName="ProductType" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_PRODUCT" domainObjectName="Product" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_PRODUCT_PERIOD" domainObjectName="ProductPeriod" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_PRODUCT_SETTLE" domainObjectName="ProductSettle" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_PRODUCT_RULE" domainObjectName="ProductRule" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	
+		<table tableName="SYS_BRANCH_DEALER" domainObjectName="SysBranchDealer" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_BRANCH_GPS_RULE" domainObjectName="SysBranchGpsRule" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_GPS_RULE" domainObjectName="GpsRule" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_GPS_LVL" domainObjectName="GpsLvl" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_BRANCH_PRODUCT" domainObjectName="BranchProduct" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="T_CAR_BRAND" domainObjectName="CarBrand" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_CAR_SERIAL" domainObjectName="CarSerial" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_CAR_Style" domainObjectName="CarStyle" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="SYS_SEQUENCE" domainObjectName="Sequence" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

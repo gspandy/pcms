@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowGlobalParamMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowGlobalParam" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_VERSION_ID" property="workflowVersionId" jdbcType="VARCHAR" />
+    <result column="IS_JUMP_FIRST_TASK" property="isJumpFirstTask" jdbcType="BIT" />
+    <result column="WORKFLOW_CREATE_PREHANDLE" property="workflowCreatePrehandle" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_CREATE_AFTERHANDLE" property="workflowCreateAfterhandle" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_END_HANDLE" property="workflowEndHandle" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_START_SCRIPT" property="workflowStartScript" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_COMPLETE_SCRIPT" property="workflowCompleteScript" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_CANCEL_SCRIPT" property="workflowCancelScript" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKFLOW_VERSION_ID, IS_JUMP_FIRST_TASK, WORKFLOW_CREATE_PREHANDLE, WORKFLOW_CREATE_AFTERHANDLE, 
+    WORKFLOW_END_HANDLE, WORKFLOW_START_SCRIPT, WORKFLOW_COMPLETE_SCRIPT, WORKFLOW_CANCEL_SCRIPT, 
+    CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_global_param
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_global_param
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowGlobalParam" >
+    insert into t_workflow_global_param (ID, WORKFLOW_VERSION_ID, IS_JUMP_FIRST_TASK, 
+      WORKFLOW_CREATE_PREHANDLE, WORKFLOW_CREATE_AFTERHANDLE, 
+      WORKFLOW_END_HANDLE, WORKFLOW_START_SCRIPT, 
+      WORKFLOW_COMPLETE_SCRIPT, WORKFLOW_CANCEL_SCRIPT, 
+      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
+      UPDATE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{isJumpFirstTask,jdbcType=BIT}, 
+      #{workflowCreatePrehandle,jdbcType=VARCHAR}, #{workflowCreateAfterhandle,jdbcType=VARCHAR}, 
+      #{workflowEndHandle,jdbcType=VARCHAR}, #{workflowStartScript,jdbcType=VARCHAR}, 
+      #{workflowCompleteScript,jdbcType=VARCHAR}, #{workflowCancelScript,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowGlobalParam" >
+    insert into t_workflow_global_param
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID,
+      </if>
+      <if test="isJumpFirstTask != null" >
+        IS_JUMP_FIRST_TASK,
+      </if>
+      <if test="workflowCreatePrehandle != null" >
+        WORKFLOW_CREATE_PREHANDLE,
+      </if>
+      <if test="workflowCreateAfterhandle != null" >
+        WORKFLOW_CREATE_AFTERHANDLE,
+      </if>
+      <if test="workflowEndHandle != null" >
+        WORKFLOW_END_HANDLE,
+      </if>
+      <if test="workflowStartScript != null" >
+        WORKFLOW_START_SCRIPT,
+      </if>
+      <if test="workflowCompleteScript != null" >
+        WORKFLOW_COMPLETE_SCRIPT,
+      </if>
+      <if test="workflowCancelScript != null" >
+        WORKFLOW_CANCEL_SCRIPT,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowVersionId != null" >
+        #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="isJumpFirstTask != null" >
+        #{isJumpFirstTask,jdbcType=BIT},
+      </if>
+      <if test="workflowCreatePrehandle != null" >
+        #{workflowCreatePrehandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCreateAfterhandle != null" >
+        #{workflowCreateAfterhandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowEndHandle != null" >
+        #{workflowEndHandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowStartScript != null" >
+        #{workflowStartScript,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCompleteScript != null" >
+        #{workflowCompleteScript,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCancelScript != null" >
+        #{workflowCancelScript,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowGlobalParam" >
+    update t_workflow_global_param
+    <set >
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="isJumpFirstTask != null" >
+        IS_JUMP_FIRST_TASK = #{isJumpFirstTask,jdbcType=BIT},
+      </if>
+      <if test="workflowCreatePrehandle != null" >
+        WORKFLOW_CREATE_PREHANDLE = #{workflowCreatePrehandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCreateAfterhandle != null" >
+        WORKFLOW_CREATE_AFTERHANDLE = #{workflowCreateAfterhandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowEndHandle != null" >
+        WORKFLOW_END_HANDLE = #{workflowEndHandle,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowStartScript != null" >
+        WORKFLOW_START_SCRIPT = #{workflowStartScript,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCompleteScript != null" >
+        WORKFLOW_COMPLETE_SCRIPT = #{workflowCompleteScript,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowCancelScript != null" >
+        WORKFLOW_CANCEL_SCRIPT = #{workflowCancelScript,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowGlobalParam" >
+    update t_workflow_global_param
+    set WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      IS_JUMP_FIRST_TASK = #{isJumpFirstTask,jdbcType=BIT},
+      WORKFLOW_CREATE_PREHANDLE = #{workflowCreatePrehandle,jdbcType=VARCHAR},
+      WORKFLOW_CREATE_AFTERHANDLE = #{workflowCreateAfterhandle,jdbcType=VARCHAR},
+      WORKFLOW_END_HANDLE = #{workflowEndHandle,jdbcType=VARCHAR},
+      WORKFLOW_START_SCRIPT = #{workflowStartScript,jdbcType=VARCHAR},
+      WORKFLOW_COMPLETE_SCRIPT = #{workflowCompleteScript,jdbcType=VARCHAR},
+      WORKFLOW_CANCEL_SCRIPT = #{workflowCancelScript,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByWorkflowVersionId" resultMap="BaseResultMap">
+  	select * from t_workflow_global_param 
+  	where WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByWorkflowVersionId">
+  	delete  from t_workflow_global_param 
+  	where WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

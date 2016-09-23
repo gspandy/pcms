@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.ApplyTenantHouseMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+    <result column="ADDR_PROVINCE" property="addrProvince" jdbcType="VARCHAR" />
+    <result column="ADDR_CITY" property="addrCity" jdbcType="VARCHAR" />
+    <result column="ADDR_COUNTY" property="addrCounty" jdbcType="VARCHAR" />
+    <result column="ADDR_EXT" property="addrExt" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, SEQ, ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, ADDR_EXT, STATUS
+  </sql>
+  
+  <select id="selectByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_tenant_house
+    where app_id = #{appId,jdbcType=VARCHAR}
+    order by seq
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_tenant_house
+    where ID = #{id,jdbcType=VARCHAR}
+    order by seq
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_tenant_house
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+    insert into t_apply_tenant_house (ID, APP_ID, SEQ, 
+      ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, 
+      ADDR_EXT, STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, #{addrCounty,jdbcType=VARCHAR}, 
+      #{addrExt,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+    insert into t_apply_tenant_house
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="addrProvince != null" >
+        ADDR_PROVINCE,
+      </if>
+      <if test="addrCity != null" >
+        ADDR_CITY,
+      </if>
+      <if test="addrCounty != null" >
+        ADDR_COUNTY,
+      </if>
+      <if test="addrExt != null" >
+        ADDR_EXT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null" >
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null" >
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null" >
+        #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrExt != null" >
+        #{addrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+    update t_apply_tenant_house
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="addrProvince != null" >
+        ADDR_PROVINCE = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null" >
+        ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null" >
+        ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrExt != null" >
+        ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+    update t_apply_tenant_house
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      ADDR_PROVINCE = #{addrProvince,jdbcType=VARCHAR},
+      ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
+      ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

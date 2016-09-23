@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.SysBranchGpsRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysBranchGpsRuleKey" >
+    <id column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <id column="GPS_LVL_ID" property="gpsLvlId" jdbcType="VARCHAR" />
+    <id column="GPS_RULE_ID" property="gpsRuleId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.pujjr.base.domain.SysBranchGpsRuleKey" >
+    delete from t_branch_gps_rule
+    where BRANCH_ID = #{branchId,jdbcType=VARCHAR}
+      and GPS_LVL_ID = #{gpsLvlId,jdbcType=VARCHAR}
+      and GPS_RULE_ID = #{gpsRuleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysBranchGpsRuleKey" >
+    insert into t_branch_gps_rule (BRANCH_ID, GPS_LVL_ID, GPS_RULE_ID
+      )
+    values (#{branchId,jdbcType=VARCHAR}, #{gpsLvlId,jdbcType=VARCHAR}, #{gpsRuleId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysBranchGpsRuleKey" >
+    insert into t_branch_gps_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        BRANCH_ID,
+      </if>
+      <if test="gpsLvlId != null" >
+        GPS_LVL_ID,
+      </if>
+      <if test="gpsRuleId != null" >
+        GPS_RULE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsLvlId != null" >
+        #{gpsLvlId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsRuleId != null" >
+        #{gpsRuleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

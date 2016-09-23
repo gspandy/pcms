@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.BranchProductMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.BranchProductKey" >
+    <id column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
+    <id column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.pujjr.base.domain.BranchProductKey" >
+    delete from t_branch_product
+    where BRANCH_ID = #{branchId,jdbcType=VARCHAR}
+      and PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.BranchProductKey" >
+    insert into t_branch_product (BRANCH_ID, PRODUCT_ID)
+    values (#{branchId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.BranchProductKey" >
+    insert into t_branch_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        BRANCH_ID,
+      </if>
+      <if test="productId != null" >
+        PRODUCT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="branchId != null" >
+        #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

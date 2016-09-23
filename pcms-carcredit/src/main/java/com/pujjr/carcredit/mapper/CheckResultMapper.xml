@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.CheckResultMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.CheckResult" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="NET_CHECK_RESULT" property="netCheckResult" jdbcType="VARCHAR" />
+    <result column="NET_CHECK_NOT_PASS_REASON" property="netCheckNotPassReason" jdbcType="VARCHAR" />
+    <result column="NET_CHECK_COMMENT" property="netCheckComment" jdbcType="VARCHAR" />
+    <result column="TEL_CHECK_RESULT" property="telCheckResult" jdbcType="VARCHAR" />
+    <result column="TEL_CHECK_NOT_PASS_REASON" property="telCheckNotPassReason" jdbcType="VARCHAR" />
+    <result column="TEL_CHECK_COMMENT" property="telCheckComment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, NET_CHECK_RESULT, NET_CHECK_NOT_PASS_REASON, NET_CHECK_COMMENT, TEL_CHECK_RESULT, 
+    TEL_CHECK_NOT_PASS_REASON, TEL_CHECK_COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_check_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_check_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.CheckResult" >
+    insert into t_check_result (ID, APP_ID, NET_CHECK_RESULT, 
+      NET_CHECK_NOT_PASS_REASON, NET_CHECK_COMMENT, 
+      TEL_CHECK_RESULT, TEL_CHECK_NOT_PASS_REASON, 
+      TEL_CHECK_COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{netCheckResult,jdbcType=VARCHAR}, 
+      #{netCheckNotPassReason,jdbcType=VARCHAR}, #{netCheckComment,jdbcType=VARCHAR}, 
+      #{telCheckResult,jdbcType=VARCHAR}, #{telCheckNotPassReason,jdbcType=VARCHAR}, 
+      #{telCheckComment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.CheckResult" >
+    insert into t_check_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="netCheckResult != null" >
+        NET_CHECK_RESULT,
+      </if>
+      <if test="netCheckNotPassReason != null" >
+        NET_CHECK_NOT_PASS_REASON,
+      </if>
+      <if test="netCheckComment != null" >
+        NET_CHECK_COMMENT,
+      </if>
+      <if test="telCheckResult != null" >
+        TEL_CHECK_RESULT,
+      </if>
+      <if test="telCheckNotPassReason != null" >
+        TEL_CHECK_NOT_PASS_REASON,
+      </if>
+      <if test="telCheckComment != null" >
+        TEL_CHECK_COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckResult != null" >
+        #{netCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckNotPassReason != null" >
+        #{netCheckNotPassReason,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckComment != null" >
+        #{netCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckResult != null" >
+        #{telCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckNotPassReason != null" >
+        #{telCheckNotPassReason,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckComment != null" >
+        #{telCheckComment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.CheckResult" >
+    update t_check_result
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckResult != null" >
+        NET_CHECK_RESULT = #{netCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckNotPassReason != null" >
+        NET_CHECK_NOT_PASS_REASON = #{netCheckNotPassReason,jdbcType=VARCHAR},
+      </if>
+      <if test="netCheckComment != null" >
+        NET_CHECK_COMMENT = #{netCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckResult != null" >
+        TEL_CHECK_RESULT = #{telCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckNotPassReason != null" >
+        TEL_CHECK_NOT_PASS_REASON = #{telCheckNotPassReason,jdbcType=VARCHAR},
+      </if>
+      <if test="telCheckComment != null" >
+        TEL_CHECK_COMMENT = #{telCheckComment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.CheckResult" >
+    update t_check_result
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      NET_CHECK_RESULT = #{netCheckResult,jdbcType=VARCHAR},
+      NET_CHECK_NOT_PASS_REASON = #{netCheckNotPassReason,jdbcType=VARCHAR},
+      NET_CHECK_COMMENT = #{netCheckComment,jdbcType=VARCHAR},
+      TEL_CHECK_RESULT = #{telCheckResult,jdbcType=VARCHAR},
+      TEL_CHECK_NOT_PASS_REASON = #{telCheckNotPassReason,jdbcType=VARCHAR},
+      TEL_CHECK_COMMENT = #{telCheckComment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

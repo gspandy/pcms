@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ProductRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ProductRule" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
+    <result column="MIN_SALE_PRICE" property="minSalePrice" jdbcType="DOUBLE" />
+    <result column="MAX_SALE_PRICE" property="maxSalePrice" jdbcType="DOUBLE" />
+    <result column="MIN_INIT_PAY_PERCENT" property="minInitPayPercent" jdbcType="DOUBLE" />
+    <result column="MAX_INIT_PAY_PERCENT" property="maxInitPayPercent" jdbcType="DOUBLE" />
+    <result column="MIN_SERVICE_FEE" property="minServiceFee" jdbcType="DOUBLE" />
+    <result column="MAX_SERVICE_FEE" property="maxServiceFee" jdbcType="DOUBLE" />
+    <result column="MIN_INSURANCE_FEE" property="minInsuranceFee" jdbcType="DOUBLE" />
+    <result column="MAX_INSURANCE_FEE" property="maxInsuranceFee" jdbcType="DOUBLE" />
+    <result column="MIN_DELAY_INSURANCE_FEE" property="minDelayInsuranceFee" jdbcType="DOUBLE" />
+    <result column="MAX_DELAY_INSURANCE_FEE" property="maxDelayInsuranceFee" jdbcType="DOUBLE" />
+    <result column="MIN_TRANSFER_FEE" property="minTransferFee" jdbcType="DOUBLE" />
+    <result column="MAX_TRANSFER_FEE" property="maxTransferFee" jdbcType="DOUBLE" />
+    <result column="MIN_ADDON_FEE" property="minAddonFee" jdbcType="DOUBLE" />
+    <result column="MAX_ADDON_FEE" property="maxAddonFee" jdbcType="DOUBLE" />
+    <result column="ENABLE_ASSESS_FEE" property="enableAssessFee" jdbcType="BIT" />
+    <result column="IS_TOTAL_REFINANCE" property="isTotalRefinance" jdbcType="BIT" />
+    <result column="HAS_SERVICE_FEE" property="hasServiceFee" jdbcType="BIT" />
+    <result column="HAS_PURCHASE_TAX" property="hasPurchaseTax" jdbcType="BIT" />
+    <result column="RULE_COMMENT" property="ruleComment" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RULE_NAME, MIN_SALE_PRICE, MAX_SALE_PRICE, MIN_INIT_PAY_PERCENT, MAX_INIT_PAY_PERCENT, 
+    MIN_SERVICE_FEE, MAX_SERVICE_FEE, MIN_INSURANCE_FEE, MAX_INSURANCE_FEE, MIN_DELAY_INSURANCE_FEE, 
+    MAX_DELAY_INSURANCE_FEE, MIN_TRANSFER_FEE, MAX_TRANSFER_FEE, MIN_ADDON_FEE, MAX_ADDON_FEE, 
+    ENABLE_ASSESS_FEE, IS_TOTAL_REFINANCE, HAS_SERVICE_FEE, HAS_PURCHASE_TAX, RULE_COMMENT, 
+    CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_rule
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_product_rule
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ProductRule" >
+    insert into t_product_rule (ID, RULE_NAME, MIN_SALE_PRICE, 
+      MAX_SALE_PRICE, MIN_INIT_PAY_PERCENT, MAX_INIT_PAY_PERCENT, 
+      MIN_SERVICE_FEE, MAX_SERVICE_FEE, MIN_INSURANCE_FEE, 
+      MAX_INSURANCE_FEE, MIN_DELAY_INSURANCE_FEE, MAX_DELAY_INSURANCE_FEE, 
+      MIN_TRANSFER_FEE, MAX_TRANSFER_FEE, MIN_ADDON_FEE, 
+      MAX_ADDON_FEE, ENABLE_ASSESS_FEE, IS_TOTAL_REFINANCE, 
+      HAS_SERVICE_FEE, HAS_PURCHASE_TAX, RULE_COMMENT, 
+      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
+      UPDATE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{ruleName,jdbcType=VARCHAR}, #{minSalePrice,jdbcType=DOUBLE}, 
+      #{maxSalePrice,jdbcType=DOUBLE}, #{minInitPayPercent,jdbcType=DOUBLE}, #{maxInitPayPercent,jdbcType=DOUBLE}, 
+      #{minServiceFee,jdbcType=DOUBLE}, #{maxServiceFee,jdbcType=DOUBLE}, #{minInsuranceFee,jdbcType=DOUBLE}, 
+      #{maxInsuranceFee,jdbcType=DOUBLE}, #{minDelayInsuranceFee,jdbcType=DOUBLE}, #{maxDelayInsuranceFee,jdbcType=DOUBLE}, 
+      #{minTransferFee,jdbcType=DOUBLE}, #{maxTransferFee,jdbcType=DOUBLE}, #{minAddonFee,jdbcType=DOUBLE}, 
+      #{maxAddonFee,jdbcType=DOUBLE}, #{enableAssessFee,jdbcType=BIT}, #{isTotalRefinance,jdbcType=BIT}, 
+      #{hasServiceFee,jdbcType=BIT}, #{hasPurchaseTax,jdbcType=BIT}, #{ruleComment,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ProductRule" >
+    insert into t_product_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="ruleName != null" >
+        RULE_NAME,
+      </if>
+      <if test="minSalePrice != null" >
+        MIN_SALE_PRICE,
+      </if>
+      <if test="maxSalePrice != null" >
+        MAX_SALE_PRICE,
+      </if>
+      <if test="minInitPayPercent != null" >
+        MIN_INIT_PAY_PERCENT,
+      </if>
+      <if test="maxInitPayPercent != null" >
+        MAX_INIT_PAY_PERCENT,
+      </if>
+      <if test="minServiceFee != null" >
+        MIN_SERVICE_FEE,
+      </if>
+      <if test="maxServiceFee != null" >
+        MAX_SERVICE_FEE,
+      </if>
+      <if test="minInsuranceFee != null" >
+        MIN_INSURANCE_FEE,
+      </if>
+      <if test="maxInsuranceFee != null" >
+        MAX_INSURANCE_FEE,
+      </if>
+      <if test="minDelayInsuranceFee != null" >
+        MIN_DELAY_INSURANCE_FEE,
+      </if>
+      <if test="maxDelayInsuranceFee != null" >
+        MAX_DELAY_INSURANCE_FEE,
+      </if>
+      <if test="minTransferFee != null" >
+        MIN_TRANSFER_FEE,
+      </if>
+      <if test="maxTransferFee != null" >
+        MAX_TRANSFER_FEE,
+      </if>
+      <if test="minAddonFee != null" >
+        MIN_ADDON_FEE,
+      </if>
+      <if test="maxAddonFee != null" >
+        MAX_ADDON_FEE,
+      </if>
+      <if test="enableAssessFee != null" >
+        ENABLE_ASSESS_FEE,
+      </if>
+      <if test="isTotalRefinance != null" >
+        IS_TOTAL_REFINANCE,
+      </if>
+      <if test="hasServiceFee != null" >
+        HAS_SERVICE_FEE,
+      </if>
+      <if test="hasPurchaseTax != null" >
+        HAS_PURCHASE_TAX,
+      </if>
+      <if test="ruleComment != null" >
+        RULE_COMMENT,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="minSalePrice != null" >
+        #{minSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="maxSalePrice != null" >
+        #{maxSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="minInitPayPercent != null" >
+        #{minInitPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInitPayPercent != null" >
+        #{maxInitPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="minServiceFee != null" >
+        #{minServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxServiceFee != null" >
+        #{maxServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minInsuranceFee != null" >
+        #{minInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInsuranceFee != null" >
+        #{maxInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minDelayInsuranceFee != null" >
+        #{minDelayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxDelayInsuranceFee != null" >
+        #{maxDelayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minTransferFee != null" >
+        #{minTransferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxTransferFee != null" >
+        #{maxTransferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minAddonFee != null" >
+        #{minAddonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAddonFee != null" >
+        #{maxAddonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="enableAssessFee != null" >
+        #{enableAssessFee,jdbcType=BIT},
+      </if>
+      <if test="isTotalRefinance != null" >
+        #{isTotalRefinance,jdbcType=BIT},
+      </if>
+      <if test="hasServiceFee != null" >
+        #{hasServiceFee,jdbcType=BIT},
+      </if>
+      <if test="hasPurchaseTax != null" >
+        #{hasPurchaseTax,jdbcType=BIT},
+      </if>
+      <if test="ruleComment != null" >
+        #{ruleComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ProductRule" >
+    update t_product_rule
+    <set >
+      <if test="ruleName != null" >
+        RULE_NAME = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="minSalePrice != null" >
+        MIN_SALE_PRICE = #{minSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="maxSalePrice != null" >
+        MAX_SALE_PRICE = #{maxSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="minInitPayPercent != null" >
+        MIN_INIT_PAY_PERCENT = #{minInitPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInitPayPercent != null" >
+        MAX_INIT_PAY_PERCENT = #{maxInitPayPercent,jdbcType=DOUBLE},
+      </if>
+      <if test="minServiceFee != null" >
+        MIN_SERVICE_FEE = #{minServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxServiceFee != null" >
+        MAX_SERVICE_FEE = #{maxServiceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minInsuranceFee != null" >
+        MIN_INSURANCE_FEE = #{minInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInsuranceFee != null" >
+        MAX_INSURANCE_FEE = #{maxInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minDelayInsuranceFee != null" >
+        MIN_DELAY_INSURANCE_FEE = #{minDelayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxDelayInsuranceFee != null" >
+        MAX_DELAY_INSURANCE_FEE = #{maxDelayInsuranceFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minTransferFee != null" >
+        MIN_TRANSFER_FEE = #{minTransferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxTransferFee != null" >
+        MAX_TRANSFER_FEE = #{maxTransferFee,jdbcType=DOUBLE},
+      </if>
+      <if test="minAddonFee != null" >
+        MIN_ADDON_FEE = #{minAddonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAddonFee != null" >
+        MAX_ADDON_FEE = #{maxAddonFee,jdbcType=DOUBLE},
+      </if>
+      <if test="enableAssessFee != null" >
+        ENABLE_ASSESS_FEE = #{enableAssessFee,jdbcType=BIT},
+      </if>
+      <if test="isTotalRefinance != null" >
+        IS_TOTAL_REFINANCE = #{isTotalRefinance,jdbcType=BIT},
+      </if>
+      <if test="hasServiceFee != null" >
+        HAS_SERVICE_FEE = #{hasServiceFee,jdbcType=BIT},
+      </if>
+      <if test="hasPurchaseTax != null" >
+        HAS_PURCHASE_TAX = #{hasPurchaseTax,jdbcType=BIT},
+      </if>
+      <if test="ruleComment != null" >
+        RULE_COMMENT = #{ruleComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ProductRule" >
+    update t_product_rule
+    set RULE_NAME = #{ruleName,jdbcType=VARCHAR},
+      MIN_SALE_PRICE = #{minSalePrice,jdbcType=DOUBLE},
+      MAX_SALE_PRICE = #{maxSalePrice,jdbcType=DOUBLE},
+      MIN_INIT_PAY_PERCENT = #{minInitPayPercent,jdbcType=DOUBLE},
+      MAX_INIT_PAY_PERCENT = #{maxInitPayPercent,jdbcType=DOUBLE},
+      MIN_SERVICE_FEE = #{minServiceFee,jdbcType=DOUBLE},
+      MAX_SERVICE_FEE = #{maxServiceFee,jdbcType=DOUBLE},
+      MIN_INSURANCE_FEE = #{minInsuranceFee,jdbcType=DOUBLE},
+      MAX_INSURANCE_FEE = #{maxInsuranceFee,jdbcType=DOUBLE},
+      MIN_DELAY_INSURANCE_FEE = #{minDelayInsuranceFee,jdbcType=DOUBLE},
+      MAX_DELAY_INSURANCE_FEE = #{maxDelayInsuranceFee,jdbcType=DOUBLE},
+      MIN_TRANSFER_FEE = #{minTransferFee,jdbcType=DOUBLE},
+      MAX_TRANSFER_FEE = #{maxTransferFee,jdbcType=DOUBLE},
+      MIN_ADDON_FEE = #{minAddonFee,jdbcType=DOUBLE},
+      MAX_ADDON_FEE = #{maxAddonFee,jdbcType=DOUBLE},
+      ENABLE_ASSESS_FEE = #{enableAssessFee,jdbcType=BIT},
+      IS_TOTAL_REFINANCE = #{isTotalRefinance,jdbcType=BIT},
+      HAS_SERVICE_FEE = #{hasServiceFee,jdbcType=BIT},
+      HAS_PURCHASE_TAX = #{hasPurchaseTax,jdbcType=BIT},
+      RULE_COMMENT = #{ruleComment,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_product_rule
+  </select>
+</mapper>

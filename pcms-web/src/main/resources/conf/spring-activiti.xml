@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+            http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd              
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+	
+    <!-- 单例json对象 -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    
+    
+    
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration"> 
+      <property name="dataSource" ref="dataSource"/> 
+      <property name="transactionManager" ref="transactionManager"/> 
+      <property name="databaseSchemaUpdate" value="true" /> 
+      <property name="jobExecutorActivate" value="false" /> 
+      <!--  
+      <property name="deploymentResources" value="classpath*:bpmn/*.bpmn"/>
+      <property name="deploymentMode" value="single-resource"/>
+      -->
+      <property name="activityFontName" value="宋体"/>  
+      <property name="labelFontName" value="宋体"/> 
+      <property name="eventListeners">
+      	<list>
+      		<ref bean="globalEventListener"></ref>
+      	</list>
+      </property>
+      <!-- 用于更改流程节点的执行行为 -->  
+      <property name="activityBehaviorFactory"  ref="activityBehaviorFactoryExt"/>
+    </bean> 
+
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean"> 
+      <property name="processEngineConfiguration" ref="processEngineConfiguration" /> 
+    </bean> 
+	
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" /> 
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" /> 
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" /> 
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" /> 
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService" /> 
+    
+    <bean id="globalEventListener" class="com.pujjr.jbpm.core.listeners.GlobalEventListener">
+    	<property name="handlers">
+    		<map>
+			   <entry key="TASK_CREATED" value="taskCreateListener"/>
+			   <entry key="TASK_COMPLETED" value="taskCompleteListener"/>
+			   <entry key="TASK_ASSIGNED" value="taskAssignedListener"/>
+			   <entry key="PROCESS_COMPLETED" value="processCompleteListener"/>
+			   <entry key="ACTIVITY_STARTED" value="activityStartedListener"/>
+			   <entry key="ACTIVITY_COMPLETED" value="activityCompletedListener"/>
+			   <entry key="PROCESS_STARTED" value="processStartedListener"></entry>
+			   <entry key="PROCESS_COMPLETED" value="processCompletedListener"></entry>
+			   <entry key="PROCESS_CANCELLED" value="processCancelledListener"></entry>
+			 </map>
+    	</property>
+    </bean>
+    
+    <bean id="springBeanUtils" name="springBeanUtils" class="com.pujjr.utils.SpringBeanUtils"></bean>
+    <bean id="activityStartedListener"  name="activityStartedListener" class="com.pujjr.jbpm.core.listeners.ActivitiStartedListener"></bean>
+    <bean id="activityCompletedListener" name="activityCompletedListener" class="com.pujjr.jbpm.core.listeners.ActivitiCompletedListener"></bean>
+    <bean id="taskCreateListener"  name="taskCreateListener" class="com.pujjr.jbpm.core.listeners.TaskCreateListener"></bean>
+    <bean id="taskCompleteListener" name="taskCompleteListener" class="com.pujjr.jbpm.core.listeners.TaskCompleteListener"></bean>
+    <bean id="taskAssignedListener"  name="taskAssignedListener" class="com.pujjr.jbpm.core.listeners.TaskAssignedListener"></bean>
+    <bean id="processStartedListener" name="processStartedListener" class="com.pujjr.jbpm.core.listeners.ProcessStartedListener"></bean>
+    <bean id="processCompletedListener" name="processCompletedListener" class="com.pujjr.jbpm.core.listeners.ProcessCompletedListener"></bean>
+    <bean id="processCancelledListener" name="processCancelledListener" class="com.pujjr.jbpm.core.listeners.ProcessCancelledListener"></bean>
+    
+    <bean id="exclusiveGatewayActivityBehaviorExt" class="com.pujjr.jbpm.core.ext.ExclusiveGatewayActivityBehaviorExt"/>  
+    
+    <bean id="activityBehaviorFactoryExt" class="com.pujjr.jbpm.core.ext.ActivityBehaviorFactoryExt">  
+    	<property name="exclusiveGatewayActivityBehaviorExt" ref="exclusiveGatewayActivityBehaviorExt"/>  
+  	</bean>  
+    
+</beans>

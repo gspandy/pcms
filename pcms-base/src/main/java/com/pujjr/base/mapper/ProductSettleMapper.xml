@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ProductSettleMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ProductSettle" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="REATE" property="reate" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PRODUCT_ID, PERIOD, REATE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_settle
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_product_settle
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ProductSettle" >
+    insert into t_product_settle (ID, PRODUCT_ID, PERIOD, 
+      REATE)
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, 
+      #{reate,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ProductSettle" >
+    insert into t_product_settle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="productId != null" >
+        PRODUCT_ID,
+      </if>
+      <if test="period != null" >
+        PERIOD,
+      </if>
+      <if test="reate != null" >
+        REATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="reate != null" >
+        #{reate,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ProductSettle" >
+    update t_product_settle
+    <set >
+      <if test="productId != null" >
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        PERIOD = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="reate != null" >
+        REATE = #{reate,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ProductSettle" >
+    update t_product_settle
+    set PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      PERIOD = #{period,jdbcType=INTEGER},
+      REATE = #{reate,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByProductId">
+  	delete from t_product_settle
+  	where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

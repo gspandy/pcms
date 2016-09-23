@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.ApplySpouseMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplySpouseVo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ID_TYPE" property="idType" jdbcType="VARCHAR" />
+    <result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="QQ" property="qq" jdbcType="VARCHAR" />
+    <result column="WEIXIN" property="weixin" jdbcType="VARCHAR" />
+    <result column="UNIT_NAME" property="unitName" jdbcType="VARCHAR" />
+    <result column="UNIT_TYPE" property="unitType" jdbcType="VARCHAR" />
+    <result column="UNIT_INDUSTRY" property="unitIndustry" jdbcType="VARCHAR" />
+    <result column="UNIT_TEL" property="unitTel" jdbcType="VARCHAR" />
+    <result column="RANK" property="rank" jdbcType="VARCHAR" />
+    <result column="RANK_NAME" property="rankName" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR_PROVINCE" property="unitAddrProvince" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR_CITY" property="unitAddrCity" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR_COUNTY" property="unitAddrCounty" jdbcType="VARCHAR" />
+    <result column="UNIT_ADDR_EXT" property="unitAddrExt" jdbcType="VARCHAR" />
+    <result column="MONTH_INCOME" property="monthIncome" jdbcType="DOUBLE" />
+    <result column="YEAR_INCOME" property="yearIncome" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, NAME, ID_TYPE, ID_NO, MOBILE, QQ, WEIXIN, UNIT_NAME, UNIT_TYPE, UNIT_INDUSTRY, 
+    UNIT_TEL, RANK, RANK_NAME, UNIT_ADDR_PROVINCE, UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, 
+    UNIT_ADDR_EXT, MONTH_INCOME, YEAR_INCOME
+  </sql>
+  
+  <select id="selectByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_spouse
+    where app_id = #{appId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_spouse
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_spouse
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplySpouse" >
+    insert into t_apply_spouse (ID, APP_ID, NAME, 
+      ID_TYPE, ID_NO, MOBILE, 
+      QQ, WEIXIN, UNIT_NAME, 
+      UNIT_TYPE, UNIT_INDUSTRY, UNIT_TEL, 
+      RANK, RANK_NAME, UNIT_ADDR_PROVINCE, 
+      UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, UNIT_ADDR_EXT, 
+      MONTH_INCOME, YEAR_INCOME)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{idType,jdbcType=VARCHAR}, #{idNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
+      #{unitType,jdbcType=VARCHAR}, #{unitIndustry,jdbcType=VARCHAR}, #{unitTel,jdbcType=VARCHAR}, 
+      #{rank,jdbcType=VARCHAR}, #{rankName,jdbcType=VARCHAR}, #{unitAddrProvince,jdbcType=VARCHAR}, 
+      #{unitAddrCity,jdbcType=VARCHAR}, #{unitAddrCounty,jdbcType=VARCHAR}, #{unitAddrExt,jdbcType=VARCHAR}, 
+      #{monthIncome,jdbcType=DOUBLE}, #{yearIncome,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplySpouse" >
+    insert into t_apply_spouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="idType != null" >
+        ID_TYPE,
+      </if>
+      <if test="idNo != null" >
+        ID_NO,
+      </if>
+      <if test="mobile != null" >
+        MOBILE,
+      </if>
+      <if test="qq != null" >
+        QQ,
+      </if>
+      <if test="weixin != null" >
+        WEIXIN,
+      </if>
+      <if test="unitName != null" >
+        UNIT_NAME,
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE,
+      </if>
+      <if test="unitIndustry != null" >
+        UNIT_INDUSTRY,
+      </if>
+      <if test="unitTel != null" >
+        UNIT_TEL,
+      </if>
+      <if test="rank != null" >
+        RANK,
+      </if>
+      <if test="rankName != null" >
+        RANK_NAME,
+      </if>
+      <if test="unitAddrProvince != null" >
+        UNIT_ADDR_PROVINCE,
+      </if>
+      <if test="unitAddrCity != null" >
+        UNIT_ADDR_CITY,
+      </if>
+      <if test="unitAddrCounty != null" >
+        UNIT_ADDR_COUNTY,
+      </if>
+      <if test="unitAddrExt != null" >
+        UNIT_ADDR_EXT,
+      </if>
+      <if test="monthIncome != null" >
+        MONTH_INCOME,
+      </if>
+      <if test="yearIncome != null" >
+        YEAR_INCOME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null" >
+        #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null" >
+        #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndustry != null" >
+        #{unitIndustry,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTel != null" >
+        #{unitTel,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="rankName != null" >
+        #{rankName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrProvince != null" >
+        #{unitAddrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrCity != null" >
+        #{unitAddrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrCounty != null" >
+        #{unitAddrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrExt != null" >
+        #{unitAddrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="monthIncome != null" >
+        #{monthIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="yearIncome != null" >
+        #{yearIncome,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplySpouse" >
+    update t_apply_spouse
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null" >
+        ID_TYPE = #{idType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNo != null" >
+        ID_NO = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null" >
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        QQ = #{qq,jdbcType=VARCHAR},
+      </if>
+      <if test="weixin != null" >
+        WEIXIN = #{weixin,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null" >
+        UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null" >
+        UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitIndustry != null" >
+        UNIT_INDUSTRY = #{unitIndustry,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTel != null" >
+        UNIT_TEL = #{unitTel,jdbcType=VARCHAR},
+      </if>
+      <if test="rank != null" >
+        RANK = #{rank,jdbcType=VARCHAR},
+      </if>
+      <if test="rankName != null" >
+        RANK_NAME = #{rankName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrProvince != null" >
+        UNIT_ADDR_PROVINCE = #{unitAddrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrCity != null" >
+        UNIT_ADDR_CITY = #{unitAddrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrCounty != null" >
+        UNIT_ADDR_COUNTY = #{unitAddrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddrExt != null" >
+        UNIT_ADDR_EXT = #{unitAddrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="monthIncome != null" >
+        MONTH_INCOME = #{monthIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="yearIncome != null" >
+        YEAR_INCOME = #{yearIncome,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplySpouse" >
+    update t_apply_spouse
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=VARCHAR},
+      ID_NO = #{idNo,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      QQ = #{qq,jdbcType=VARCHAR},
+      WEIXIN = #{weixin,jdbcType=VARCHAR},
+      UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      UNIT_INDUSTRY = #{unitIndustry,jdbcType=VARCHAR},
+      UNIT_TEL = #{unitTel,jdbcType=VARCHAR},
+      RANK = #{rank,jdbcType=VARCHAR},
+      RANK_NAME = #{rankName,jdbcType=VARCHAR},
+      UNIT_ADDR_PROVINCE = #{unitAddrProvince,jdbcType=VARCHAR},
+      UNIT_ADDR_CITY = #{unitAddrCity,jdbcType=VARCHAR},
+      UNIT_ADDR_COUNTY = #{unitAddrCounty,jdbcType=VARCHAR},
+      UNIT_ADDR_EXT = #{unitAddrExt,jdbcType=VARCHAR},
+      MONTH_INCOME = #{monthIncome,jdbcType=DOUBLE},
+      YEAR_INCOME = #{yearIncome,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

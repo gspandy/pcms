@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.SysAccountMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysAccount">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="BRANCH_ID" jdbcType="VARCHAR" property="branchId" />
+    <result column="POST_ID" jdbcType="VARCHAR" property="postId" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="WEIXIN_ID" jdbcType="VARCHAR" property="weixinId" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
+    <result column="RESERVER4" jdbcType="VARCHAR" property="reserver4" />
+    <result column="RESERVER5" jdbcType="VARCHAR" property="reserver5" />
+    <association select="selectSysJob" column="POST_ID" property="sysJob"></association>
+    <association select="selectSysDictData" column="STATUS" property="statusDict"></association>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ACCOUNT_ID, ACCOUNT_NAME, PASSWORD, BRANCH_ID, POST_ID, MOBILE, WEIXIN_ID, EMAIL, 
+    STATUS, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, RESERVER1, RESERVER2, RESERVER3, 
+    RESERVER4, RESERVER5
+  </sql>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_account
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_account
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysAccount">
+    insert into sys_account (ID, ACCOUNT_ID, ACCOUNT_NAME, 
+      PASSWORD, BRANCH_ID, POST_ID, 
+      MOBILE, WEIXIN_ID, EMAIL, 
+      STATUS, CREATE_TIME, CREATE_ID, 
+      UPDATE_TIME, UPDATE_ID, RESERVER1, 
+      RESERVER2, RESERVER3, RESERVER4, 
+      RESERVER5)
+    values (#{id,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{branchId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{weixinId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
+      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=VARCHAR}, 
+      #{reserver5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysAccount">
+    insert into sys_account
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="accountId != null">
+        ACCOUNT_ID,
+      </if>
+      <if test="accountName != null">
+        ACCOUNT_NAME,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="branchId != null">
+        BRANCH_ID,
+      </if>
+      <if test="postId != null">
+        POST_ID,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="weixinId != null">
+        WEIXIN_ID,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID,
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null">
+        RESERVER5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null">
+        #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null">
+        #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null">
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinId != null">
+        #{weixinId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null">
+        #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null">
+        #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysAccount">
+    update sys_account
+    <set>
+      <if test="accountId != null">
+        ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="branchId != null">
+        BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+      </if>
+      <if test="postId != null">
+        POST_ID = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="weixinId != null">
+        WEIXIN_ID = #{weixinId,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null">
+        RESERVER5 = #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysAccount">
+    update sys_account
+    set ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
+      ACCOUNT_NAME = #{accountName,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      BRANCH_ID = #{branchId,jdbcType=VARCHAR},
+      POST_ID = #{postId,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      WEIXIN_ID = #{weixinId,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      RESERVER5 = #{reserver5,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from 
+  	sys_account
+  </select>
+  <select id="selectByAccountId" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+  	from 
+  	sys_account
+  	where account_id = #{accountId}
+  </select>
+  <select id="selectAllByWorkgroupId" resultMap="BaseResultMap">
+  	select 
+  	b.*
+  	from 
+  	sys_workgroup_account a 
+  	left join sys_account b on a.SYSACCOUNT_ID = b.id
+  	where a.WORKGROUP_ID = #{workgroupId}
+  </select>
+  <select id="selectAllByBranchId" resultMap="BaseResultMap">
+  	select * from sys_account where BRANCH_ID =#{branchId}
+  </select>
+  
+  <resultMap id="SysJobMap" type="com.pujjr.base.domain.SysJob" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectSysJob" resultMap="SysJobMap" parameterType="String">
+  		select * from SYS_JOB where id = #{POST_ID}
+  </select>
+  
+  <resultMap id="SysDictDataMap" type="com.pujjr.base.domain.SysDictData">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="DICT_TYPE_ID" jdbcType="VARCHAR" property="dictTypeId" />
+    <result column="SHOW_SEQ" jdbcType="INTEGER" property="showSeq" />
+    <result column="DICT_DATA_CODE" jdbcType="VARCHAR" property="dictDataCode" />
+    <result column="DICT_DATA_NAME" jdbcType="VARCHAR" property="dictDataName" />
+    <result column="ENABLED" jdbcType="BIT" property="enabled" />
+  </resultMap>
+  
+  <select id="selectSysDictData" resultMap="SysDictDataMap" parameterType="String">
+  	select * from SYS_DICT_DATA where DICT_DATA_CODE =#{STATUS}
+  </select>
+</mapper>

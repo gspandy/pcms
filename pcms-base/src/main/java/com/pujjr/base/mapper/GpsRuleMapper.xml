@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.GpsRuleMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.GpsRule" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+    <result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
+    <result column="MIN_AMOUNT" property="minAmount" jdbcType="DOUBLE" />
+    <result column="MAX_AMOUNT" property="maxAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SEQ, RULE_NAME, MIN_AMOUNT, MAX_AMOUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_gps_rule
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_gps_rule
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.GpsRule" >
+    insert into t_gps_rule (ID, SEQ, RULE_NAME, 
+      MIN_AMOUNT, MAX_AMOUNT)
+    values (#{id,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{ruleName,jdbcType=VARCHAR}, 
+      #{minAmount,jdbcType=DOUBLE}, #{maxAmount,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.GpsRule" >
+    insert into t_gps_rule
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="ruleName != null" >
+        RULE_NAME,
+      </if>
+      <if test="minAmount != null" >
+        MIN_AMOUNT,
+      </if>
+      <if test="maxAmount != null" >
+        MAX_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="minAmount != null" >
+        #{minAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAmount != null" >
+        #{maxAmount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.GpsRule" >
+    update t_gps_rule
+    <set >
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="ruleName != null" >
+        RULE_NAME = #{ruleName,jdbcType=VARCHAR},
+      </if>
+      <if test="minAmount != null" >
+        MIN_AMOUNT = #{minAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAmount != null" >
+        MAX_AMOUNT = #{maxAmount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.GpsRule" >
+    update t_gps_rule
+    set SEQ = #{seq,jdbcType=INTEGER},
+      RULE_NAME = #{ruleName,jdbcType=VARCHAR},
+      MIN_AMOUNT = #{minAmount,jdbcType=DOUBLE},
+      MAX_AMOUNT = #{maxAmount,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_gps_rule order by seq
+  </select>
+  <select id="selectByAmt" resultMap="BaseResultMap">
+  	select * from t_gps_rule 
+  	<![CDATA[
+  		where MIN_AMOUNT <=#{amt} and MAX_AMOUNT > #{amt}
+  	]]>
+  </select>
+</mapper>

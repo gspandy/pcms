@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.ApplyFamilyDebtMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplyFamilyDebtVo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="BANK_LOAN_AMOUNT" property="bankLoanAmount" jdbcType="DOUBLE" />
+    <result column="BANK_LOAN_YHK" property="bankLoanYhk" jdbcType="DOUBLE" />
+    <result column="PETTY_LOAN_AMOUT" property="pettyLoanAmout" jdbcType="DOUBLE" />
+    <result column="PETTY_LOAN_YHK" property="pettyLoanYhk" jdbcType="DOUBLE" />
+    <result column="DB_LOAN_AMOUNT" property="dbLoanAmount" jdbcType="DOUBLE" />
+    <result column="DB_LOAN_YHK" property="dbLoanYhk" jdbcType="DOUBLE" />
+    <result column="CREDIT_LOAN_AMOUNT" property="creditLoanAmount" jdbcType="DOUBLE" />
+    <result column="CREDIT_LOAN_YHK" property="creditLoanYhk" jdbcType="DOUBLE" />
+    <result column="RELATIVE_LOAN_AMOUNT" property="relativeLoanAmount" jdbcType="DOUBLE" />
+    <result column="RELATIVE_LOAN_YHK" property="relativeLoanYhk" jdbcType="DOUBLE" />
+    <result column="FRIEND_LOAN_AMOUNT" property="friendLoanAmount" jdbcType="DOUBLE" />
+    <result column="FRIEND_LOAN_YHK" property="friendLoanYhk" jdbcType="DOUBLE" />
+    <result column="EASYCAR_LOAN_AMOUNT" property="easycarLoanAmount" jdbcType="DOUBLE" />
+    <result column="EASYCAR_LOAN_YHK" property="easycarLoanYhk" jdbcType="DOUBLE" />
+    <result column="LOAN_TOTAL" property="loanTotal" jdbcType="DOUBLE" />
+    <result column="LOAN_YHK_TOTAL" property="loanYhkTotal" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, BANK_LOAN_AMOUNT, BANK_LOAN_YHK, PETTY_LOAN_AMOUT, PETTY_LOAN_YHK, DB_LOAN_AMOUNT, 
+    DB_LOAN_YHK, CREDIT_LOAN_AMOUNT, CREDIT_LOAN_YHK, RELATIVE_LOAN_AMOUNT, RELATIVE_LOAN_YHK, 
+    FRIEND_LOAN_AMOUNT, FRIEND_LOAN_YHK, EASYCAR_LOAN_AMOUNT, EASYCAR_LOAN_YHK, LOAN_TOTAL, 
+    LOAN_YHK_TOTAL
+  </sql>
+  <select id="selectByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_family_debt
+    where app_id = #{appId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_family_debt
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_family_debt
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyFamilyDebt" >
+    insert into t_apply_family_debt (ID, APP_ID, BANK_LOAN_AMOUNT, 
+      BANK_LOAN_YHK, PETTY_LOAN_AMOUT, PETTY_LOAN_YHK, 
+      DB_LOAN_AMOUNT, DB_LOAN_YHK, CREDIT_LOAN_AMOUNT, 
+      CREDIT_LOAN_YHK, RELATIVE_LOAN_AMOUNT, RELATIVE_LOAN_YHK, 
+      FRIEND_LOAN_AMOUNT, FRIEND_LOAN_YHK, EASYCAR_LOAN_AMOUNT, 
+      EASYCAR_LOAN_YHK, LOAN_TOTAL, LOAN_YHK_TOTAL
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{bankLoanAmount,jdbcType=DOUBLE}, 
+      #{bankLoanYhk,jdbcType=DOUBLE}, #{pettyLoanAmout,jdbcType=DOUBLE}, #{pettyLoanYhk,jdbcType=DOUBLE}, 
+      #{dbLoanAmount,jdbcType=DOUBLE}, #{dbLoanYhk,jdbcType=DOUBLE}, #{creditLoanAmount,jdbcType=DOUBLE}, 
+      #{creditLoanYhk,jdbcType=DOUBLE}, #{relativeLoanAmount,jdbcType=DOUBLE}, #{relativeLoanYhk,jdbcType=DOUBLE}, 
+      #{friendLoanAmount,jdbcType=DOUBLE}, #{friendLoanYhk,jdbcType=DOUBLE}, #{easycarLoanAmount,jdbcType=DOUBLE}, 
+      #{easycarLoanYhk,jdbcType=DOUBLE}, #{loanTotal,jdbcType=DOUBLE}, #{loanYhkTotal,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyFamilyDebt" >
+    insert into t_apply_family_debt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="bankLoanAmount != null" >
+        BANK_LOAN_AMOUNT,
+      </if>
+      <if test="bankLoanYhk != null" >
+        BANK_LOAN_YHK,
+      </if>
+      <if test="pettyLoanAmout != null" >
+        PETTY_LOAN_AMOUT,
+      </if>
+      <if test="pettyLoanYhk != null" >
+        PETTY_LOAN_YHK,
+      </if>
+      <if test="dbLoanAmount != null" >
+        DB_LOAN_AMOUNT,
+      </if>
+      <if test="dbLoanYhk != null" >
+        DB_LOAN_YHK,
+      </if>
+      <if test="creditLoanAmount != null" >
+        CREDIT_LOAN_AMOUNT,
+      </if>
+      <if test="creditLoanYhk != null" >
+        CREDIT_LOAN_YHK,
+      </if>
+      <if test="relativeLoanAmount != null" >
+        RELATIVE_LOAN_AMOUNT,
+      </if>
+      <if test="relativeLoanYhk != null" >
+        RELATIVE_LOAN_YHK,
+      </if>
+      <if test="friendLoanAmount != null" >
+        FRIEND_LOAN_AMOUNT,
+      </if>
+      <if test="friendLoanYhk != null" >
+        FRIEND_LOAN_YHK,
+      </if>
+      <if test="easycarLoanAmount != null" >
+        EASYCAR_LOAN_AMOUNT,
+      </if>
+      <if test="easycarLoanYhk != null" >
+        EASYCAR_LOAN_YHK,
+      </if>
+      <if test="loanTotal != null" >
+        LOAN_TOTAL,
+      </if>
+      <if test="loanYhkTotal != null" >
+        LOAN_YHK_TOTAL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankLoanAmount != null" >
+        #{bankLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="bankLoanYhk != null" >
+        #{bankLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="pettyLoanAmout != null" >
+        #{pettyLoanAmout,jdbcType=DOUBLE},
+      </if>
+      <if test="pettyLoanYhk != null" >
+        #{pettyLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="dbLoanAmount != null" >
+        #{dbLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dbLoanYhk != null" >
+        #{dbLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="creditLoanAmount != null" >
+        #{creditLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="creditLoanYhk != null" >
+        #{creditLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="relativeLoanAmount != null" >
+        #{relativeLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="relativeLoanYhk != null" >
+        #{relativeLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="friendLoanAmount != null" >
+        #{friendLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="friendLoanYhk != null" >
+        #{friendLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="easycarLoanAmount != null" >
+        #{easycarLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="easycarLoanYhk != null" >
+        #{easycarLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="loanTotal != null" >
+        #{loanTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="loanYhkTotal != null" >
+        #{loanYhkTotal,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyFamilyDebt" >
+    update t_apply_family_debt
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="bankLoanAmount != null" >
+        BANK_LOAN_AMOUNT = #{bankLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="bankLoanYhk != null" >
+        BANK_LOAN_YHK = #{bankLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="pettyLoanAmout != null" >
+        PETTY_LOAN_AMOUT = #{pettyLoanAmout,jdbcType=DOUBLE},
+      </if>
+      <if test="pettyLoanYhk != null" >
+        PETTY_LOAN_YHK = #{pettyLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="dbLoanAmount != null" >
+        DB_LOAN_AMOUNT = #{dbLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="dbLoanYhk != null" >
+        DB_LOAN_YHK = #{dbLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="creditLoanAmount != null" >
+        CREDIT_LOAN_AMOUNT = #{creditLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="creditLoanYhk != null" >
+        CREDIT_LOAN_YHK = #{creditLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="relativeLoanAmount != null" >
+        RELATIVE_LOAN_AMOUNT = #{relativeLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="relativeLoanYhk != null" >
+        RELATIVE_LOAN_YHK = #{relativeLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="friendLoanAmount != null" >
+        FRIEND_LOAN_AMOUNT = #{friendLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="friendLoanYhk != null" >
+        FRIEND_LOAN_YHK = #{friendLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="easycarLoanAmount != null" >
+        EASYCAR_LOAN_AMOUNT = #{easycarLoanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="easycarLoanYhk != null" >
+        EASYCAR_LOAN_YHK = #{easycarLoanYhk,jdbcType=DOUBLE},
+      </if>
+      <if test="loanTotal != null" >
+        LOAN_TOTAL = #{loanTotal,jdbcType=DOUBLE},
+      </if>
+      <if test="loanYhkTotal != null" >
+        LOAN_YHK_TOTAL = #{loanYhkTotal,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyFamilyDebt" >
+    update t_apply_family_debt
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      BANK_LOAN_AMOUNT = #{bankLoanAmount,jdbcType=DOUBLE},
+      BANK_LOAN_YHK = #{bankLoanYhk,jdbcType=DOUBLE},
+      PETTY_LOAN_AMOUT = #{pettyLoanAmout,jdbcType=DOUBLE},
+      PETTY_LOAN_YHK = #{pettyLoanYhk,jdbcType=DOUBLE},
+      DB_LOAN_AMOUNT = #{dbLoanAmount,jdbcType=DOUBLE},
+      DB_LOAN_YHK = #{dbLoanYhk,jdbcType=DOUBLE},
+      CREDIT_LOAN_AMOUNT = #{creditLoanAmount,jdbcType=DOUBLE},
+      CREDIT_LOAN_YHK = #{creditLoanYhk,jdbcType=DOUBLE},
+      RELATIVE_LOAN_AMOUNT = #{relativeLoanAmount,jdbcType=DOUBLE},
+      RELATIVE_LOAN_YHK = #{relativeLoanYhk,jdbcType=DOUBLE},
+      FRIEND_LOAN_AMOUNT = #{friendLoanAmount,jdbcType=DOUBLE},
+      FRIEND_LOAN_YHK = #{friendLoanYhk,jdbcType=DOUBLE},
+      EASYCAR_LOAN_AMOUNT = #{easycarLoanAmount,jdbcType=DOUBLE},
+      EASYCAR_LOAN_YHK = #{easycarLoanYhk,jdbcType=DOUBLE},
+      LOAN_TOTAL = #{loanTotal,jdbcType=DOUBLE},
+      LOAN_YHK_TOTAL = #{loanYhkTotal,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

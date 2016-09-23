@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.ApplyLinkmanMapper">
+
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplyLinkmanVo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="TENANT_RELATION" jdbcType="VARCHAR" property="tenantRelation" />
+    <result column="ADDR_PROVINCE" jdbcType="VARCHAR" property="addrProvince" />
+    <result column="ADDR_CITY" jdbcType="VARCHAR" property="addrCity" />
+    <result column="ADDR_COUNTY" jdbcType="VARCHAR" property="addrCounty" />
+    <result column="ADDR_EXT" jdbcType="VARCHAR" property="addrExt" />
+    <result column="IS_KNOW" jdbcType="VARCHAR" property="isKnow" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, SEQ, NAME, MOBILE, TENANT_RELATION, ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, 
+    ADDR_EXT, IS_KNOW
+  </sql>
+  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_linkman
+    where app_id = #{appId,jdbcType=VARCHAR}
+    order by seq
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_linkman
+    where ID = #{id,jdbcType=VARCHAR}
+    order by seq
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_apply_linkman
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyLinkman">
+    insert into t_apply_linkman (ID, APP_ID, SEQ, 
+      NAME, MOBILE, TENANT_RELATION, 
+      ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, 
+      ADDR_EXT, IS_KNOW)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{tenantRelation,jdbcType=VARCHAR}, 
+      #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, #{addrCounty,jdbcType=VARCHAR}, 
+      #{addrExt,jdbcType=VARCHAR}, #{isKnow,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyLinkman">
+    insert into t_apply_linkman
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="tenantRelation != null">
+        TENANT_RELATION,
+      </if>
+      <if test="addrProvince != null">
+        ADDR_PROVINCE,
+      </if>
+      <if test="addrCity != null">
+        ADDR_CITY,
+      </if>
+      <if test="addrCounty != null">
+        ADDR_COUNTY,
+      </if>
+      <if test="addrExt != null">
+        ADDR_EXT,
+      </if>
+      <if test="isKnow != null">
+        IS_KNOW,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantRelation != null">
+        #{tenantRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvince != null">
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null">
+        #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrExt != null">
+        #{addrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnow != null">
+        #{isKnow,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyLinkman">
+    update t_apply_linkman
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantRelation != null">
+        TENANT_RELATION = #{tenantRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="addrProvince != null">
+        ADDR_PROVINCE = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCounty != null">
+        ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="addrExt != null">
+        ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnow != null">
+        IS_KNOW = #{isKnow,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyLinkman">
+    update t_apply_linkman
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      NAME = #{name,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      TENANT_RELATION = #{tenantRelation,jdbcType=VARCHAR},
+      ADDR_PROVINCE = #{addrProvince,jdbcType=VARCHAR},
+      ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
+      ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
+      ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
+      IS_KNOW = #{isKnow,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

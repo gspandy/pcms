@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowNodesMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowNodes" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_VERSION_ID" property="workflowVersionId" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+    <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="NODE_NAME" property="nodeName" jdbcType="VARCHAR" />
+    <result column="NODE_TYPE" property="nodeType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKFLOW_VERSION_ID, SEQ, NODE_ID, NODE_NAME, NODE_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_nodes
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_nodes
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowNodes" >
+    insert into t_workflow_nodes (ID, WORKFLOW_VERSION_ID, SEQ, 
+      NODE_ID, NODE_NAME, NODE_TYPE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{nodeId,jdbcType=VARCHAR}, #{nodeName,jdbcType=VARCHAR}, #{nodeType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodes" >
+    insert into t_workflow_nodes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="nodeId != null" >
+        NODE_ID,
+      </if>
+      <if test="nodeName != null" >
+        NODE_NAME,
+      </if>
+      <if test="nodeType != null" >
+        NODE_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowVersionId != null" >
+        #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeType != null" >
+        #{nodeType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodes" >
+    update t_workflow_nodes
+    <set >
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="nodeId != null" >
+        NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeName != null" >
+        NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeType != null" >
+        NODE_TYPE = #{nodeType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowNodes" >
+    update t_workflow_nodes
+    set WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      NODE_NAME = #{nodeName,jdbcType=VARCHAR},
+      NODE_TYPE = #{nodeType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllByNodeType" resultMap="BaseResultMap">
+  	select * from t_workflow_nodes
+  	where WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR}  
+  	<if test="nodeType !=null and nodeType !=''">
+  		AND NODE_TYPE = #{nodeType,jdbcType=VARCHAR}
+  	</if>
+  	order by node_type desc
+  </select>
+  <select id="selectWorkflowUserTaskNodeForms" resultType="HashMap">
+  	select 
+  	nodes.id as id,
+  	nodes.WORKFLOW_VERSION_ID as workflowVersinId,
+  	nodes.SEQ  as seq,
+  	nodes.NODE_ID as nodeId,
+  	nodes.NODE_NAME as nodeName,
+  	nodes.NODE_TYPE as nodeType,
+  	form.FORM_NAME as formName,
+  	form.CREATE_TIME as createTime,
+  	form.CREATE_ID as createId
+  	from t_workflow_nodes nodes
+  	left join t_workflow_node_form form on (nodes.NODE_ID = form.NODE_ID and nodes.WORKFLOW_VERSION_ID = form.WORKFLOW_VERSION_ID)
+  	where nodes.WORKFLOW_VERSION_ID =  #{workflowVersionId} and nodes.NODE_TYPE ='userTask'
+  	order by nodes.seq
+  </select>
+  <select id="selectWorkflowNodeParam" resultType="HashMap">
+  	select 
+	  	nodes.id as id,
+	  	nodes.WORKFLOW_VERSION_ID as workflowVersinId,
+	  	nodes.SEQ  as seq,
+	  	nodes.NODE_ID as nodeId,
+	  	nodes.NODE_NAME as nodeName,
+	  	nodes.NODE_TYPE as nodeType,
+	  	param.ACT_START_SCRIPT as actStartScript,
+	    param.ACT_END_SCRIPT as actEndScript,
+	   	param.TASK_CREATE_PREHANDLE as taskCreatePrehandle,
+	    param.TASK_CREATE_AFTERHANDLE as taskCreateAfterhandle,
+	    param.TASK_CREATE_SCRIPT as taskCreateScript,
+	    param.TASK_COMPLETE_SCRIPT as taskCompleteScript,
+	    param.ON_SITE_NOTICE as onSiteNotice,
+	    param.ON_MSG_NOTICE as onMsgNotice,
+	    param.ON_MAIL_NOTICE as onMailNotice,
+	    param.ON_WEIXIN_NOTICE as onWeixinNotice,
+	    param.RECOMMIT_MODE as recommitMode,
+	    param.BACK_NODE_ID as backNodeId,
+	    param.CREATE_TIME as createTime,
+	    param.CREATE_ID as createId
+    from t_workflow_nodes nodes
+  	left join t_workflow_node_param param on (nodes.NODE_ID = param.NODE_ID and  nodes.WORKFLOW_VERSION_ID = param.WORKFLOW_VERSION_ID)
+  	where nodes.WORKFLOW_VERSION_ID =  #{workflowVersionId,jdbcType=VARCHAR} and nodes.NODE_ID =#{nodeId}
+  	order by nodes.seq
+  </select>
+  <delete id="deleteNodesByVersionId">
+  	 delete from t_workflow_nodes
+  	 where WORKFLOW_VERSION_ID = #{workflowVersionId}
+  </delete>
+  <select id="selectWorkflowNodeByNodeId" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    from t_workflow_nodes
+    where WORKFLOW_VERSION_ID = #{workflowVersionId} and NODE_ID = #{nodeId}
+  </select>
+  <select id="selectWorkflowUserTaskNodeAssignee" resultType="HashMap">
+  	select 
+  	nodes.id as id,
+  	nodes.WORKFLOW_VERSION_ID as workflowVersinId,
+  	nodes.SEQ  as seq,
+  	nodes.NODE_ID as nodeId,
+  	nodes.NODE_NAME as nodeName,
+  	nodes.NODE_TYPE as nodeType,
+  	assignee.ASSIGNEE_TYPE as assigneeType,
+  	assignee.ASSIGNEE_PARAM as assigneeParam,
+  	assignee.ASSIGNEE_HANDLE as assigneeHandle
+  	from t_workflow_nodes nodes
+  	left join t_workflow_node_assignee assignee on (nodes.NODE_ID = assignee.NODE_ID and nodes.WORKFLOW_VERSION_ID = assignee.WORKFLOW_VERSION_ID)
+  	where nodes.WORKFLOW_VERSION_ID =  #{workflowVersionId} and nodes.NODE_TYPE ='userTask'
+  	order by nodes.seq
+  </select>
+</mapper>

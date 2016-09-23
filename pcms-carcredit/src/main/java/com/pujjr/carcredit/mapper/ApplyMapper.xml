@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.ApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.Apply" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATE_BRANCH_CODE" property="createBranchCode" jdbcType="VARCHAR" />
+    <result column="CREATE_ACCOUNT_ID" property="createAccountId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, APP_ID, PRODUCT_CODE, PERIOD, COMMENT, STATUS, CREATE_BRANCH_CODE, CREATE_ACCOUNT_ID, 
+    CREATE_TIME
+  </sql>
+  
+  
+  <!-- 查询订单融资信息 ->查询融资车辆信息 -->
+ <!--  <resultMap id="carStyleResult" type="com.pujjr.base.domain.CarStyle">
+  	<id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CAR_SERIAL_ID" property="carSerialId" jdbcType="VARCHAR" />
+    <result column="CAR_STYLE_NAME" property="carDetail" jdbcType="VARCHAR" />
+    <result column="DISPLACEMENT" property="carStatus" jdbcType="VARCHAR" />
+    <result column="GUIDE_PRICE" property="carStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectCarStyle" type="java.lang.String">
+  	select * from t_apply_tenant_car where app_id=#{APP_ID}
+  </select> -->
+   <!-- 查询订单融资信息 -->
+<!--   <resultMap id="financesResult" type="com.pujjr.carcredit.vo.ApplyFinanceVo">
+  	<id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="CAR_STYLE_ID" jdbcType="VARCHAR" property="carStyleId" />
+    <result column="SALE_PRICE" jdbcType="DOUBLE" property="salePrice" />
+    <result column="INIT_PAY_PERCENT" jdbcType="DOUBLE" property="initPayPercent" />
+    <result column="IS_FINANCE_GPS" jdbcType="BIT" property="isFinanceGps" />
+    <result column="GPS_LVL_ID" jdbcType="VARCHAR" property="gpsLvlId" />
+    <result column="GPS_FEE" jdbcType="DOUBLE" property="gpsFee" />
+    <result column="IS_PURCHASE_TAX" jdbcType="BIT" property="isPurchaseTax" />
+    <result column="PURCHASE_TAX" jdbcType="DOUBLE" property="purchaseTax" />
+    <result column="IS_SERVICE_FEE" jdbcType="BIT" property="isServiceFee" />
+    <result column="SERVICE_FEE" jdbcType="DOUBLE" property="serviceFee" />
+    <result column="IS_INSURANCE_FEE" jdbcType="BIT" property="isInsuranceFee" />
+    <result column="INSURANCE_FEE" jdbcType="DOUBLE" property="insuranceFee" />
+    <result column="IS_DELAY_INSURANCE_FEE" jdbcType="BIT" property="isDelayInsuranceFee" />
+    <result column="DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="delayInsuranceFee" />
+    <result column="IS_TRANSFER_FEE" jdbcType="BIT" property="isTransferFee" />
+    <result column="TRANSFER_FEE" jdbcType="DOUBLE" property="transferFee" />
+    <result column="IS_ADDON_FEE" jdbcType="BIT" property="isAddonFee" />
+    <result column="ADDON_FEE" jdbcType="DOUBLE" property="addonFee" />
+    <result column="ASSESS_FEE" jdbcType="DOUBLE" property="assessFee" />
+    <result column="CAR_COLOR" jdbcType="VARCHAR" property="carColor" />
+    <result column="CAR_MANU" jdbcType="VARCHAR" property="carManu" />
+    <result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+    <result column="CAR_ENGINE_NO" jdbcType="VARCHAR" property="carEngineNo" />
+    <result column="ASSESS_PRICE" jdbcType="DOUBLE" property="assessPrice" />
+    <result column="COLLATERAL" jdbcType="DOUBLE" property="collateral" />
+    <result column="INIT_PAY_AMOUNT" jdbcType="DOUBLE" property="initPayAmount" />
+    <result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
+    <result column="FINANCE_FEE" jdbcType="DOUBLE" property="financeFee" />
+    <result column="SELECT" jdbcType="BIT" property="select"/>
+    <association column="CAR_STYLE_ID" property="carStyle" select="selectCarStyle"></association>
+    <association column="GPS_LVL_ID" property="gpsLvl" select="selectGpsLvl"></association>
+  </resultMap>
+  <select id="selectFinances" resultMap="financesResult" parameterType="com.pujjr.carcredit.vo.ApplyFinanceVo">
+  	select * from t_apply_finance where app_id=#{APP_ID}
+  </select> -->
+  
+  <!-- 订单联系人信息查询 -->
+<!--   <resultMap id="linkmansResult" type="com.pujjr.carcredit.vo.ApplyLinkmanVo">
+  	<id column="ID" property="id" jdbcType="VARCHAR" />
+  	<result column="APP_ID" property="appId" jdbcType="VARCHAR"/>
+  	<result column="SEQ" property="seq" jdbcType="VARCHAR"/>
+  	<result column="NAME" property="name" jdbcType="VARCHAR"/>
+  	<result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+  	<result column="TENANT_RELATION" property="tenantRelation" jdbcType="VARCHAR"/>
+  	<result column="ADDR_PROVINCE" property="addrProvince" jdbcType="VARCHAR"/>
+  	<result column="ADDR_CITY" property="addrCity" jdbcType="VARCHAR"/>
+  	<result column="ADDR_COUNTY" property="addrCounty" jdbcType="VARCHAR"/>
+  	<result column="ADDR_EXT" property="addrExt" jdbcType="VARCHAR"/>
+  	<result column="IS_KNOW" property="isKnow" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectLinkmans" resultMap="linkmansResult" parameterType="java.lang.String">
+  	select * from t_apply_linkman where app_id=#{APP_ID};
+  </select> -->
+  
+  <!--订单家庭负债查询 -->
+<!--   <resultMap id="familyDebtResult" type="com.pujjr.carcredit.vo.ApplyFamilyDebtVo">
+  	<id column="ID" property="id" jdbcType="VARCHAR" />
+  	<result column="APP_ID" property="appId" jdbcType="VARCHAR"/>
+  	<result column="BANK_LOAN_AMOUNT" property="bankLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="BANK_LOAN_YHK" property="bankLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="PETTY_LOAN_AMOUT" property="pettyLoanAmout" jdbcType="VARCHAR"/>
+  	<result column="PETTY_LOAN_YHK" property="pettyLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="DB_LOAN_AMOUNT" property="dbLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="DB_LOAN_YHK" property="dbLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="CREDIT_LOAN_AMOUNT" property="creditLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="CREDIT_LOAN_YHK" property="creditLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="RELATIVE_LOAN_AMOUNT" property="relativeLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="RELATIVE_LOAN_YHK" property="relativeLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="FRIEND_LOAN_AMOUNT" property="friendLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="FRIEND_LOAN_YHK" property="friendLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="EASYCAR_LOAN_AMOUNT" property="easycarLoanAmount" jdbcType="VARCHAR"/>
+  	<result column="EASYCAR_LOAN_YHK" property="easycarLoanYhk" jdbcType="VARCHAR"/>
+  	<result column="LOAN_TOTAL" property="loanTotal" jdbcType="VARCHAR"/>
+  	<result column="LOAN_YHK_TOTAL" property="loanYhkTotal" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="selectFamilyDebt" resultMap="familyDebtResult" parameterType="java.lang.String">
+  	select * from t_apply_family_debt where app_id=#{APP_ID}
+  </select> -->
+  
+  <!-- 查询未提交订单 -->
+  <resultMap id="applyVoResultMap" type="com.pujjr.carcredit.vo.ApplyVo">
+  	<id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="CREATE_BRANCH_CODE" property="createBranchCode" jdbcType="VARCHAR" />
+    <result column="CREATE_ACCOUNT_ID" property="createAccountId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <!-- <association column="APP_ID" property="familyDebt" select="selectFamilyDebt"></association>
+    <collection column="APP_ID" property="linkmans" ofType="com.pujjr.carcredit.vo.ApplyLinkmanVo" select="selectLinkmans"></collection>
+    <collection column="APP_ID" property="finances" ofType="com.pujjr.carcredit.vo.ApplyFinanceVo" select="selectFinances"/> -->
+  </resultMap>
+  <select id="selectByMap" resultMap="applyVoResultMap" parameterType="java.util.HashMap">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from t_apply
+  	where CREATE_ACCOUNT_ID = #{accountId} and STATUS = #{status}
+  </select>
+  
+  <select id="selectApplyByMap" resultMap="applyVoResultMap" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from t_apply
+  	where app_id=#{appId}
+  </select>
+  
+  <select id="selectByAppid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from t_apply
+  	where app_id = #{appId}
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.Apply" >
+    insert into t_apply (ID, APP_ID, PRODUCT_CODE, 
+      PERIOD, COMMENT, STATUS, 
+      CREATE_BRANCH_CODE, CREATE_ACCOUNT_ID, CREATE_TIME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
+      #{period,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createBranchCode,jdbcType=VARCHAR}, #{createAccountId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.Apply" >
+    insert into t_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="productCode != null" >
+        PRODUCT_CODE,
+      </if>
+      <if test="period != null" >
+        PERIOD,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="createBranchCode != null" >
+        CREATE_BRANCH_CODE,
+      </if>
+      <if test="createAccountId != null" >
+        CREATE_ACCOUNT_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createBranchCode != null" >
+        #{createBranchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createAccountId != null" >
+        #{createAccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByAppidSelective" parameterType="com.pujjr.carcredit.domain.Apply">
+  	update t_apply
+  	<set>
+  		<if test="productCode != null">
+  		 	PRODUCT_CODE = #{productCode},
+  		</if>
+  		<if test="period != null">
+  			PERIOD = #{period,jdbcType=INTEGER},
+  		</if>
+  		<if test="comment != null">
+  			comment = #{comment},
+  		</if>
+  	</set>
+  	where app_id = #{appId}
+  </update>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.Apply" >
+    update t_apply
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        PERIOD = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createBranchCode != null" >
+        CREATE_BRANCH_CODE = #{createBranchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createAccountId != null" >
+        CREATE_ACCOUNT_ID = #{createAccountId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.Apply" >
+    update t_apply
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      PERIOD = #{period,jdbcType=INTEGER},
+      COMMENT = #{comment,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      CREATE_BRANCH_CODE = #{createBranchCode,jdbcType=VARCHAR},
+      CREATE_ACCOUNT_ID = #{createAccountId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <resultMap id="ApplyInfoResultMap" type="com.pujjr.carcredit.po.ApplyInfoPo" >
+    <result column="appId" property="appId" jdbcType="VARCHAR" />
+    <result column="productName" property="productName" jdbcType="VARCHAR" />
+    <result column="tenantName" property="tenantName" jdbcType="VARCHAR" />
+    <result column="tenantIdNo" property="tenantIdNo" jdbcType="VARCHAR" />
+    <result column="totalFinanceAmt" property="totalFinanceAmt" jdbcType="VARCHAR" />
+    <result column="period" property="period" jdbcType="INTEGER" />
+    <result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectApplyInfoList" resultMap="ApplyInfoResultMap">
+  	select 
+  	a.APP_ID as appId,
+  	c.PRODUCT_NAME as productName,
+  	b.NAME as tenantName,
+  	b.ID_NO as  tenantIdNo,
+  	a.PERIOD as period,
+  	a.CREATE_TIME as createTime,
+  	d.DICT_DATA_NAME as status
+  	from t_apply a 
+  	left join t_apply_tenant b on a.APP_ID = b.APP_ID
+  	left join t_product c on a.PRODUCT_CODE = c.PRODUCT_CODE 
+  	left join sys_dict_data d on a.STATUS = d.DICT_DATA_CODE
+  	where 1= 1
+  	<if test="accountId != null and accountId!=''">
+  		and a.CREATE_ACCOUNT_ID = #{accountId}
+  	</if>
+  	<if test="status !=null and status!=''">
+  		and a.STATUS =#{status}
+  	</if>
+  </select>
+</mapper>

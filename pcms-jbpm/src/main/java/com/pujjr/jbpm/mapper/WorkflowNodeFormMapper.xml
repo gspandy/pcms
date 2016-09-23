@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowNodeFormMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowNodeForm">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="WORKFLOW_VERSION_ID" jdbcType="CHAR" property="workflowVersionId" />
+    <result column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <result column="FORM_NAME" jdbcType="VARCHAR" property="formName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, WORKFLOW_VERSION_ID, NODE_ID, FORM_NAME, CREATE_TIME, CREATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_node_form
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_workflow_node_form
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowNodeForm">
+    insert into t_workflow_node_form (ID, WORKFLOW_VERSION_ID, NODE_ID, 
+      FORM_NAME, CREATE_TIME, CREATE_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=CHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{formName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeForm">
+    insert into t_workflow_node_form
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="workflowVersionId != null">
+        WORKFLOW_VERSION_ID,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+      <if test="formName != null">
+        FORM_NAME,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowVersionId != null">
+        #{workflowVersionId,jdbcType=CHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="formName != null">
+        #{formName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeForm">
+    update t_workflow_node_form
+    <set>
+      <if test="workflowVersionId != null">
+        WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=CHAR},
+      </if>
+      <if test="nodeId != null">
+        NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="formName != null">
+        FORM_NAME = #{formName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowNodeForm">
+    update t_workflow_node_form
+    set WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=CHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      FORM_NAME = #{formName,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByWorkflowVersionId">
+  	delete from t_workflow_node_form
+  	where WORKFLOW_VERSION_ID = #{workflowVersionId}
+  </delete>
+</mapper>

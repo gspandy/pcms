@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowNodeAssigneeMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowNodeAssignee" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_VERSION_ID" property="workflowVersionId" jdbcType="VARCHAR" />
+    <result column="NODE_ID" property="nodeId" jdbcType="VARCHAR" />
+    <result column="ASSIGNEE_TYPE" property="assigneeType" jdbcType="VARCHAR" />
+    <result column="ASSIGNEE_PARAM" property="assigneeParam" jdbcType="VARCHAR" />
+    <result column="ASSIGNEE_HANDLE" property="assigneeHandle" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKFLOW_VERSION_ID, NODE_ID, ASSIGNEE_TYPE, ASSIGNEE_PARAM, ASSIGNEE_HANDLE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_node_assignee
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_node_assignee
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowNodeAssignee" >
+    insert into t_workflow_node_assignee (ID, WORKFLOW_VERSION_ID, NODE_ID, 
+      ASSIGNEE_TYPE, ASSIGNEE_PARAM, ASSIGNEE_HANDLE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{assigneeType,jdbcType=VARCHAR}, #{assigneeParam,jdbcType=VARCHAR}, #{assigneeHandle,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeAssignee" >
+    insert into t_workflow_node_assignee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID,
+      </if>
+      <if test="nodeId != null" >
+        NODE_ID,
+      </if>
+      <if test="assigneeType != null" >
+        ASSIGNEE_TYPE,
+      </if>
+      <if test="assigneeParam != null" >
+        ASSIGNEE_PARAM,
+      </if>
+      <if test="assigneeHandle != null" >
+        ASSIGNEE_HANDLE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowVersionId != null" >
+        #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeType != null" >
+        #{assigneeType,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeParam != null" >
+        #{assigneeParam,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeHandle != null" >
+        #{assigneeHandle,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeAssignee" >
+    update t_workflow_node_assignee
+    <set >
+      <if test="workflowVersionId != null" >
+        WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null" >
+        NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeType != null" >
+        ASSIGNEE_TYPE = #{assigneeType,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeParam != null" >
+        ASSIGNEE_PARAM = #{assigneeParam,jdbcType=VARCHAR},
+      </if>
+      <if test="assigneeHandle != null" >
+        ASSIGNEE_HANDLE = #{assigneeHandle,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowNodeAssignee" >
+    update t_workflow_node_assignee
+    set WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      ASSIGNEE_TYPE = #{assigneeType,jdbcType=VARCHAR},
+      ASSIGNEE_PARAM = #{assigneeParam,jdbcType=VARCHAR},
+      ASSIGNEE_HANDLE = #{assigneeHandle,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByWorkflowVersionId">
+  	delete from t_workflow_node_assignee where workflow_version_id =#{workflowVersionId}
+  </delete>
+  <select id="selectNodeAssignee" resultMap="BaseResultMap">
+  	select * from t_workflow_node_assignee 
+  	where
+  	WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR} and
+  	NODE_ID = #{nodeId,jdbcType=VARCHAR} 
+  </select>
+</mapper>

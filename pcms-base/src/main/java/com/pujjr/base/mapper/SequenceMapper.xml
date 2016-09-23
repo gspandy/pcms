@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.SequenceMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.Sequence" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="FORMAT" property="format" jdbcType="VARCHAR" />
+    <result column="CURVAL" property="curval" jdbcType="INTEGER" />
+    <result column="INCREMENT" property="increment" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, FORMAT, CURVAL, INCREMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_sequence
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_sequence
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.Sequence" >
+    insert into sys_sequence (ID, NAME, FORMAT, 
+      CURVAL, INCREMENT)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{format,jdbcType=VARCHAR}, 
+      #{curval,jdbcType=INTEGER}, #{increment,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.Sequence" >
+    insert into sys_sequence
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="format != null" >
+        FORMAT,
+      </if>
+      <if test="curval != null" >
+        CURVAL,
+      </if>
+      <if test="increment != null" >
+        INCREMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="curval != null" >
+        #{curval,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        #{increment,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.Sequence" >
+    update sys_sequence
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="format != null" >
+        FORMAT = #{format,jdbcType=VARCHAR},
+      </if>
+      <if test="curval != null" >
+        CURVAL = #{curval,jdbcType=INTEGER},
+      </if>
+      <if test="increment != null" >
+        INCREMENT = #{increment,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.Sequence" >
+    update sys_sequence
+    set NAME = #{name,jdbcType=VARCHAR},
+      FORMAT = #{format,jdbcType=VARCHAR},
+      CURVAL = #{curval,jdbcType=INTEGER},
+      INCREMENT = #{increment,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByName" resultMap="BaseResultMap">
+  	select * from sys_sequence where name = #{name}
+  </select>
+</mapper>

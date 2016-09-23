@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowVersionMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowVersion" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_DEFINE_ID" property="workflowDefineId" jdbcType="VARCHAR" />
+    <result column="ACTIVITI_MODEL_ID" property="activitiModelId" jdbcType="VARCHAR" />
+    <result column="ACTIVITI_DEPLOY_ID" property="activitiDeployId" jdbcType="VARCHAR" />
+    <result column="ACTIVITI_PROCDEF_ID" property="activitiProcdefId" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="INTEGER" />
+    <result column="VERSION_STATUS" property="versionStatus" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKFLOW_DEFINE_ID, ACTIVITI_MODEL_ID, ACTIVITI_DEPLOY_ID, ACTIVITI_PROCDEF_ID, 
+    VERSION, VERSION_STATUS
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_version
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_version
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowVersion" >
+    insert into t_workflow_version (ID, WORKFLOW_DEFINE_ID, ACTIVITI_MODEL_ID, 
+      ACTIVITI_DEPLOY_ID, ACTIVITI_PROCDEF_ID, VERSION, 
+      VERSION_STATUS)
+    values (#{id,jdbcType=VARCHAR}, #{workflowDefineId,jdbcType=VARCHAR}, #{activitiModelId,jdbcType=VARCHAR}, 
+      #{activitiDeployId,jdbcType=VARCHAR}, #{activitiProcdefId,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{versionStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowVersion" >
+    insert into t_workflow_version
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workflowDefineId != null" >
+        WORKFLOW_DEFINE_ID,
+      </if>
+      <if test="activitiModelId != null" >
+        ACTIVITI_MODEL_ID,
+      </if>
+      <if test="activitiDeployId != null" >
+        ACTIVITI_DEPLOY_ID,
+      </if>
+      <if test="activitiProcdefId != null" >
+        ACTIVITI_PROCDEF_ID,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="versionStatus != null" >
+        VERSION_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowDefineId != null" >
+        #{workflowDefineId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiModelId != null" >
+        #{activitiModelId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiDeployId != null" >
+        #{activitiDeployId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiProcdefId != null" >
+        #{activitiProcdefId,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="versionStatus != null" >
+        #{versionStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowVersion" >
+    update t_workflow_version
+    <set >
+      <if test="workflowDefineId != null" >
+        WORKFLOW_DEFINE_ID = #{workflowDefineId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiModelId != null" >
+        ACTIVITI_MODEL_ID = #{activitiModelId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiDeployId != null" >
+        ACTIVITI_DEPLOY_ID = #{activitiDeployId,jdbcType=VARCHAR},
+      </if>
+      <if test="activitiProcdefId != null" >
+        ACTIVITI_PROCDEF_ID = #{activitiProcdefId,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="versionStatus != null" >
+        VERSION_STATUS = #{versionStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowVersion" >
+    update t_workflow_version
+    set WORKFLOW_DEFINE_ID = #{workflowDefineId,jdbcType=VARCHAR},
+      ACTIVITI_MODEL_ID = #{activitiModelId,jdbcType=VARCHAR},
+      ACTIVITI_DEPLOY_ID = #{activitiDeployId,jdbcType=VARCHAR},
+      ACTIVITI_PROCDEF_ID = #{activitiProcdefId,jdbcType=VARCHAR},
+      VERSION = #{version,jdbcType=INTEGER},
+      VERSION_STATUS = #{versionStatus,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByModelId" resultMap="BaseResultMap">
+  	select  
+  	<include refid="Base_Column_List" />
+    from t_workflow_version
+    where ACTIVITI_MODEL_ID = #{modelId,jdbcType=VARCHAR} order by version
+  </select>
+  <select id="selectListByDefineId" resultType="HashMap" >
+  	select a.*,
+	case
+		when a.id = b. activate_version_id then true
+		else false
+	end as isAct
+	from t_workflow_version a 
+	left join t_workflow_define b on a.workflow_define_id = b.id
+	where a.workflow_define_id = #{defineId,jdbcType=VARCHAR}
+	order by a.version
+  </select>
+  <select id="selectActivateVersionByDefineId" resultMap="BaseResultMap">
+  	select b.* from 
+  	t_workflow_define a
+  	left join t_workflow_version b on a.ACTIVATE_VERSION_ID = b.ID
+  	where a.ID = #{defineId}
+  	
+  </select>
+ 
+</mapper>

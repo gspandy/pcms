@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ProductPeriodMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ProductPeriod" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="FINANCE_FEE" property="financeFee" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PRODUCT_ID, PERIOD, FINANCE_FEE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_product_period
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_product_period
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ProductPeriod" >
+    insert into t_product_period (ID, PRODUCT_ID, PERIOD, 
+      FINANCE_FEE)
+    values (#{id,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, 
+      #{financeFee,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ProductPeriod" >
+    insert into t_product_period
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="productId != null" >
+        PRODUCT_ID,
+      </if>
+      <if test="period != null" >
+        PERIOD,
+      </if>
+      <if test="financeFee != null" >
+        FINANCE_FEE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="financeFee != null" >
+        #{financeFee,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ProductPeriod" >
+    update t_product_period
+    <set >
+      <if test="productId != null" >
+        PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        PERIOD = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="financeFee != null" >
+        FINANCE_FEE = #{financeFee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ProductPeriod" >
+    update t_product_period
+    set PRODUCT_ID = #{productId,jdbcType=VARCHAR},
+      PERIOD = #{period,jdbcType=INTEGER},
+      FINANCE_FEE = #{financeFee,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByProductId">
+  	delete from t_product_period
+  	where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

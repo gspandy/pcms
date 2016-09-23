@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowDefineMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowDefine" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_TYPE_ID" property="workflowTypeId" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_NAME" property="workflowName" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_KEY" property="workflowKey" jdbcType="VARCHAR" />
+    <result column="WORKFLOW_DESC" property="workflowDesc" jdbcType="VARCHAR" />
+    <result column="ACTIVATE_VERSION_ID" property="activateVersionId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKFLOW_TYPE_ID, WORKFLOW_NAME, WORKFLOW_KEY, WORKFLOW_DESC, ACTIVATE_VERSION_ID, 
+    CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_define
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_define
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowDefine" >
+    insert into t_workflow_define (ID, WORKFLOW_TYPE_ID, WORKFLOW_NAME, 
+      WORKFLOW_KEY, WORKFLOW_DESC, ACTIVATE_VERSION_ID, 
+      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
+      UPDATE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{workflowTypeId,jdbcType=VARCHAR}, #{workflowName,jdbcType=VARCHAR}, 
+      #{workflowKey,jdbcType=VARCHAR}, #{workflowDesc,jdbcType=VARCHAR}, #{activateVersionId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowDefine" >
+    insert into t_workflow_define
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workflowTypeId != null" >
+        WORKFLOW_TYPE_ID,
+      </if>
+      <if test="workflowName != null" >
+        WORKFLOW_NAME,
+      </if>
+      <if test="workflowKey != null" >
+        WORKFLOW_KEY,
+      </if>
+      <if test="workflowDesc != null" >
+        WORKFLOW_DESC,
+      </if>
+      <if test="activateVersionId != null" >
+        ACTIVATE_VERSION_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowTypeId != null" >
+        #{workflowTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowName != null" >
+        #{workflowName,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowKey != null" >
+        #{workflowKey,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowDesc != null" >
+        #{workflowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activateVersionId != null" >
+        #{activateVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowDefine" >
+    update t_workflow_define
+    <set >
+      <if test="workflowTypeId != null" >
+        WORKFLOW_TYPE_ID = #{workflowTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowName != null" >
+        WORKFLOW_NAME = #{workflowName,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowKey != null" >
+        WORKFLOW_KEY = #{workflowKey,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowDesc != null" >
+        WORKFLOW_DESC = #{workflowDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="activateVersionId != null" >
+        ACTIVATE_VERSION_ID = #{activateVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowDefine" >
+    update t_workflow_define
+    set WORKFLOW_TYPE_ID = #{workflowTypeId,jdbcType=VARCHAR},
+      WORKFLOW_NAME = #{workflowName,jdbcType=VARCHAR},
+      WORKFLOW_KEY = #{workflowKey,jdbcType=VARCHAR},
+      WORKFLOW_DESC = #{workflowDesc,jdbcType=VARCHAR},
+      ACTIVATE_VERSION_ID = #{activateVersionId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectListByTypeId" resultType="HashMap">
+  	select 
+  		a.ID as id ,
+  		a.WORKFLOW_TYPE_ID as workflowTypeId,
+  		a.WORKFLOW_NAME as workflowName,
+  		a.WORKFLOW_KEY as workflowKey,
+  		a.WORKFLOW_DESC as workflowDesc,
+  		a.CREATE_TIME as createTime ,
+  		a.CREATE_ID as createId,
+  		a.UPDATE_TIME as updateTime,
+  		a.UPDATE_ID as updateId,
+  		b.ID as versionId,
+  		b.ACTIVITI_MODEL_ID  as activitiModelId,
+  		b.ACTIVITI_DEPLOY_ID as activitiDeployId ,
+  		b.ACTIVITI_PROCDEF_ID as activitiProcdefId,
+  		b.VERSION as version ,
+  		b.VERSION_STATUS as versionStatus
+  	from t_workflow_define a 
+	left join t_workflow_version b on a.activate_version_id =b.id
+	where 1=1 
+	<if test="workflowTypeId != null and workflowTypeId!=''">
+		and a.workflow_type_id = #{workflowTypeId}
+	</if>
+  </select>
+  <select id="selectByVersionId" resultMap="BaseResultMap">
+  	select
+  	a.ID, a.WORKFLOW_TYPE_ID, a.WORKFLOW_NAME, a.WORKFLOW_KEY, a.WORKFLOW_DESC, a.ACTIVATE_VERSION_ID, 
+    a.CREATE_TIME, a.CREATE_ID, a.UPDATE_TIME, a.UPDATE_ID
+  	from t_workflow_define a
+  	left join t_workflow_version b on a.id = b.workflow_define_id 
+  	where b.id = #{versionId}
+  </select>
+  <update id="setActivateVersion">
+  	update t_workflow_define 
+  	set ACTIVATE_VERSION_ID = #{versionId}
+  	where id = #{defineId}
+  </update>
+  <select id="selectByDefineKey" resultMap="BaseResultMap">
+  	select
+  	<include refid="Base_Column_List"/>
+  	from t_workflow_define 
+  	where WORKFLOW_KEY = #{workflowKey}
+  </select>
+</mapper>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowNodeParamMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowNodeParam">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="WORKFLOW_VERSION_ID" jdbcType="VARCHAR" property="workflowVersionId" />
+    <result column="NODE_ID" jdbcType="VARCHAR" property="nodeId" />
+    <result column="ACT_START_SCRIPT" jdbcType="VARCHAR" property="actStartScript" />
+    <result column="ACT_END_SCRIPT" jdbcType="VARCHAR" property="actEndScript" />
+    <result column="TASK_CREATE_PREHANDLE" jdbcType="VARCHAR" property="taskCreatePrehandle" />
+    <result column="TASK_CREATE_AFTERHANDLE" jdbcType="VARCHAR" property="taskCreateAfterhandle" />
+    <result column="TASK_CREATE_SCRIPT" jdbcType="VARCHAR" property="taskCreateScript" />
+    <result column="TASK_COMPLETE_SCRIPT" jdbcType="VARCHAR" property="taskCompleteScript" />
+    <result column="ON_SITE_NOTICE" jdbcType="BIT" property="onSiteNotice" />
+    <result column="ON_MAIL_NOTICE" jdbcType="BIT" property="onMailNotice" />
+    <result column="ON_MSG_NOTICE" jdbcType="BIT" property="onMsgNotice" />
+    <result column="ON_WEIXIN_NOTICE" jdbcType="BIT" property="onWeixinNotice" />
+    <result column="RECOMMIT_MODE" jdbcType="VARCHAR" property="recommitMode" />
+    <result column="BACK_NODE_ID" jdbcType="VARCHAR" property="backNodeId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, WORKFLOW_VERSION_ID, NODE_ID, ACT_START_SCRIPT, ACT_END_SCRIPT, TASK_CREATE_PREHANDLE, 
+    TASK_CREATE_AFTERHANDLE, TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, 
+    ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, BACK_NODE_ID, CREATE_TIME, 
+    CREATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_node_param
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_workflow_node_param
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
+    insert into t_workflow_node_param (ID, WORKFLOW_VERSION_ID, NODE_ID, 
+      ACT_START_SCRIPT, ACT_END_SCRIPT, TASK_CREATE_PREHANDLE, 
+      TASK_CREATE_AFTERHANDLE, TASK_CREATE_SCRIPT, 
+      TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, ON_MAIL_NOTICE, 
+      ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, 
+      BACK_NODE_ID, CREATE_TIME, CREATE_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
+      #{actStartScript,jdbcType=VARCHAR}, #{actEndScript,jdbcType=VARCHAR}, #{taskCreatePrehandle,jdbcType=VARCHAR}, 
+      #{taskCreateAfterhandle,jdbcType=VARCHAR}, #{taskCreateScript,jdbcType=VARCHAR}, 
+      #{taskCompleteScript,jdbcType=VARCHAR}, #{onSiteNotice,jdbcType=BIT}, #{onMailNotice,jdbcType=BIT}, 
+      #{onMsgNotice,jdbcType=BIT}, #{onWeixinNotice,jdbcType=BIT}, #{recommitMode,jdbcType=VARCHAR}, 
+      #{backNodeId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
+    insert into t_workflow_node_param
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="workflowVersionId != null">
+        WORKFLOW_VERSION_ID,
+      </if>
+      <if test="nodeId != null">
+        NODE_ID,
+      </if>
+      <if test="actStartScript != null">
+        ACT_START_SCRIPT,
+      </if>
+      <if test="actEndScript != null">
+        ACT_END_SCRIPT,
+      </if>
+      <if test="taskCreatePrehandle != null">
+        TASK_CREATE_PREHANDLE,
+      </if>
+      <if test="taskCreateAfterhandle != null">
+        TASK_CREATE_AFTERHANDLE,
+      </if>
+      <if test="taskCreateScript != null">
+        TASK_CREATE_SCRIPT,
+      </if>
+      <if test="taskCompleteScript != null">
+        TASK_COMPLETE_SCRIPT,
+      </if>
+      <if test="onSiteNotice != null">
+        ON_SITE_NOTICE,
+      </if>
+      <if test="onMailNotice != null">
+        ON_MAIL_NOTICE,
+      </if>
+      <if test="onMsgNotice != null">
+        ON_MSG_NOTICE,
+      </if>
+      <if test="onWeixinNotice != null">
+        ON_WEIXIN_NOTICE,
+      </if>
+      <if test="recommitMode != null">
+        RECOMMIT_MODE,
+      </if>
+      <if test="backNodeId != null">
+        BACK_NODE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowVersionId != null">
+        #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="actStartScript != null">
+        #{actStartScript,jdbcType=VARCHAR},
+      </if>
+      <if test="actEndScript != null">
+        #{actEndScript,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreatePrehandle != null">
+        #{taskCreatePrehandle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreateAfterhandle != null">
+        #{taskCreateAfterhandle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreateScript != null">
+        #{taskCreateScript,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCompleteScript != null">
+        #{taskCompleteScript,jdbcType=VARCHAR},
+      </if>
+      <if test="onSiteNotice != null">
+        #{onSiteNotice,jdbcType=BIT},
+      </if>
+      <if test="onMailNotice != null">
+        #{onMailNotice,jdbcType=BIT},
+      </if>
+      <if test="onMsgNotice != null">
+        #{onMsgNotice,jdbcType=BIT},
+      </if>
+      <if test="onWeixinNotice != null">
+        #{onWeixinNotice,jdbcType=BIT},
+      </if>
+      <if test="recommitMode != null">
+        #{recommitMode,jdbcType=VARCHAR},
+      </if>
+      <if test="backNodeId != null">
+        #{backNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
+    update t_workflow_node_param
+    <set>
+      <if test="workflowVersionId != null">
+        WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeId != null">
+        NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="actStartScript != null">
+        ACT_START_SCRIPT = #{actStartScript,jdbcType=VARCHAR},
+      </if>
+      <if test="actEndScript != null">
+        ACT_END_SCRIPT = #{actEndScript,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreatePrehandle != null">
+        TASK_CREATE_PREHANDLE = #{taskCreatePrehandle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreateAfterhandle != null">
+        TASK_CREATE_AFTERHANDLE = #{taskCreateAfterhandle,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCreateScript != null">
+        TASK_CREATE_SCRIPT = #{taskCreateScript,jdbcType=VARCHAR},
+      </if>
+      <if test="taskCompleteScript != null">
+        TASK_COMPLETE_SCRIPT = #{taskCompleteScript,jdbcType=VARCHAR},
+      </if>
+      <if test="onSiteNotice != null">
+        ON_SITE_NOTICE = #{onSiteNotice,jdbcType=BIT},
+      </if>
+      <if test="onMailNotice != null">
+        ON_MAIL_NOTICE = #{onMailNotice,jdbcType=BIT},
+      </if>
+      <if test="onMsgNotice != null">
+        ON_MSG_NOTICE = #{onMsgNotice,jdbcType=BIT},
+      </if>
+      <if test="onWeixinNotice != null">
+        ON_WEIXIN_NOTICE = #{onWeixinNotice,jdbcType=BIT},
+      </if>
+      <if test="recommitMode != null">
+        RECOMMIT_MODE = #{recommitMode,jdbcType=VARCHAR},
+      </if>
+      <if test="backNodeId != null">
+        BACK_NODE_ID = #{backNodeId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
+    update t_workflow_node_param
+    set WORKFLOW_VERSION_ID = #{workflowVersionId,jdbcType=VARCHAR},
+      NODE_ID = #{nodeId,jdbcType=VARCHAR},
+      ACT_START_SCRIPT = #{actStartScript,jdbcType=VARCHAR},
+      ACT_END_SCRIPT = #{actEndScript,jdbcType=VARCHAR},
+      TASK_CREATE_PREHANDLE = #{taskCreatePrehandle,jdbcType=VARCHAR},
+      TASK_CREATE_AFTERHANDLE = #{taskCreateAfterhandle,jdbcType=VARCHAR},
+      TASK_CREATE_SCRIPT = #{taskCreateScript,jdbcType=VARCHAR},
+      TASK_COMPLETE_SCRIPT = #{taskCompleteScript,jdbcType=VARCHAR},
+      ON_SITE_NOTICE = #{onSiteNotice,jdbcType=BIT},
+      ON_MAIL_NOTICE = #{onMailNotice,jdbcType=BIT},
+      ON_MSG_NOTICE = #{onMsgNotice,jdbcType=BIT},
+      ON_WEIXIN_NOTICE = #{onWeixinNotice,jdbcType=BIT},
+      RECOMMIT_MODE = #{recommitMode,jdbcType=VARCHAR},
+      BACK_NODE_ID = #{backNodeId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByNodeId">
+  	delete from t_workflow_node_param
+  	where WORKFLOW_VERSION_ID = #{workflowVersionId} and NODE_ID = #{nodeId}
+  </delete>
+</mapper>

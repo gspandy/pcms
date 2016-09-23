@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.SysBranchMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysBranch" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="BRANCH_FULLNAME" property="branchFullname" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="BRANCH_TYPE" property="branchType" jdbcType="VARCHAR" />
+    <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+    <result column="RESERVER4" property="reserver4" jdbcType="VARCHAR" />
+    <result column="RESERVER5" property="reserver5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, BRANCH_CODE, BRANCH_NAME, BRANCH_FULLNAME, PARENT_ID, BRANCH_TYPE, AREA_ID, ENABLED, 
+    CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, RESERVER1, RESERVER2, RESERVER3, 
+    RESERVER4, RESERVER5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_branch
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_branch
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysBranch" >
+    insert into sys_branch (ID, BRANCH_CODE, BRANCH_NAME, 
+      BRANCH_FULLNAME, PARENT_ID, BRANCH_TYPE, 
+      AREA_ID, ENABLED, CREATE_TIME, 
+      CREATE_ID, UPDATE_TIME, UPDATE_ID, 
+      RESERVER1, RESERVER2, RESERVER3, 
+      RESERVER4, RESERVER5)
+    values (#{id,jdbcType=VARCHAR}, #{branchCode,jdbcType=VARCHAR}, #{branchName,jdbcType=VARCHAR}, 
+      #{branchFullname,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{branchType,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR}, 
+      #{reserver4,jdbcType=VARCHAR}, #{reserver5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysBranch" >
+    insert into sys_branch
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="branchCode != null" >
+        BRANCH_CODE,
+      </if>
+      <if test="branchName != null" >
+        BRANCH_NAME,
+      </if>
+      <if test="branchFullname != null" >
+        BRANCH_FULLNAME,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="branchType != null" >
+        BRANCH_TYPE,
+      </if>
+      <if test="areaId != null" >
+        AREA_ID,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="branchCode != null" >
+        #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null" >
+        #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchFullname != null" >
+        #{branchFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="branchType != null" >
+        #{branchType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysBranch" >
+    update sys_branch
+    <set >
+      <if test="branchCode != null" >
+        BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null" >
+        BRANCH_NAME = #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="branchFullname != null" >
+        BRANCH_FULLNAME = #{branchFullname,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="branchType != null" >
+        BRANCH_TYPE = #{branchType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        AREA_ID = #{areaId,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysBranch" >
+    update sys_branch
+    set BRANCH_CODE = #{branchCode,jdbcType=VARCHAR},
+      BRANCH_NAME = #{branchName,jdbcType=VARCHAR},
+      BRANCH_FULLNAME = #{branchFullname,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      BRANCH_TYPE = #{branchType,jdbcType=VARCHAR},
+      AREA_ID = #{areaId,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      RESERVER5 = #{reserver5,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from sys_branch
+  </select>
+</mapper>

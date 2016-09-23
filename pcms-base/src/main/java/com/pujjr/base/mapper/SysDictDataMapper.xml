@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.SysDictDataMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysDictData">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="DICT_TYPE_ID" jdbcType="VARCHAR" property="dictTypeId" />
+    <result column="SHOW_SEQ" jdbcType="INTEGER" property="showSeq" />
+    <result column="DICT_DATA_CODE" jdbcType="VARCHAR" property="dictDataCode" />
+    <result column="DICT_DATA_NAME" jdbcType="VARCHAR" property="dictDataName" />
+    <result column="ENABLED" jdbcType="BIT" property="enabled" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, DICT_TYPE_ID, SHOW_SEQ, DICT_DATA_CODE, DICT_DATA_NAME, ENABLED
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dict_data
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_dict_data
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysDictData">
+    insert into sys_dict_data (ID, DICT_TYPE_ID, SHOW_SEQ, 
+      DICT_DATA_CODE, DICT_DATA_NAME, ENABLED
+      )
+    values (#{id,jdbcType=VARCHAR}, #{dictTypeId,jdbcType=VARCHAR}, #{showSeq,jdbcType=INTEGER}, 
+      #{dictDataCode,jdbcType=VARCHAR}, #{dictDataName,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysDictData">
+    insert into sys_dict_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="dictTypeId != null">
+        DICT_TYPE_ID,
+      </if>
+      <if test="showSeq != null">
+        SHOW_SEQ,
+      </if>
+      <if test="dictDataCode != null">
+        DICT_DATA_CODE,
+      </if>
+      <if test="dictDataName != null">
+        DICT_DATA_NAME,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dictTypeId != null">
+        #{dictTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="showSeq != null">
+        #{showSeq,jdbcType=INTEGER},
+      </if>
+      <if test="dictDataCode != null">
+        #{dictDataCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDataName != null">
+        #{dictDataName,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysDictData">
+    update sys_dict_data
+    <set>
+      <if test="dictTypeId != null">
+        DICT_TYPE_ID = #{dictTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="showSeq != null">
+        SHOW_SEQ = #{showSeq,jdbcType=INTEGER},
+      </if>
+      <if test="dictDataCode != null">
+        DICT_DATA_CODE = #{dictDataCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dictDataName != null">
+        DICT_DATA_NAME = #{dictDataName,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysDictData">
+    update sys_dict_data
+    set DICT_TYPE_ID = #{dictTypeId,jdbcType=VARCHAR},
+      SHOW_SEQ = #{showSeq,jdbcType=INTEGER},
+      DICT_DATA_CODE = #{dictDataCode,jdbcType=VARCHAR},
+      DICT_DATA_NAME = #{dictDataName,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllWithFilter" resultMap="BaseResultMap">
+  	select b.*
+  	from sys_dict_type a
+  	inner join sys_dict_data b on a.ID = b.DICT_TYPE_ID
+  	where 1=1 
+  	<if test="dictTypeId!=null and dictTypeId!=''">
+  		and a.ID = #{dictTypeId}
+  	</if>
+  	<if test="dictTypeCode!=null and dictTypeCode!=''">
+  		and a.DICT_TYPE_CODE = #{dictTypeCode}
+  	</if>
+  	order by b.show_seq
+  </select>
+</mapper>

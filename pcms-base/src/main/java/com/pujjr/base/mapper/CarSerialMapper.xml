@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.CarSerialMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.CarSerial">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CAR_BRAND_ID" jdbcType="VARCHAR" property="carBrandId" />
+    <result column="CAR_SERIAL_GROUP" jdbcType="VARCHAR" property="carSerialGroup" />
+    <result column="CAR_SERIAL_NAME" jdbcType="VARCHAR" property="carSerialName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CAR_BRAND_ID, CAR_SERIAL_GROUP, CAR_SERIAL_NAME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_car_serial
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_car_serial
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.CarSerial">
+    insert into t_car_serial (ID, CAR_BRAND_ID, CAR_SERIAL_GROUP, 
+      CAR_SERIAL_NAME)
+    values (#{id,jdbcType=VARCHAR}, #{carBrandId,jdbcType=VARCHAR}, #{carSerialGroup,jdbcType=VARCHAR}, 
+      #{carSerialName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.CarSerial">
+    insert into t_car_serial
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="carBrandId != null">
+        CAR_BRAND_ID,
+      </if>
+      <if test="carSerialGroup != null">
+        CAR_SERIAL_GROUP,
+      </if>
+      <if test="carSerialName != null">
+        CAR_SERIAL_NAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrandId != null">
+        #{carBrandId,jdbcType=VARCHAR},
+      </if>
+      <if test="carSerialGroup != null">
+        #{carSerialGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="carSerialName != null">
+        #{carSerialName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.CarSerial">
+    update t_car_serial
+    <set>
+      <if test="carBrandId != null">
+        CAR_BRAND_ID = #{carBrandId,jdbcType=VARCHAR},
+      </if>
+      <if test="carSerialGroup != null">
+        CAR_SERIAL_GROUP = #{carSerialGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="carSerialName != null">
+        CAR_SERIAL_NAME = #{carSerialName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.CarSerial">
+    update t_car_serial
+    set CAR_BRAND_ID = #{carBrandId,jdbcType=VARCHAR},
+      CAR_SERIAL_GROUP = #{carSerialGroup,jdbcType=VARCHAR},
+      CAR_SERIAL_NAME = #{carSerialName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllByCarBrandId" resultMap="BaseResultMap">
+  	select * from t_car_serial where CAR_BRAND_ID =#{carBrandId};
+  </select>
+</mapper>

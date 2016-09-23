@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.jbpm.dao.WorkflowRunPathMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.jbpm.domain.WorkflowRunPath" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PROC_DEF_ID" property="procDefId" jdbcType="VARCHAR" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+    <result column="EXECUTION_ID" property="executionId" jdbcType="VARCHAR" />
+    <result column="ACT_ID" property="actId" jdbcType="VARCHAR" />
+    <result column="ACT_NAME" property="actName" jdbcType="VARCHAR" />
+    <result column="ACT_TYPE" property="actType" jdbcType="VARCHAR" />
+    <result column="IS_MULTI_ACT" property="isMultiAct" jdbcType="BIT" />
+    <result column="ASSIGNEE" property="assignee" jdbcType="VARCHAR" />
+    <result column="AGENT" property="agent" jdbcType="VARCHAR" />
+    <result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+    <result column="NODE_LEVEL" property="nodeLevel" jdbcType="INTEGER" />
+    <result column="START_TIME" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="END_TIME" property="endTime" jdbcType="TIMESTAMP" />
+    <result column="DURATION_TIME" property="durationTime" jdbcType="INTEGER" />
+    <result column="EFFECT_TIME" property="effectTime" jdbcType="INTEGER" />
+    <result column="IN_JUMP_TYPE" property="inJumpType" jdbcType="VARCHAR" />
+    <result column="OUT_JUMP_TYPE" property="outJumpType" jdbcType="VARCHAR" />
+    <result column="REF_PATH_ID" property="refPathId" jdbcType="VARCHAR" />
+    <result column="PARENT_PATH_ID" property="parentPathId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, PROC_DEF_ID, PROC_INST_ID, EXECUTION_ID, ACT_ID, ACT_NAME, ACT_TYPE, IS_MULTI_ACT, 
+    ASSIGNEE, AGENT, MESSAGE, NODE_LEVEL, START_TIME, END_TIME, DURATION_TIME, EFFECT_TIME, 
+    IN_JUMP_TYPE, OUT_JUMP_TYPE, REF_PATH_ID, PARENT_PATH_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_runpath
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_workflow_runpath
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowRunPath" >
+    insert into t_workflow_runpath (ID, PROC_DEF_ID, PROC_INST_ID, 
+      EXECUTION_ID, ACT_ID, ACT_NAME, 
+      ACT_TYPE, IS_MULTI_ACT, ASSIGNEE, 
+      AGENT, MESSAGE, NODE_LEVEL, 
+      START_TIME, END_TIME, DURATION_TIME, 
+      EFFECT_TIME, IN_JUMP_TYPE, OUT_JUMP_TYPE, 
+      REF_PATH_ID, PARENT_PATH_ID)
+    values (#{id,jdbcType=VARCHAR}, #{procDefId,jdbcType=VARCHAR}, #{procInstId,jdbcType=VARCHAR}, 
+      #{executionId,jdbcType=VARCHAR}, #{actId,jdbcType=VARCHAR}, #{actName,jdbcType=VARCHAR}, 
+      #{actType,jdbcType=VARCHAR}, #{isMultiAct,jdbcType=BIT}, #{assignee,jdbcType=VARCHAR}, 
+      #{agent,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{nodeLevel,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{durationTime,jdbcType=INTEGER}, 
+      #{effectTime,jdbcType=INTEGER}, #{inJumpType,jdbcType=VARCHAR}, #{outJumpType,jdbcType=VARCHAR}, 
+      #{refPathId,jdbcType=VARCHAR}, #{parentPathId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowRunPath" >
+    insert into t_workflow_runpath
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="procDefId != null" >
+        PROC_DEF_ID,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+      <if test="executionId != null" >
+        EXECUTION_ID,
+      </if>
+      <if test="actId != null" >
+        ACT_ID,
+      </if>
+      <if test="actName != null" >
+        ACT_NAME,
+      </if>
+      <if test="actType != null" >
+        ACT_TYPE,
+      </if>
+      <if test="isMultiAct != null" >
+        IS_MULTI_ACT,
+      </if>
+      <if test="assignee != null" >
+        ASSIGNEE,
+      </if>
+      <if test="agent != null" >
+        AGENT,
+      </if>
+      <if test="message != null" >
+        MESSAGE,
+      </if>
+      <if test="nodeLevel != null" >
+        NODE_LEVEL,
+      </if>
+      <if test="startTime != null" >
+        START_TIME,
+      </if>
+      <if test="endTime != null" >
+        END_TIME,
+      </if>
+      <if test="durationTime != null" >
+        DURATION_TIME,
+      </if>
+      <if test="effectTime != null" >
+        EFFECT_TIME,
+      </if>
+      <if test="inJumpType != null" >
+        IN_JUMP_TYPE,
+      </if>
+      <if test="outJumpType != null" >
+        OUT_JUMP_TYPE,
+      </if>
+      <if test="refPathId != null" >
+        REF_PATH_ID,
+      </if>
+      <if test="parentPathId != null" >
+        PARENT_PATH_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="procDefId != null" >
+        #{procDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="executionId != null" >
+        #{executionId,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null" >
+        #{actId,jdbcType=VARCHAR},
+      </if>
+      <if test="actName != null" >
+        #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="actType != null" >
+        #{actType,jdbcType=VARCHAR},
+      </if>
+      <if test="isMultiAct != null" >
+        #{isMultiAct,jdbcType=BIT},
+      </if>
+      <if test="assignee != null" >
+        #{assignee,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeLevel != null" >
+        #{nodeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="durationTime != null" >
+        #{durationTime,jdbcType=INTEGER},
+      </if>
+      <if test="effectTime != null" >
+        #{effectTime,jdbcType=INTEGER},
+      </if>
+      <if test="inJumpType != null" >
+        #{inJumpType,jdbcType=VARCHAR},
+      </if>
+      <if test="outJumpType != null" >
+        #{outJumpType,jdbcType=VARCHAR},
+      </if>
+      <if test="refPathId != null" >
+        #{refPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPathId != null" >
+        #{parentPathId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.jbpm.domain.WorkflowRunPath" >
+    update t_workflow_runpath
+    <set >
+      <if test="procDefId != null" >
+        PROC_DEF_ID = #{procDefId,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="executionId != null" >
+        EXECUTION_ID = #{executionId,jdbcType=VARCHAR},
+      </if>
+      <if test="actId != null" >
+        ACT_ID = #{actId,jdbcType=VARCHAR},
+      </if>
+      <if test="actName != null" >
+        ACT_NAME = #{actName,jdbcType=VARCHAR},
+      </if>
+      <if test="actType != null" >
+        ACT_TYPE = #{actType,jdbcType=VARCHAR},
+      </if>
+      <if test="isMultiAct != null" >
+        IS_MULTI_ACT = #{isMultiAct,jdbcType=BIT},
+      </if>
+      <if test="assignee != null" >
+        ASSIGNEE = #{assignee,jdbcType=VARCHAR},
+      </if>
+      <if test="agent != null" >
+        AGENT = #{agent,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null" >
+        MESSAGE = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="nodeLevel != null" >
+        NODE_LEVEL = #{nodeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null" >
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="durationTime != null" >
+        DURATION_TIME = #{durationTime,jdbcType=INTEGER},
+      </if>
+      <if test="effectTime != null" >
+        EFFECT_TIME = #{effectTime,jdbcType=INTEGER},
+      </if>
+      <if test="inJumpType != null" >
+        IN_JUMP_TYPE = #{inJumpType,jdbcType=VARCHAR},
+      </if>
+      <if test="outJumpType != null" >
+        OUT_JUMP_TYPE = #{outJumpType,jdbcType=VARCHAR},
+      </if>
+      <if test="refPathId != null" >
+        REF_PATH_ID = #{refPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentPathId != null" >
+        PARENT_PATH_ID = #{parentPathId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.jbpm.domain.WorkflowRunPath" >
+    update t_workflow_runpath
+    set PROC_DEF_ID = #{procDefId,jdbcType=VARCHAR},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      EXECUTION_ID = #{executionId,jdbcType=VARCHAR},
+      ACT_ID = #{actId,jdbcType=VARCHAR},
+      ACT_NAME = #{actName,jdbcType=VARCHAR},
+      ACT_TYPE = #{actType,jdbcType=VARCHAR},
+      IS_MULTI_ACT = #{isMultiAct,jdbcType=BIT},
+      ASSIGNEE = #{assignee,jdbcType=VARCHAR},
+      AGENT = #{agent,jdbcType=VARCHAR},
+      MESSAGE = #{message,jdbcType=VARCHAR},
+      NODE_LEVEL = #{nodeLevel,jdbcType=INTEGER},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      DURATION_TIME = #{durationTime,jdbcType=INTEGER},
+      EFFECT_TIME = #{effectTime,jdbcType=INTEGER},
+      IN_JUMP_TYPE = #{inJumpType,jdbcType=VARCHAR},
+      OUT_JUMP_TYPE = #{outJumpType,jdbcType=VARCHAR},
+      REF_PATH_ID = #{refPathId,jdbcType=VARCHAR},
+      PARENT_PATH_ID = #{parentPathId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllByProcInstIdAndActId" resultMap="BaseResultMap">
+  	SELECT *
+  	FROM
+  	T_WORKFLOW_RUNPATH 
+  	WHERE PROC_INST_ID = #{procInstId} and ACT_ID = #{actId} ORDER  BY NODE_LEVEL  DESC
+  </select>
+  <select id="selectAllByProcInstId" resultMap="BaseResultMap">
+  	SELECT *
+  	FROM 
+  	T_WORKFLOW_RUNPATH
+  	WHERE PROC_INST_ID = #{procInstId}
+  </select>
+</mapper>
