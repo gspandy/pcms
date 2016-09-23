@@ -12,8 +12,14 @@
 		<result column="runPathId" property="runPathId" jdbcType="VARCHAR" />
 		<result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="inJumpType" property="inJumpType" jdbcType="VARCHAR" />
+		<result column="parentTaskName" property="parentTaskName" jdbcType="VARCHAR" />
 		<result column="parentAssignee" property="parentAssignee" jdbcType="VARCHAR" />
 		<result column="taskRouter" property="taskRouter" jdbcType="VARCHAR" />
+		<result column="productName" property="productName" jdbcType="VARCHAR" />
+		<result column="tenantName" property="tenantName" jdbcType="VARCHAR" />
+		<result column="tenantIdNo" property="tenantIdNo" jdbcType="VARCHAR" />
+		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
+		<result column="branchName" property="branchName" jdbcType="VARCHAR" />
 	</resultMap>
 
 	<select id="selectToDoTaskListByAccountId" resultMap="ToDoTaskResultMap">
@@ -28,19 +34,26 @@
 		runpath.ID as runPathId,
 		runpath.START_TIME as startTime,
 		runpath.IN_JUMP_TYPE as inJumpType,
+		prunpath.ACT_NAME as parentTaskName,
 		prunpath.ASSIGNEE as parentAssignee,
-		form.form_name as taskRouter
+		form.form_name as taskRouter,
+		product.PRODUCT_NAME as productName,
+		applyTenant.NAME as  tenantName,
+		applyTenant.ID_NO as tenantIdNo,
+		apply.CREATE_TIME as createTime,
+		branch.BRANCH_NAME as branchName
 		from act_ru_task task
 		left join act_ru_execution exec on task.EXECUTION_ID_ = exec.ID_
 		left join act_re_procdef def on task.PROC_DEF_ID_ = def.ID_
 		left join t_workflow_runpath runpath on runpath.PROC_INST_ID =
 		task.PROC_INST_ID_ and runpath.ACT_ID = task.TASK_DEF_KEY_
-		left join t_workflow_runpath prunpath on runpath.PARENT_PATH_ID =
-		prunpath.ID
-		left join t_workflow_version flowversion on
-		flowversion.activiti_procdef_id = task.PROC_DEF_ID_
-		left join t_workflow_node_form form on form.workflow_version_id =
-		flowversion.id and task.TASK_DEF_KEY_ = form.node_id
+		left join t_workflow_runpath prunpath on runpath.PARENT_USERTASK_PATH_ID =prunpath.ID
+		left join t_workflow_version flowversion on flowversion.activiti_procdef_id = task.PROC_DEF_ID_
+		left join t_workflow_node_form form on form.workflow_version_id = flowversion.id and task.TASK_DEF_KEY_ = form.node_id
+		left join T_APPLY apply on exec.BUSINESS_KEY_ = apply.APP_ID
+		left join T_APPLY_TENANT applyTenant on exec.BUSINESS_KEY_ = applyTenant.APP_ID
+		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
+		left join SYS_BRANCH branch on branch.BRANCH_CODE = apply.CREATE_BRANCH_CODE
 		where
 		task.ASSIGNEE_ = #{accountId}
 	</select>

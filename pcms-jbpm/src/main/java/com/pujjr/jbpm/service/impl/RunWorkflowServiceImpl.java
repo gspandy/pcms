@@ -110,6 +110,10 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 		String workflowVersionId = runtimeService.getVariable(task.getProcessInstanceId(),ProcessGlobalVariable.WORKFLOW_VERSION_ID).toString();
 		//获取节点参数配置
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId, task.getTaskDefinitionKey());
+		
+		//获取当前任务节点执行路径信息
+		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		
 		//如果是回退操作，先获取可回退节点的回退路径
 		if(processNextCommand.getCommandType().equals(CommandType.BACK))
 		{
@@ -128,10 +132,10 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 			}
 			
 		}
-		//如果是正常提交，则先判断此节点是否由回退产生，是则按照原回退路径提交，否则正常提交
+		//如果是正常提交，则先判断此节点是否由回退产生，是则需要判断提交方式，1、按原路径走，2、按流程路径走
 		else
 		{
-			WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+			
 			if((runPath != null) &&(runPath.getInJumpType().equals(CommandType.BACK) || runPath.getInJumpType().equals(CommandType.BACT_TO_STARTER)))
 			{
 				//如果设置为原路径返回则原路径，如果没设置则默认原路径返回
@@ -140,7 +144,11 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 					processNextCommand.setDestNodeId(runPath.getParentPathId());
 				}
 			}
+			
 		}
+		//帮当前路径ID加入线程变量让后续的任务能识别出是哪个人工任务提交的
+		processNextCommand.setCurRunPathId(runPath.getId());
+		
 		//保存线程信息
 		ProcessHandleHelper.setProcessCommand(processNextCommand);
 		
