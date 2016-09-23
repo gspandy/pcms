@@ -6,92 +6,152 @@ import java.util.Date;
 public class Apply {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private String productCode;
+	private String productCode;
 
-    private Integer period;
+	private Integer period;
 
-    private String comment;
+	private String comment;
 
-    private String status;
+	private String status;
 
-    private String createBranchCode;
+	private String createBranchCode;
 
-    private String createAccountId;
+	private String createAccountId;
 
-    private Date createTime;
+	private Date createTime;
 
-    public String getId() {
-        return id;
-    }
+	private String custType;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Double totalFinanceAmt;
 
-    public String getAppId() {
-        return appId;
-    }
+	private Double totalLoanAmt;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	private Double monthRent;
 
-    public String getProductCode() {
-        return productCode;
-    }
+	private Date approveDate;
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
+	private String procInstId;
 
-    public Integer getPeriod() {
-        return period;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setPeriod(Integer period) {
-        this.period = period;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getComment() {
-        return comment;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getProductCode() {
+		return productCode;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
 
-    public String getCreateBranchCode() {
-        return createBranchCode;
-    }
+	public Integer getPeriod() {
+		return period;
+	}
 
-    public void setCreateBranchCode(String createBranchCode) {
-        this.createBranchCode = createBranchCode;
-    }
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
 
-    public String getCreateAccountId() {
-        return createAccountId;
-    }
+	public String getComment() {
+		return comment;
+	}
 
-    public void setCreateAccountId(String createAccountId) {
-        this.createAccountId = createAccountId;
-    }
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-   
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCreateBranchCode() {
+		return createBranchCode;
+	}
+
+	public void setCreateBranchCode(String createBranchCode) {
+		this.createBranchCode = createBranchCode;
+	}
+
+	public String getCreateAccountId() {
+		return createAccountId;
+	}
+
+	public void setCreateAccountId(String createAccountId) {
+		this.createAccountId = createAccountId;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCustType() {
+		return custType;
+	}
+
+	public void setCustType(String custType) {
+		this.custType = custType;
+	}
+
+	public Double getTotalFinanceAmt() {
+		return totalFinanceAmt;
+	}
+
+	public void setTotalFinanceAmt(Double totalFinanceAmt) {
+		this.totalFinanceAmt = totalFinanceAmt;
+	}
+
+	public Double getTotalLoanAmt() {
+		return totalLoanAmt;
+	}
+
+	public void setTotalLoanAmt(Double totalLoanAmt) {
+		this.totalLoanAmt = totalLoanAmt;
+	}
+
+	public Double getMonthRent() {
+		return monthRent;
+	}
+
+	public void setMonthRent(Double monthRent) {
+		this.monthRent = monthRent;
+	}
+
+	public Date getApproveDate() {
+		return approveDate;
+	}
+
+	public void setApproveDate(Date approveDate) {
+		this.approveDate = approveDate;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
+
 }
