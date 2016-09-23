@@ -13,6 +13,14 @@
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                         http://www.springframework.org/schema/tx
                         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+	<!-- <context:component-scan base-package="
+	com.pujjr.carcredit.service,
+	com.pujjr.carcredit.service.impl,
+	com.pujjr.jbpm.service,
+	com.pujjr.jbpm.service.impl,
+	com.pujjr.base.service,
+	com.pujjr.base.service.impl"/> -->
+	<context:component-scan base-package="com.pujjr.*.service"/>
 	
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
@@ -70,8 +78,7 @@
 
 	
 	<!-- 服务层扫描 -->
-	<context:component-scan base-package="com.pujjr">
-	</context:component-scan>
+	<!-- <context:component-scan base-package="com.pujjr"></context:component-scan> -->
 	
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
@@ -92,5 +99,7 @@
 		<property name="configLocation" value="classpath:conf/mybatis.xml"></property>
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/>
 
 </beans>
