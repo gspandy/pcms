@@ -12,6 +12,8 @@
     <result column="WEIXIN_ID" jdbcType="VARCHAR" property="weixinId" />
     <result column="EMAIL" jdbcType="VARCHAR" property="email" />
     <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="LOGIN_STATUS" jdbcType="VARCHAR" property="loginStatus" />
+    <result column="LAST_HEARTBEAT_TIME" jdbcType="TIMESTAMP" property="lastHeartbeatTime" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
@@ -21,15 +23,14 @@
     <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
     <result column="RESERVER4" jdbcType="VARCHAR" property="reserver4" />
     <result column="RESERVER5" jdbcType="VARCHAR" property="reserver5" />
-    <association select="selectSysJob" column="POST_ID" property="sysJob"></association>
-    <association select="selectSysDictData" column="STATUS" property="statusDict"></association>
+    <association column="POST_ID" property="sysJob" select="selectSysJob" />
+    <association column="STATUS" property="statusDict" select="selectSysDictData" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, ACCOUNT_ID, ACCOUNT_NAME, PASSWORD, BRANCH_ID, POST_ID, MOBILE, WEIXIN_ID, EMAIL, 
-    STATUS, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, RESERVER1, RESERVER2, RESERVER3, 
-    RESERVER4, RESERVER5
+    STATUS, LOGIN_STATUS, LAST_HEARTBEAT_TIME, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, 
+    RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5
   </sql>
-  
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -44,17 +45,19 @@
     insert into sys_account (ID, ACCOUNT_ID, ACCOUNT_NAME, 
       PASSWORD, BRANCH_ID, POST_ID, 
       MOBILE, WEIXIN_ID, EMAIL, 
-      STATUS, CREATE_TIME, CREATE_ID, 
-      UPDATE_TIME, UPDATE_ID, RESERVER1, 
-      RESERVER2, RESERVER3, RESERVER4, 
-      RESERVER5)
+      STATUS, LOGIN_STATUS, LAST_HEARTBEAT_TIME, 
+      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
+      UPDATE_ID, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4, RESERVER5
+      )
     values (#{id,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{branchId,jdbcType=VARCHAR}, #{postId,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{weixinId,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
-      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=VARCHAR}, 
-      #{reserver5,jdbcType=VARCHAR})
+      #{status,jdbcType=VARCHAR}, #{loginStatus,jdbcType=VARCHAR}, #{lastHeartbeatTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=VARCHAR}, #{reserver5,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysAccount">
     insert into sys_account
@@ -88,6 +91,12 @@
       </if>
       <if test="status != null">
         STATUS,
+      </if>
+      <if test="loginStatus != null">
+        LOGIN_STATUS,
+      </if>
+      <if test="lastHeartbeatTime != null">
+        LAST_HEARTBEAT_TIME,
       </if>
       <if test="createTime != null">
         CREATE_TIME,
@@ -148,6 +157,12 @@
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
       </if>
+      <if test="loginStatus != null">
+        #{loginStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lastHeartbeatTime != null">
+        #{lastHeartbeatTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -207,6 +222,12 @@
       <if test="status != null">
         STATUS = #{status,jdbcType=VARCHAR},
       </if>
+      <if test="loginStatus != null">
+        LOGIN_STATUS = #{loginStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lastHeartbeatTime != null">
+        LAST_HEARTBEAT_TIME = #{lastHeartbeatTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -248,6 +269,8 @@
       WEIXIN_ID = #{weixinId,jdbcType=VARCHAR},
       EMAIL = #{email,jdbcType=VARCHAR},
       STATUS = #{status,jdbcType=VARCHAR},
+      LOGIN_STATUS = #{loginStatus,jdbcType=VARCHAR},
+      LAST_HEARTBEAT_TIME = #{lastHeartbeatTime,jdbcType=TIMESTAMP},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       CREATE_ID = #{createId,jdbcType=VARCHAR},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
@@ -280,20 +303,32 @@
   	left join sys_account b on a.SYSACCOUNT_ID = b.id
   	where a.WORKGROUP_ID = #{workgroupId}
   </select>
+  <select id="selectOnlineListByWorkgroupId" resultMap="BaseResultMap">
+  	select 
+  	b.*
+  	from 
+  	sys_workgroup_account a 
+  	left join sys_account b on a.SYSACCOUNT_ID = b.id
+  	where a.WORKGROUP_ID = #{workgroupId} and 
+  	<![CDATA[
+  		and timestampdiff(SECOND,b.last_heartbeat_time,now()) <= 15
+  	]]>
+  	
+  </select>
   <select id="selectAllByBranchId" resultMap="BaseResultMap">
   	select * from sys_account where BRANCH_ID =#{branchId}
   </select>
   
-  <resultMap id="SysJobMap" type="com.pujjr.base.domain.SysJob" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="POST_NAME" property="postName" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  <resultMap id="SysJobMap" type="com.pujjr.base.domain.SysJob">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="POST_NAME" jdbcType="VARCHAR" property="postName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
   </resultMap>
   
-  <select id="selectSysJob" resultMap="SysJobMap" parameterType="String">
+  <select id="selectSysJob" parameterType="String" resultMap="SysJobMap">
   		select * from SYS_JOB where id = #{POST_ID}
   </select>
   
@@ -306,7 +341,7 @@
     <result column="ENABLED" jdbcType="BIT" property="enabled" />
   </resultMap>
   
-  <select id="selectSysDictData" resultMap="SysDictDataMap" parameterType="String">
+  <select id="selectSysDictData" parameterType="String" resultMap="SysDictDataMap">
   	select * from SYS_DICT_DATA where DICT_DATA_CODE =#{STATUS}
   </select>
 </mapper>

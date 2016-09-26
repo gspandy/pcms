@@ -57,4 +57,18 @@
 		where
 		task.ASSIGNEE_ = #{accountId}
 	</select>
+	<select id="selectTaskCntAndOnlineAccountIdByWorkgroupId" resultType="HashMap">
+		select 
+		  		b.account_id,count(*) as cnt
+		  	from 
+			  	sys_workgroup_account a 
+			  	left join sys_account b on a.SYSACCOUNT_ID = b.id
+			  	left join act_ru_task c on b.account_id = c.assignee_
+		  	where 
+				a.WORKGROUP_ID = '41757f87fe683ec1' 
+				<![CDATA[
+					and timestampdiff(SECOND,b.last_heartbeat_time,now()) <= 30
+				]]>
+		  		group by b.account_id
+	</select>
 </mapper>

@@ -1,6 +1,9 @@
 package com.pujjr.base.controller;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,4 +46,17 @@ public class SysAccountController  extends BaseController
 	{
 		sysAccountService.modifySysAccount(SysAccount);
 	}
+	@RequestMapping(value="/heartbeat",method=RequestMethod.POST)
+	public void clientHeartBeat(HttpServletRequest request)
+	{
+		SysAccount sysAccount  = (SysAccount)request.getAttribute("account");
+		sysAccountService.modifySysAccountLoginStatus(sysAccount.getId(),"dlzt01", new Date());
+	}
+	@RequestMapping(value="/loginout",method=RequestMethod.POST)
+	public void loginOut(HttpServletRequest request)
+	{
+		SysAccount sysAccount  = (SysAccount)request.getAttribute("account");
+		sysAccountService.modifySysAccountLoginStatus(sysAccount.getId(),"dlzt02", null);
+	}
+	
 }

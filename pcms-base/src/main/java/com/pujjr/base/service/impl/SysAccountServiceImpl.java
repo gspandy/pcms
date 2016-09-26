@@ -69,4 +69,21 @@ public class SysAccountServiceImpl implements ISysAccountService
 		return sysAccountDao.selectByAccountId(accountId);
 	}
 
+	@Override
+	public void modifySysAccountLoginStatus(String id, String loginStatus, Date loginDate) {
+		// TODO Auto-generated method stub
+		SysAccount account = new SysAccount();
+		account.setId(id);
+		account.setLoginStatus(loginStatus);
+		account.setLastHeartbeatTime(loginDate);
+		sysAccountDao.updateByPrimaryKeySelective(account);
+	}
+
+	@Override
+	public List<SysAccount> getOnlineSysAccountByWorkgroupId(String workgroupId) {
+		// TODO Auto-generated method stub
+		return sysAccountDao.selectOnlineListByWorkgroupId(workgroupId, new Date());
+	}
+
+
 }

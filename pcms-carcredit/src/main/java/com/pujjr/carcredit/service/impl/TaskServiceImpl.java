@@ -127,6 +127,12 @@ public class TaskServiceImpl implements ITaskService
 		
 	}
 
+	@Override
+	public String getMinTaskCountAccountIdByWorkgroupId(String workgroupId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

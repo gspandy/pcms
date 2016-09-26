@@ -1,5 +1,6 @@
 package com.pujjr.base.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,4 +24,8 @@ public interface ISysAccountService
 	public List<SysAccount> getSysAccount();
 	
 	public SysAccount getSysAccountByAccountId(String accountId);
+	
+	public void modifySysAccountLoginStatus(String id,String loginStatus,Date loginDate);
+	
+	public List<SysAccount>  getOnlineSysAccountByWorkgroupId(String workgroupId);
 }
