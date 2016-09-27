@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<classPathEntry
-		location="D:\apache-maven-3.3.3\dependency\mysql\mysql-connector-java\5.1.21\mysql-connector-java-5.1.21.jar" />
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
 		
 	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
@@ -12,8 +12,8 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdb?characterEncoding=UTF-8" userId="xdxt"
-			password="xdxt" />
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt3?characterEncoding=UTF-8" userId="asd"
+			password="asd" />
 		<!-- 工作流相关表生成配置开始-->
 		<javaModelGenerator targetPackage="com.pujjr.carcredit.domain"
 			targetProject="pcms-carcredit/src/main/java" />
@@ -21,13 +21,13 @@
 			targetProject="pcms-carcredit/src/main/java" />
 		<javaClientGenerator targetPackage="com.pujjr.carcredit.dao"
 			targetProject="pcms-carcredit/src/main/java" type="XMLMAPPER" />
-		
+		<!-- 
 		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		
-		<!-- 
+		
 		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -85,5 +85,21 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		<!-- 工作流相关表生成配置结束-->
+		<table tableName="T_RULE_FINANCE_AMOUNT" domainObjectName="RuleFinanceAmount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_PRODUCT" domainObjectName="RuleProduct" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_DEALER" domainObjectName="RuleDealer" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_MEMBER_TASKCNT" domainObjectName="RuleMemberTaskCnt" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
 	</context>
 </generatorConfiguration>

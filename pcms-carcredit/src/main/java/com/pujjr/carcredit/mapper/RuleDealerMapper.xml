@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.RuleDealerMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RuleDealer" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="SYS_BRANCH_ID" property="sysBranchId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKGROUP_ID, SYS_BRANCH_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rule_dealer
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_rule_dealer
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+    insert into t_rule_dealer (ID, WORKGROUP_ID, SYS_BRANCH_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{sysBranchId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+    insert into t_rule_dealer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+      <if test="sysBranchId != null" >
+        SYS_BRANCH_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBranchId != null" >
+        #{sysBranchId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+    update t_rule_dealer
+    <set >
+      <if test="workgroupId != null" >
+        WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="sysBranchId != null" >
+        SYS_BRANCH_ID = #{sysBranchId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+    update t_rule_dealer
+    set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      SYS_BRANCH_ID = #{sysBranchId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectListByWorkgroupId" resultMap="BaseResultMap">
+  	select * from t_rule_dealer where WORKGROUP_ID = #{workgroupId}
+   </select>
+</mapper>

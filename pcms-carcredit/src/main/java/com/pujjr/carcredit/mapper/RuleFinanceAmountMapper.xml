@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.RuleFinanceAmountMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="MIN_AMOUNT" property="minAmount" jdbcType="DOUBLE" />
+    <result column="MAX_AMOUNT" property="maxAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKGROUP_ID, MIN_AMOUNT, MAX_AMOUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rule_finance_amount
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_rule_finance_amount
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+    insert into t_rule_finance_amount (ID, WORKGROUP_ID, MIN_AMOUNT, 
+      MAX_AMOUNT)
+    values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{minAmount,jdbcType=DOUBLE}, 
+      #{maxAmount,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+    insert into t_rule_finance_amount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+      <if test="minAmount != null" >
+        MIN_AMOUNT,
+      </if>
+      <if test="maxAmount != null" >
+        MAX_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="minAmount != null" >
+        #{minAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAmount != null" >
+        #{maxAmount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+    update t_rule_finance_amount
+    <set >
+      <if test="workgroupId != null" >
+        WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="minAmount != null" >
+        MIN_AMOUNT = #{minAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="maxAmount != null" >
+        MAX_AMOUNT = #{maxAmount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+    update t_rule_finance_amount
+    set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      MIN_AMOUNT = #{minAmount,jdbcType=DOUBLE},
+      MAX_AMOUNT = #{maxAmount,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByWorkgroupId" resultMap="BaseResultMap">
+  	select * from t_rule_finance_amount where WORKGROUP_ID =#{workgroupId}
+  </select>
+</mapper>
