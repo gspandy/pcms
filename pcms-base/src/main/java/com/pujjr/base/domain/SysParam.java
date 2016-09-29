@@ -5,71 +5,81 @@ import java.util.Date;
 public class SysParam {
     private String id;
 
-    private String paramName;
+	private String paramName;
 
-    private String paramValue;
+	private String paramValue;
 
-    private Date createTime;
+	private String paramDesc;
 
-    private String createId;
+	private Date createTime;
 
-    private Date updateTime;
+	private String createId;
 
-    private String updateId;
+	private Date updateTime;
 
-    public String getId() {
-        return id;
-    }
+	private String updateId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getParamName() {
-        return paramName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setParamName(String paramName) {
-        this.paramName = paramName;
-    }
+	public String getParamName() {
+		return paramName;
+	}
 
-    public String getParamValue() {
-        return paramValue;
-    }
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
+	}
 
-    public void setParamValue(String paramValue) {
-        this.paramValue = paramValue;
-    }
+	public String getParamValue() {
+		return paramValue;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setParamValue(String paramValue) {
+		this.paramValue = paramValue;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getParamDesc() {
+		return paramDesc;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setParamDesc(String paramDesc) {
+		this.paramDesc = paramDesc;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getUpdateId() {
-        return updateId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
 }

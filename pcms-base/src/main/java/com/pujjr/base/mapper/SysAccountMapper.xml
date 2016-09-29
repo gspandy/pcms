@@ -25,6 +25,7 @@
     <result column="RESERVER5" jdbcType="VARCHAR" property="reserver5" />
     <association column="POST_ID" property="sysJob" select="selectSysJob" />
     <association column="STATUS" property="statusDict" select="selectSysDictData" />
+    <association column="ID" property="assigneeTaskCnt" select="selectAccountAssigneTaskCnt"></association>
   </resultMap>
   <sql id="Base_Column_List">
     ID, ACCOUNT_ID, ACCOUNT_NAME, PASSWORD, BRANCH_ID, POST_ID, MOBILE, WEIXIN_ID, EMAIL, 
@@ -343,5 +344,16 @@
   
   <select id="selectSysDictData" parameterType="String" resultMap="SysDictDataMap">
   	select * from SYS_DICT_DATA where DICT_DATA_CODE =#{STATUS}
+  </select>
+  
+  <resultMap id="TaskCntResultMap" type="com.pujjr.base.domain.RuleMemberTaskCnt" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR" />
+    <result column="MAX_TASK_CNT" property="maxTaskCnt" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="selectAccountAssigneTaskCnt" parameterType="String" resultMap="TaskCntResultMap">
+  	select * from t_rule_member_taskcnt where ACCOUNT_ID = #{ID}
   </select>
 </mapper>

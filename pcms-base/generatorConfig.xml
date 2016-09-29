@@ -12,7 +12,7 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt3?characterEncoding=UTF-8" userId="asd"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt4?characterEncoding=UTF-8" userId="asd"
 			password="asd" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.base.domain"
@@ -112,15 +112,33 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
-	
+		<table tableName="T_RULE_FINANCE_AMOUNT" domainObjectName="RuleFinanceAmount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_PRODUCT" domainObjectName="RuleProduct" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_DEALER" domainObjectName="RuleDealer" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_RULE_MEMBER_TASKCNT" domainObjectName="RuleMemberTaskCnt" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
 		<table tableName="SYS_ACCOUNT" domainObjectName="SysAccount" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		-->
+	
 		<table tableName="SYS_PARAM" domainObjectName="SysParam" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		
 	</context>
 </generatorConfiguration>

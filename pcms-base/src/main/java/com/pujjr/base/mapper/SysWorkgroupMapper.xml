@@ -120,4 +120,55 @@
   <delete id="deleteWorkgroupRelateSysAccounts">
   	delete from  sys_workgroup_account where workgroup_id = #{workgroupId}
   </delete>
+  <select id="selectListByParentId" resultMap="BaseResultMap">
+  	select * from sys_workgroup where PARENT_ID =#{parentId}
+  </select>
+  <select id="selectMatchRuleAccountList" resultType="HashMap">
+  	
+	select distinct g.id as taskCntRuleId
+	from 
+	sys_workgroup  a
+	inner join t_rule_product  b  on a.id = b.workgroup_id
+	inner join t_rule_dealer c on a.id = c.workgroup_id
+	inner join t_rule_finance_amount d on a.id = d.workgroup_id
+	inner  join sys_workgroup_account e on a.id = e.workgroup_id
+	inner join sys_account f on e.sysaccount_id = f.id
+	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
+	where 
+	<![CDATA[d.min_amount<=#{financeAmount} and d.max_amount>#{financeAmount}]]>
+	and b.product_code = #{productCode}
+	and c.sys_branch_id = #{dealerId}
+	<if test="groups.size()!=0">
+		and a.id in 
+		<foreach item="item" index="index" collection="groups"
+			open="(" separator="," close=")">
+				#{item.id}
+		</foreach>
+	</if>
+	<if test="candidateAccounts.size()!=0">
+		and f.account_id in 
+		<foreach item="item" index="index" collection="candidateAccounts"
+			open="(" separator="," close=")">
+				#{item}
+		</foreach>
+		
+	</if>
+	<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
+  </select>
+  <select id="selectWorkgroupOnlineAccountList" resultType="HashMap">
+  	select distinct g.id as taskCntRuleId
+	from  sys_workgroup  a
+	inner  join sys_workgroup_account e on a.id = e.workgroup_id
+	inner join sys_account f on e.sysaccount_id = f.id
+	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
+	and a.id in 
+	<foreach item="item" index="index" collection="groups"
+			open="(" separator="," close=")">
+				#{item.id}
+	</foreach>
+	<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
+  </select>
+  <select id="selectByName" resultMap="BaseResultMap">
+  	select * from sys_workgroup where workgroup_name =#{workgroupName}
+  </select>
 </mapper>

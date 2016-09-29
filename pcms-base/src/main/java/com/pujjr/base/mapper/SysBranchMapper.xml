@@ -235,4 +235,17 @@
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from sys_branch
   </select>
+  <select id="selectSysBranch" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from sys_branch
+    where 1=1
+    <if test="id!=null and id!=''">
+     	and ID = #{id,jdbcType=VARCHAR}
+    </if>
+    <if test="branchCode!=null and branchCode!=''">
+    	and BRANCH_CODE =#{branchCode}
+    </if>
+    
+  </select>
 </mapper>

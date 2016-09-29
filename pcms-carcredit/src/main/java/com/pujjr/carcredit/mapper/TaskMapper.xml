@@ -71,4 +71,20 @@
 				]]>
 		  		group by b.account_id
 	</select>
+	<select id="selectTaskAssignCntInfo" resultType="HashMap">
+		select a.assignee as assignee , b.account_name as accountName,a.cnt as curTaskCnt ,d.max_task_cnt as maxTaskCnt
+		from
+		(
+			select assignee_ as assignee,count(*) as cnt
+			from act_ru_task 
+			group by assignee_
+		) a 
+		inner join  sys_account  b on a.assignee = b.account_id
+		inner join t_rule_member_taskcnt d on d.account_id = b.id
+		and d.id in 
+		<foreach item="item" index="index" collection="taskCntRuleIds"
+			open="(" separator="," close=")">
+				#{item}
+		</foreach>
+	</select>
 </mapper>

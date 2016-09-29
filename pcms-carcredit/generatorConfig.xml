@@ -85,21 +85,9 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		<!-- 工作流相关表生成配置结束-->
-		<table tableName="T_RULE_FINANCE_AMOUNT" domainObjectName="RuleFinanceAmount" enableCountByExample="false"
+		<table tableName="T_REJECT_RECOMMIT" domainObjectName="RejectRecommit" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
-		<table tableName="T_RULE_PRODUCT" domainObjectName="RuleProduct" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
-		<table tableName="T_RULE_DEALER" domainObjectName="RuleDealer" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
-		<table tableName="T_RULE_MEMBER_TASKCNT" domainObjectName="RuleMemberTaskCnt" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		</table> 
 	</context>
 </generatorConfiguration>

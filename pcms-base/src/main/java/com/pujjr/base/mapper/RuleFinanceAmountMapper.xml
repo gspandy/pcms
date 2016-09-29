@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.RuleFinanceAmountMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+<mapper namespace="com.pujjr.base.dao.RuleFinanceAmountMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleFinanceAmount" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
     <result column="MIN_AMOUNT" property="minAmount" jdbcType="DOUBLE" />
@@ -20,13 +20,13 @@
     delete from t_rule_finance_amount
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleFinanceAmount" >
     insert into t_rule_finance_amount (ID, WORKGROUP_ID, MIN_AMOUNT, 
       MAX_AMOUNT)
     values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{minAmount,jdbcType=DOUBLE}, 
       #{maxAmount,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleFinanceAmount" >
     insert into t_rule_finance_amount
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -57,7 +57,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleFinanceAmount" >
     update t_rule_finance_amount
     <set >
       <if test="workgroupId != null" >
@@ -72,7 +72,7 @@
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RuleFinanceAmount" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleFinanceAmount" >
     update t_rule_finance_amount
     set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
       MIN_AMOUNT = #{minAmount,jdbcType=DOUBLE},
@@ -82,4 +82,7 @@
   <select id="selectByWorkgroupId" resultMap="BaseResultMap">
   	select * from t_rule_finance_amount where WORKGROUP_ID =#{workgroupId}
   </select>
+  <delete id="deleteByWorkgroupId">
+  	delete from  t_rule_finance_amount where WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR}
+  </delete>
 </mapper>

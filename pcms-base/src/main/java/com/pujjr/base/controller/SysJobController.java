@@ -14,7 +14,7 @@ import com.pujjr.base.service.ISysJobService;
 
 @RestController
 @RequestMapping(value="/sysjob")
-public class SysJobController 
+public class SysJobController extends BaseController
 {
 	@Autowired
 	private ISysJobService sysJobService;

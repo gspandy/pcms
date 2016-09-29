@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.RuleProductMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleProduct" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKGROUP_ID, PRODUCT_CODE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rule_product
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_rule_product
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleProduct" >
+    insert into t_rule_product (ID, WORKGROUP_ID, PRODUCT_CODE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleProduct" >
+    insert into t_rule_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+      <if test="productCode != null" >
+        PRODUCT_CODE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleProduct" >
+    update t_rule_product
+    <set >
+      <if test="workgroupId != null" >
+        WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="productCode != null" >
+        PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleProduct" >
+    update t_rule_product
+    set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      PRODUCT_CODE = #{productCode,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="ProductResultMap" type="com.pujjr.base.domain.Product" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
+    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
+    <result column="LOAN_CONDITION" property="loanCondition" jdbcType="VARCHAR" />
+    <result column="MIN_LOAN_AMOUNT" property="minLoanAmount" jdbcType="DOUBLE" />
+    <result column="MAX_LOAN_AMOUNT" property="maxLoanAmount" jdbcType="DOUBLE" />
+    <result column="YEAR_RATE" property="yearRate" jdbcType="DOUBLE" />
+    <result column="DAY_LATE_RATE" property="dayLateRate" jdbcType="DOUBLE" />
+    <result column="DAY_EXTEND_RATE" property="dayExtendRate" jdbcType="DOUBLE" />
+    <result column="REPAY_MODE" property="repayMode" jdbcType="VARCHAR" />
+    <result column="PRODUCT_RULE_ID" property="productRuleId" jdbcType="VARCHAR" />
+    <result column="ENABLE" property="enable" jdbcType="BIT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectListByWorkgroupId" resultMap="ProductResultMap">
+  	select b.* from t_rule_product a
+  	left join t_product b on a.PRODUCT_CODE = b.PRODUCT_CODE 
+    where a.WORKGROUP_ID = #{workgroupId}
+  </select>
+  <delete id="deleteByWorkgroupId">
+  	delete from t_rule_product where WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR}
+  </delete>
+</mapper>

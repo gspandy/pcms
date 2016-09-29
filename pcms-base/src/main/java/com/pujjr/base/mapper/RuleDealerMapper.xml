@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.RuleDealerMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RuleDealer" >
+<mapper namespace="com.pujjr.base.dao.RuleDealerMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleDealer" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
     <result column="SYS_BRANCH_ID" property="sysBranchId" jdbcType="VARCHAR" />
@@ -19,13 +19,13 @@
     delete from t_rule_dealer
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleDealer" >
     insert into t_rule_dealer (ID, WORKGROUP_ID, SYS_BRANCH_ID
       )
     values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{sysBranchId,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleDealer" >
     insert into t_rule_dealer
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -50,7 +50,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleDealer" >
     update t_rule_dealer
     <set >
       <if test="workgroupId != null" >
@@ -62,13 +62,37 @@
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RuleDealer" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleDealer" >
     update t_rule_dealer
     set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
       SYS_BRANCH_ID = #{sysBranchId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectListByWorkgroupId" resultMap="BaseResultMap">
-  	select * from t_rule_dealer where WORKGROUP_ID = #{workgroupId}
+  <resultMap id="SysBranchResultMap" type="com.pujjr.base.domain.SysBranch" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="BRANCH_FULLNAME" property="branchFullname" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="BRANCH_TYPE" property="branchType" jdbcType="VARCHAR" />
+    <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+    <result column="RESERVER4" property="reserver4" jdbcType="VARCHAR" />
+    <result column="RESERVER5" property="reserver5" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectListByWorkgroupId" resultMap="SysBranchResultMap">
+  	select b.* from t_rule_dealer a
+  	left join sys_branch b on a.SYS_BRANCH_ID = b.ID
+  	where a.WORKGROUP_ID = #{workgroupId}
    </select>
+   <delete id="deleteByWorkgroupId">
+   	delete from t_rule_dealer where WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR}
+   </delete>
 </mapper>

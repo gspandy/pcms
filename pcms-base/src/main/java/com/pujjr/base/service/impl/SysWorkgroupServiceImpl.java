@@ -1,11 +1,14 @@
 package com.pujjr.base.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pujjr.base.dao.RuleMemberTaskCntMapper;
 import com.pujjr.base.dao.SysAccountMapper;
 import com.pujjr.base.dao.SysWorkgroupAccountMapper;
 import com.pujjr.base.dao.SysWorkgroupMapper;
@@ -23,6 +26,8 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 	private SysAccountMapper sysAccountDao;
 	@Autowired
 	private SysWorkgroupAccountMapper sysWorkgroupAccountDao;
+	@Autowired
+	private RuleMemberTaskCntMapper ruleMemberTaskCntDao;
 
 	public List<SysWorkgroup> getSysWorkgroupList() {
 		// TODO Auto-generated method stub
@@ -65,6 +70,7 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 		SysWorkgroupAccountKey key = new SysWorkgroupAccountKey();
 		key.setWorkgroupId(workgroupId);
 		key.setSysaccountId(sysAccountId);
+		ruleMemberTaskCntDao.deleteByWorkgroupIdAndAccountId(workgroupId, sysAccountId);
 		sysWorkgroupAccountDao.deleteByPrimaryKey(key);
 	}
 
@@ -82,6 +88,30 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 		{
 			this.addSysAccountToWorkgroup(workgroupId, records.get(i).getId());
 		}
+	}
+
+	@Override
+	public List<SysWorkgroup> getSysWorkgroupListByParentId(String parentId) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectListByParentId(parentId);
+	}
+
+	@Override
+	public List<HashMap> getMatchRuleAccountList(String productCode, double financeAmount, String dealerId,List<SysWorkgroup> groups,List<String> candidateAccounts) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectMatchRuleAccountList(productCode, financeAmount, dealerId, groups,candidateAccounts);
+	}
+
+	@Override
+	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectWorkgroupOnlineAccountList(groups);
+	}
+
+	@Override
+	public SysWorkgroup getWorkgroupByName(String workgroupName) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectByName(workgroupName);
 	}
 
 }

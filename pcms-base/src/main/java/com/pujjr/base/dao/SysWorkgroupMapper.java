@@ -1,5 +1,6 @@
 package com.pujjr.base.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +23,15 @@ public interface SysWorkgroupMapper {
     List<SysWorkgroup> selectAll();
     
     int deleteWorkgroupRelateSysAccounts(@Param("workgroupId")String workgroupId);
+    
+    List<SysWorkgroup> selectListByParentId(@Param("parentId")String parentId);
+    
+    List<HashMap> selectMatchRuleAccountList(@Param("productCode")String productCode,
+    									   			@Param("financeAmount") double financeAmount, 
+    									   			@Param("dealerId")String dealerId,
+    									   			@Param("groups")List<SysWorkgroup> groups,
+    									   			@Param("candidateAccounts")List<String> candidateAccounts);
+    List<HashMap> selectWorkgroupOnlineAccountList(@Param("groups")List<SysWorkgroup> groups);
+    
+    SysWorkgroup selectByName(@Param("workgroupName")String workgroupName);
 }

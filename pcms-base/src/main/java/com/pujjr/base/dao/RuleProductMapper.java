@@ -1,10 +1,11 @@
-package com.pujjr.carcredit.dao;
+package com.pujjr.base.dao;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.pujjr.carcredit.domain.RuleProduct;
+import com.pujjr.base.domain.Product;
+import com.pujjr.base.domain.RuleProduct;
 
 public interface RuleProductMapper {
     int deleteByPrimaryKey(String id);
@@ -19,5 +20,7 @@ public interface RuleProductMapper {
 
     int updateByPrimaryKey(RuleProduct record);
     
-    List<RuleProduct> selectListByWorkgroupId(@Param("workgroupId")String workgroupId);
+    List<Product> selectListByWorkgroupId(@Param("workgroupId")String workgroupId);
+    
+    int deleteByWorkgroupId(@Param("workgroupId")String workgroupId);
 }

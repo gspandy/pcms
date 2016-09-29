@@ -15,4 +15,7 @@ public interface TaskMapper
 	public List<ToDoTaskPo> selectToDoTaskListByAccountId(@Param("accountId")String accountId);
 	
 	public String selectTaskCntAndOnlineAccountIdByWorkgroupId(@Param("workgroupId")String workgroupId);
+	
+	public List<HashMap> selectTaskAssignCntInfo(@Param("taskCntRuleIds")List<String> taskCntRuleIds);
+	
 }

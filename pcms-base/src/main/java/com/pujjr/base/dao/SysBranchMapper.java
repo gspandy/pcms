@@ -2,6 +2,8 @@ package com.pujjr.base.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.base.domain.SysBranch;
 
 public interface SysBranchMapper {
@@ -18,4 +20,6 @@ public interface SysBranchMapper {
     int updateByPrimaryKey(SysBranch record);
     
     List<SysBranch> selectAll();
+    
+    SysBranch selectSysBranch(@Param("id")String id,@Param("branchCode")String branchCode);
 }

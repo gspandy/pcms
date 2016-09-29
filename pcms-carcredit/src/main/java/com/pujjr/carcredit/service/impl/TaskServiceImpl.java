@@ -1,5 +1,6 @@
 package com.pujjr.carcredit.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,11 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.base.dao.SysWorkgroupMapper;
+import com.pujjr.base.domain.SysWorkgroup;
+import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.dao.CheckResultMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.CheckResult;
 import com.pujjr.carcredit.domain.TaskProcessResult;
+import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ITaskService;
@@ -45,6 +50,8 @@ public class TaskServiceImpl implements ITaskService
 	private CheckResultMapper checkResultDao;
 	@Autowired
 	private TaskProcessResultMapper taskProcessResultDao;
+	@Autowired
+	private ISysWorkgroupService workgroupService;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId) {
 		// TODO Auto-generated method stub
@@ -131,6 +138,98 @@ public class TaskServiceImpl implements ITaskService
 	public String getMinTaskCountAccountIdByWorkgroupId(String workgroupId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getProcessTaskAccount(String productCode, double financeAmount, String dealerId,String workgroupId,List<String> candidateAccounts) {
+		// TODO Auto-generated method stub
+		//1、获取工作组及其子工作组
+		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
+		//2、获取满足任务的用户，如果有待选用户则从待选中过滤用户
+		List<HashMap> listMatch = workgroupService.getMatchRuleAccountList(productCode, financeAmount, dealerId, listGroup,candidateAccounts);
+		if(listMatch.size()==0)
+		{
+			return null;
+		}
+		else
+		{
+			//3、获取满足执行条件用户当前任务数及可支配最大任务数
+			List<String> listMatchAccountId = new ArrayList<String>();
+			String assignee=null;
+			int hasRemainCnt = 0;
+			for(HashMap item :listMatch)
+			{
+				listMatchAccountId.add(item.get("taskCntRuleId").toString());
+			}
+			List<HashMap> matchAccountTaskCntInfo = taskDao.selectTaskAssignCntInfo(listMatchAccountId);
+			for(HashMap l : matchAccountTaskCntInfo)
+			{
+				int curTaskCnt = Integer.valueOf(l.get("curTaskCnt").toString());
+				int maxTaskCnt = Integer.valueOf(l.get("maxTaskCnt").toString());
+				if((maxTaskCnt-curTaskCnt)>hasRemainCnt)
+				{
+					hasRemainCnt = maxTaskCnt-curTaskCnt;
+					assignee = l.get("assignee").toString();
+				}
+				
+			}
+			return assignee;
+		}
+	}
+	
+	private List<SysWorkgroup> getChildWorkgroup(String workgroupId,boolean includeSelf )
+	{
+		List<SysWorkgroup>  list = new ArrayList<SysWorkgroup>();
+		SysWorkgroup parentgroup = workgroupService.getWorkgroupById(workgroupId);
+		if(includeSelf)
+		{
+			list.add(parentgroup);
+		}
+		List<SysWorkgroup> childGroups = workgroupService.getSysWorkgroupListByParentId(parentgroup.getId());
+		if(childGroups.size()>0)
+		{
+			for(SysWorkgroup childGroup : childGroups)
+			{
+				list.addAll(getChildWorkgroup(childGroup.getId(),true));
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<OnlineAcctPo> getOnlineAcctInfo(String workgroupId) {
+		// TODO Auto-generated method stub
+		List<OnlineAcctPo> poList = new ArrayList<OnlineAcctPo>();
+		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
+		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup);
+		if(listMatch.size()==0)
+		{
+			return null;
+		}
+		else
+		{
+			//3、获取满足执行条件用户当前任务数及可支配最大任务数
+			List<String> listMatchAccountId = new ArrayList<String>();
+			for(HashMap item :listMatch)
+			{
+				listMatchAccountId.add(item.get("taskCntRuleId").toString());
+			}
+			List<HashMap> matchAccountTaskCntInfo = taskDao.selectTaskAssignCntInfo(listMatchAccountId);
+			for(HashMap l : matchAccountTaskCntInfo)
+			{
+				int curTaskCnt = Integer.valueOf(l.get("curTaskCnt").toString());
+				int maxTaskCnt = Integer.valueOf(l.get("maxTaskCnt").toString());
+				String assignee = l.get("assignee").toString();
+				String assigneeName = l.get("accountName").toString();
+				OnlineAcctPo po = new OnlineAcctPo();
+				po.setAccountId(assignee);
+				po.setCurTaskCnt(curTaskCnt);
+				po.setMaxTaxkCnt(maxTaskCnt);
+				po.setAccountName(assigneeName);
+				poList.add(po);
+			}
+		}
+		return poList;
 	}
 
 

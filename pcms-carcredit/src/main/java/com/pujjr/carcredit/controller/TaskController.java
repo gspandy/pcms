@@ -20,24 +20,46 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.domain.SysParam;
+import com.pujjr.base.domain.SysWorkgroup;
+import com.pujjr.base.service.ISysBranchService;
+import com.pujjr.base.service.ISysParamService;
+import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
+import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
+import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.OnlineAcctVo;
+import com.pujjr.carcredit.vo.TaskAssigneeVo;
 import com.pujjr.carcredit.vo.TaskCheckCommitVo;
 import com.pujjr.carcredit.vo.TaskVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
+import com.pujjr.jbpm.service.IRunWorkflowService;
 
 @RestController
 @RequestMapping("/task")
-public class TaskController 
+public class TaskController extends BaseController
 {
 	@Autowired
 	private ITaskService taskService;
 	@Autowired
 	private TaskService actTaskService;
+	@Autowired
+	private ISysParamService sysParamService;
+	@Autowired
+	private ISysWorkgroupService workgroupService;
+	@Autowired
+	private IApplyService applyService;
+	@Autowired
+	private ISysBranchService sysBranchService;
+	@Autowired
+	private IRunWorkflowService  runWorkflowService;
 	
 	@RequestMapping(value="/todolist",method=RequestMethod.GET)
 	public PageVo getToDoTaskList(String curPage,String pageSize,HttpServletRequest request)
@@ -82,5 +104,45 @@ public class TaskController
 		ApplyCheckVo checkVo =params.getCheckVo();
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitCheckTask(applyVo,checkVo, taskId,sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/getCheckWorkgroupOnlineAcct",method=RequestMethod.GET)
+	public List<OnlineAcctVo> getCheckWorkgroupOnlineAcct() throws Exception
+	{
+		SysParam sysParam = sysParamService.getSysParamByParamName("check-group-name");
+		if(sysParam ==null)
+		{
+			throw new Exception("未配置系统参数check-group-name");
+		}
+		SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
+		List<OnlineAcctPo> poList = taskService.getOnlineAcctInfo(group.getId());
+		List<OnlineAcctVo> voList = new ArrayList<OnlineAcctVo>();
+		for(OnlineAcctPo po : poList)
+		{
+			OnlineAcctVo vo = new OnlineAcctVo();
+			BeanUtils.copyProperties(po, vo);
+			voList.add(vo);
+		}
+		return voList;
+	}
+	@RequestMapping(value="/doCheckBatchAssigneeTask",method=RequestMethod.POST)
+	public List<HashMap> doCheckBatchAssigneeTask(@RequestBody TaskAssigneeVo vo) throws Exception
+	{
+		List<ToDoTaskVo> toDoTaskList = vo.getToDoTaskList();
+		List<String> candidateAccounts = vo.getAssingees();
+		for(ToDoTaskVo task : toDoTaskList)
+		{
+			String businessKey = task.getBusinessKey();
+			ApplyVo apply = applyService.getUnCommitApplyDetail(businessKey);
+			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
+			SysParam sysParam = sysParamService.getSysParamByParamName("check-group-name");
+			if(sysParam ==null)
+			{
+				throw new Exception("未配置系统参数check-group-name");
+			}
+			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
+			String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
+			
+		}
+		return null;
 	}
 }

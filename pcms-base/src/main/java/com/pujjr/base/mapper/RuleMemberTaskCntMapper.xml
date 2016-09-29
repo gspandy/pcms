@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.RuleMemberTaskCntMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RuleMemberTaskCnt" >
+<mapper namespace="com.pujjr.base.dao.RuleMemberTaskCntMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleMemberTaskCnt" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
     <result column="ACCOUNT_ID" property="accountId" jdbcType="VARCHAR" />
@@ -20,13 +20,13 @@
     delete from t_rule_member_taskcnt
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RuleMemberTaskCnt" >
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleMemberTaskCnt" >
     insert into t_rule_member_taskcnt (ID, WORKGROUP_ID, ACCOUNT_ID, 
       MAX_TASK_CNT)
     values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{accountId,jdbcType=VARCHAR}, 
       #{maxTaskCnt,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RuleMemberTaskCnt" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleMemberTaskCnt" >
     insert into t_rule_member_taskcnt
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -57,7 +57,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RuleMemberTaskCnt" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleMemberTaskCnt" >
     update t_rule_member_taskcnt
     <set >
       <if test="workgroupId != null" >
@@ -72,11 +72,15 @@
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RuleMemberTaskCnt" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleMemberTaskCnt" >
     update t_rule_member_taskcnt
     set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
       ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
       MAX_TASK_CNT = #{maxTaskCnt,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <delete id="deleteByWorkgroupIdAndAccountId">
+  	delete from t_rule_member_taskcnt
+  	where WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR} and ACCOUNT_ID = #{accountId,jdbcType=VARCHAR}
+  </delete>
 </mapper>
