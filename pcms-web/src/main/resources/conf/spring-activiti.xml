@@ -11,8 +11,6 @@
     <!-- 单例json对象 -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     
-    
-    
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration"> 
       <property name="dataSource" ref="dataSource"/> 
       <property name="transactionManager" ref="transactionManager"/> 

@@ -1,21 +1,21 @@
 package com.pujjr.carcredit.domain;
 
 public class CheckResult {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private String netCheckResult;
+    public String netCheckResult;
 
-    private String netCheckNotPassReason;
+    public String netCheckNotPassReason;
 
-    private String netCheckComment;
+    public String netCheckComment;
 
-    private String telCheckResult;
+    public String telCheckResult;
 
-    private String telCheckNotPassReason;
+    public String telCheckNotPassReason;
 
-    private String telCheckComment;
+    public String telCheckComment;
 
     public String getId() {
         return id;

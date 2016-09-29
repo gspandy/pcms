@@ -1,27 +1,27 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyLinkman {
-    private String id;
+    public String id;
 
-	private String appId;
+	public String appId;
 
-	private Integer seq;
+	public Integer seq;
 
-	private String name;
+	public String name;
 
-	private String mobile;
+	public String mobile;
 
-	private String tenantRelation;
+	public String tenantRelation;
 
-	private String addrProvince;
+	public String addrProvince;
 
-	private String addrCity;
+	public String addrCity;
 
-	private String addrCounty;
+	public String addrCounty;
 
-	private String addrExt;
+	public String addrExt;
 
-	private String isKnow;
+	public String isKnow;
 
 	public String getId() {
 		return id;

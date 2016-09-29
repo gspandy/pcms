@@ -7,8 +7,10 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +44,9 @@ public class ApplyController {
 	@Autowired
 	private IApplyService applyService;
 //	private ApplyServiceImpl applyService;
+	@Value("${pcms.sys_mode}") 
+	private String sysMode = "debug";
+	
 	@ResponseBody
 	@RequestMapping(value="/apply/{id}/{name}",method=RequestMethod.GET)
 	public JSONArray clientInfoQuery(@PathVariable String id,@PathVariable String name){
@@ -60,8 +65,13 @@ public class ApplyController {
 	@ResponseBody
 	public HashMap<String,Object> applySave(@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		String appId = applyService.saveApply(applyVo,sysAccount.getAccountId());
+		String appId = "";
+		System.out.println("ApplyController->sysMode："+sysMode);
 		HashMap<String,Object> map = new HashMap<String,Object>();
+		if("debug".equals(sysMode))
+			appId = applyService.saveApply(applyVo,"333");
+		else
+			appId = applyService.saveApply(applyVo,sysAccount.getAccountId());
 		map.put("appId", appId);
 		return map;
 		

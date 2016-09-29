@@ -9,11 +9,11 @@ import com.pujjr.carcredit.domain.ApplyFinance;
 public class ApplyFinanceVo extends ApplyFinance
 {
 	//是否选择车辆
-	private boolean select;
+	public boolean select;
 	//融资车辆信息
-	private CarStyle carStyle;
+	public CarStyle carStyle;
 	//GPS价格档位
-	private GpsLvl gpsLvl;
+	public GpsLvl gpsLvl;
 	
 	public GpsLvl getGpsLvl() {
 		return gpsLvl;

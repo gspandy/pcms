@@ -4,35 +4,35 @@ import java.util.Date;
 
 
 public class Apply {
-    private String id;
+    public String id;
 
-	private String appId;
+	public String appId;
 
-	private String productCode;
+	public String productCode;
 
-	private Integer period;
+	public Integer period;
 
-	private String comment;
+	public String comment;
 
-	private String status;
+	public String status;
 
-	private String createBranchCode;
+	public String createBranchCode;
 
-	private String createAccountId;
+	public String createAccountId;
 
-	private Date createTime;
+	public Date createTime;
 
-	private String custType;
+	public String custType;
 
-	private Double totalFinanceAmt;
+	public Double totalFinanceAmt;
 
-	private Double totalLoanAmt;
+	public Double totalLoanAmt;
 
-	private Double monthRent;
+	public Double monthRent;
 
-	private Date approveDate;
+	public Date approveDate;
 
-	private String procInstId;
+	public String procInstId;
 
 	public String getId() {
 		return id;

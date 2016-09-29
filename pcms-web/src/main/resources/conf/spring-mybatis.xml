@@ -12,7 +12,9 @@
                         http://www.springframework.org/schema/mvc  
                         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
                         http://www.springframework.org/schema/tx
-                        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+                        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+                        http://www.springframework.org/schema/aop
+                        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 	<!-- <context:component-scan base-package="
 	com.pujjr.carcredit.service,
 	com.pujjr.carcredit.service.impl,
@@ -21,6 +23,7 @@
 	com.pujjr.base.service,
 	com.pujjr.base.service.impl"/> -->
 	<context:component-scan base-package="com.pujjr.*.service"/>
+	<context:component-scan base-package="com.pujjr.carcredit.dao.impl"/>
 	
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
@@ -102,4 +105,7 @@
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/>
 
+	<!-- aop -->
+	<aop:aspectj-autoproxy proxy-target-class="true"  expose-proxy="true"/>
+	<bean class="com.pujjr.carcredit.aspect.ApplyOperHisAspect"/>
 </beans>

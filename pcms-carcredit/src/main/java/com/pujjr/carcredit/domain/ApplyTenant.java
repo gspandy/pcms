@@ -3,71 +3,71 @@ package com.pujjr.carcredit.domain;
 import java.util.List;
 
 public class ApplyTenant {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private String name;
+    public String name;
 
-    private String idType;
+    public String idType;
 
-    private String idNo;
+    public String idNo;
 
-    private Integer age;
+    public Integer age;
 
-    private String sex;
+    public String sex;
 
-    private String mobile;
+    public String mobile;
 
-    private String qq;
+    public String qq;
 
-    private String weixin;
+    public String weixin;
 
-    private String education;
+    public String education;
 
-    private String marryStatus;
+    public String marryStatus;
 
-    private String addrProvince;
+    public String addrProvince;
 
-    private String addrCity;
+    public String addrCity;
 
-    private String addrCounty;
+    public String addrCounty;
 
-    private String addrExt;
+    public String addrExt;
 
-    private String houseOwner;
+    public String houseOwner;
 
-    private String houseMate;
+    public String houseMate;
 
-    private String houseHold;
+    public String houseHold;
 
-    private String familyMember;
+    public String familyMember;
 
-    private String liveTime;
+    public String liveTime;
 
-    private String unitName;
+    public String unitName;
 
-    private String unitType;
+    public String unitType;
 
-    private String unitIndustry;
+    public String unitIndustry;
 
-    private String unitTel;
+    public String unitTel;
 
-    private String rank;
+    public String rank;
 
-    private String ranName;
+    public String ranName;
 
-    private String unitAddrProvince;
+    public String unitAddrProvince;
 
-    private String unitAddrCity;
+    public String unitAddrCity;
 
-    private String unitAddrCounty;
+    public String unitAddrCounty;
 
-    private String unitAddrExt;
+    public String unitAddrExt;
 
-    private Double montyIncome;
+    public Double montyIncome;
 
-    private Double yearIncome;
+    public Double yearIncome;
 
     public String getId() {
         return id;
@@ -333,9 +333,9 @@ public class ApplyTenant {
         this.yearIncome = yearIncome;
     }
     
-    private List<ApplyTenantHouse>  tenantHouses;
+    public List<ApplyTenantHouse>  tenantHouses;
     
-    private List<ApplyTenantCar> tenantCars;
+    public List<ApplyTenantCar> tenantCars;
 
 	public List<ApplyTenantHouse> getTenantHouses() {
 		return tenantHouses;

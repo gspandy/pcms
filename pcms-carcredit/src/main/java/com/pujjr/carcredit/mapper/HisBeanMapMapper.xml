@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.HisBeanMapMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.HisBeanMap" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CLASS_NAME" property="className" jdbcType="VARCHAR" />
+    <result column="CLASS_CNAME" property="classCname" jdbcType="VARCHAR" />
+    <result column="TABLE_NAME" property="tableName" jdbcType="VARCHAR" />
+    <result column="TABLE_CNAME" property="tableCname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CLASS_NAME, CLASS_CNAME, TABLE_NAME, TABLE_CNAME
+  </sql>
+  <select id="selectByClassName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_his_beanmap
+    where CLASS_NAME = #{className,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_his_beanmap
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_his_beanmap
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteAll">
+    delete from t_his_beanmap
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.HisBeanMap" >
+    insert into t_his_beanmap (ID, CLASS_NAME, CLASS_CNAME, 
+      TABLE_NAME, TABLE_CNAME)
+    values (#{id,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{classCname,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{tableCname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.HisBeanMap" >
+    insert into t_his_beanmap
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="className != null" >
+        CLASS_NAME,
+      </if>
+      <if test="classCname != null" >
+        CLASS_CNAME,
+      </if>
+      <if test="tableName != null" >
+        TABLE_NAME,
+      </if>
+      <if test="tableCname != null" >
+        TABLE_CNAME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null" >
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classCname != null" >
+        #{classCname,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableCname != null" >
+        #{tableCname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.HisBeanMap" >
+    update t_his_beanmap
+    <set >
+      <if test="className != null" >
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="classCname != null" >
+        CLASS_CNAME = #{classCname,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="tableCname != null" >
+        TABLE_CNAME = #{tableCname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.HisBeanMap" >
+    update t_his_beanmap
+    set CLASS_NAME = #{className,jdbcType=VARCHAR},
+      CLASS_CNAME = #{classCname,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      TABLE_CNAME = #{tableCname,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

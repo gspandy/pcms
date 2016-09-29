@@ -14,7 +14,7 @@
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
 			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdb?characterEncoding=UTF-8" userId="xdxt"
 			password="xdxt" />
-		<!-- 工作流相关表生成配置开始-->
+		
 		<javaModelGenerator targetPackage="com.pujjr.carcredit.domain"
 			targetProject="pcms-carcredit/src/main/java" />
 		<sqlMapGenerator targetPackage="com.pujjr.carcredit.mapper"
@@ -22,10 +22,24 @@
 		<javaClientGenerator targetPackage="com.pujjr.carcredit.dao"
 			targetProject="pcms-carcredit/src/main/java" type="XMLMAPPER" />
 		
-		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
+		<!-- 历史记录表配置开始 -->
+		<!-- <table tableName="T_HIS_BEANMAP" domainObjectName="HisBeanMap" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		<table tableName="T_HIS_FIELDCOMMENT" domainObjectName="HisFieldComment" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<table tableName="T_HIS_OPER" domainObjectName="HisOper" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<!-- <table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
 		
 		<!-- 
 		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
@@ -84,6 +98,6 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
-		<!-- 工作流相关表生成配置结束-->
+		
 	</context>
 </generatorConfiguration>

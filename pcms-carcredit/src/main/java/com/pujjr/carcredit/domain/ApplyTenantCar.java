@@ -1,17 +1,17 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyTenantCar {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private Integer seq;
+    public Integer seq;
 
-    private String carBrand;
+    public String carBrand;
 
-    private String carDetail;
+    public String carDetail;
 
-    private String carStatus;
+    public String carStatus;
 
     public String getId() {
         return id;

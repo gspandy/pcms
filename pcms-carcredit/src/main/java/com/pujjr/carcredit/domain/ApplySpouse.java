@@ -1,45 +1,45 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplySpouse {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private String name;
+    public String name;
 
-    private String idType;
+    public String idType;
 
-    private String idNo;
+    public String idNo;
 
-    private String mobile;
+    public String mobile;
 
-    private String qq;
+    public String qq;
 
-    private String weixin;
+    public String weixin;
 
-    private String unitName;
+    public String unitName;
 
-    private String unitType;
+    public String unitType;
 
-    private String unitIndustry;
+    public String unitIndustry;
 
-    private String unitTel;
+    public String unitTel;
 
-    private String rank;
+    public String rank;
 
-    private String rankName;
+    public String rankName;
 
-    private String unitAddrProvince;
+    public String unitAddrProvince;
 
-    private String unitAddrCity;
+    public String unitAddrCity;
 
-    private String unitAddrCounty;
+    public String unitAddrCounty;
 
-    private String unitAddrExt;
+    public String unitAddrExt;
 
-    private Double monthIncome;
+    public Double monthIncome;
 
-    private Double yearIncome;
+    public Double yearIncome;
 
     public String getId() {
         return id;

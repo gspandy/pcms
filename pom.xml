@@ -21,6 +21,8 @@
 		<log4j.version>1.2.17</log4j.version>
 		<!-- servlet版本 -->
 		<servlet.version>2.5</servlet.version>
+		<!-- aspect版本 -->
+		<aspect.version>1.8.9</aspect.version>
 	</properties>
 
 	<dependencyManagement>
@@ -207,6 +209,17 @@
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
+		</dependency>
+		<!-- aspect包 -->
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjrt</artifactId>
+		    <version>${aspect.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.aspectj</groupId>
+		    <artifactId>aspectjweaver</artifactId>
+		    <version>${aspect.version}</version>
 		</dependency>
 	</dependencies>
 	<modules>

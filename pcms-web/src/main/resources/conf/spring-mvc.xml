@@ -13,6 +13,7 @@
 											org.activiti.rest.diagram,
 											com.pujjr">										
     </context:component-scan> -->
+ 	<context:property-placeholder location="classpath:conf/jdbc.properties" />
 	<context:component-scan base-package="org.activiti.rest.editor,
 	org.activiti.rest.diagram,
 	com.pujjr.*.controller">

@@ -1,67 +1,67 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyFinance {
-    private String id;
+    public String id;
 
-	private String appId;
+	public String appId;
 
-	private Integer seq;
+	public Integer seq;
 
-	private String carStyleId;
+	public String carStyleId;
 
-	private Double salePrice;
+	public Double salePrice;
 
-	private Double initPayPercent;
+	public Double initPayPercent;
 
-	private Boolean isFinanceGps;
+	public Boolean isFinanceGps;
 
-	private String gpsLvlId;
+	public String gpsLvlId;
 
-	private Double gpsFee;
+	public Double gpsFee;
 
-	private Boolean isPurchaseTax;
+	public Boolean isPurchaseTax;
 
-	private Double purchaseTax;
+	public Double purchaseTax;
 
-	private Boolean isServiceFee;
+	public Boolean isServiceFee;
 
-	private Double serviceFee;
+	public Double serviceFee;
 
-	private Boolean isInsuranceFee;
+	public Boolean isInsuranceFee;
 
-	private Double insuranceFee;
+	public Double insuranceFee;
 
-	private Boolean isDelayInsuranceFee;
+	public Boolean isDelayInsuranceFee;
 
-	private Double delayInsuranceFee;
+	public Double delayInsuranceFee;
 
-	private Boolean isTransferFee;
+	public Boolean isTransferFee;
 
-	private Double transferFee;
+	public Double transferFee;
 
-	private Boolean isAddonFee;
+	public Boolean isAddonFee;
 
-	private Double addonFee;
+	public Double addonFee;
 
-	private Double assessFee;
+	public Double assessFee;
 
-	private String carColor;
+	public String carColor;
 
-	private String carManu;
+	public String carManu;
 
-	private String carVin;
+	public String carVin;
 
-	private String carEngineNo;
+	public String carEngineNo;
 
-	private Double assessPrice;
+	public Double assessPrice;
 
-	private Double collateral;
+	public Double collateral;
 
-	private Double initPayAmount;
+	public Double initPayAmount;
 
-	private Double financeAmount;
+	public Double financeAmount;
 
-	private Double financeFee;
+	public Double financeFee;
 
 	public String getId() {
 		return id;

@@ -1,17 +1,17 @@
 package com.pujjr.carcredit.domain;
 
 public class TaskProcessResult {
-    private String id;
+    public String id;
 
-    private String runPathId;
+    public String runPathId;
 
-    private String processResult;
+    public String processResult;
 
-    private String processResultDesc;
+    public String processResultDesc;
 
-    private String comment;
+    public String comment;
 
-    private String taskBusinessId;
+    public String taskBusinessId;
 
     public String getId() {
         return id;

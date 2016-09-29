@@ -11,19 +11,19 @@ import com.pujjr.carcredit.domain.ApplyTenant;
 public class ApplyVo extends Apply
 {
 	//产品信息
-	private Product product;
+	public Product product;
 	//融资信息
-	private List<ApplyFinanceVo> finances;
+	public List<ApplyFinanceVo> finances;
 	//承租人信息
-	private ApplyTenantVo tenant;
+	public ApplyTenantVo tenant;
 	//配偶信息
-	private ApplySpouseVo spouse;
+	public ApplySpouseVo spouse;
 	//共租人信息
-	private ApplyCloesseeVo cloessee;
+	public ApplyCloesseeVo cloessee;
 	//联系人信息
-	private List<ApplyLinkmanVo> linkmans;
+	public List<ApplyLinkmanVo> linkmans;
 	//家庭负债
-	private ApplyFamilyDebtVo familyDebt;
+	public ApplyFamilyDebtVo familyDebt;
 	
 	public Product getProduct() {
 		return product;

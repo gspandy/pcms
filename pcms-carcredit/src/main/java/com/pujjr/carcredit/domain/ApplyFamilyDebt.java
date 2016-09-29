@@ -1,41 +1,41 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyFamilyDebt {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private Double bankLoanAmount;
+    public Double bankLoanAmount;
 
-    private Double bankLoanYhk;
+    public Double bankLoanYhk;
 
-    private Double pettyLoanAmout;
+    public Double pettyLoanAmout;
 
-    private Double pettyLoanYhk;
+    public Double pettyLoanYhk;
 
-    private Double dbLoanAmount;
+    public Double dbLoanAmount;
 
-    private Double dbLoanYhk;
+    public Double dbLoanYhk;
 
-    private Double creditLoanAmount;
+    public Double creditLoanAmount;
 
-    private Double creditLoanYhk;
+    public Double creditLoanYhk;
 
-    private Double relativeLoanAmount;
+    public Double relativeLoanAmount;
 
-    private Double relativeLoanYhk;
+    public Double relativeLoanYhk;
 
-    private Double friendLoanAmount;
+    public Double friendLoanAmount;
 
-    private Double friendLoanYhk;
+    public Double friendLoanYhk;
 
-    private Double easycarLoanAmount;
+    public Double easycarLoanAmount;
 
-    private Double easycarLoanYhk;
+    public Double easycarLoanYhk;
 
-    private Double loanTotal;
+    public Double loanTotal;
 
-    private Double loanYhkTotal;
+    public Double loanYhkTotal;
 
     public String getId() {
         return id;

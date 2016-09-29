@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.HisOperMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.HisOper">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+    <result column="CLASS_NAME" jdbcType="VARCHAR" property="className" />
+    <result column="UPD_MODE" jdbcType="VARCHAR" property="updMode" />
+    <result column="PRE_VALUE" jdbcType="VARCHAR" property="preValue" />
+    <result column="AFTER_VALUE" jdbcType="VARCHAR" property="afterValue" />
+    <result column="OPER_TIME" jdbcType="TIMESTAMP" property="operTime" />
+    <result column="ACCOUN_ID" jdbcType="VARCHAR" property="accounId" />
+    <result column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, TABLE_NAME, FIELD_NAME, CLASS_NAME, UPD_MODE, PRE_VALUE, AFTER_VALUE, 
+    OPER_TIME, ACCOUN_ID, RECORD_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_his_oper
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_his_oper
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.HisOper">
+    insert into t_his_oper (ID, APP_ID, TABLE_NAME, 
+      FIELD_NAME, CLASS_NAME, UPD_MODE, 
+      PRE_VALUE, AFTER_VALUE, OPER_TIME, 
+      ACCOUN_ID, RECORD_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
+      #{fieldName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{updMode,jdbcType=VARCHAR}, 
+      #{preValue,jdbcType=VARCHAR}, #{afterValue,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, 
+      #{accounId,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.HisOper">
+    insert into t_his_oper
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME,
+      </if>
+      <if test="fieldName != null">
+        FIELD_NAME,
+      </if>
+      <if test="className != null">
+        CLASS_NAME,
+      </if>
+      <if test="updMode != null">
+        UPD_MODE,
+      </if>
+      <if test="preValue != null">
+        PRE_VALUE,
+      </if>
+      <if test="afterValue != null">
+        AFTER_VALUE,
+      </if>
+      <if test="operTime != null">
+        OPER_TIME,
+      </if>
+      <if test="accounId != null">
+        ACCOUN_ID,
+      </if>
+      <if test="recordId != null">
+        RECORD_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldName != null">
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="updMode != null">
+        #{updMode,jdbcType=VARCHAR},
+      </if>
+      <if test="preValue != null">
+        #{preValue,jdbcType=VARCHAR},
+      </if>
+      <if test="afterValue != null">
+        #{afterValue,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null">
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accounId != null">
+        #{accounId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null">
+        #{recordId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.HisOper">
+    update t_his_oper
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null">
+        TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldName != null">
+        FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="className != null">
+        CLASS_NAME = #{className,jdbcType=VARCHAR},
+      </if>
+      <if test="updMode != null">
+        UPD_MODE = #{updMode,jdbcType=VARCHAR},
+      </if>
+      <if test="preValue != null">
+        PRE_VALUE = #{preValue,jdbcType=VARCHAR},
+      </if>
+      <if test="afterValue != null">
+        AFTER_VALUE = #{afterValue,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null">
+        OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accounId != null">
+        ACCOUN_ID = #{accounId,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null">
+        RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.HisOper">
+    update t_his_oper
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      TABLE_NAME = #{tableName,jdbcType=VARCHAR},
+      FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+      CLASS_NAME = #{className,jdbcType=VARCHAR},
+      UPD_MODE = #{updMode,jdbcType=VARCHAR},
+      PRE_VALUE = #{preValue,jdbcType=VARCHAR},
+      AFTER_VALUE = #{afterValue,jdbcType=VARCHAR},
+      OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      ACCOUN_ID = #{accounId,jdbcType=VARCHAR},
+      RECORD_ID = #{recordId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectCommon" parameterType="java.util.HashMap" resultType="java.util.HashMap" statementType="STATEMENT">
+     select * from ${tableName} where id = ${id}
+  </select>
+</mapper>

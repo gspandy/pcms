@@ -1,15 +1,15 @@
 package com.pujjr.carcredit.domain;
 
 public class RejectRecommit {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private String rejectReason;
+    public String rejectReason;
 
-    private String recommitReason;
+    public String recommitReason;
 
-    private String recommitComment;
+    public String recommitComment;
 
     public String getId() {
         return id;

@@ -28,6 +28,35 @@ public class Utils {
 		}
 		return value;
 	}
+	
+	/**
+	 * 过滤null对象
+	 * @param obj
+	 * @return
+	 */
+	public static String nullFilter(Object obj){
+		return obj == null?"":obj.toString();
+	}
+	
+	/**
+	 * 对象属性转换为对应数据表列名 
+	 * @param propName  输入格式："myUserName"
+	 * @return 返回格式：：MY_USER_NAME
+	 */
+	public static String field2Col(String propName){
+//		System.out.println("对象属性转换前："+propName);
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < propName.length(); i++) {
+			char c = propName.charAt(i);
+			if(Character.isUpperCase(c)){
+				sb.append("_"+Character.toLowerCase(c));
+			}else{
+				sb.append(c);
+			}
+		}
+		return sb.toString().toUpperCase();
+	}
+	
 	/**
 	 * 获取日期天数
 	 * **/

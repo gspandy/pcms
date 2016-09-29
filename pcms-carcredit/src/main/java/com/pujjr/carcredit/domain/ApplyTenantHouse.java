@@ -1,21 +1,21 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyTenantHouse {
-    private String id;
+    public String id;
 
-    private String appId;
+    public String appId;
 
-    private Integer seq;
+    public Integer seq;
 
-    private String addrProvince;
+    public String addrProvince;
 
-    private String addrCity;
+    public String addrCity;
 
-    private String addrCounty;
+    public String addrCounty;
 
-    private String addrExt;
+    public String addrExt;
 
-    private String status;
+    public String status;
 
     public String getId() {
         return id;
