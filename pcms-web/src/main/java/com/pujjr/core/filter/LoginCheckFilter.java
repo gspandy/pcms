@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
@@ -30,13 +31,13 @@ public class LoginCheckFilter implements Filter {
 	
 	@Autowired
 	private ISysAccountService sysAccountService;
+	
+//	@Value("${pcms.sys_mode}")
+//	private String sysModel;
 
 	public void destroy() {
 		// TODO Auto-generated method stub
-
 	}
-
-	
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain filterChain) throws IOException, ServletException {
 		// TODO Auto-generated method stub
@@ -53,8 +54,8 @@ public class LoginCheckFilter implements Filter {
 	    	final String authHeader = req.getHeader("Authorization");
 	        try 
 	        {
-	            final Claims claims = Jwts.parser().setSigningKey("secretkey")
-	                .parseClaimsJws(authHeader).getBody();
+	        	final Claims claims = Jwts.parser().setSigningKey("secretkey")
+    	                .parseClaimsJws(authHeader).getBody();
 	            String userid=claims.getSubject();
 	            ServletContext sc = req.getSession().getServletContext();
 	            XmlWebApplicationContext cxt = (XmlWebApplicationContext)WebApplicationContextUtils.getWebApplicationContext(sc);
@@ -62,7 +63,6 @@ public class LoginCheckFilter implements Filter {
 	            SysAccount sysAccount = sysAccountService.getSysAccountByAccountId(userid);
 	            request.setAttribute("account", sysAccount);
 	        	filterChain.doFilter(request,response); 
-	        	
 	        }
 	        catch (SignatureException  e) 
 	        {
