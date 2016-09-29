@@ -53,9 +53,9 @@ public class TaskServiceImpl implements ITaskService
 	@Autowired
 	private ISysWorkgroupService workgroupService;
 	
-	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId) {
+	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
-		return taskDao.selectToDoTaskListByAccountId(accountId);
+		return taskDao.selectToDoTaskListByAccountId(accountId,queryType);
 	}
 
 	public void commitApplyTask(ApplyVo applyVo, String operId) throws Exception {

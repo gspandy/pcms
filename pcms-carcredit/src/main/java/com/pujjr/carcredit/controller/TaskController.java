@@ -40,6 +40,7 @@ import com.pujjr.carcredit.vo.TaskAssigneeVo;
 import com.pujjr.carcredit.vo.TaskCheckCommitVo;
 import com.pujjr.carcredit.vo.TaskVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
+import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 
 @RestController
@@ -61,12 +62,12 @@ public class TaskController extends BaseController
 	@Autowired
 	private IRunWorkflowService  runWorkflowService;
 	
-	@RequestMapping(value="/todolist",method=RequestMethod.GET)
-	public PageVo getToDoTaskList(String curPage,String pageSize,HttpServletRequest request)
+	@RequestMapping(value="/todolist/{queryType}",method=RequestMethod.GET)
+	public PageVo getToDoTaskList(String curPage,String pageSize,@PathVariable String queryType,HttpServletRequest request)
 	{
 		PageHelper.startPage(Integer.parseInt(curPage), Integer.parseInt(pageSize),true);
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		List<ToDoTaskPo> poList = taskService.getToDoTaskListByAccountId(sysAccount.getAccountId());
+		List<ToDoTaskPo> poList = taskService.getToDoTaskListByAccountId(sysAccount.getAccountId(),queryType);
 		List<ToDoTaskVo> voList = new ArrayList<ToDoTaskVo>();
 		for(ToDoTaskPo po : poList)
 		{
@@ -125,24 +126,39 @@ public class TaskController extends BaseController
 		return voList;
 	}
 	@RequestMapping(value="/doCheckBatchAssigneeTask",method=RequestMethod.POST)
-	public List<HashMap> doCheckBatchAssigneeTask(@RequestBody TaskAssigneeVo vo) throws Exception
+	public List<HashMap<String,Object>> doCheckBatchAssigneeTask(@RequestBody TaskAssigneeVo vo) throws Exception
 	{
 		List<ToDoTaskVo> toDoTaskList = vo.getToDoTaskList();
 		List<String> candidateAccounts = vo.getAssingees();
+		List<HashMap<String,Object>> procResultList = new ArrayList<HashMap<String,Object>>();
+		SysParam sysParam = sysParamService.getSysParamByParamName("check-group-name");
+		if(sysParam ==null)
+		{
+			throw new Exception("未配置系统参数check-group-name");
+		}
 		for(ToDoTaskVo task : toDoTaskList)
 		{
+			HashMap<String,Object> result = new HashMap<String,Object>();
+			result.put("appId", task.getBusinessKey());
 			String businessKey = task.getBusinessKey();
 			ApplyVo apply = applyService.getUnCommitApplyDetail(businessKey);
 			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
-			SysParam sysParam = sysParamService.getSysParamByParamName("check-group-name");
-			if(sysParam ==null)
-			{
-				throw new Exception("未配置系统参数check-group-name");
-			}
 			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
 			String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
+			if(assignee != null)
+			{
+				HashMap<String,Object> vars = new HashMap<String,Object>();
+				vars.put("checkAssignee", assignee);
+				runWorkflowService.completeTask(task.getTaskId(), "", vars, CommandType.COMMIT);
+				result.put("procResult", "分配成功，任务执行人"+assignee);
+			}
+			else
+			{
+				result.put("procResult", "未找到满足条件的任务执行者");
+			}
+			procResultList.add(result);
 			
 		}
-		return null;
+		return procResultList;
 	}
 }

@@ -14,7 +14,7 @@ import com.pujjr.carcredit.vo.ApplyVo;
 @Service
 public interface ITaskService 
 {
-	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId);
+	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType);
 	
 	public void commitApplyTask(ApplyVo applyVo,String operId) throws Exception;
 	

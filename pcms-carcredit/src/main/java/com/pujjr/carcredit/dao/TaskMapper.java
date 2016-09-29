@@ -12,7 +12,7 @@ import com.pujjr.carcredit.vo.ApplyVo;
 
 public interface TaskMapper 
 {
-	public List<ToDoTaskPo> selectToDoTaskListByAccountId(@Param("accountId")String accountId);
+	public List<ToDoTaskPo> selectToDoTaskListByAccountId(@Param("accountId")String accountId,@Param("queryType")String queryType);
 	
 	public String selectTaskCntAndOnlineAccountIdByWorkgroupId(@Param("workgroupId")String workgroupId);
 	

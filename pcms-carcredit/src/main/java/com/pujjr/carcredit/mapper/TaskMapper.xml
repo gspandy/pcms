@@ -54,8 +54,14 @@
 		left join T_APPLY_TENANT applyTenant on exec.BUSINESS_KEY_ = applyTenant.APP_ID
 		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
 		left join SYS_BRANCH branch on branch.BRANCH_CODE = apply.CREATE_BRANCH_CODE
-		where
+		where 
 		task.ASSIGNEE_ = #{accountId}
+		<if test='queryType =="0"'>
+			and task.TASK_DEF_KEY_ = 'sgfd'
+		</if>
+		<if test='queryType =="1"'>
+			and task.TASK_DEF_KEY_ != 'sgfd'
+		</if>
 	</select>
 	<select id="selectTaskCntAndOnlineAccountIdByWorkgroupId" resultType="HashMap">
 		select 

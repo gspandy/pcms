@@ -20,7 +20,7 @@
 	com.pujjr.jbpm.service.impl,
 	com.pujjr.base.service,
 	com.pujjr.base.service.impl"/> -->
-	<context:component-scan base-package="com.pujjr.*.service"/>
+	<context:component-scan base-package="com.pujjr.*.service;com.pujjr.carcredit.exthandle"/>
 	
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"

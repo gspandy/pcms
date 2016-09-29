@@ -155,6 +155,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		vo.setActEndScript(po.containsKey("actEndScript")?po.get("actEndScript").toString():"");
 		vo.setTaskCreatePrehandle(po.containsKey("taskCreatePrehandle")?po.get("taskCreatePrehandle").toString():"");
 		vo.setTaskCreateAfterhandle(po.containsKey("taskCreateAfterhandle")?po.get("taskCreateAfterhandle").toString():"");
+		vo.setTaskCompleteHandle(po.containsKey("taskCompleteHandle")?po.get("taskCompleteHandle").toString():"");
 		vo.setTaskCreateScript(po.containsKey("taskCreateScript")?po.get("taskCreateScript").toString():"");
 		vo.setTaskCompleteScript(po.containsKey("taskCompleteScript")?po.get("taskCompleteScript").toString():"");
 		vo.setOnSiteNotice(po.containsKey("onSiteNotice")?(Boolean)po.get("onSiteNotice"):false);
@@ -178,6 +179,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		po.setActEndScript(vo.getActEndScript());
 		po.setTaskCreatePrehandle(vo.getTaskCreatePrehandle());
 		po.setTaskCreateAfterhandle(vo.getTaskCreateAfterhandle());
+		po.setTaskCompleteHandle(vo.getTaskCompleteHandle());
 		po.setTaskCreateScript(vo.getTaskCreateScript());
 		po.setTaskCompleteScript(vo.getTaskCompleteScript());
 		po.setOnSiteNotice(vo.getOnSiteNotice());
