@@ -20,7 +20,7 @@ public interface ITaskService
 	
 	public void commitCheckTask(ApplyVo applyVo,ApplyCheckVo checkVo,String taskId,String operId) throws Exception;
 	
-	public void commitApproveTask(ApplyVo applyVo,ApplyApproveVo approveVo,String taskId,String operId);
+	public void commitApproveTask(ApplyVo applyVo,ApplyApproveVo approveVo,String taskId,String operId) throws Exception;
 	
 	public String getMinTaskCountAccountIdByWorkgroupId(String workgroupId); 
 	

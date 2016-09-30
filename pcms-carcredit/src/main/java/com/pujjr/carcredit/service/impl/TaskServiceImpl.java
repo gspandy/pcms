@@ -129,9 +129,44 @@ public class TaskServiceImpl implements ITaskService
 		runWorkflowService.completeTask(taskId, "提交任务",vars, CommandType.COMMIT);
 	}
 
-	public void commitApproveTask(ApplyVo applyVo, ApplyApproveVo approveVo, String taskId,String operId) {
+	public void commitApproveTask(ApplyVo applyVo, ApplyApproveVo approveVo, String taskId, String operId) throws Exception {
 		// TODO Auto-generated method stub
-		
+		// 1、保存申请单变更信息
+		applyService.saveApply(applyVo, operId);
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+
+		// 2、保存任务处理结果信息
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(approveVo.getResult());
+		// 建议通过
+		if (approveVo.getResult().equals(TaskCommitType.PASS)) {
+			taskProcessResult.setProcessResultDesc("通过");
+		} else if (approveVo.getResult().equals(TaskCommitType.CONDITION_LOAN)) {
+			taskProcessResult.setProcessResultDesc(approveVo.getLoanExtConditon());
+		} else if (approveVo.getResult().equals(TaskCommitType.CANCEL)) {
+			taskProcessResult.setProcessResultDesc(approveVo.getCancelReason());
+		} else {
+			taskProcessResult.setProcessResultDesc(approveVo.getRejectReason());
+		}
+		taskProcessResult.setComment(approveVo.getComment());
+		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
+		taskProcessResultDao.insert(taskProcessResult);
+
+		// 4、放入流程变量
+		HashMap<String, Object> vars = new HashMap<String, Object>();
+		vars.put("approveProcessResult", approveVo.getResult());
+
+		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
 	}
 
 	@Override

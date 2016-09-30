@@ -6,5 +6,5 @@ import org.activiti.engine.impl.persistence.entity.TaskEntity;
 
 public interface ITaskAssigneeHandle 
 {
-	public String handle(TaskEntity taskEntity);
+	public String handle(String assigneeParam,TaskEntity taskEntity);
 }

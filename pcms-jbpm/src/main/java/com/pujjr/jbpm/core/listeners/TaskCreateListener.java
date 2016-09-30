@@ -101,7 +101,7 @@ public class TaskCreateListener implements EventHandler
 		else if(assigneeType.equals(AssigneeType.ASSIGNEE_WORKGROUP))
 		{
 			ITaskAssigneeHandle handler = (ITaskAssigneeHandle)SpringBeanUtils.getBean(nodeAssigneeParam.getAssigneeHandle());
-			assignee = handler.handle(taskEntity);
+			assignee = handler.handle(nodeAssigneeParam.getAssigneeParam(),taskEntity);
 		}
 		else
 		{

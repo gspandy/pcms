@@ -33,9 +33,11 @@ import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ITaskService;
+import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
+import com.pujjr.carcredit.vo.TaskApproveCommitVo;
 import com.pujjr.carcredit.vo.TaskAssigneeVo;
 import com.pujjr.carcredit.vo.TaskCheckCommitVo;
 import com.pujjr.carcredit.vo.TaskVo;
@@ -106,6 +108,16 @@ public class TaskController extends BaseController
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitCheckTask(applyVo,checkVo, taskId,sysAccount.getAccountId());
 	}
+	
+	@RequestMapping(value="/commitApproveTask/{taskId}",method=RequestMethod.POST)
+	public void commitApproveTask(@PathVariable String taskId,@RequestBody TaskApproveCommitVo params,HttpServletRequest request) throws Exception
+	{
+		ApplyVo applyVo =params.getApplyVo();
+		ApplyApproveVo approveVo =params.getApproveVo();
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitApproveTask(applyVo,approveVo, taskId,sysAccount.getAccountId());
+	}
+	
 	@RequestMapping(value="/getCheckWorkgroupOnlineAcct",method=RequestMethod.GET)
 	public List<OnlineAcctVo> getCheckWorkgroupOnlineAcct() throws Exception
 	{

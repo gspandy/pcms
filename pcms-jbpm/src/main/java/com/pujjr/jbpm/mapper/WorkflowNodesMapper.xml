@@ -109,7 +109,7 @@
   	<if test="nodeType !=null and nodeType !=''">
   		AND NODE_TYPE = #{nodeType,jdbcType=VARCHAR}
   	</if>
-  	order by node_type desc
+  	order by node_type,seq 
   </select>
   <select id="selectWorkflowUserTaskNodeForms" resultType="HashMap">
   	select 
@@ -153,7 +153,7 @@
     from t_workflow_nodes nodes
   	left join t_workflow_node_param param on (nodes.NODE_ID = param.NODE_ID and  nodes.WORKFLOW_VERSION_ID = param.WORKFLOW_VERSION_ID)
   	where nodes.WORKFLOW_VERSION_ID =  #{workflowVersionId,jdbcType=VARCHAR} and nodes.NODE_ID =#{nodeId}
-  	order by nodes.seq
+  	order by nodes.node_type,nodes.seq
   </select>
   <delete id="deleteNodesByVersionId">
   	 delete from t_workflow_nodes
