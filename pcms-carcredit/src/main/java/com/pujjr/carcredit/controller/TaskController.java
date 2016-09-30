@@ -29,6 +29,7 @@ import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.service.ISysParamService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
+import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
@@ -156,13 +157,13 @@ public class TaskController extends BaseController
 			ApplyVo apply = applyService.getApplyDetail(businessKey);
 			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
-			String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
+			ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
 			if(assignee != null)
 			{
 				HashMap<String,Object> vars = new HashMap<String,Object>();
-				vars.put("checkAssignee", assignee);
+				vars.put("checkAssignee", assignee.getAccountId());
 				runWorkflowService.completeTask(task.getTaskId(), "", vars, CommandType.COMMIT);
-				result.put("procResult", "分配成功，任务执行人"+assignee);
+				result.put("procResult", "分配成功，任务执行人"+assignee.getAccountId());
 			}
 			else
 			{

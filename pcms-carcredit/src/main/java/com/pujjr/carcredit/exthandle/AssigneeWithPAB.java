@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.service.ISysBranchService;
+import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyVo;
@@ -31,8 +32,10 @@ public class AssigneeWithPAB implements ITaskAssigneeHandle {
 		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(taskEntity.getProcessInstanceId()).singleResult().getBusinessKey();
 		ApplyVo apply = applyService.getApplyDetail(businessKey);
 		SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
-		String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), assigneeParam, null);
-		return assignee;
+		ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), assigneeParam, null);
+		runtimeService.setVariable(taskEntity.getExecutionId(), "batchAssigneeWorkgroupId", assignee.getWorkgroupId());
+		runtimeService.setVariable(taskEntity.getExecutionId(), "batchAssigneeAccountId", assignee.getAccountId());
+		return assignee.getAccountId();
 	}
 
 }

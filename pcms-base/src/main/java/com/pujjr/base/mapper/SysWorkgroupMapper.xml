@@ -138,14 +138,14 @@
 	<![CDATA[d.min_amount<=#{financeAmount} and d.max_amount>#{financeAmount}]]>
 	and b.product_code = #{productCode}
 	and c.sys_branch_id = #{dealerId}
-	<if test="groups.size()!=0">
+	<if test="groups !=null and groups.size()!=0">
 		and a.id in 
 		<foreach item="item" index="index" collection="groups"
 			open="(" separator="," close=")">
 				#{item.id}
 		</foreach>
 	</if>
-	<if test="candidateAccounts.size()!=0">
+	<if test="candidateAccounts !=null and candidateAccounts.size()!=0">
 		and f.account_id in 
 		<foreach item="item" index="index" collection="candidateAccounts"
 			open="(" separator="," close=")">

@@ -217,13 +217,13 @@ public class SysAccount {
 	
 	private SysDictData statusDict;
 	
-	private RuleMemberTaskCnt assigneeTaskCnt;
-
-	public RuleMemberTaskCnt getAssigneeTaskCnt() {
+	private int assigneeTaskCnt;
+	
+	public int getAssigneeTaskCnt() {
 		return assigneeTaskCnt;
 	}
 
-	public void setAssigneeTaskCnt(RuleMemberTaskCnt assigneeTaskCnt) {
+	public void setAssigneeTaskCnt(int assigneeTaskCnt) {
 		this.assigneeTaskCnt = assigneeTaskCnt;
 	}
 

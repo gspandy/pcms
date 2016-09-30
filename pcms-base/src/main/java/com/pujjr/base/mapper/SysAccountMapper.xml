@@ -23,9 +23,9 @@
     <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
     <result column="RESERVER4" jdbcType="VARCHAR" property="reserver4" />
     <result column="RESERVER5" jdbcType="VARCHAR" property="reserver5" />
+    <result column="MAX_TASK_CNT" jdbcType="INTEGER" property="assigneeTaskCnt" />
     <association column="POST_ID" property="sysJob" select="selectSysJob" />
     <association column="STATUS" property="statusDict" select="selectSysDictData" />
-    <association column="ID" property="assigneeTaskCnt" select="selectAccountAssigneTaskCnt"></association>
   </resultMap>
   <sql id="Base_Column_List">
     ID, ACCOUNT_ID, ACCOUNT_NAME, PASSWORD, BRANCH_ID, POST_ID, MOBILE, WEIXIN_ID, EMAIL, 
@@ -298,10 +298,12 @@
   </select>
   <select id="selectAllByWorkgroupId" resultMap="BaseResultMap">
   	select 
-  	b.*
+  	b.*,
+  	c.MAX_TASK_CNT
   	from 
   	sys_workgroup_account a 
   	left join sys_account b on a.SYSACCOUNT_ID = b.id
+  	left join t_rule_member_taskcnt c on a.WORKGROUP_ID = c.WORKGROUP_ID and b.id = c.account_id
   	where a.WORKGROUP_ID = #{workgroupId}
   </select>
   <select id="selectOnlineListByWorkgroupId" resultMap="BaseResultMap">

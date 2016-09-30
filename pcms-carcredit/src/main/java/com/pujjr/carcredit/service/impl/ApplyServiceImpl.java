@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.poi.ss.formula.functions.Finance;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -130,8 +131,9 @@ public class ApplyServiceImpl implements IApplyService {
 
 	public ApplyVo getApplyDetail(String appId) {
 		// TODO Auto-generated method stub
-		ApplyVo applyVo = applyMapper.selectApplyByMap(appId);
-		
+		ApplyVo applyVo = new ApplyVo();
+		Apply apply = applyMapper.selectByAppid(appId);
+		BeanUtils.copyProperties(apply, applyVo);
 		System.out.println(applyVo);
 		//产品信息
 		Product product = productMapper.selectProductByProductCode(applyVo.getProductCode());

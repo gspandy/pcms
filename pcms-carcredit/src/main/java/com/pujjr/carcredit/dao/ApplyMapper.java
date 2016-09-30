@@ -25,7 +25,7 @@ public interface ApplyMapper {
 
 	int updateByAppidSelective(Apply record);
 
-	List<Apply> selectByAppid(@Param("appId")String appId);
+	Apply selectByAppid(@Param("appId")String appId);
 
 	List<Apply> selectByMap(HashMap condition);
 

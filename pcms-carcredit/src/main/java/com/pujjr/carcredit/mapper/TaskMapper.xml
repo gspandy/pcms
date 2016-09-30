@@ -78,7 +78,7 @@
 		  		group by b.account_id
 	</select>
 	<select id="selectTaskAssignCntInfo" resultType="HashMap">
-		select a.assignee as assignee , b.account_name as accountName,a.cnt as curTaskCnt ,d.max_task_cnt as maxTaskCnt
+		select a.assignee as assignee , b.account_name as accountName,a.cnt as curTaskCnt ,d.max_task_cnt as maxTaskCnt , d.workgroup_id as workgroupId
 		from
 		(
 			select assignee_ as assignee,count(*) as cnt

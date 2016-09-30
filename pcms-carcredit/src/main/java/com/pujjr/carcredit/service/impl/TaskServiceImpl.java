@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
+import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.dao.CheckResultMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
@@ -176,8 +177,9 @@ public class TaskServiceImpl implements ITaskService
 	}
 
 	@Override
-	public String getProcessTaskAccount(String productCode, double financeAmount, String dealerId,String workgroupId,List<String> candidateAccounts) {
+	public ProcessTaskUserBo getProcessTaskAccount(String productCode, double financeAmount, String dealerId,String workgroupId,List<String> candidateAccounts) {
 		// TODO Auto-generated method stub
+		ProcessTaskUserBo bo = new ProcessTaskUserBo();
 		//1、获取工作组及其子工作组
 		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
 		//2、获取满足任务的用户，如果有待选用户则从待选中过滤用户
@@ -189,14 +191,15 @@ public class TaskServiceImpl implements ITaskService
 		else
 		{
 			//3、获取满足执行条件用户当前任务数及可支配最大任务数
-			List<String> listMatchAccountId = new ArrayList<String>();
+			List<String> listMatchRuleTaskCntId = new ArrayList<String>();
 			String assignee=null;
+			String assigneeWorkgroupId = null;
 			int hasRemainCnt = 0;
 			for(HashMap item :listMatch)
 			{
-				listMatchAccountId.add(item.get("taskCntRuleId").toString());
+				listMatchRuleTaskCntId.add(item.get("taskCntRuleId").toString());
 			}
-			List<HashMap> matchAccountTaskCntInfo = taskDao.selectTaskAssignCntInfo(listMatchAccountId);
+			List<HashMap> matchAccountTaskCntInfo = taskDao.selectTaskAssignCntInfo(listMatchRuleTaskCntId);
 			for(HashMap l : matchAccountTaskCntInfo)
 			{
 				int curTaskCnt = Integer.valueOf(l.get("curTaskCnt").toString());
@@ -205,10 +208,20 @@ public class TaskServiceImpl implements ITaskService
 				{
 					hasRemainCnt = maxTaskCnt-curTaskCnt;
 					assignee = l.get("assignee").toString();
+					assigneeWorkgroupId = l.get("workgroupId").toString();
 				}
 				
 			}
-			return assignee;
+			if(assignee == null)
+			{
+				return null;
+			}
+			else
+			{
+				bo.setAccountId(assignee);
+				bo.setWorkgroupId(assigneeWorkgroupId);
+			}
+			return bo;
 		}
 	}
 	
