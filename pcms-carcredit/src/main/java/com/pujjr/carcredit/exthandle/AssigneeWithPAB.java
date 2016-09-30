@@ -29,7 +29,7 @@ public class AssigneeWithPAB implements ITaskAssigneeHandle {
 	public String handle(String assigneeParam,TaskEntity taskEntity) {
 		// TODO Auto-generated method stub
 		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(taskEntity.getProcessInstanceId()).singleResult().getBusinessKey();
-		ApplyVo apply = applyService.getUnCommitApplyDetail(businessKey);
+		ApplyVo apply = applyService.getApplyDetail(businessKey);
 		SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 		String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), assigneeParam, null);
 		return assignee;

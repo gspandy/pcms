@@ -24,7 +24,7 @@ public class ReloadBusinessData implements ITaskCompleteHandle {
 	{
 		// TODO Auto-generated method stub
 		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(taskEntity.getProcessInstanceId()).singleResult().getBusinessKey();
-		ApplyVo apply = applyService.getUnCommitApplyDetail(businessKey);
+		ApplyVo apply = applyService.getApplyDetail(businessKey);
 		double totalFinanceAmt = apply.getTotalFinanceAmt();
 		taskEntity.getExecution().setVariable("totalFinanceAmount", totalFinanceAmt);
 		

@@ -128,7 +128,7 @@ public class ApplyServiceImpl implements IApplyService {
 		System.out.println(applyList);
 	}
 
-	public ApplyVo getUnCommitApplyDetail(String appId) {
+	public ApplyVo getApplyDetail(String appId) {
 		// TODO Auto-generated method stub
 		ApplyVo applyVo = applyMapper.selectApplyByMap(appId);
 		

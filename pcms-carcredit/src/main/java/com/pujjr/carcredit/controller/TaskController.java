@@ -153,7 +153,7 @@ public class TaskController extends BaseController
 			HashMap<String,Object> result = new HashMap<String,Object>();
 			result.put("appId", task.getBusinessKey());
 			String businessKey = task.getBusinessKey();
-			ApplyVo apply = applyService.getUnCommitApplyDetail(businessKey);
+			ApplyVo apply = applyService.getApplyDetail(businessKey);
 			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
 			String assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
