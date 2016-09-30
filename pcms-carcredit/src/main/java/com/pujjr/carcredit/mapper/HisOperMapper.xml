@@ -3,6 +3,7 @@
 <mapper namespace="com.pujjr.carcredit.dao.HisOperMapper">
   <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.HisOper">
     <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
     <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
     <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
     <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
@@ -11,12 +12,11 @@
     <result column="PRE_VALUE" jdbcType="VARCHAR" property="preValue" />
     <result column="AFTER_VALUE" jdbcType="VARCHAR" property="afterValue" />
     <result column="OPER_TIME" jdbcType="TIMESTAMP" property="operTime" />
-    <result column="ACCOUN_ID" jdbcType="VARCHAR" property="accounId" />
-    <result column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+    <result column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, APP_ID, TABLE_NAME, FIELD_NAME, CLASS_NAME, UPD_MODE, PRE_VALUE, AFTER_VALUE, 
-    OPER_TIME, ACCOUN_ID, RECORD_ID
+    ID, RECORD_ID, APP_ID, TABLE_NAME, FIELD_NAME, CLASS_NAME, UPD_MODE, PRE_VALUE, AFTER_VALUE, 
+    OPER_TIME, ACCOUNT_ID
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -29,20 +29,23 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.pujjr.carcredit.domain.HisOper">
-    insert into t_his_oper (ID, APP_ID, TABLE_NAME, 
-      FIELD_NAME, CLASS_NAME, UPD_MODE, 
-      PRE_VALUE, AFTER_VALUE, OPER_TIME, 
-      ACCOUN_ID, RECORD_ID)
-    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{tableName,jdbcType=VARCHAR}, 
-      #{fieldName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, #{updMode,jdbcType=VARCHAR}, 
-      #{preValue,jdbcType=VARCHAR}, #{afterValue,jdbcType=VARCHAR}, #{operTime,jdbcType=TIMESTAMP}, 
-      #{accounId,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR})
+    insert into t_his_oper (ID, RECORD_ID, APP_ID, 
+      TABLE_NAME, FIELD_NAME, CLASS_NAME, 
+      UPD_MODE, PRE_VALUE, AFTER_VALUE, 
+      OPER_TIME, ACCOUNT_ID)
+    values (#{id,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{className,jdbcType=VARCHAR}, 
+      #{updMode,jdbcType=VARCHAR}, #{preValue,jdbcType=VARCHAR}, #{afterValue,jdbcType=VARCHAR}, 
+      #{operTime,jdbcType=TIMESTAMP}, #{accountId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.HisOper">
     insert into t_his_oper
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         ID,
+      </if>
+      <if test="recordId != null">
+        RECORD_ID,
       </if>
       <if test="appId != null">
         APP_ID,
@@ -68,16 +71,16 @@
       <if test="operTime != null">
         OPER_TIME,
       </if>
-      <if test="accounId != null">
-        ACCOUN_ID,
-      </if>
-      <if test="recordId != null">
-        RECORD_ID,
+      <if test="accountId != null">
+        ACCOUNT_ID,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="recordId != null">
+        #{recordId,jdbcType=VARCHAR},
       </if>
       <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
@@ -103,17 +106,17 @@
       <if test="operTime != null">
         #{operTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="accounId != null">
-        #{accounId,jdbcType=VARCHAR},
-      </if>
-      <if test="recordId != null">
-        #{recordId,jdbcType=VARCHAR},
+      <if test="accountId != null">
+        #{accountId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.HisOper">
     update t_his_oper
     <set>
+      <if test="recordId != null">
+        RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      </if>
       <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
@@ -138,18 +141,16 @@
       <if test="operTime != null">
         OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="accounId != null">
-        ACCOUN_ID = #{accounId,jdbcType=VARCHAR},
-      </if>
-      <if test="recordId != null">
-        RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      <if test="accountId != null">
+        ACCOUNT_ID = #{accountId,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.HisOper">
     update t_his_oper
-    set APP_ID = #{appId,jdbcType=VARCHAR},
+    set RECORD_ID = #{recordId,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
       TABLE_NAME = #{tableName,jdbcType=VARCHAR},
       FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
       CLASS_NAME = #{className,jdbcType=VARCHAR},
@@ -157,10 +158,13 @@
       PRE_VALUE = #{preValue,jdbcType=VARCHAR},
       AFTER_VALUE = #{afterValue,jdbcType=VARCHAR},
       OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
-      ACCOUN_ID = #{accounId,jdbcType=VARCHAR},
-      RECORD_ID = #{recordId,jdbcType=VARCHAR}
+      ACCOUNT_ID = #{accountId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+ 
+
+
+
   
   <select id="selectCommon" parameterType="java.util.HashMap" resultType="java.util.HashMap" statementType="STATEMENT">
      select * from ${tableName} where id = ${id}

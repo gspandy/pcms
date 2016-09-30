@@ -74,7 +74,8 @@ public class ApplyDaoImpl implements IApplyDao {
 	@ApplyOperHisAnnotation
 	public void updApply(Apply apply, String accountId) {
 		// TODO Auto-generated method stub
-		applyMapper.updateByAppidSelective(apply);
+//		applyMapper.updateByAppidSelective(apply);
+		applyMapper.updateByPrimaryKeySelective(apply);
 	}
 	@Override
 	@ApplyOperHisAnnotation

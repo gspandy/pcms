@@ -3,27 +3,27 @@ package com.pujjr.carcredit.domain;
 import java.util.Date;
 
 public class HisOper {
-    public String id;
+    private String id;
 
-	public String appId;
+	private String recordId;
 
-	public String tableName;
+	private String appId;
 
-	public String fieldName;
+	private String tableName;
 
-	public String className;
+	private String fieldName;
 
-	public String updMode;
+	private String className;
 
-	public String preValue;
+	private String updMode;
 
-	public String afterValue;
+	private String preValue;
 
-	public Date operTime;
+	private String afterValue;
 
-	public String accounId;
+	private Date operTime;
 
-	public String recordId;
+	private String accountId;
 
 	public String getId() {
 		return id;
@@ -31,6 +31,14 @@ public class HisOper {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(String recordId) {
+		this.recordId = recordId;
 	}
 
 	public String getAppId() {
@@ -97,20 +105,12 @@ public class HisOper {
 		this.operTime = operTime;
 	}
 
-	public String getAccounId() {
-		return accounId;
+	public String getAccountId() {
+		return accountId;
 	}
 
-	public void setAccounId(String accounId) {
-		this.accounId = accounId;
-	}
-
-	public String getRecordId() {
-		return recordId;
-	}
-
-	public void setRecordId(String recordId) {
-		this.recordId = recordId;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	

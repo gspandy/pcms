@@ -12,7 +12,7 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdb?characterEncoding=UTF-8" userId="xdxt"
+			connectionURL="jdbc:mysql://172.18.10.73:3306/pcms?characterEncoding=UTF-8" userId="xdxt"
 			password="xdxt" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.carcredit.domain"
@@ -99,9 +99,9 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		<!-- 工作流相关表生成配置结束-->
-		<table tableName="T_REJECT_RECOMMIT" domainObjectName="RejectRecommit" enableCountByExample="false"
+		<!-- <table tableName="T_REJECT_RECOMMIT" domainObjectName="RejectRecommit" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table> 
+		</table>  -->
 	</context>
 </generatorConfiguration>

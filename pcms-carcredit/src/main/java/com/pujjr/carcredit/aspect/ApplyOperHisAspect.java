@@ -88,7 +88,7 @@ public class ApplyOperHisAspect {
 							hisOper.setPreValue(preValue+"");
 							hisOper.setAfterValue(feildValue+"");
 							hisOper.setOperTime(Calendar.getInstance().getTime());
-							hisOper.setAccounId(accountId);
+							hisOper.setAccountId(accountId);
 							hisOper.setRecordId(id);
 							hisOperMapper.insert(hisOper);
 						}
@@ -117,7 +117,7 @@ public class ApplyOperHisAspect {
 					hisOper.setPreValue("");
 					hisOper.setAfterValue(fieldValue+"");
 					hisOper.setOperTime(Calendar.getInstance().getTime());
-					hisOper.setAccounId(accountId);
+					hisOper.setAccountId(accountId);
 					hisOper.setRecordId(id);
 					hisOperMapper.insert(hisOper);
 				}

@@ -383,6 +383,7 @@ public class ApplyServiceImpl implements IApplyService {
 		String id = applyVo.getId();
 		String appId = applyVo.getAppId();
 		Apply applyExist = null;
+		Apply applyToDao = new Apply();
 		if("debug".equals(sysMode)){
 			//测试
 			// TODO Auto-generated method stub
@@ -390,22 +391,31 @@ public class ApplyServiceImpl implements IApplyService {
 			applyExist = applyMapper.selectByPrimaryKey(id);
 			System.out.println("applyExist:"+applyExist);
 			//基本信息
-//			apply = new Apply();
-			applyVo.setId(Utils.get16UUID());//主键随机数
+			Apply apply = new Apply();
+			apply.setId(Utils.get16UUID());//主键随机数
 			if(appId == null)
 				appId = "000116092831231001";
-			applyVo.setAppId(appId);
-			applyVo.setProductCode(productCode);
-			applyVo.setStatus(ApplyStatus.UNCOMMIT);	
-			applyVo.setCreateBranchCode("1");
-			applyVo.setCreateAccountId(accountId);
+			id = Utils.get16UUID();//主键随机数
+			applyToDao.setId(id);
+			applyToDao.setAppId(appId);
+			applyToDao.setProductCode(productCode);
+			applyToDao.setPeriod(applyVo.getPeriod());
+			applyToDao.setComment(applyVo.getComment());
+			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
+			applyToDao.setCreateBranchCode("1");
+			applyToDao.setCreateAccountId(accountId);
+			applyToDao.setCustType(applyVo.getCustType());
+			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
+			applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
+			applyToDao.setMonthRent(applyVo.getMonthRent());
+			applyToDao.setApproveDate(applyVo.getApproveDate());
+			applyToDao.setProcInstId(applyVo.getProcInstId());
+			
 		}else{
 			//生产
 			String productCode = applyVo.getProduct().getProductCode();
 			SysAccount sysAccount = sysAccountMapper.selectByAccountId(accountId);
-			System.out.println("*****sysAccount:"+sysAccount);
 			SysBranch branch = sysBranchService.getSysBranch(sysAccount.getBranchId(), "");
-			System.out.println("**********branch:"+branch);
 			String branchId = branch.getBranchCode();
 			String dataNow = Utils.getFormatDate(Calendar.getInstance().getTime(), "YYMMdd");
 			String sequence=String.format("%04d", sequenceService.getNextVal("appid"));
@@ -414,25 +424,34 @@ public class ApplyServiceImpl implements IApplyService {
 			applyExist = applyMapper.selectByPrimaryKey(id);
 //			System.out.println("applyList.size():"+applyList.size());
 			//基本信息
-//			apply = new Apply();
-			applyVo.setId(Utils.get16UUID());//主键随机数
-			applyVo.setAppId(appId);		
-			applyVo.setProductCode(productCode);
-			applyVo.setPeriod(applyVo.getPeriod());
-			applyVo.setComment(applyVo.getComment());
-			applyVo.setStatus(ApplyStatus.UNCOMMIT);	
-			applyVo.setCreateBranchCode(branchId);
-			applyVo.setCreateAccountId(sysAccount.getAccountId());
+			id = Utils.get16UUID();//主键随机数
+			applyToDao.setId(id);
+			applyToDao.setAppId(appId);		
+			applyToDao.setProductCode(productCode);
+			applyToDao.setPeriod(applyVo.getPeriod());
+			applyToDao.setComment(applyVo.getComment());
+			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
+			applyToDao.setCreateBranchCode(branchId);
+			applyToDao.setCreateAccountId(sysAccount.getAccountId());
+			applyToDao.setCustType(applyVo.getCustType());
+			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
+			applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
+			applyToDao.setMonthRent(applyVo.getMonthRent());
+			applyToDao.setApproveDate(applyVo.getApproveDate());
+			applyToDao.setProcInstId(applyVo.getProcInstId());
 		}
-		
 		if(applyExist == null){
-			applyVo.setCreateTime(Calendar.getInstance().getTime());//录入时间
-			applyDao.insertApply(applyVo, accountId);
+			applyToDao.setCreateTime(Calendar.getInstance().getTime());//录入时间
+			applyDao.insertApply(applyToDao, accountId);
 		}else{
-			applyVo.setId(id);
-			applyDao.updApply(applyVo, accountId);
+			id = applyVo.getId();
+			appId = applyVo.getAppId();
+			applyToDao.setId(id);
+			applyToDao.setAppId(appId);
+			applyDao.updApply(applyToDao, accountId);
 		}
 		//保存关联信息-融资信息
+		applyVo.setAppId(appId);
 		currentProxy.saveApplyFinance(applyVo,accountId);
 		currentProxy.saveApplyTenant(applyVo, accountId);
 		currentProxy.saveApplySpouse(applyVo, accountId);
