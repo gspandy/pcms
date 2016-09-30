@@ -113,9 +113,9 @@ public class ApplyController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/apply/{appId}",method=RequestMethod.GET)
-	public Apply unCommitDetail(HttpServletRequest request,@PathVariable String appId) throws Exception{
-		System.out.println("ApplyController->unCommit");
-		ApplyVo applyVo = applyService.getUnCommitApplyDetail(appId);
+	public Apply getApplyDetail(HttpServletRequest request,@PathVariable String appId) throws Exception{
+		System.out.println("ApplyController->getApplyDetail");
+		ApplyVo applyVo = applyService.getApplyDetail(appId);
 		System.out.println(applyVo);
 		return applyVo;
 	}

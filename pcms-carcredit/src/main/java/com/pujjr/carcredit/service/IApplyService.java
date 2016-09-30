@@ -40,7 +40,7 @@ public interface IApplyService
 	public void commitApply();
 	public void deleteApply();
 	public void getUnCommitApply(String accountId,List<Apply> applyList);
-	public ApplyVo getUnCommitApplyDetail(String appId);
+	public ApplyVo getApplyDetail(String appId);
 	//查询指定用户未提交的申请单信息
 	List<ApplyInfoPo>  getApplyInfoList(String accountId,String status);
 //	public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
