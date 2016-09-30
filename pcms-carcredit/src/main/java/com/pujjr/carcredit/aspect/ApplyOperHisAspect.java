@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.UUID;
@@ -48,7 +49,6 @@ public class ApplyOperHisAspect {
 		}
 		tableName = hisBeanMap.getTableName();
 //		System.out.println("tableName:"+tableName);
-		
 		HashMap<String,Object> condition = new HashMap<String,Object>();
 		System.out.println(afterJson.getString("id"));
 		if(id == null){
@@ -63,20 +63,21 @@ public class ApplyOperHisAspect {
 //			存在object对应记录,执行修改操作
 			while(keyIt.hasNext()){
 				String key = keyIt.next();
-				String value = preRecord.get(key)+"";
-//				System.out.println("key:"+key+"|value:"+value);
+				Object preValue = preRecord.get(key);
 				for (int i = 0; i < fields.length; i++) {
 					Field field = fields[i];
 					String fieldName = Utils.field2Col(field.getName());//属性名转数据库列
-//					System.out.println("fieldName:"+fieldName);
-					String feildValue = "";
+					Object feildValue = null;
 					if(field.get(object) != null){
-						feildValue = field.get(object).toString();
+						feildValue = field.get(object);
 					}
-//					String feildValue = field.get(object)+"";
-//					System.out.println("|feildValue:"+feildValue);
 					if(key.toUpperCase().equals(fieldName)){
-						if(!value.equals(feildValue) && !feildValue.equals("")){//插入操作历史表：1、修改字段和原表字段值不一致  2、前端上送值非空
+						if(feildValue == null && preValue != null){
+							continue;//空值不做修改操作，故无操作历史
+						}else if(!feildValue.equals(preValue) && !feildValue.equals("")){//插入操作历史表：1、修改字段和原表字段值不一致 
+							System.out.println("fieldName:"+fieldName);
+							System.out.println("feildValue:"+feildValue);
+							System.out.println("preValue:"+preValue);
 							HisOper hisOper = new HisOper();
 							hisOper.setId(Utils.get16UUID());
 							hisOper.setAppId(appId);
@@ -84,7 +85,7 @@ public class ApplyOperHisAspect {
 							hisOper.setFieldName(fieldName);
 							hisOper.setClassName(className);
 							hisOper.setUpdMode("update");
-							hisOper.setPreValue(value);
+							hisOper.setPreValue(preValue+"");
 							hisOper.setAfterValue(feildValue+"");
 							hisOper.setOperTime(Calendar.getInstance().getTime());
 							hisOper.setAccounId(accountId);

@@ -8,6 +8,8 @@ public class ProcessNextCommand extends AbstractExecutionCommand
 	private String assignee; 
 	//任务目的节点
 	private String destNodeId;
+	//当前路径ID
+	private String curRunPathId;
 	
 	public String getTaskId() {
 		return taskId;
@@ -31,6 +33,14 @@ public class ProcessNextCommand extends AbstractExecutionCommand
 
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
+	}
+
+	public String getCurRunPathId() {
+		return curRunPathId;
+	}
+
+	public void setCurRunPathId(String curRunPathId) {
+		this.curRunPathId = curRunPathId;
 	}
 	
 }

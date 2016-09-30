@@ -12,7 +12,7 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt2?characterEncoding=UTF-8" userId="asd"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt3?characterEncoding=UTF-8" userId="asd"
 			password="asd" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.base.domain"
@@ -53,10 +53,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="SYS_ACCOUNT" domainObjectName="SysAccount" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		<table tableName="T_PRODUCT_TYPE" domainObjectName="ProductType" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -111,8 +108,17 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		<table tableName="SYS_SEQUENCE" domainObjectName="Sequence" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+	
+		<table tableName="SYS_ACCOUNT" domainObjectName="SysAccount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_PARAM" domainObjectName="SysParam" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

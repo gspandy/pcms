@@ -25,11 +25,47 @@ public class ToDoTaskPo
 	private Date startTime;
 	//进入流程方式
 	private String inJumpType;
+	//上级任务名称
+	private String parentTaskName;
 	//上级任务执行人
 	private String parentAssignee;
 	//任务路由
 	private String taskRouter;
+	//产品名称
+	private String productName;
+	//客户姓名
+	private String tenantName;
+	//身份证号
+	private String tenantIdNo;
+	//录入日期
+	private String createTime;
+	//所属经销商
+	private String branchName;
 	
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public String getTenantName() {
+		return tenantName;
+	}
+	public void setTenantName(String tenantName) {
+		this.tenantName = tenantName;
+	}
+	public String getTenantIdNo() {
+		return tenantIdNo;
+	}
+	public void setTenantIdNo(String tenantIdNo) {
+		this.tenantIdNo = tenantIdNo;
+	}
+	public String getBranchName() {
+		return branchName;
+	}
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
 	public String getTaskId() {
 		return taskId;
 	}
@@ -101,5 +137,17 @@ public class ToDoTaskPo
 	}
 	public void setTaskRouter(String taskRouter) {
 		this.taskRouter = taskRouter;
+	}
+	public String getParentTaskName() {
+		return parentTaskName;
+	}
+	public void setParentTaskName(String parentTaskName) {
+		this.parentTaskName = parentTaskName;
+	}
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
 	}
 }

@@ -71,6 +71,7 @@ public class ActivitiStartedListener implements EventHandler
 		path.setIsMultiAct(false);
 		path.setStartTime(new Date());
 		path.setInJumpType(cmd.getCommandType().toString());
+		
 		//开始节点则设置父节点为0
 		if(curAct.getActivityBehavior() instanceof  NoneStartEventActivityBehavior)
 		{
@@ -91,6 +92,7 @@ public class ActivitiStartedListener implements EventHandler
 					WorkflowRunPath backNodeRunPath = ProcessHandleHelper.getBackNode();
 					path.setRefPathId(backNodeRunPath.getId());
 				}
+				path.setParentUsertaskPathId(nextCmd.getCurRunPathId());
 			}
 			
 		}

@@ -12,7 +12,7 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt2?characterEncoding=UTF-8" userId="asd"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt3?characterEncoding=UTF-8" userId="asd"
 			password="asd" />
 		<!-- 工作流相关表生成配置开始-->
 		<javaModelGenerator targetPackage="com.pujjr.jbpm.domain"
@@ -35,10 +35,7 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		 
-		<table tableName="T_WORKFLOW_RUNPATH" domainObjectName="WorkflowRunPath" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		-->
 		<!--  
 		<table tableName="T_WORKFLOW_GLOBAL_PARAM" domainObjectName="WorkflowGlobalParam" enableCountByExample="false"
@@ -68,8 +65,12 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		<table tableName="T_WORKFLOW_NODE_PARAM" domainObjectName="WorkflowNodeParam" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_WORKFLOW_RUNPATH" domainObjectName="WorkflowRunPath" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

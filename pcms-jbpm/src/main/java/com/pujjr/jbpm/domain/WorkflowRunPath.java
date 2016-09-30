@@ -5,201 +5,221 @@ import java.util.Date;
 public class WorkflowRunPath {
     private String id;
 
-    private String procDefId;
+	private String procDefId;
 
-    private String procInstId;
+	private String procInstId;
 
-    private String executionId;
+	private String executionId;
 
-    private String actId;
+	private String actId;
 
-    private String actName;
+	private String actName;
 
-    private String actType;
+	private String actType;
 
-    private Boolean isMultiAct;
+	private Boolean isMultiAct;
 
-    private String assignee;
+	private String assignee;
 
-    private String agent;
+	private String agent;
 
-    private String message;
+	private String message;
 
-    private Integer nodeLevel;
+	private Integer nodeLevel;
 
-    private Date startTime;
+	private Date startTime;
 
-    private Date endTime;
+	private Date processTime;
 
-    private Integer durationTime;
+	private Date endTime;
 
-    private Integer effectTime;
+	private Integer durationTime;
 
-    private String inJumpType;
+	private Integer effectTime;
 
-    private String outJumpType;
+	private String inJumpType;
 
-    private String refPathId;
+	private String outJumpType;
 
-    private String parentPathId;
+	private String refPathId;
 
-    public String getId() {
-        return id;
-    }
+	private String parentPathId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private String parentUsertaskPathId;
 
-    public String getProcDefId() {
-        return procDefId;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setProcDefId(String procDefId) {
-        this.procDefId = procDefId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getProcInstId() {
-        return procInstId;
-    }
+	public String getProcDefId() {
+		return procDefId;
+	}
 
-    public void setProcInstId(String procInstId) {
-        this.procInstId = procInstId;
-    }
+	public void setProcDefId(String procDefId) {
+		this.procDefId = procDefId;
+	}
 
-    public String getExecutionId() {
-        return executionId;
-    }
+	public String getProcInstId() {
+		return procInstId;
+	}
 
-    public void setExecutionId(String executionId) {
-        this.executionId = executionId;
-    }
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
 
-    public String getActId() {
-        return actId;
-    }
+	public String getExecutionId() {
+		return executionId;
+	}
 
-    public void setActId(String actId) {
-        this.actId = actId;
-    }
+	public void setExecutionId(String executionId) {
+		this.executionId = executionId;
+	}
 
-    public String getActName() {
-        return actName;
-    }
+	public String getActId() {
+		return actId;
+	}
 
-    public void setActName(String actName) {
-        this.actName = actName;
-    }
+	public void setActId(String actId) {
+		this.actId = actId;
+	}
 
-    public String getActType() {
-        return actType;
-    }
+	public String getActName() {
+		return actName;
+	}
 
-    public void setActType(String actType) {
-        this.actType = actType;
-    }
+	public void setActName(String actName) {
+		this.actName = actName;
+	}
 
-    public Boolean getIsMultiAct() {
-        return isMultiAct;
-    }
+	public String getActType() {
+		return actType;
+	}
 
-    public void setIsMultiAct(Boolean isMultiAct) {
-        this.isMultiAct = isMultiAct;
-    }
+	public void setActType(String actType) {
+		this.actType = actType;
+	}
 
-    public String getAssignee() {
-        return assignee;
-    }
+	public Boolean getIsMultiAct() {
+		return isMultiAct;
+	}
 
-    public void setAssignee(String assignee) {
-        this.assignee = assignee;
-    }
+	public void setIsMultiAct(Boolean isMultiAct) {
+		this.isMultiAct = isMultiAct;
+	}
 
-    public String getAgent() {
-        return agent;
-    }
+	public String getAssignee() {
+		return assignee;
+	}
 
-    public void setAgent(String agent) {
-        this.agent = agent;
-    }
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getAgent() {
+		return agent;
+	}
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+	public void setAgent(String agent) {
+		this.agent = agent;
+	}
 
-    public Integer getNodeLevel() {
-        return nodeLevel;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public void setNodeLevel(Integer nodeLevel) {
-        this.nodeLevel = nodeLevel;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public Date getStartTime() {
-        return startTime;
-    }
+	public Integer getNodeLevel() {
+		return nodeLevel;
+	}
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+	public void setNodeLevel(Integer nodeLevel) {
+		this.nodeLevel = nodeLevel;
+	}
 
-    public Date getEndTime() {
-        return endTime;
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public Integer getDurationTime() {
-        return durationTime;
-    }
+	public Date getProcessTime() {
+		return processTime;
+	}
 
-    public void setDurationTime(Integer durationTime) {
-        this.durationTime = durationTime;
-    }
+	public void setProcessTime(Date processTime) {
+		this.processTime = processTime;
+	}
 
-    public Integer getEffectTime() {
-        return effectTime;
-    }
+	public Date getEndTime() {
+		return endTime;
+	}
 
-    public void setEffectTime(Integer effectTime) {
-        this.effectTime = effectTime;
-    }
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
-    public String getInJumpType() {
-        return inJumpType;
-    }
+	public Integer getDurationTime() {
+		return durationTime;
+	}
 
-    public void setInJumpType(String inJumpType) {
-        this.inJumpType = inJumpType;
-    }
+	public void setDurationTime(Integer durationTime) {
+		this.durationTime = durationTime;
+	}
 
-    public String getOutJumpType() {
-        return outJumpType;
-    }
+	public Integer getEffectTime() {
+		return effectTime;
+	}
 
-    public void setOutJumpType(String outJumpType) {
-        this.outJumpType = outJumpType;
-    }
+	public void setEffectTime(Integer effectTime) {
+		this.effectTime = effectTime;
+	}
 
-    public String getRefPathId() {
-        return refPathId;
-    }
+	public String getInJumpType() {
+		return inJumpType;
+	}
 
-    public void setRefPathId(String refPathId) {
-        this.refPathId = refPathId;
-    }
+	public void setInJumpType(String inJumpType) {
+		this.inJumpType = inJumpType;
+	}
 
-    public String getParentPathId() {
-        return parentPathId;
-    }
+	public String getOutJumpType() {
+		return outJumpType;
+	}
 
-    public void setParentPathId(String parentPathId) {
-        this.parentPathId = parentPathId;
-    }
+	public void setOutJumpType(String outJumpType) {
+		this.outJumpType = outJumpType;
+	}
+
+	public String getRefPathId() {
+		return refPathId;
+	}
+
+	public void setRefPathId(String refPathId) {
+		this.refPathId = refPathId;
+	}
+
+	public String getParentPathId() {
+		return parentPathId;
+	}
+
+	public void setParentPathId(String parentPathId) {
+		this.parentPathId = parentPathId;
+	}
+
+	public String getParentUsertaskPathId() {
+		return parentUsertaskPathId;
+	}
+
+	public void setParentUsertaskPathId(String parentUsertaskPathId) {
+		this.parentUsertaskPathId = parentUsertaskPathId;
+	}
 }

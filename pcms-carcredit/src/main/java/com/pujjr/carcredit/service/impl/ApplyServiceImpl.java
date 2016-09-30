@@ -24,6 +24,7 @@ import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.domain.GpsLvl;
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.carcredit.annotion.ApplyOperHisAnnotation;
@@ -91,11 +92,10 @@ public class ApplyServiceImpl implements IApplyService {
 	@Autowired
 	private GpsLvlMapper gpsLvlMapper;
 	
-	
 	@Autowired
 	@Qualifier("applyDaoImpl")
 	private IApplyDao applyDao;
-	
+	@Autowired
 	private ISysBranchService sysBranchService;
 	@Autowired
 	private IRunWorkflowService runWorkflowService ;
@@ -131,6 +131,8 @@ public class ApplyServiceImpl implements IApplyService {
 	public ApplyVo getUnCommitApplyDetail(String appId) {
 		// TODO Auto-generated method stub
 		ApplyVo applyVo = applyMapper.selectApplyByMap(appId);
+		
+		System.out.println(applyVo);
 		//产品信息
 		Product product = productMapper.selectProductByProductCode(applyVo.getProductCode());
 		applyVo.setProduct(product);
@@ -401,7 +403,10 @@ public class ApplyServiceImpl implements IApplyService {
 			//生产
 			String productCode = applyVo.getProduct().getProductCode();
 			SysAccount sysAccount = sysAccountMapper.selectByAccountId(accountId);
-			String branchId = sysBranchService.getSysBranch(sysAccount.getBranchId(), "").getBranchCode();
+			System.out.println("*****sysAccount:"+sysAccount);
+			SysBranch branch = sysBranchService.getSysBranch(sysAccount.getBranchId(), "");
+			System.out.println("**********branch:"+branch);
+			String branchId = branch.getBranchCode();
 			String dataNow = Utils.getFormatDate(Calendar.getInstance().getTime(), "YYMMdd");
 			String sequence=String.format("%04d", sequenceService.getNextVal("appid"));
 			if("".equals(appId) || appId == null)

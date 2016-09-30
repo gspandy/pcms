@@ -21,4 +21,6 @@ public interface ITaskService
 	
 	public void commitApproveTask(ApplyVo applyVo,ApplyApproveVo approveVo,String taskId,String operId);
 	
+	public String getMinTaskCountAccountIdByWorkgroupId(String workgroupId); 
+	
 }

@@ -23,6 +23,10 @@ public class SysAccount {
 
 	private String status;
 
+	private String loginStatus;
+
+	private Date lastHeartbeatTime;
+
 	private Date createTime;
 
 	private String createId;
@@ -40,26 +44,6 @@ public class SysAccount {
 	private String reserver4;
 
 	private String reserver5;
-	
-	private SysJob sysJob;
-	
-	private SysDictData statusDict;
-
-	public SysDictData getStatusDict() {
-		return statusDict;
-	}
-
-	public void setStatusDict(SysDictData statusDict) {
-		this.statusDict = statusDict;
-	}
-
-	public SysJob getSysJob() {
-		return sysJob;
-	}
-
-	public void setSysJob(SysJob sysJob) {
-		this.sysJob = sysJob;
-	}
 
 	public String getId() {
 		return id;
@@ -141,6 +125,22 @@ public class SysAccount {
 		this.status = status;
 	}
 
+	public String getLoginStatus() {
+		return loginStatus;
+	}
+
+	public void setLoginStatus(String loginStatus) {
+		this.loginStatus = loginStatus;
+	}
+
+	public Date getLastHeartbeatTime() {
+		return lastHeartbeatTime;
+	}
+
+	public void setLastHeartbeatTime(Date lastHeartbeatTime) {
+		this.lastHeartbeatTime = lastHeartbeatTime;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
@@ -212,4 +212,25 @@ public class SysAccount {
 	public void setReserver5(String reserver5) {
 		this.reserver5 = reserver5;
 	}
+	
+	private SysJob sysJob;
+	
+	private SysDictData statusDict;
+
+	public SysDictData getStatusDict() {
+		return statusDict;
+	}
+
+	public void setStatusDict(SysDictData statusDict) {
+		this.statusDict = statusDict;
+	}
+
+	public SysJob getSysJob() {
+		return sysJob;
+	}
+
+	public void setSysJob(SysJob sysJob) {
+		this.sysJob = sysJob;
+	}
+
 }
