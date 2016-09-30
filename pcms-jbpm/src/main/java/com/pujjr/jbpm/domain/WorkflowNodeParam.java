@@ -17,6 +17,8 @@ public class WorkflowNodeParam {
 
 	private String taskCreateAfterhandle;
 
+	private String taskCompleteHandle;
+
 	private String taskCreateScript;
 
 	private String taskCompleteScript;
@@ -91,6 +93,14 @@ public class WorkflowNodeParam {
 
 	public void setTaskCreateAfterhandle(String taskCreateAfterhandle) {
 		this.taskCreateAfterhandle = taskCreateAfterhandle;
+	}
+
+	public String getTaskCompleteHandle() {
+		return taskCompleteHandle;
+	}
+
+	public void setTaskCompleteHandle(String taskCompleteHandle) {
+		this.taskCompleteHandle = taskCompleteHandle;
 	}
 
 	public String getTaskCreateScript() {

@@ -1,5 +1,6 @@
 package com.pujjr.base.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,4 +27,12 @@ public interface ISysWorkgroupService
 	public void batchAddSysAccountToWorkgroup(String workgroupId,List<SysAccount> records);
 	
 	public void removeSysAccountFromWorkgroup(String workgroupId,String sysAccountId);
+	
+	public List<SysWorkgroup> getSysWorkgroupListByParentId(String parentId);
+	
+	public List<HashMap> getMatchRuleAccountList(String productCode, double financeAmount, String dealerId,List<SysWorkgroup> groups,List<String> candidateAccounts);
+	
+	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups);
+	
+	public SysWorkgroup getWorkgroupByName(String workgroupName);
 }

@@ -9,6 +9,7 @@
     <result column="ACT_END_SCRIPT" jdbcType="VARCHAR" property="actEndScript" />
     <result column="TASK_CREATE_PREHANDLE" jdbcType="VARCHAR" property="taskCreatePrehandle" />
     <result column="TASK_CREATE_AFTERHANDLE" jdbcType="VARCHAR" property="taskCreateAfterhandle" />
+    <result column="TASK_COMPLETE_HANDLE" jdbcType="VARCHAR" property="taskCompleteHandle" />
     <result column="TASK_CREATE_SCRIPT" jdbcType="VARCHAR" property="taskCreateScript" />
     <result column="TASK_COMPLETE_SCRIPT" jdbcType="VARCHAR" property="taskCompleteScript" />
     <result column="ON_SITE_NOTICE" jdbcType="BIT" property="onSiteNotice" />
@@ -22,9 +23,9 @@
   </resultMap>
   <sql id="Base_Column_List">
     ID, WORKFLOW_VERSION_ID, NODE_ID, ACT_START_SCRIPT, ACT_END_SCRIPT, TASK_CREATE_PREHANDLE, 
-    TASK_CREATE_AFTERHANDLE, TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, 
-    ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, BACK_NODE_ID, CREATE_TIME, 
-    CREATE_ID
+    TASK_CREATE_AFTERHANDLE, TASK_COMPLETE_HANDLE, TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, 
+    ON_SITE_NOTICE, ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, BACK_NODE_ID, 
+    CREATE_TIME, CREATE_ID
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -39,18 +40,18 @@
   <insert id="insert" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
     insert into t_workflow_node_param (ID, WORKFLOW_VERSION_ID, NODE_ID, 
       ACT_START_SCRIPT, ACT_END_SCRIPT, TASK_CREATE_PREHANDLE, 
-      TASK_CREATE_AFTERHANDLE, TASK_CREATE_SCRIPT, 
-      TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, ON_MAIL_NOTICE, 
-      ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, 
-      BACK_NODE_ID, CREATE_TIME, CREATE_ID
-      )
+      TASK_CREATE_AFTERHANDLE, TASK_COMPLETE_HANDLE, 
+      TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, 
+      ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, 
+      RECOMMIT_MODE, BACK_NODE_ID, CREATE_TIME, 
+      CREATE_ID)
     values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
       #{actStartScript,jdbcType=VARCHAR}, #{actEndScript,jdbcType=VARCHAR}, #{taskCreatePrehandle,jdbcType=VARCHAR}, 
-      #{taskCreateAfterhandle,jdbcType=VARCHAR}, #{taskCreateScript,jdbcType=VARCHAR}, 
-      #{taskCompleteScript,jdbcType=VARCHAR}, #{onSiteNotice,jdbcType=BIT}, #{onMailNotice,jdbcType=BIT}, 
-      #{onMsgNotice,jdbcType=BIT}, #{onWeixinNotice,jdbcType=BIT}, #{recommitMode,jdbcType=VARCHAR}, 
-      #{backNodeId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}
-      )
+      #{taskCreateAfterhandle,jdbcType=VARCHAR}, #{taskCompleteHandle,jdbcType=VARCHAR}, 
+      #{taskCreateScript,jdbcType=VARCHAR}, #{taskCompleteScript,jdbcType=VARCHAR}, #{onSiteNotice,jdbcType=BIT}, 
+      #{onMailNotice,jdbcType=BIT}, #{onMsgNotice,jdbcType=BIT}, #{onWeixinNotice,jdbcType=BIT}, 
+      #{recommitMode,jdbcType=VARCHAR}, #{backNodeId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
     insert into t_workflow_node_param
@@ -75,6 +76,9 @@
       </if>
       <if test="taskCreateAfterhandle != null">
         TASK_CREATE_AFTERHANDLE,
+      </if>
+      <if test="taskCompleteHandle != null">
+        TASK_COMPLETE_HANDLE,
       </if>
       <if test="taskCreateScript != null">
         TASK_CREATE_SCRIPT,
@@ -129,6 +133,9 @@
       <if test="taskCreateAfterhandle != null">
         #{taskCreateAfterhandle,jdbcType=VARCHAR},
       </if>
+      <if test="taskCompleteHandle != null">
+        #{taskCompleteHandle,jdbcType=VARCHAR},
+      </if>
       <if test="taskCreateScript != null">
         #{taskCreateScript,jdbcType=VARCHAR},
       </if>
@@ -182,6 +189,9 @@
       <if test="taskCreateAfterhandle != null">
         TASK_CREATE_AFTERHANDLE = #{taskCreateAfterhandle,jdbcType=VARCHAR},
       </if>
+      <if test="taskCompleteHandle != null">
+        TASK_COMPLETE_HANDLE = #{taskCompleteHandle,jdbcType=VARCHAR},
+      </if>
       <if test="taskCreateScript != null">
         TASK_CREATE_SCRIPT = #{taskCreateScript,jdbcType=VARCHAR},
       </if>
@@ -223,6 +233,7 @@
       ACT_END_SCRIPT = #{actEndScript,jdbcType=VARCHAR},
       TASK_CREATE_PREHANDLE = #{taskCreatePrehandle,jdbcType=VARCHAR},
       TASK_CREATE_AFTERHANDLE = #{taskCreateAfterhandle,jdbcType=VARCHAR},
+      TASK_COMPLETE_HANDLE = #{taskCompleteHandle,jdbcType=VARCHAR},
       TASK_CREATE_SCRIPT = #{taskCreateScript,jdbcType=VARCHAR},
       TASK_COMPLETE_SCRIPT = #{taskCompleteScript,jdbcType=VARCHAR},
       ON_SITE_NOTICE = #{onSiteNotice,jdbcType=BIT},

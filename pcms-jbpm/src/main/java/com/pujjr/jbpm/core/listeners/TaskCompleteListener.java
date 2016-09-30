@@ -9,9 +9,12 @@ import org.activiti.engine.delegate.event.impl.ActivitiEntityWithVariablesEventI
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.pujjr.jbpm.core.handle.ITaskAssigneeHandle;
+import com.pujjr.jbpm.core.handle.ITaskCompleteHandle;
 import com.pujjr.jbpm.core.script.GroovyEngine;
 import com.pujjr.jbpm.service.IConfigWorkflowService;
 import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
+import com.pujjr.utils.SpringBeanUtils;
 
 public class TaskCompleteListener implements EventHandler {
 	@Autowired
@@ -35,11 +38,17 @@ public class TaskCompleteListener implements EventHandler {
 		//执行任务完成脚本
 		String workflowVersionId = runtimeService.getVariable(taskEntity.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
+		if(nodeParam!=null && nodeParam.getTaskCompleteHandle()!=null && nodeParam.getTaskCompleteHandle()!="")
+		{
+			ITaskCompleteHandle handle = (ITaskCompleteHandle)SpringBeanUtils.getBean(nodeParam.getTaskCompleteHandle());
+			handle.handle(taskEntity);
+		}
 		if (nodeParam!= null && nodeParam.getTaskCompleteScript() != null && nodeParam.getTaskCompleteScript() != "") 
 		{
 			Map<String, Object> vars = runtimeService.getVariables(taskEntity.getExecutionId());
 			GroovyEngine.execScript(nodeParam.getTaskCompleteScript(),taskEntity.getExecutionId(),vars);
 		}
+		
 	}
 
 }

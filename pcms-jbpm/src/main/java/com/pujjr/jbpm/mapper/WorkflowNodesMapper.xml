@@ -139,6 +139,7 @@
 	    param.ACT_END_SCRIPT as actEndScript,
 	   	param.TASK_CREATE_PREHANDLE as taskCreatePrehandle,
 	    param.TASK_CREATE_AFTERHANDLE as taskCreateAfterhandle,
+	    param.TASK_COMPLETE_HANDLE as taskCompleteHandle,
 	    param.TASK_CREATE_SCRIPT as taskCreateScript,
 	    param.TASK_COMPLETE_SCRIPT as taskCompleteScript,
 	    param.ON_SITE_NOTICE as onSiteNotice,

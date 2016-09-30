@@ -1,4 +1,4 @@
-package com.pujjr.carcredit.domain;
+package com.pujjr.base.domain;
 
 public class RuleFinanceAmount {
     private String id;

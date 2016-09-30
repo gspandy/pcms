@@ -12,6 +12,8 @@ public class WorkflowNodeParamVo extends WorkflowNodeVo
 	private String taskCreatePrehandle;
 
 	private String taskCreateAfterhandle;
+	
+	private String taskCompleteHandle;
 
 	private String taskCreateScript;
 
@@ -143,5 +145,13 @@ public class WorkflowNodeParamVo extends WorkflowNodeVo
 
 	public void setCreateId(String createId) {
 		this.createId = createId;
+	}
+
+	public String getTaskCompleteHandle() {
+		return taskCompleteHandle;
+	}
+
+	public void setTaskCompleteHandle(String taskCompleteHandle) {
+		this.taskCompleteHandle = taskCompleteHandle;
 	}
 }

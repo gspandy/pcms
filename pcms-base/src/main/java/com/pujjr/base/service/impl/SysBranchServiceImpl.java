@@ -54,7 +54,7 @@ public class SysBranchServiceImpl implements ISysBranchService {
 
 	public SysBranch getSysBranch(String id, String branchCode) {
 		// TODO Auto-generated method stub
-		return  sysBranchDao.selectByPrimaryKey(id);
+		return  sysBranchDao.selectSysBranch(id,branchCode);
 	}
 
 	public void deleteSysBranchById(String id) {

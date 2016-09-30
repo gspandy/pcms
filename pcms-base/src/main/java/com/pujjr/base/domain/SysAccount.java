@@ -216,6 +216,16 @@ public class SysAccount {
 	private SysJob sysJob;
 	
 	private SysDictData statusDict;
+	
+	private RuleMemberTaskCnt assigneeTaskCnt;
+
+	public RuleMemberTaskCnt getAssigneeTaskCnt() {
+		return assigneeTaskCnt;
+	}
+
+	public void setAssigneeTaskCnt(RuleMemberTaskCnt assigneeTaskCnt) {
+		this.assigneeTaskCnt = assigneeTaskCnt;
+	}
 
 	public SysDictData getStatusDict() {
 		return statusDict;

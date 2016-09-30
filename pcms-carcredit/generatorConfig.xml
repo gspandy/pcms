@@ -98,6 +98,10 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
-		
+		<!-- 工作流相关表生成配置结束-->
+		<table tableName="T_REJECT_RECOMMIT" domainObjectName="RejectRecommit" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> 
 	</context>
 </generatorConfiguration>
