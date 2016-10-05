@@ -4,6 +4,7 @@
 	<resultMap id="ToDoTaskResultMap" type="com.pujjr.carcredit.po.ToDoTaskPo">
 		<result column="taskId" property="taskId" jdbcType="VARCHAR" />
 		<result column="taskName" property="taskName" jdbcType="VARCHAR" />
+		<result column="taskDefKey" property="taskDefKey" jdbcType="VARCHAR" />
 		<result column="assignee" property="assignee" jdbcType="VARCHAR" />
 		<result column="businessKey" property="businessKey" jdbcType="VARCHAR" />
 		<result column="procInstId" property="procInstId" jdbcType="VARCHAR" />
@@ -26,6 +27,7 @@
 		select
 		task.ID_ as taskId,
 		task.NAME_ as taskName,
+		task.TASK_DEF_KEY_ as taskDefKey,
 		task.ASSIGNEE_ as assignee,
 		exec.BUSINESS_KEY_ as businessKey,
 		task.PROC_INST_ID_ as procInstId,

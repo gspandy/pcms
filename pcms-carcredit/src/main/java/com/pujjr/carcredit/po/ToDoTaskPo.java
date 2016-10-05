@@ -9,6 +9,8 @@ public class ToDoTaskPo
 	private String taskId;
 	//任务名称
 	private String taskName;
+	//任务定义ID
+	private String taskDefKey;
 	//任务执行人
 	private String assignee;
 	//业务主键
@@ -77,6 +79,12 @@ public class ToDoTaskPo
 	}
 	public void setTaskName(String taskName) {
 		this.taskName = taskName;
+	}
+	public String getTaskDefKey() {
+		return taskDefKey;
+	}
+	public void setTaskDefKey(String taskDefKey) {
+		this.taskDefKey = taskDefKey;
 	}
 	public String getAssignee() {
 		return assignee;
