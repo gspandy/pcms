@@ -224,7 +224,6 @@
 	</dependencies>
 	<modules>
 		<module>pcms-jbpm</module>
-		<module>pcms-auth</module>
 		<module>pcms-base</module>
 		<module>pcms-utils</module>
 		<module>pcms-web</module>
