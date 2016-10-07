@@ -18,4 +18,12 @@ public class TaskCommitType
 	public static String CANCEL = "tjlx203";
 	//拒绝
 	public static String REJECT = "tjlx204";
+	//放款审批通过
+	public static String LOAN_PASS = "tjlx301";
+	//放款审批拒绝
+	public static String LOAN_REJECT = "tjlx302";
+	//复议审批通过
+	public static String RECONSIDER_PASS = "tjlx401";
+	//复议审批拒绝
+	public static String RECONSIDER_REJECT = "tjlx402";
 }

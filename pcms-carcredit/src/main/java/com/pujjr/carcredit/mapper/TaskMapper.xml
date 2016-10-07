@@ -24,8 +24,11 @@
 	</resultMap>
 
 	<select id="selectToDoTaskListByAccountId" resultMap="ToDoTaskResultMap">
+	select * from 
+	(
 		select
 		task.ID_ as taskId,
+		runpath.NODE_LEVEL as nodeLevel,
 		task.NAME_ as taskName,
 		task.TASK_DEF_KEY_ as taskDefKey,
 		task.ASSIGNEE_ as assignee,
@@ -64,6 +67,8 @@
 		<if test='queryType =="1"'>
 			and task.TASK_DEF_KEY_ != 'sgfd'
 		</if>
+		order by nodeLevel desc 
+	) tmp group by taskId	
 	</select>
 	<select id="selectTaskCntAndOnlineAccountIdByWorkgroupId" resultType="HashMap">
 		select 

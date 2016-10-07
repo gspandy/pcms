@@ -280,6 +280,7 @@
   	c.PRODUCT_NAME as productName,
   	b.NAME as tenantName,
   	b.ID_NO as  tenantIdNo,
+  	a.TOTAL_FINANCE_AMT as totalFinanceAmt,
   	a.PERIOD as period,
   	a.CREATE_TIME as createTime,
   	d.DICT_DATA_NAME as status

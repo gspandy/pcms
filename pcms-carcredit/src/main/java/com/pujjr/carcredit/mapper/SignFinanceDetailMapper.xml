@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.SignFinanceDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.SignFinanceDetail">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="FINANCE_ID" jdbcType="VARCHAR" property="financeId" />
+    <result column="INVOICE_SALE_PRICE" jdbcType="DOUBLE" property="invoiceSalePrice" />
+    <result column="CAR_VIN" jdbcType="VARCHAR" property="carVin" />
+    <result column="CAR_ENGINE_NO" jdbcType="VARCHAR" property="carEngineNo" />
+    <result column="PLATE_NO" jdbcType="VARCHAR" property="plateNo" />
+    <result column="CAR_COLOR" jdbcType="VARCHAR" property="carColor" />
+    <result column="GPS_SUPPLIER_ID" jdbcType="VARCHAR" property="gpsSupplierId" />
+    <result column="GPS_WIRED_NO" jdbcType="VARCHAR" property="gpsWiredNo" />
+    <result column="GPS_WIRELESS_NO" jdbcType="VARCHAR" property="gpsWirelessNo" />
+    <result column="INVOICE_CODE" jdbcType="VARCHAR" property="invoiceCode" />
+    <result column="INVOICE_NO" jdbcType="VARCHAR" property="invoiceNo" />
+    <result column="INVOICE_AREA_ID" jdbcType="VARCHAR" property="invoiceAreaId" />
+    <result column="REGISTER_CODE" jdbcType="VARCHAR" property="registerCode" />
+    <result column="INS_COMPANY_ID" jdbcType="VARCHAR" property="insCompanyId" />
+    <result column="INS_POLICY_NO" jdbcType="VARCHAR" property="insPolicyNo" />
+    <result column="INS_AMOUNT" jdbcType="DOUBLE" property="insAmount" />
+    <result column="INS_START_DATE" jdbcType="DATE" property="insStartDate" />
+    <result column="INS_END_DATE" jdbcType="DATE" property="insEndDate" />
+    <result column="BUSI_COMPANY_ID" jdbcType="VARCHAR" property="busiCompanyId" />
+    <result column="BUSI_POLICY_NO" jdbcType="VARCHAR" property="busiPolicyNo" />
+    <result column="BUSI_AMOUNT" jdbcType="DOUBLE" property="busiAmount" />
+    <result column="IS_DAMAGE" jdbcType="BIT" property="isDamage" />
+    <result column="DAMAGE_AMOUNT" jdbcType="DOUBLE" property="damageAmount" />
+    <result column="IS_THIRD" jdbcType="BIT" property="isThird" />
+    <result column="THIRD_AMOUNT" jdbcType="DOUBLE" property="thirdAmount" />
+    <result column="IS_THEFT" jdbcType="BIT" property="isTheft" />
+    <result column="THEFT_AMOUNT" jdbcType="DOUBLE" property="theftAmount" />
+    <result column="IS_AVOID" jdbcType="BIT" property="isAvoid" />
+    <result column="AVOID_AMOUNT" jdbcType="DOUBLE" property="avoidAmount" />
+    <result column="BUSI_START_DATE" jdbcType="DATE" property="busiStartDate" />
+    <result column="BUSI_END_DATE" jdbcType="DATE" property="busiEndDate" />
+    <result column="IMP_COMPANY_ID" jdbcType="VARCHAR" property="impCompanyId" />
+    <result column="IMP_POLICY_NO" jdbcType="VARCHAR" property="impPolicyNo" />
+    <result column="IMP_AMOUNT" jdbcType="DOUBLE" property="impAmount" />
+    <result column="IMP_START_DATE" jdbcType="DATE" property="impStartDate" />
+    <result column="IMP_END_DATE" jdbcType="DATE" property="impEndDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, FINANCE_ID, INVOICE_SALE_PRICE, CAR_VIN, CAR_ENGINE_NO, PLATE_NO, CAR_COLOR, 
+    GPS_SUPPLIER_ID, GPS_WIRED_NO, GPS_WIRELESS_NO, INVOICE_CODE, INVOICE_NO, INVOICE_AREA_ID, 
+    REGISTER_CODE, INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, INS_START_DATE, INS_END_DATE, 
+    BUSI_COMPANY_ID, BUSI_POLICY_NO, BUSI_AMOUNT, IS_DAMAGE, DAMAGE_AMOUNT, IS_THIRD, 
+    THIRD_AMOUNT, IS_THEFT, THEFT_AMOUNT, IS_AVOID, AVOID_AMOUNT, BUSI_START_DATE, BUSI_END_DATE, 
+    IMP_COMPANY_ID, IMP_POLICY_NO, IMP_AMOUNT, IMP_START_DATE, IMP_END_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sign_finance_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_sign_finance_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.SignFinanceDetail">
+    insert into t_sign_finance_detail (ID, APP_ID, FINANCE_ID, 
+      INVOICE_SALE_PRICE, CAR_VIN, CAR_ENGINE_NO, 
+      PLATE_NO, CAR_COLOR, GPS_SUPPLIER_ID, 
+      GPS_WIRED_NO, GPS_WIRELESS_NO, INVOICE_CODE, 
+      INVOICE_NO, INVOICE_AREA_ID, REGISTER_CODE, 
+      INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, 
+      INS_START_DATE, INS_END_DATE, BUSI_COMPANY_ID, 
+      BUSI_POLICY_NO, BUSI_AMOUNT, IS_DAMAGE, 
+      DAMAGE_AMOUNT, IS_THIRD, THIRD_AMOUNT, 
+      IS_THEFT, THEFT_AMOUNT, IS_AVOID, 
+      AVOID_AMOUNT, BUSI_START_DATE, BUSI_END_DATE, 
+      IMP_COMPANY_ID, IMP_POLICY_NO, IMP_AMOUNT, 
+      IMP_START_DATE, IMP_END_DATE)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{financeId,jdbcType=VARCHAR}, 
+      #{invoiceSalePrice,jdbcType=DOUBLE}, #{carVin,jdbcType=VARCHAR}, #{carEngineNo,jdbcType=VARCHAR}, 
+      #{plateNo,jdbcType=VARCHAR}, #{carColor,jdbcType=VARCHAR}, #{gpsSupplierId,jdbcType=VARCHAR}, 
+      #{gpsWiredNo,jdbcType=VARCHAR}, #{gpsWirelessNo,jdbcType=VARCHAR}, #{invoiceCode,jdbcType=VARCHAR}, 
+      #{invoiceNo,jdbcType=VARCHAR}, #{invoiceAreaId,jdbcType=VARCHAR}, #{registerCode,jdbcType=VARCHAR}, 
+      #{insCompanyId,jdbcType=VARCHAR}, #{insPolicyNo,jdbcType=VARCHAR}, #{insAmount,jdbcType=DOUBLE}, 
+      #{insStartDate,jdbcType=DATE}, #{insEndDate,jdbcType=DATE}, #{busiCompanyId,jdbcType=VARCHAR}, 
+      #{busiPolicyNo,jdbcType=VARCHAR}, #{busiAmount,jdbcType=DOUBLE}, #{isDamage,jdbcType=BIT}, 
+      #{damageAmount,jdbcType=DOUBLE}, #{isThird,jdbcType=BIT}, #{thirdAmount,jdbcType=DOUBLE}, 
+      #{isTheft,jdbcType=BIT}, #{theftAmount,jdbcType=DOUBLE}, #{isAvoid,jdbcType=BIT}, 
+      #{avoidAmount,jdbcType=DOUBLE}, #{busiStartDate,jdbcType=DATE}, #{busiEndDate,jdbcType=DATE}, 
+      #{impCompanyId,jdbcType=VARCHAR}, #{impPolicyNo,jdbcType=VARCHAR}, #{impAmount,jdbcType=DOUBLE}, 
+      #{impStartDate,jdbcType=DATE}, #{impEndDate,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.SignFinanceDetail">
+    insert into t_sign_finance_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="financeId != null">
+        FINANCE_ID,
+      </if>
+      <if test="invoiceSalePrice != null">
+        INVOICE_SALE_PRICE,
+      </if>
+      <if test="carVin != null">
+        CAR_VIN,
+      </if>
+      <if test="carEngineNo != null">
+        CAR_ENGINE_NO,
+      </if>
+      <if test="plateNo != null">
+        PLATE_NO,
+      </if>
+      <if test="carColor != null">
+        CAR_COLOR,
+      </if>
+      <if test="gpsSupplierId != null">
+        GPS_SUPPLIER_ID,
+      </if>
+      <if test="gpsWiredNo != null">
+        GPS_WIRED_NO,
+      </if>
+      <if test="gpsWirelessNo != null">
+        GPS_WIRELESS_NO,
+      </if>
+      <if test="invoiceCode != null">
+        INVOICE_CODE,
+      </if>
+      <if test="invoiceNo != null">
+        INVOICE_NO,
+      </if>
+      <if test="invoiceAreaId != null">
+        INVOICE_AREA_ID,
+      </if>
+      <if test="registerCode != null">
+        REGISTER_CODE,
+      </if>
+      <if test="insCompanyId != null">
+        INS_COMPANY_ID,
+      </if>
+      <if test="insPolicyNo != null">
+        INS_POLICY_NO,
+      </if>
+      <if test="insAmount != null">
+        INS_AMOUNT,
+      </if>
+      <if test="insStartDate != null">
+        INS_START_DATE,
+      </if>
+      <if test="insEndDate != null">
+        INS_END_DATE,
+      </if>
+      <if test="busiCompanyId != null">
+        BUSI_COMPANY_ID,
+      </if>
+      <if test="busiPolicyNo != null">
+        BUSI_POLICY_NO,
+      </if>
+      <if test="busiAmount != null">
+        BUSI_AMOUNT,
+      </if>
+      <if test="isDamage != null">
+        IS_DAMAGE,
+      </if>
+      <if test="damageAmount != null">
+        DAMAGE_AMOUNT,
+      </if>
+      <if test="isThird != null">
+        IS_THIRD,
+      </if>
+      <if test="thirdAmount != null">
+        THIRD_AMOUNT,
+      </if>
+      <if test="isTheft != null">
+        IS_THEFT,
+      </if>
+      <if test="theftAmount != null">
+        THEFT_AMOUNT,
+      </if>
+      <if test="isAvoid != null">
+        IS_AVOID,
+      </if>
+      <if test="avoidAmount != null">
+        AVOID_AMOUNT,
+      </if>
+      <if test="busiStartDate != null">
+        BUSI_START_DATE,
+      </if>
+      <if test="busiEndDate != null">
+        BUSI_END_DATE,
+      </if>
+      <if test="impCompanyId != null">
+        IMP_COMPANY_ID,
+      </if>
+      <if test="impPolicyNo != null">
+        IMP_POLICY_NO,
+      </if>
+      <if test="impAmount != null">
+        IMP_AMOUNT,
+      </if>
+      <if test="impStartDate != null">
+        IMP_START_DATE,
+      </if>
+      <if test="impEndDate != null">
+        IMP_END_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeId != null">
+        #{financeId,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceSalePrice != null">
+        #{invoiceSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="carVin != null">
+        #{carVin,jdbcType=VARCHAR},
+      </if>
+      <if test="carEngineNo != null">
+        #{carEngineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNo != null">
+        #{plateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="carColor != null">
+        #{carColor,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsSupplierId != null">
+        #{gpsSupplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsWiredNo != null">
+        #{gpsWiredNo,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsWirelessNo != null">
+        #{gpsWirelessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null">
+        #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNo != null">
+        #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAreaId != null">
+        #{invoiceAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCode != null">
+        #{registerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insCompanyId != null">
+        #{insCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="insPolicyNo != null">
+        #{insPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insAmount != null">
+        #{insAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="insStartDate != null">
+        #{insStartDate,jdbcType=DATE},
+      </if>
+      <if test="insEndDate != null">
+        #{insEndDate,jdbcType=DATE},
+      </if>
+      <if test="busiCompanyId != null">
+        #{busiCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="busiPolicyNo != null">
+        #{busiPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="busiAmount != null">
+        #{busiAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isDamage != null">
+        #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="damageAmount != null">
+        #{damageAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isThird != null">
+        #{isThird,jdbcType=BIT},
+      </if>
+      <if test="thirdAmount != null">
+        #{thirdAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isTheft != null">
+        #{isTheft,jdbcType=BIT},
+      </if>
+      <if test="theftAmount != null">
+        #{theftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isAvoid != null">
+        #{isAvoid,jdbcType=BIT},
+      </if>
+      <if test="avoidAmount != null">
+        #{avoidAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="busiStartDate != null">
+        #{busiStartDate,jdbcType=DATE},
+      </if>
+      <if test="busiEndDate != null">
+        #{busiEndDate,jdbcType=DATE},
+      </if>
+      <if test="impCompanyId != null">
+        #{impCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="impPolicyNo != null">
+        #{impPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="impAmount != null">
+        #{impAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="impStartDate != null">
+        #{impStartDate,jdbcType=DATE},
+      </if>
+      <if test="impEndDate != null">
+        #{impEndDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.SignFinanceDetail">
+    update t_sign_finance_detail
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="financeId != null">
+        FINANCE_ID = #{financeId,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceSalePrice != null">
+        INVOICE_SALE_PRICE = #{invoiceSalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="carVin != null">
+        CAR_VIN = #{carVin,jdbcType=VARCHAR},
+      </if>
+      <if test="carEngineNo != null">
+        CAR_ENGINE_NO = #{carEngineNo,jdbcType=VARCHAR},
+      </if>
+      <if test="plateNo != null">
+        PLATE_NO = #{plateNo,jdbcType=VARCHAR},
+      </if>
+      <if test="carColor != null">
+        CAR_COLOR = #{carColor,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsSupplierId != null">
+        GPS_SUPPLIER_ID = #{gpsSupplierId,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsWiredNo != null">
+        GPS_WIRED_NO = #{gpsWiredNo,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsWirelessNo != null">
+        GPS_WIRELESS_NO = #{gpsWirelessNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCode != null">
+        INVOICE_CODE = #{invoiceCode,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceNo != null">
+        INVOICE_NO = #{invoiceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceAreaId != null">
+        INVOICE_AREA_ID = #{invoiceAreaId,jdbcType=VARCHAR},
+      </if>
+      <if test="registerCode != null">
+        REGISTER_CODE = #{registerCode,jdbcType=VARCHAR},
+      </if>
+      <if test="insCompanyId != null">
+        INS_COMPANY_ID = #{insCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="insPolicyNo != null">
+        INS_POLICY_NO = #{insPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insAmount != null">
+        INS_AMOUNT = #{insAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="insStartDate != null">
+        INS_START_DATE = #{insStartDate,jdbcType=DATE},
+      </if>
+      <if test="insEndDate != null">
+        INS_END_DATE = #{insEndDate,jdbcType=DATE},
+      </if>
+      <if test="busiCompanyId != null">
+        BUSI_COMPANY_ID = #{busiCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="busiPolicyNo != null">
+        BUSI_POLICY_NO = #{busiPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="busiAmount != null">
+        BUSI_AMOUNT = #{busiAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isDamage != null">
+        IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="damageAmount != null">
+        DAMAGE_AMOUNT = #{damageAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isThird != null">
+        IS_THIRD = #{isThird,jdbcType=BIT},
+      </if>
+      <if test="thirdAmount != null">
+        THIRD_AMOUNT = #{thirdAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isTheft != null">
+        IS_THEFT = #{isTheft,jdbcType=BIT},
+      </if>
+      <if test="theftAmount != null">
+        THEFT_AMOUNT = #{theftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isAvoid != null">
+        IS_AVOID = #{isAvoid,jdbcType=BIT},
+      </if>
+      <if test="avoidAmount != null">
+        AVOID_AMOUNT = #{avoidAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="busiStartDate != null">
+        BUSI_START_DATE = #{busiStartDate,jdbcType=DATE},
+      </if>
+      <if test="busiEndDate != null">
+        BUSI_END_DATE = #{busiEndDate,jdbcType=DATE},
+      </if>
+      <if test="impCompanyId != null">
+        IMP_COMPANY_ID = #{impCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="impPolicyNo != null">
+        IMP_POLICY_NO = #{impPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="impAmount != null">
+        IMP_AMOUNT = #{impAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="impStartDate != null">
+        IMP_START_DATE = #{impStartDate,jdbcType=DATE},
+      </if>
+      <if test="impEndDate != null">
+        IMP_END_DATE = #{impEndDate,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.SignFinanceDetail">
+    update t_sign_finance_detail
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      FINANCE_ID = #{financeId,jdbcType=VARCHAR},
+      INVOICE_SALE_PRICE = #{invoiceSalePrice,jdbcType=DOUBLE},
+      CAR_VIN = #{carVin,jdbcType=VARCHAR},
+      CAR_ENGINE_NO = #{carEngineNo,jdbcType=VARCHAR},
+      PLATE_NO = #{plateNo,jdbcType=VARCHAR},
+      CAR_COLOR = #{carColor,jdbcType=VARCHAR},
+      GPS_SUPPLIER_ID = #{gpsSupplierId,jdbcType=VARCHAR},
+      GPS_WIRED_NO = #{gpsWiredNo,jdbcType=VARCHAR},
+      GPS_WIRELESS_NO = #{gpsWirelessNo,jdbcType=VARCHAR},
+      INVOICE_CODE = #{invoiceCode,jdbcType=VARCHAR},
+      INVOICE_NO = #{invoiceNo,jdbcType=VARCHAR},
+      INVOICE_AREA_ID = #{invoiceAreaId,jdbcType=VARCHAR},
+      REGISTER_CODE = #{registerCode,jdbcType=VARCHAR},
+      INS_COMPANY_ID = #{insCompanyId,jdbcType=VARCHAR},
+      INS_POLICY_NO = #{insPolicyNo,jdbcType=VARCHAR},
+      INS_AMOUNT = #{insAmount,jdbcType=DOUBLE},
+      INS_START_DATE = #{insStartDate,jdbcType=DATE},
+      INS_END_DATE = #{insEndDate,jdbcType=DATE},
+      BUSI_COMPANY_ID = #{busiCompanyId,jdbcType=VARCHAR},
+      BUSI_POLICY_NO = #{busiPolicyNo,jdbcType=VARCHAR},
+      BUSI_AMOUNT = #{busiAmount,jdbcType=DOUBLE},
+      IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      DAMAGE_AMOUNT = #{damageAmount,jdbcType=DOUBLE},
+      IS_THIRD = #{isThird,jdbcType=BIT},
+      THIRD_AMOUNT = #{thirdAmount,jdbcType=DOUBLE},
+      IS_THEFT = #{isTheft,jdbcType=BIT},
+      THEFT_AMOUNT = #{theftAmount,jdbcType=DOUBLE},
+      IS_AVOID = #{isAvoid,jdbcType=BIT},
+      AVOID_AMOUNT = #{avoidAmount,jdbcType=DOUBLE},
+      BUSI_START_DATE = #{busiStartDate,jdbcType=DATE},
+      BUSI_END_DATE = #{busiEndDate,jdbcType=DATE},
+      IMP_COMPANY_ID = #{impCompanyId,jdbcType=VARCHAR},
+      IMP_POLICY_NO = #{impPolicyNo,jdbcType=VARCHAR},
+      IMP_AMOUNT = #{impAmount,jdbcType=DOUBLE},
+      IMP_START_DATE = #{impStartDate,jdbcType=DATE},
+      IMP_END_DATE = #{impEndDate,jdbcType=DATE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getByApplyFinanceId" resultMap="BaseResultMap">
+  	select * from t_sign_finance_detail where FINANCE_ID = #{applyFinanceId}
+  </select>
+  <delete id="deleteByAppId">
+  	delete from t_sign_finance_detail where APP_ID =#{appId}
+  </delete>
+</mapper>

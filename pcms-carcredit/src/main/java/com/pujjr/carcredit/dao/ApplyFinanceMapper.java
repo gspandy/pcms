@@ -19,5 +19,7 @@ public interface ApplyFinanceMapper {
 	int updateByPrimaryKey(ApplyFinance record);
 	
 	List<ApplyFinanceVo> selectByAppId(String appId);
+	
+	List<ApplyFinance> selectListByAppId(String appId);
  
 }

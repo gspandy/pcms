@@ -161,11 +161,7 @@
       ACCOUNT_ID = #{accountId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
- 
 
-
-
-  
   <select id="selectCommon" parameterType="java.util.HashMap" resultType="java.util.HashMap" statementType="STATEMENT">
      select * from ${tableName} where id = ${id}
   </select>

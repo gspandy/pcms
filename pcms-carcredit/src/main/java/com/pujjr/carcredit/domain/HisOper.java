@@ -112,6 +112,5 @@ public class HisOper {
 	public void setAccountId(String accountId) {
 		this.accountId = accountId;
 	}
-
 	
 }

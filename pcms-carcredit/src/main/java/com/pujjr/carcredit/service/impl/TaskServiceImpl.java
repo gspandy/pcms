@@ -1,11 +1,13 @@
 package com.pujjr.carcredit.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +17,29 @@ import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.dao.CheckResultMapper;
+import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.CheckResult;
+import com.pujjr.carcredit.domain.Reconsider;
+import com.pujjr.carcredit.domain.SignContract;
+import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
+import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.ReconsiderApplyVo;
+import com.pujjr.carcredit.vo.ReconsiderApproveVo;
+import com.pujjr.carcredit.vo.SignCommitType;
+import com.pujjr.carcredit.vo.SignContractVo;
+import com.pujjr.carcredit.vo.SignFinanceDetailVo;
 import com.pujjr.carcredit.vo.TaskCommitType;
+import com.pujjr.carcredit.vo.TaskLoanApproveVo;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
@@ -53,6 +66,10 @@ public class TaskServiceImpl implements ITaskService
 	private TaskProcessResultMapper taskProcessResultDao;
 	@Autowired
 	private ISysWorkgroupService workgroupService;
+	@Autowired
+	private ISignContractService signContractService;
+	@Autowired
+	private ReconsiderMapper reconsiderDao;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -280,6 +297,148 @@ public class TaskServiceImpl implements ITaskService
 		return poList;
 	}
 
+	@Override
+	public void commitSignContract(SignContractVo signContractVo,String taskId,String operId) {
+		// TODO Auto-generated method stub
+		String appId = signContractVo.getAppId();
+		SignContract signContractPo = new SignContract();
+		BeanUtils.copyProperties(signContractVo, signContractPo);
+		if(signContractService.getSignContractByAppId(signContractVo.getAppId())==null)
+		{
+			//如果没有签约信息则创建签约信息及合同编号
+			signContractPo.setId(Utils.get16UUID());
+			signContractPo.setContractNo("ContractNo"+appId);
+			signContractPo.setCreateId(operId);
+			signContractPo.setCreateTime(new Date());
+			signContractService.addSignContract(signContractPo);
+		}
+		else
+		{
+			signContractPo.setUpdateId(operId);
+			signContractPo.setUpdateTime(new Date());
+			signContractService.modifySignContract(signContractPo);
+		}
+		
+		
+		//删除签约融资明细信息后再插入
+		signContractService.deleteSignFinanceDetailByAppId(appId);
+		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
+		{
+			SignFinanceDetail detailPo = new SignFinanceDetail();
+			BeanUtils.copyProperties(item.getSignFinanceDetail(), detailPo);
+			detailPo.setId(Utils.get16UUID());
+			detailPo.setAppId(appId);
+			detailPo.setFinanceId(item.getApplyFinance().getId());
+			signContractService.addSignFinanceDetail(detailPo);
+		}
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("signType", SignCommitType.SIGN);
+		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitLoanCheck(SignContractVo signContractVo, String taskId, String operId) {
+		// TODO Auto-generated method stub
+		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
+		{
+			SignFinanceDetail detailPo = new SignFinanceDetail();
+			BeanUtils.copyProperties(item.getSignFinanceDetail(), detailPo);
+			//这里只更新放款复核信息
+			signContractService.modifySignFinanceDetail(detailPo);
+		}
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitPrevLoanApprove(String taskId, String operId) {
+		// TODO Auto-generated method stub
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitLoanApprove(TaskLoanApproveVo loanApproveVo, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		if(runpath == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应路径不存在 ");
+		}
+		
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(loanApproveVo.getLoanApproveResult());
+		taskProcessResult.setComment(loanApproveVo.getLoanApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("loanApproveProcessResult", loanApproveVo.getLoanApproveResult());
+		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public TaskProcessResult getTaskProcessResultByPathId(String pathId) {
+		// TODO Auto-generated method stub
+		return taskProcessResultDao.selectByRunPathId(pathId);
+	}
+
+	@Override
+	public void commitReconsiderApply(ReconsiderApplyVo reconsiderApplyVo, String appId,String taskId, String operId) {
+		// TODO Auto-generated method stub
+		reconsiderDao.disabledAllByAppId(appId);
+		Reconsider po = new Reconsider();
+		po.setId(Utils.get16UUID());
+		po.setAppId(appId);
+		po.setEnabled(true);
+		po.setRejectReason(reconsiderApplyVo.getRejectReason());
+		po.setRecommitReason(reconsiderApplyVo.getRecommitReason());
+		po.setRecommitComment(reconsiderApplyVo.getRecommitComment());
+		reconsiderDao.insert(po);
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public Reconsider getEnabledReconsiderByAppId(String appId) {
+		// TODO Auto-generated method stub
+		return reconsiderDao.selectEnabledByAppId(appId);
+	}
+
+	@Override
+	public void commitReconsiderApprove(ReconsiderApproveVo reconsiderApproveVo, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+
+		// 2、保存任务处理结果信息
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(reconsiderApproveVo.getApproveResult());
+		// 建议通过
+		if (reconsiderApproveVo.getApproveResult().equals(TaskCommitType.RECONSIDER_PASS)) {
+			taskProcessResult.setProcessResultDesc("通过");
+		} else {
+			taskProcessResult.setProcessResultDesc("拒绝");
+		}
+		taskProcessResult.setComment(reconsiderApproveVo.getApproveComment());
+		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
+		taskProcessResultDao.insert(taskProcessResult);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("reconsiderApproveProcessResult", reconsiderApproveVo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+	}
 
 
 }

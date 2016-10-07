@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyCloessee;
+import com.pujjr.carcredit.domain.ApplyFinance;
 import com.pujjr.carcredit.domain.ApplyTenantCar;
 import com.pujjr.carcredit.domain.ApplyTenantHouse;
 import com.pujjr.carcredit.po.ApplyInfoPo;
@@ -45,4 +46,5 @@ public interface IApplyService
 	List<ApplyInfoPo>  getApplyInfoList(String accountId,String status);
 //	public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
 	public void commitApplyTask(ApplyVo applyVo,SysAccount sysAccount);
+	public List<ApplyFinance> getApplyFinanceList(String appId);
 }

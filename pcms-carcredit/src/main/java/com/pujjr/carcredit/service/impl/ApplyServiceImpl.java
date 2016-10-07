@@ -462,4 +462,10 @@ public class ApplyServiceImpl implements IApplyService {
 		currentProxy.saveApplyFamilyDebt(applyVo, accountId);
 		return appId;
 	}
+
+	@Override
+	public List<ApplyFinance> getApplyFinanceList(String appId) {
+		// TODO Auto-generated method stub
+		return applyFinanceMapper.selectListByAppId(appId);
+	}
 }

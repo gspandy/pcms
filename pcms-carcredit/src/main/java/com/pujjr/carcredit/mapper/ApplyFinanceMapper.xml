@@ -408,4 +408,8 @@
       FINANCE_FEE = #{financeFee,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectListByAppId" resultMap="BaseResultMap">
+  	select * from t_apply_finance where APP_ID = #{appId} 
+  	order by seq
+  </select>
 </mapper>

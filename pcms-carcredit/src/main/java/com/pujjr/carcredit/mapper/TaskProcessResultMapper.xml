@@ -103,4 +103,7 @@
       TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByRunPathId" resultMap="BaseResultMap">
+  	select * from t_task_process_result where RUN_PATH_ID = #{runPathId}
+  </select>
 </mapper>

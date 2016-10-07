@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.SignContractMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.SignContract" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="CONTRACT_NO" property="contractNo" jdbcType="VARCHAR" />
+    <result column="REPAY_BANK_ID" property="repayBankId" jdbcType="VARCHAR" />
+    <result column="REPAY_ACCT_NAME" property="repayAcctName" jdbcType="VARCHAR" />
+    <result column="REPAY_ACCT_NO" property="repayAcctNo" jdbcType="VARCHAR" />
+    <result column="COMMIT_SIGN_DATE" property="commitSignDate" jdbcType="DATE" />
+    <result column="SIGN_COMMENT" property="signComment" jdbcType="VARCHAR" />
+    <result column="SIGN_STEP" property="signStep" jdbcType="INTEGER" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, CONTRACT_NO, REPAY_BANK_ID, REPAY_ACCT_NAME, REPAY_ACCT_NO, COMMIT_SIGN_DATE, 
+    SIGN_COMMENT, SIGN_STEP, CREATE_ID, CREATE_TIME, UPDATE_ID, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_sign_contract
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_sign_contract
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.SignContract" >
+    insert into t_sign_contract (ID, APP_ID, CONTRACT_NO, 
+      REPAY_BANK_ID, REPAY_ACCT_NAME, REPAY_ACCT_NO, 
+      COMMIT_SIGN_DATE, SIGN_COMMENT, SIGN_STEP, 
+      CREATE_ID, CREATE_TIME, UPDATE_ID, 
+      UPDATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{contractNo,jdbcType=VARCHAR}, 
+      #{repayBankId,jdbcType=VARCHAR}, #{repayAcctName,jdbcType=VARCHAR}, #{repayAcctNo,jdbcType=VARCHAR}, 
+      #{commitSignDate,jdbcType=DATE}, #{signComment,jdbcType=VARCHAR}, #{signStep,jdbcType=INTEGER}, 
+      #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.SignContract" >
+    insert into t_sign_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="contractNo != null" >
+        CONTRACT_NO,
+      </if>
+      <if test="repayBankId != null" >
+        REPAY_BANK_ID,
+      </if>
+      <if test="repayAcctName != null" >
+        REPAY_ACCT_NAME,
+      </if>
+      <if test="repayAcctNo != null" >
+        REPAY_ACCT_NO,
+      </if>
+      <if test="commitSignDate != null" >
+        COMMIT_SIGN_DATE,
+      </if>
+      <if test="signComment != null" >
+        SIGN_COMMENT,
+      </if>
+      <if test="signStep != null" >
+        SIGN_STEP,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNo != null" >
+        #{contractNo,jdbcType=VARCHAR},
+      </if>
+      <if test="repayBankId != null" >
+        #{repayBankId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctName != null" >
+        #{repayAcctName,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctNo != null" >
+        #{repayAcctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="commitSignDate != null" >
+        #{commitSignDate,jdbcType=DATE},
+      </if>
+      <if test="signComment != null" >
+        #{signComment,jdbcType=VARCHAR},
+      </if>
+      <if test="signStep != null" >
+        #{signStep,jdbcType=INTEGER},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.SignContract" >
+    update t_sign_contract
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractNo != null" >
+        CONTRACT_NO = #{contractNo,jdbcType=VARCHAR},
+      </if>
+      <if test="repayBankId != null" >
+        REPAY_BANK_ID = #{repayBankId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctName != null" >
+        REPAY_ACCT_NAME = #{repayAcctName,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctNo != null" >
+        REPAY_ACCT_NO = #{repayAcctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="commitSignDate != null" >
+        COMMIT_SIGN_DATE = #{commitSignDate,jdbcType=DATE},
+      </if>
+      <if test="signComment != null" >
+        SIGN_COMMENT = #{signComment,jdbcType=VARCHAR},
+      </if>
+      <if test="signStep != null" >
+        SIGN_STEP = #{signStep,jdbcType=INTEGER},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.SignContract" >
+    update t_sign_contract
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      CONTRACT_NO = #{contractNo,jdbcType=VARCHAR},
+      REPAY_BANK_ID = #{repayBankId,jdbcType=VARCHAR},
+      REPAY_ACCT_NAME = #{repayAcctName,jdbcType=VARCHAR},
+      REPAY_ACCT_NO = #{repayAcctNo,jdbcType=VARCHAR},
+      COMMIT_SIGN_DATE = #{commitSignDate,jdbcType=DATE},
+      SIGN_COMMENT = #{signComment,jdbcType=VARCHAR},
+      SIGN_STEP = #{signStep,jdbcType=INTEGER},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="getByAppId" resultMap="BaseResultMap">
+  	select * from t_sign_contract where APP_ID = #{appId}
+  </select>
+</mapper>

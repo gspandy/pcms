@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.LoanCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.LoanCheck" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="IDNO_CHECK_RESULT" property="idnoCheckResult" jdbcType="VARCHAR" />
+    <result column="IDNO_CHECK_COMMENT" property="idnoCheckComment" jdbcType="VARCHAR" />
+    <result column="APPLY_FORM_CHECK_RESULT" property="applyFormCheckResult" jdbcType="VARCHAR" />
+    <result column="APPLY_FORM_CHECK_COMMENT" property="applyFormCheckComment" jdbcType="VARCHAR" />
+    <result column="REPAY_CARD_CHECK_RESULT" property="repayCardCheckResult" jdbcType="VARCHAR" />
+    <result column="REPAY_CARD_CHECK_COMMENT" property="repayCardCheckComment" jdbcType="VARCHAR" />
+    <result column="INVOICE_CHECK_RESULT" property="invoiceCheckResult" jdbcType="VARCHAR" />
+    <result column="INVOICE_CHECK_COMMENT" property="invoiceCheckComment" jdbcType="VARCHAR" />
+    <result column="INSURANCE_CHECK_RESULT" property="insuranceCheckResult" jdbcType="VARCHAR" />
+    <result column="INSURANCE_CHECK_COMMENT" property="insuranceCheckComment" jdbcType="VARCHAR" />
+    <result column="PLEDGE_CHECK_RESULT" property="pledgeCheckResult" jdbcType="VARCHAR" />
+    <result column="PLEDGE_CHECK_COMMENT" property="pledgeCheckComment" jdbcType="VARCHAR" />
+    <result column="LEASING_CONTRACT_CHECK_RESULT" property="leasingContractCheckResult" jdbcType="VARCHAR" />
+    <result column="LEASING_CONTRACT_CHECK_COMMENT" property="leasingContractCheckComment" jdbcType="VARCHAR" />
+    <result column="PLEDGE_CONTRACT_CHECK_RESULT" property="pledgeContractCheckResult" jdbcType="VARCHAR" />
+    <result column="PLEDGE_CONTRACT_CHECK_COMMET" property="pledgeContractCheckCommet" jdbcType="VARCHAR" />
+    <result column="TENANT_CHECK_RESULT" property="tenantCheckResult" jdbcType="VARCHAR" />
+    <result column="TENANT_CHECK_COMMENT" property="tenantCheckComment" jdbcType="VARCHAR" />
+    <result column="TRUST_CHECK_RESULT" property="trustCheckResult" jdbcType="VARCHAR" />
+    <result column="TRUST_CHECK_COMMENT" property="trustCheckComment" jdbcType="VARCHAR" />
+    <result column="LOAN_ADD_CHECK_RESULT" property="loanAddCheckResult" jdbcType="VARCHAR" />
+    <result column="LOAN_ADD_CHECK_COMMENT" property="loanAddCheckComment" jdbcType="VARCHAR" />
+    <result column="PHOTO_CHECK_RESULT" property="photoCheckResult" jdbcType="VARCHAR" />
+    <result column="PHOTO_CHECK_COMMENT" property="photoCheckComment" jdbcType="VARCHAR" />
+    <result column="GPS_CHECK_RESULT" property="gpsCheckResult" jdbcType="VARCHAR" />
+    <result column="GPS_CHECK_COMMENT" property="gpsCheckComment" jdbcType="VARCHAR" />
+    <result column="OTHER_CHECK_RESULT" property="otherCheckResult" jdbcType="VARCHAR" />
+    <result column="OTHER_CHECK_COMMENT" property="otherCheckComment" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, IDNO_CHECK_RESULT, IDNO_CHECK_COMMENT, APPLY_FORM_CHECK_RESULT, APPLY_FORM_CHECK_COMMENT, 
+    REPAY_CARD_CHECK_RESULT, REPAY_CARD_CHECK_COMMENT, INVOICE_CHECK_RESULT, INVOICE_CHECK_COMMENT, 
+    INSURANCE_CHECK_RESULT, INSURANCE_CHECK_COMMENT, PLEDGE_CHECK_RESULT, PLEDGE_CHECK_COMMENT, 
+    LEASING_CONTRACT_CHECK_RESULT, LEASING_CONTRACT_CHECK_COMMENT, PLEDGE_CONTRACT_CHECK_RESULT, 
+    PLEDGE_CONTRACT_CHECK_COMMET, TENANT_CHECK_RESULT, TENANT_CHECK_COMMENT, TRUST_CHECK_RESULT, 
+    TRUST_CHECK_COMMENT, LOAN_ADD_CHECK_RESULT, LOAN_ADD_CHECK_COMMENT, PHOTO_CHECK_RESULT, 
+    PHOTO_CHECK_COMMENT, GPS_CHECK_RESULT, GPS_CHECK_COMMENT, OTHER_CHECK_RESULT, OTHER_CHECK_COMMENT, 
+    CREATE_ID, CREATE_TIME, UPDATE_ID, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_loan_check
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_loan_check
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.LoanCheck" >
+    insert into t_loan_check (ID, APP_ID, IDNO_CHECK_RESULT, 
+      IDNO_CHECK_COMMENT, APPLY_FORM_CHECK_RESULT, 
+      APPLY_FORM_CHECK_COMMENT, REPAY_CARD_CHECK_RESULT, 
+      REPAY_CARD_CHECK_COMMENT, INVOICE_CHECK_RESULT, 
+      INVOICE_CHECK_COMMENT, INSURANCE_CHECK_RESULT, 
+      INSURANCE_CHECK_COMMENT, PLEDGE_CHECK_RESULT, 
+      PLEDGE_CHECK_COMMENT, LEASING_CONTRACT_CHECK_RESULT, 
+      LEASING_CONTRACT_CHECK_COMMENT, PLEDGE_CONTRACT_CHECK_RESULT, 
+      PLEDGE_CONTRACT_CHECK_COMMET, TENANT_CHECK_RESULT, 
+      TENANT_CHECK_COMMENT, TRUST_CHECK_RESULT, TRUST_CHECK_COMMENT, 
+      LOAN_ADD_CHECK_RESULT, LOAN_ADD_CHECK_COMMENT, 
+      PHOTO_CHECK_RESULT, PHOTO_CHECK_COMMENT, GPS_CHECK_RESULT, 
+      GPS_CHECK_COMMENT, OTHER_CHECK_RESULT, OTHER_CHECK_COMMENT, 
+      CREATE_ID, CREATE_TIME, UPDATE_ID, 
+      UPDATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{idnoCheckResult,jdbcType=VARCHAR}, 
+      #{idnoCheckComment,jdbcType=VARCHAR}, #{applyFormCheckResult,jdbcType=VARCHAR}, 
+      #{applyFormCheckComment,jdbcType=VARCHAR}, #{repayCardCheckResult,jdbcType=VARCHAR}, 
+      #{repayCardCheckComment,jdbcType=VARCHAR}, #{invoiceCheckResult,jdbcType=VARCHAR}, 
+      #{invoiceCheckComment,jdbcType=VARCHAR}, #{insuranceCheckResult,jdbcType=VARCHAR}, 
+      #{insuranceCheckComment,jdbcType=VARCHAR}, #{pledgeCheckResult,jdbcType=VARCHAR}, 
+      #{pledgeCheckComment,jdbcType=VARCHAR}, #{leasingContractCheckResult,jdbcType=VARCHAR}, 
+      #{leasingContractCheckComment,jdbcType=VARCHAR}, #{pledgeContractCheckResult,jdbcType=VARCHAR}, 
+      #{pledgeContractCheckCommet,jdbcType=VARCHAR}, #{tenantCheckResult,jdbcType=VARCHAR}, 
+      #{tenantCheckComment,jdbcType=VARCHAR}, #{trustCheckResult,jdbcType=VARCHAR}, #{trustCheckComment,jdbcType=VARCHAR}, 
+      #{loanAddCheckResult,jdbcType=VARCHAR}, #{loanAddCheckComment,jdbcType=VARCHAR}, 
+      #{photoCheckResult,jdbcType=VARCHAR}, #{photoCheckComment,jdbcType=VARCHAR}, #{gpsCheckResult,jdbcType=VARCHAR}, 
+      #{gpsCheckComment,jdbcType=VARCHAR}, #{otherCheckResult,jdbcType=VARCHAR}, #{otherCheckComment,jdbcType=VARCHAR}, 
+      #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.LoanCheck" >
+    insert into t_loan_check
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="idnoCheckResult != null" >
+        IDNO_CHECK_RESULT,
+      </if>
+      <if test="idnoCheckComment != null" >
+        IDNO_CHECK_COMMENT,
+      </if>
+      <if test="applyFormCheckResult != null" >
+        APPLY_FORM_CHECK_RESULT,
+      </if>
+      <if test="applyFormCheckComment != null" >
+        APPLY_FORM_CHECK_COMMENT,
+      </if>
+      <if test="repayCardCheckResult != null" >
+        REPAY_CARD_CHECK_RESULT,
+      </if>
+      <if test="repayCardCheckComment != null" >
+        REPAY_CARD_CHECK_COMMENT,
+      </if>
+      <if test="invoiceCheckResult != null" >
+        INVOICE_CHECK_RESULT,
+      </if>
+      <if test="invoiceCheckComment != null" >
+        INVOICE_CHECK_COMMENT,
+      </if>
+      <if test="insuranceCheckResult != null" >
+        INSURANCE_CHECK_RESULT,
+      </if>
+      <if test="insuranceCheckComment != null" >
+        INSURANCE_CHECK_COMMENT,
+      </if>
+      <if test="pledgeCheckResult != null" >
+        PLEDGE_CHECK_RESULT,
+      </if>
+      <if test="pledgeCheckComment != null" >
+        PLEDGE_CHECK_COMMENT,
+      </if>
+      <if test="leasingContractCheckResult != null" >
+        LEASING_CONTRACT_CHECK_RESULT,
+      </if>
+      <if test="leasingContractCheckComment != null" >
+        LEASING_CONTRACT_CHECK_COMMENT,
+      </if>
+      <if test="pledgeContractCheckResult != null" >
+        PLEDGE_CONTRACT_CHECK_RESULT,
+      </if>
+      <if test="pledgeContractCheckCommet != null" >
+        PLEDGE_CONTRACT_CHECK_COMMET,
+      </if>
+      <if test="tenantCheckResult != null" >
+        TENANT_CHECK_RESULT,
+      </if>
+      <if test="tenantCheckComment != null" >
+        TENANT_CHECK_COMMENT,
+      </if>
+      <if test="trustCheckResult != null" >
+        TRUST_CHECK_RESULT,
+      </if>
+      <if test="trustCheckComment != null" >
+        TRUST_CHECK_COMMENT,
+      </if>
+      <if test="loanAddCheckResult != null" >
+        LOAN_ADD_CHECK_RESULT,
+      </if>
+      <if test="loanAddCheckComment != null" >
+        LOAN_ADD_CHECK_COMMENT,
+      </if>
+      <if test="photoCheckResult != null" >
+        PHOTO_CHECK_RESULT,
+      </if>
+      <if test="photoCheckComment != null" >
+        PHOTO_CHECK_COMMENT,
+      </if>
+      <if test="gpsCheckResult != null" >
+        GPS_CHECK_RESULT,
+      </if>
+      <if test="gpsCheckComment != null" >
+        GPS_CHECK_COMMENT,
+      </if>
+      <if test="otherCheckResult != null" >
+        OTHER_CHECK_RESULT,
+      </if>
+      <if test="otherCheckComment != null" >
+        OTHER_CHECK_COMMENT,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="idnoCheckResult != null" >
+        #{idnoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="idnoCheckComment != null" >
+        #{idnoCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyFormCheckResult != null" >
+        #{applyFormCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="applyFormCheckComment != null" >
+        #{applyFormCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCardCheckResult != null" >
+        #{repayCardCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCardCheckComment != null" >
+        #{repayCardCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCheckResult != null" >
+        #{invoiceCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCheckComment != null" >
+        #{invoiceCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceCheckResult != null" >
+        #{insuranceCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceCheckComment != null" >
+        #{insuranceCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeCheckResult != null" >
+        #{pledgeCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeCheckComment != null" >
+        #{pledgeCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="leasingContractCheckResult != null" >
+        #{leasingContractCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="leasingContractCheckComment != null" >
+        #{leasingContractCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeContractCheckResult != null" >
+        #{pledgeContractCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeContractCheckCommet != null" >
+        #{pledgeContractCheckCommet,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantCheckResult != null" >
+        #{tenantCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantCheckComment != null" >
+        #{tenantCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="trustCheckResult != null" >
+        #{trustCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="trustCheckComment != null" >
+        #{trustCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAddCheckResult != null" >
+        #{loanAddCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAddCheckComment != null" >
+        #{loanAddCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="photoCheckResult != null" >
+        #{photoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="photoCheckComment != null" >
+        #{photoCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsCheckResult != null" >
+        #{gpsCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsCheckComment != null" >
+        #{gpsCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="otherCheckResult != null" >
+        #{otherCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="otherCheckComment != null" >
+        #{otherCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.LoanCheck" >
+    update t_loan_check
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="idnoCheckResult != null" >
+        IDNO_CHECK_RESULT = #{idnoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="idnoCheckComment != null" >
+        IDNO_CHECK_COMMENT = #{idnoCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyFormCheckResult != null" >
+        APPLY_FORM_CHECK_RESULT = #{applyFormCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="applyFormCheckComment != null" >
+        APPLY_FORM_CHECK_COMMENT = #{applyFormCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCardCheckResult != null" >
+        REPAY_CARD_CHECK_RESULT = #{repayCardCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCardCheckComment != null" >
+        REPAY_CARD_CHECK_COMMENT = #{repayCardCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCheckResult != null" >
+        INVOICE_CHECK_RESULT = #{invoiceCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="invoiceCheckComment != null" >
+        INVOICE_CHECK_COMMENT = #{invoiceCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceCheckResult != null" >
+        INSURANCE_CHECK_RESULT = #{insuranceCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceCheckComment != null" >
+        INSURANCE_CHECK_COMMENT = #{insuranceCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeCheckResult != null" >
+        PLEDGE_CHECK_RESULT = #{pledgeCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeCheckComment != null" >
+        PLEDGE_CHECK_COMMENT = #{pledgeCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="leasingContractCheckResult != null" >
+        LEASING_CONTRACT_CHECK_RESULT = #{leasingContractCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="leasingContractCheckComment != null" >
+        LEASING_CONTRACT_CHECK_COMMENT = #{leasingContractCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeContractCheckResult != null" >
+        PLEDGE_CONTRACT_CHECK_RESULT = #{pledgeContractCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="pledgeContractCheckCommet != null" >
+        PLEDGE_CONTRACT_CHECK_COMMET = #{pledgeContractCheckCommet,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantCheckResult != null" >
+        TENANT_CHECK_RESULT = #{tenantCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="tenantCheckComment != null" >
+        TENANT_CHECK_COMMENT = #{tenantCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="trustCheckResult != null" >
+        TRUST_CHECK_RESULT = #{trustCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="trustCheckComment != null" >
+        TRUST_CHECK_COMMENT = #{trustCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAddCheckResult != null" >
+        LOAN_ADD_CHECK_RESULT = #{loanAddCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="loanAddCheckComment != null" >
+        LOAN_ADD_CHECK_COMMENT = #{loanAddCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="photoCheckResult != null" >
+        PHOTO_CHECK_RESULT = #{photoCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="photoCheckComment != null" >
+        PHOTO_CHECK_COMMENT = #{photoCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsCheckResult != null" >
+        GPS_CHECK_RESULT = #{gpsCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="gpsCheckComment != null" >
+        GPS_CHECK_COMMENT = #{gpsCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="otherCheckResult != null" >
+        OTHER_CHECK_RESULT = #{otherCheckResult,jdbcType=VARCHAR},
+      </if>
+      <if test="otherCheckComment != null" >
+        OTHER_CHECK_COMMENT = #{otherCheckComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.LoanCheck" >
+    update t_loan_check
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      IDNO_CHECK_RESULT = #{idnoCheckResult,jdbcType=VARCHAR},
+      IDNO_CHECK_COMMENT = #{idnoCheckComment,jdbcType=VARCHAR},
+      APPLY_FORM_CHECK_RESULT = #{applyFormCheckResult,jdbcType=VARCHAR},
+      APPLY_FORM_CHECK_COMMENT = #{applyFormCheckComment,jdbcType=VARCHAR},
+      REPAY_CARD_CHECK_RESULT = #{repayCardCheckResult,jdbcType=VARCHAR},
+      REPAY_CARD_CHECK_COMMENT = #{repayCardCheckComment,jdbcType=VARCHAR},
+      INVOICE_CHECK_RESULT = #{invoiceCheckResult,jdbcType=VARCHAR},
+      INVOICE_CHECK_COMMENT = #{invoiceCheckComment,jdbcType=VARCHAR},
+      INSURANCE_CHECK_RESULT = #{insuranceCheckResult,jdbcType=VARCHAR},
+      INSURANCE_CHECK_COMMENT = #{insuranceCheckComment,jdbcType=VARCHAR},
+      PLEDGE_CHECK_RESULT = #{pledgeCheckResult,jdbcType=VARCHAR},
+      PLEDGE_CHECK_COMMENT = #{pledgeCheckComment,jdbcType=VARCHAR},
+      LEASING_CONTRACT_CHECK_RESULT = #{leasingContractCheckResult,jdbcType=VARCHAR},
+      LEASING_CONTRACT_CHECK_COMMENT = #{leasingContractCheckComment,jdbcType=VARCHAR},
+      PLEDGE_CONTRACT_CHECK_RESULT = #{pledgeContractCheckResult,jdbcType=VARCHAR},
+      PLEDGE_CONTRACT_CHECK_COMMET = #{pledgeContractCheckCommet,jdbcType=VARCHAR},
+      TENANT_CHECK_RESULT = #{tenantCheckResult,jdbcType=VARCHAR},
+      TENANT_CHECK_COMMENT = #{tenantCheckComment,jdbcType=VARCHAR},
+      TRUST_CHECK_RESULT = #{trustCheckResult,jdbcType=VARCHAR},
+      TRUST_CHECK_COMMENT = #{trustCheckComment,jdbcType=VARCHAR},
+      LOAN_ADD_CHECK_RESULT = #{loanAddCheckResult,jdbcType=VARCHAR},
+      LOAN_ADD_CHECK_COMMENT = #{loanAddCheckComment,jdbcType=VARCHAR},
+      PHOTO_CHECK_RESULT = #{photoCheckResult,jdbcType=VARCHAR},
+      PHOTO_CHECK_COMMENT = #{photoCheckComment,jdbcType=VARCHAR},
+      GPS_CHECK_RESULT = #{gpsCheckResult,jdbcType=VARCHAR},
+      GPS_CHECK_COMMENT = #{gpsCheckComment,jdbcType=VARCHAR},
+      OTHER_CHECK_RESULT = #{otherCheckResult,jdbcType=VARCHAR},
+      OTHER_CHECK_COMMENT = #{otherCheckComment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import com.pujjr.carcredit.domain.HisOper;
 
 public interface HisOperMapper {
-    int deleteByPrimaryKey(String id);
+
+	int deleteByPrimaryKey(String id);
 
 	int insert(HisOper record);
 

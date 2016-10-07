@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.RejectRecommitMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.RejectRecommit" >
+<mapper namespace="com.pujjr.carcredit.dao.ReconsiderMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.Reconsider" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
     <result column="REJECT_REASON" property="rejectReason" jdbcType="VARCHAR" />
     <result column="RECOMMIT_REASON" property="recommitReason" jdbcType="VARCHAR" />
     <result column="RECOMMIT_COMMENT" property="recommitComment" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
   </resultMap>
   <sql id="Base_Column_List" >
-    ID, APP_ID, REJECT_REASON, RECOMMIT_REASON, RECOMMIT_COMMENT
+    ID, APP_ID, REJECT_REASON, RECOMMIT_REASON, RECOMMIT_COMMENT, ENABLED
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
-    from t_reject_recommit
+    from t_reconsider
     where ID = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_reject_recommit
+    delete from t_reconsider
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
-    insert into t_reject_recommit (ID, APP_ID, REJECT_REASON, 
-      RECOMMIT_REASON, RECOMMIT_COMMENT)
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.Reconsider" >
+    insert into t_reconsider (ID, APP_ID, REJECT_REASON, 
+      RECOMMIT_REASON, RECOMMIT_COMMENT, ENABLED
+      )
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{rejectReason,jdbcType=VARCHAR}, 
-      #{recommitReason,jdbcType=VARCHAR}, #{recommitComment,jdbcType=VARCHAR})
+      #{recommitReason,jdbcType=VARCHAR}, #{recommitComment,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
-    insert into t_reject_recommit
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.Reconsider" >
+    insert into t_reconsider
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         ID,
@@ -44,6 +47,9 @@
       </if>
       <if test="recommitComment != null" >
         RECOMMIT_COMMENT,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -62,10 +68,13 @@
       <if test="recommitComment != null" >
         #{recommitComment,jdbcType=VARCHAR},
       </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
-    update t_reject_recommit
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.Reconsider" >
+    update t_reconsider
     <set >
       <if test="appId != null" >
         APP_ID = #{appId,jdbcType=VARCHAR},
@@ -79,15 +88,28 @@
       <if test="recommitComment != null" >
         RECOMMIT_COMMENT = #{recommitComment,jdbcType=VARCHAR},
       </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.RejectRecommit" >
-    update t_reject_recommit
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.Reconsider" >
+    update t_reconsider
     set APP_ID = #{appId,jdbcType=VARCHAR},
       REJECT_REASON = #{rejectReason,jdbcType=VARCHAR},
       RECOMMIT_REASON = #{recommitReason,jdbcType=VARCHAR},
-      RECOMMIT_COMMENT = #{recommitComment,jdbcType=VARCHAR}
+      RECOMMIT_COMMENT = #{recommitComment,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <update id="disabledAllByAppId">
+  	update t_reconsider
+  	SET ENABLED = false
+  	where APP_ID =#{appId}
+  </update>
+  <select id="selectEnabledByAppId" resultMap="BaseResultMap">
+  	select * from t_reconsider
+  	where APP_ID = #{appId} and ENABLED =true
+  </select>
 </mapper>

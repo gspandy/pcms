@@ -23,27 +23,43 @@ import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.domain.SysBranchDealer;
 import com.pujjr.base.domain.SysParam;
 import com.pujjr.base.domain.SysWorkgroup;
+import com.pujjr.base.service.IBankService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.service.ISysParamService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.Reconsider;
+import com.pujjr.carcredit.domain.SignContract;
+import com.pujjr.carcredit.domain.SignFinanceDetail;
+import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
+import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
+import com.pujjr.carcredit.vo.ApplyFinanceVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
+import com.pujjr.carcredit.vo.ReconsiderApplyVo;
+import com.pujjr.carcredit.vo.ReconsiderApproveVo;
+import com.pujjr.carcredit.vo.SignContractVo;
+import com.pujjr.carcredit.vo.SignFinanceDetailVo;
 import com.pujjr.carcredit.vo.TaskApproveCommitVo;
 import com.pujjr.carcredit.vo.TaskAssigneeVo;
 import com.pujjr.carcredit.vo.TaskCheckCommitVo;
+import com.pujjr.carcredit.vo.TaskLoanApproveVo;
 import com.pujjr.carcredit.vo.TaskVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
 import com.pujjr.jbpm.core.command.CommandType;
+import com.pujjr.jbpm.domain.WorkflowRunPath;
+import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 
 @RestController
@@ -64,6 +80,12 @@ public class TaskController extends BaseController
 	private ISysBranchService sysBranchService;
 	@Autowired
 	private IRunWorkflowService  runWorkflowService;
+	@Autowired
+	private ISignContractService signContractService;
+	@Autowired
+	private IRunPathService runPathService;
+	@Autowired
+	private IBankService bankService;
 	
 	@RequestMapping(value="/todolist/{queryType}",method=RequestMethod.GET)
 	public PageVo getToDoTaskList(String curPage,String pageSize,@PathVariable String queryType,HttpServletRequest request)
@@ -173,5 +195,108 @@ public class TaskController extends BaseController
 			
 		}
 		return procResultList;
+	}
+	@RequestMapping(value="/querySignInfo/{appId}",method=RequestMethod.GET)
+	public SignContractVo getSignInfo(@PathVariable String appId)
+	{
+		SignContractVo signVo = new SignContractVo();
+		List<SignFinanceDetailVo>  dtlListVo = new ArrayList<SignFinanceDetailVo>();
+		SignContract signPo = signContractService.getSignContractByAppId(appId);
+		if(signPo==null)
+		{
+			signPo = new SignContract();
+			signPo.setSignStep(1);  
+			signPo.setAppId(appId);
+		}
+		BeanUtils.copyProperties(signPo, signVo);  
+		
+		ApplyVo applyVo = applyService.getApplyDetail(appId);
+		signVo.setRepayAcctName(applyVo.getTenant().getName());
+		SysBranch sysBranch = sysBranchService.getSysBranch(null, applyVo.getCreateBranchCode());
+		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(sysBranch.getId());
+		String loanBankName = bankService.getBankInfoById(dealer.getBankId()).getBankName();
+		signVo.setLoanBankName(loanBankName);
+		signVo.setLoanSubBranch(dealer.getLoanSubbranch());
+		signVo.setLoanAcctNo(dealer.getLoanAcctNo());
+		signVo.setLoanAcctName(dealer.getLoanAcctName());
+		List<ApplyFinanceVo> applyFinanceListVo = applyVo.getFinances();
+		for(ApplyFinanceVo l:applyFinanceListVo)
+		{
+			//查询申请融资信息签约信息
+			SignFinanceDetail dtl = signContractService.getSignFinanceDetailByApplyFinanceId(l.getId());
+			SignFinanceDetailVo dtlVo = new SignFinanceDetailVo();
+			dtlVo.setApplyFinance(l);
+			dtlVo.setSignFinanceDetail(dtl);
+			dtlListVo.add(dtlVo);
+		}
+		signVo.setSignFinanceList(dtlListVo);
+		return signVo;
+	}
+	@RequestMapping(value="/commitSignContractTask/{taskId}",method=RequestMethod.POST)
+	public void commitSignContractTask(@PathVariable String taskId,@RequestBody SignContractVo params,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitSignContract(params, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/commitLoanCheckTask/{taskId}",method=RequestMethod.POST)
+	public void commitLoanCheckTask(@PathVariable String taskId,@RequestBody SignContractVo params,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitLoanCheck(params, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/commitPrevLoanApproveTask/{taskId}",method=RequestMethod.POST)
+	public void commitPrevLoanApproveTask(@PathVariable String taskId,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitPrevLoanApprove(taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/commitLoanApproveTask/{taskId}",method=RequestMethod.POST)
+	public void commitLoanApproveTask(@PathVariable String taskId,@RequestBody TaskLoanApproveVo params,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitLoanApprove(params,taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/getReconsiderInfo/{taskId}",method=RequestMethod.GET)
+	public ReconsiderApplyVo getReconsiderInfo(@PathVariable String taskId) throws Exception
+	{
+		//获取拒绝复议上级任务路径
+		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		if(runpath == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应路径不存在 ");
+		} 
+		String parentUserTaskPathId = runpath.getParentUsertaskPathId();
+		//获取上级任务处理结果
+		TaskProcessResult parentUserTaskProcessResult = taskService.getTaskProcessResultByPathId(parentUserTaskPathId);
+		
+		ReconsiderApplyVo vo = new ReconsiderApplyVo();
+		vo.setRejectReason(parentUserTaskProcessResult.getProcessResultDesc());
+		return vo;
+	}
+	@RequestMapping(value="/commitReconsiderApplyTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void commitReconsiderApplyTask(@RequestBody ReconsiderApplyVo params,@PathVariable String taskId,@PathVariable String appId,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitReconsiderApply(params, appId, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/getReconsiderApproveInfo/{appId}",method=RequestMethod.GET)
+	public ReconsiderApproveVo getReconsiderApproveInfo(@PathVariable String appId)
+	{
+		Reconsider po = taskService.getEnabledReconsiderByAppId(appId);
+		ReconsiderApproveVo vo = new ReconsiderApproveVo();
+		BeanUtils.copyProperties(po, vo);
+		return vo;
+	}
+	
+	@RequestMapping(value="/commitReconsiderApproveTask/{taskId}",method=RequestMethod.POST)
+	public void commitReconsiderApproveTask(@RequestBody ReconsiderApproveVo params,@PathVariable String taskId,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitReconsiderApprove(params, taskId, sysAccount.getAccountId());
 	}
 }

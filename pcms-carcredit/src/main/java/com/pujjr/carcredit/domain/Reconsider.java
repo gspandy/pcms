@@ -1,15 +1,17 @@
 package com.pujjr.carcredit.domain;
 
-public class RejectRecommit {
-    public String id;
+public class Reconsider {
+    private String id;
 
-    public String appId;
+    private String appId;
 
-    public String rejectReason;
+    private String rejectReason;
 
-    public String recommitReason;
+    private String recommitReason;
 
-    public String recommitComment;
+    private String recommitComment;
+
+    private Boolean enabled;
 
     public String getId() {
         return id;
@@ -49,5 +51,13 @@ public class RejectRecommit {
 
     public void setRecommitComment(String recommitComment) {
         this.recommitComment = recommitComment;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 }

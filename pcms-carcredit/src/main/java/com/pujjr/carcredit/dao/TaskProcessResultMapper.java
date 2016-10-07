@@ -1,5 +1,7 @@
 package com.pujjr.carcredit.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.carcredit.domain.TaskProcessResult;
 
 public interface TaskProcessResultMapper {
@@ -14,4 +16,6 @@ public interface TaskProcessResultMapper {
     int updateByPrimaryKeySelective(TaskProcessResult record);
 
     int updateByPrimaryKey(TaskProcessResult record);
+    
+    TaskProcessResult selectByRunPathId(@Param("runPathId")String runPathId);
 }
