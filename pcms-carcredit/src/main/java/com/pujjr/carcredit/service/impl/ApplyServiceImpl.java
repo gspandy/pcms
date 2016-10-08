@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -92,6 +93,9 @@ public class ApplyServiceImpl implements IApplyService {
 	private CarStyleMapper carStyleMapper;
 	@Autowired
 	private GpsLvlMapper gpsLvlMapper;
+	
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	@Qualifier("applyDaoImpl")
@@ -452,14 +456,19 @@ public class ApplyServiceImpl implements IApplyService {
 			applyToDao.setAppId(appId);
 			applyDao.updApply(applyToDao, accountId);
 		}
-		//保存关联信息-融资信息
+		String sql = "insert into test1(userId,couse,point,id) values('1','1','1','1')";
+		jdbcTemplate.update(sql);
+		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//		throw new RuntimeException("555555555555555555");
+		
+	/*	//保存关联信息-融资信息
 		applyVo.setAppId(appId);
 		currentProxy.saveApplyFinance(applyVo,accountId);
 		currentProxy.saveApplyTenant(applyVo, accountId);
 		currentProxy.saveApplySpouse(applyVo, accountId);
 		currentProxy.saveApplyCloessee(applyVo, accountId);
 		currentProxy.saveApplyLinkman(applyVo, accountId);
-		currentProxy.saveApplyFamilyDebt(applyVo, accountId);
+		currentProxy.saveApplyFamilyDebt(applyVo, accountId);*/
 		return appId;
 	}
 

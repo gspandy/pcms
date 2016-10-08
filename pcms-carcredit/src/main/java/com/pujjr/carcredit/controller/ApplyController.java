@@ -27,12 +27,10 @@ import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.po.ApplyInfoPo;
 import com.pujjr.carcredit.service.IApplyService;
-import com.pujjr.carcredit.service.impl.ApplyServiceImpl;
 import com.pujjr.carcredit.vo.ApplyStatus;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.utils.Utils;
-
 /**
  * 
  * @author pujjr 2016-09-18
