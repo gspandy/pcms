@@ -175,11 +175,14 @@ public class TaskController extends BaseController
 		{
 			HashMap<String,Object> result = new HashMap<String,Object>();
 			result.put("appId", task.getBusinessKey());
+			result.put("taskName", task.getTaskName());
+			result.put("productName", task.getProductName());
+			result.put("tenantName", task.getTenantName());
 			String businessKey = task.getBusinessKey();
 			ApplyVo apply = applyService.getApplyDetail(businessKey);
 			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
-			ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
+			ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), group.getId(), candidateAccounts);
 			if(assignee != null)
 			{
 				HashMap<String,Object> vars = new HashMap<String,Object>();
@@ -298,5 +301,10 @@ public class TaskController extends BaseController
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitReconsiderApprove(params, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/backTask/{taskId}",method=RequestMethod.POST)
+	public void backTask(@PathVariable String taskId,@RequestBody String message)
+	{
+		taskService.backTask(taskId, message);
 	}
 }

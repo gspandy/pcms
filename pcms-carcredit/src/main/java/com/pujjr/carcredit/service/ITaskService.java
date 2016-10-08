@@ -52,4 +52,6 @@ public interface ITaskService
 	public Reconsider getEnabledReconsiderByAppId(String appId);
 	
 	public void commitReconsiderApprove(ReconsiderApproveVo reconsiderApproveVo,String taskId,String operId) throws Exception;
+	
+	public void backTask(String taskId,String message);
 }

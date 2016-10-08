@@ -440,5 +440,11 @@ public class TaskServiceImpl implements ITaskService
 		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
 	}
 
+	@Override
+	public void backTask(String taskId, String message) {
+		// TODO Auto-generated method stub
+		runWorkflowService.completeTask(taskId, message, null, CommandType.BACK);
+	}
+
 
 }
