@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.domain.Apply;
@@ -40,7 +41,7 @@ import com.pujjr.utils.Utils;
  */
 @Controller
 //@RequestMapping(value="/apply")
-public class ApplyController {
+public class ApplyController extends BaseController {
 	@Autowired
 	private IApplyService applyService;
 //	private ApplyServiceImpl applyService;

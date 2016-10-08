@@ -25,6 +25,8 @@ public class ToDoTaskPo
 	private String runPathId;
 	//分配时间
 	private Date startTime;
+	//执行时间
+	private Date processTime;
 	//进入流程方式
 	private String inJumpType;
 	//上级任务名称
@@ -88,6 +90,13 @@ public class ToDoTaskPo
 	}
 	public String getAssignee() {
 		return assignee;
+	}
+
+	public Date getProcessTime() {
+		return processTime;
+	}
+	public void setProcessTime(Date processTime) {
+		this.processTime = processTime;
 	}
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;

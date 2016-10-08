@@ -39,4 +39,8 @@ public interface IRunPathService
 	 * @return 路径信息
 	 * **/
 	public WorkflowRunPath getRunPathById(String pathId);
+	/**更新路径任务执行时间
+	 * @param taskId 任务ID
+	 * **/
+	public void updateRunPathProcessTimeByTaskId(String taskId);
 }

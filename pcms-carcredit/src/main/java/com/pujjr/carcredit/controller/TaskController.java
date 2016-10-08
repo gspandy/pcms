@@ -39,6 +39,7 @@ import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
+import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
@@ -115,9 +116,14 @@ public class TaskController extends BaseController
 	}
 	
 	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
-	public TaskVo getTaskByTaskId(@PathVariable String taskId)
+	public TaskVo getTaskByTaskId(@PathVariable String taskId) throws Exception
 	{
 		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		runPathService.updateRunPathProcessTimeByTaskId(taskId);
 		TaskVo vo = new TaskVo();
 		vo.setId(task.getId());
 		vo.setName(task.getName());
@@ -306,5 +312,15 @@ public class TaskController extends BaseController
 	public void backTask(@PathVariable String taskId,@RequestBody String message)
 	{
 		taskService.backTask(taskId, message);
+	}
+	@RequestMapping(value="/getWorkflowProcessResult/{taskId}",method=RequestMethod.GET)
+	public List<WorkflowProcessResultPo> getWorkflowProcessResult(@PathVariable String taskId) throws Exception
+	{
+		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		return taskService.getWorkflowProcessResult(task.getProcessInstanceId());
 	}
 }

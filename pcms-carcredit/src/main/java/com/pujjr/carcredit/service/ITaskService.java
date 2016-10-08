@@ -13,6 +13,7 @@ import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
+import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
@@ -54,4 +55,6 @@ public interface ITaskService
 	public void commitReconsiderApprove(ReconsiderApproveVo reconsiderApproveVo,String taskId,String operId) throws Exception;
 	
 	public void backTask(String taskId,String message);
+	
+	public List<WorkflowProcessResultPo> getWorkflowProcessResult(String procInstId);
 }
