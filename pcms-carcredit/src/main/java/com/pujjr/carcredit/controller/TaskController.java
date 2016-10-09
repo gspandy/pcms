@@ -39,6 +39,7 @@ import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
+import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
@@ -115,9 +116,14 @@ public class TaskController extends BaseController
 	}
 	
 	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
-	public TaskVo getTaskByTaskId(@PathVariable String taskId)
+	public TaskVo getTaskByTaskId(@PathVariable String taskId) throws Exception
 	{
 		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		runPathService.updateRunPathProcessTimeByTaskId(taskId);
 		TaskVo vo = new TaskVo();
 		vo.setId(task.getId());
 		vo.setName(task.getName());
@@ -175,11 +181,14 @@ public class TaskController extends BaseController
 		{
 			HashMap<String,Object> result = new HashMap<String,Object>();
 			result.put("appId", task.getBusinessKey());
+			result.put("taskName", task.getTaskName());
+			result.put("productName", task.getProductName());
+			result.put("tenantName", task.getTenantName());
 			String businessKey = task.getBusinessKey();
 			ApplyVo apply = applyService.getApplyDetail(businessKey);
 			SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 			SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
-			ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 5000, sysBranch.getId(), group.getId(), candidateAccounts);
+			ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), group.getId(), candidateAccounts);
 			if(assignee != null)
 			{
 				HashMap<String,Object> vars = new HashMap<String,Object>();
@@ -298,5 +307,20 @@ public class TaskController extends BaseController
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitReconsiderApprove(params, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/backTask/{taskId}",method=RequestMethod.POST)
+	public void backTask(@PathVariable String taskId,@RequestBody String message)
+	{
+		taskService.backTask(taskId, message);
+	}
+	@RequestMapping(value="/getWorkflowProcessResult/{taskId}",method=RequestMethod.GET)
+	public List<WorkflowProcessResultPo> getWorkflowProcessResult(@PathVariable String taskId) throws Exception
+	{
+		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if(task == null)
+		{
+			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+		}
+		return taskService.getWorkflowProcessResult(task.getProcessInstanceId());
 	}
 }

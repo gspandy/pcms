@@ -16,5 +16,5 @@ public interface ApplySpouseMapper {
 
     int updateByPrimaryKey(ApplySpouse record);
     
-    ApplySpouseVo selectByAppId(String appId);
+    ApplySpouse selectByAppId(String appId);
 }

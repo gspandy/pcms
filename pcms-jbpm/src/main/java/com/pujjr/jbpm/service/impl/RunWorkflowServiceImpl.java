@@ -255,6 +255,7 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 		processNextCommand.setTaskId(taskId);
 		processNextCommand.setAssignee(task.getAssignee());
 		processNextCommand.setVars(vars);
+		processNextCommand.setMessage(message);
 		completeTask(processNextCommand);
 	}
 }

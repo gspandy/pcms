@@ -42,7 +42,11 @@ import com.pujjr.carcredit.dao.ApplyTenantMapper;
 import com.pujjr.carcredit.dao.IApplyDao;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyCloessee;
+import com.pujjr.carcredit.domain.ApplyFamilyDebt;
 import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.ApplyLinkman;
+import com.pujjr.carcredit.domain.ApplySpouse;
+import com.pujjr.carcredit.domain.ApplyTenant;
 import com.pujjr.carcredit.domain.ApplyTenantCar;
 import com.pujjr.carcredit.domain.ApplyTenantHouse;
 import com.pujjr.carcredit.po.ApplyInfoPo;
@@ -137,46 +141,64 @@ public class ApplyServiceImpl implements IApplyService {
 		// TODO Auto-generated method stub
 		ApplyVo applyVo = new ApplyVo();
 		Apply apply = applyMapper.selectByAppid(appId);
-		BeanUtils.copyProperties(apply, applyVo);
+		Utils.copyProperties(apply, applyVo);
 		System.out.println(applyVo);
 		//产品信息
 		Product product = productMapper.selectProductByProductCode(applyVo.getProductCode());
 		applyVo.setProduct(product);
 		//融资信息
-		List<ApplyFinanceVo> finances = applyFinanceMapper.selectByAppId(appId);
-		for (ApplyFinanceVo finance:finances) {
-			String carStyleId = finance.getCarStyleId();
-			String gpsLvlId = finance.getGpsLvlId();
+		List<ApplyFinance> financesPo = applyFinanceMapper.selectByAppId(appId);
+		List<ApplyFinanceVo> financesVo = new ArrayList<ApplyFinanceVo>();
+		for (ApplyFinance financePo:financesPo) {
+			ApplyFinanceVo financeVo = new ApplyFinanceVo();
+			Utils.copyProperties(financePo, financeVo);
+			String carStyleId = financePo.getCarStyleId();
+			String gpsLvlId = financePo.getGpsLvlId();
 			//融资车辆信息
 			CarStyle carStyle = carStyleMapper.selectByPrimaryKey(carStyleId);
 			//GPS价格档位
 			GpsLvl gpsLvl = gpsLvlMapper.selectByPrimaryKey(gpsLvlId);
-			finance.setSelect(true);
-			finance.setCarStyle(carStyle);
-			finance.setGpsLvl(gpsLvl);
+			financeVo.setSelect(true);
+			financeVo.setCarStyle(carStyle);
+			financeVo.setGpsLvl(gpsLvl);
+			financesVo.add(financeVo);
 		}
-		applyVo.setFinances(finances);
+		applyVo.setFinances(financesVo);
 		//承租人信息
-		ApplyTenantVo tenant = applyTenantMapper.selectByAppId(appId);
+		ApplyTenant tenantPo = applyTenantMapper.selectByAppId(appId);
+		ApplyTenantVo tenantVo = new ApplyTenantVo();
+		Utils.copyProperties(tenantPo, tenantVo);
 		List<ApplyTenantCar> tenantCars = applyTenantCarMapper.selectByAppId(appId);
 		List<ApplyTenantHouse> tenantHouses = applyTenantHouseMapper.selectByAppId(appId);
-		tenant.setTenantCars(tenantCars);
-		tenant.setTenantHouses(tenantHouses);
-		applyVo.setTenant(tenant);
+		tenantVo.setTenantCars(tenantCars);
+		tenantVo.setTenantHouses(tenantHouses);
+		applyVo.setTenant(tenantVo);
 		//配偶信息
-		ApplySpouseVo spouse = applySpouseMapper.selectByAppId(appId);
-		applyVo.setSpouse(spouse);
+		ApplySpouse spousePo = applySpouseMapper.selectByAppId(appId);
+		ApplySpouseVo spouseVo = new ApplySpouseVo();
+		Utils.copyProperties(spousePo, spouseVo);
+		applyVo.setSpouse(spouseVo);
 		//共租人信息
-		ApplyCloesseeVo cloessee = applyCloesseeMapper.selectByAppId(appId);
-		applyVo.setCloessee(cloessee);
+		ApplyCloessee cloesseePo = applyCloesseeMapper.selectByAppId(appId);
+		ApplyCloesseeVo cloesseeVo = new ApplyCloesseeVo();
+		Utils.copyProperties(cloesseePo, cloesseeVo);
+		applyVo.setCloessee(cloesseeVo);
 		//联系人信息
-		List<ApplyLinkmanVo> linkmans = applyLinkmanMapper.selectByAppId(appId);
-		applyVo.setLinkmans(linkmans);
+		List<ApplyLinkman> linkmansPo = applyLinkmanMapper.selectByAppId(appId);
+		List<ApplyLinkmanVo> linkmansVo = new ArrayList();
+		for(ApplyLinkman linkmanPo:linkmansPo){
+			ApplyLinkmanVo linkmanVo = new ApplyLinkmanVo();
+			Utils.copyProperties(linkmanPo, linkmanVo);
+			linkmansVo.add(linkmanVo);
+		}
+		applyVo.setLinkmans(linkmansVo);
 		//家庭负债
-		ApplyFamilyDebtVo familyDebt = applyFamilyDebtMapper.selectByAppId(appId);
-		applyVo.setFamilyDebt(familyDebt);
-		System.out.println(finances);
-		System.out.println(applyVo);
+		ApplyFamilyDebt familyDebtPo = applyFamilyDebtMapper.selectByAppId(appId);
+		ApplyFamilyDebtVo familyDebtVo = new ApplyFamilyDebtVo();
+		Utils.copyProperties(familyDebtPo, familyDebtVo);
+		applyVo.setFamilyDebt(familyDebtVo);
+//		System.out.println(finances);
+//		System.out.println(applyVo);
 		return applyVo;
 		
 	}
@@ -205,6 +227,8 @@ public class ApplyServiceImpl implements IApplyService {
 		IApplyService currentProxy = (IApplyService)AopContext.currentProxy();
 		String appId = applyVo.getAppId();
 		List<ApplyFinanceVo> finances = applyVo.getFinances();
+		if(finances == null)
+			return;
 		for (int i = 0; i < finances.size(); i++) {
 			ApplyFinanceVo afv = finances.get(i);
 			if(afv.isSelect()){
@@ -237,6 +261,8 @@ public class ApplyServiceImpl implements IApplyService {
 		IApplyService currentProxy = (IApplyService) AopContext.currentProxy();
 		String appId = applyVo.getAppId();
 		ApplySpouseVo spouse = applyVo.getSpouse();
+		if(spouse == null)
+			return;
 		spouse.setAppId(appId);
 		String tempId = "";
 		tempId = spouse.getId();
@@ -256,6 +282,8 @@ public class ApplyServiceImpl implements IApplyService {
 		IApplyService currentProxy = (IApplyService) AopContext.currentProxy();
 		String appId = applyVo.getAppId();
 		ApplyCloesseeVo ac = applyVo.getCloessee();
+		if(ac == null)
+			return;
 		String tempId = "";
 		tempId = ac.getId();
 		if(tempId == null || "".equals(tempId)){//insert
@@ -273,6 +301,8 @@ public class ApplyServiceImpl implements IApplyService {
 		IApplyService currentProxy = (IApplyService) AopContext.currentProxy();
 		String appId = applyVo.getAppId();
 		List<ApplyLinkmanVo> linkmans = applyVo.getLinkmans();
+		if(linkmans == null)
+			return;
 		for (int i = 0; i < linkmans.size(); i++) {
 			String tempId = "";
 			ApplyLinkmanVo linkman = linkmans.get(i);
@@ -296,6 +326,8 @@ public class ApplyServiceImpl implements IApplyService {
 		String appId = applyVo.getAppId();
 		String tempId = "";
 		ApplyFamilyDebtVo familyDebt = applyVo.getFamilyDebt();
+		if(familyDebt == null)
+			return;
 		tempId = familyDebt.getId();
 		if(tempId == null || "".equals(tempId)){//insert
 			familyDebt.setAppId(appId);
@@ -312,6 +344,8 @@ public class ApplyServiceImpl implements IApplyService {
 		IApplyService currentProxy = (IApplyService) AopContext.currentProxy();
 		String appId = applyVo.getAppId();
 		ApplyTenantVo tenant = applyVo.getTenant();
+		if(tenant == null)
+			return;
 		String tempId = "";
 		tempId = tenant.getId();
 		System.out.println("tempId:"+tempId);
@@ -456,19 +490,15 @@ public class ApplyServiceImpl implements IApplyService {
 			applyToDao.setAppId(appId);
 			applyDao.updApply(applyToDao, accountId);
 		}
-		String sql = "insert into test1(userId,couse,point,id) values('1','1','1','1')";
-		jdbcTemplate.update(sql);
-		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//		throw new RuntimeException("555555555555555555");
 		
-	/*	//保存关联信息-融资信息
+		//保存关联信息-融资信息
 		applyVo.setAppId(appId);
 		currentProxy.saveApplyFinance(applyVo,accountId);
 		currentProxy.saveApplyTenant(applyVo, accountId);
 		currentProxy.saveApplySpouse(applyVo, accountId);
 		currentProxy.saveApplyCloessee(applyVo, accountId);
 		currentProxy.saveApplyLinkman(applyVo, accountId);
-		currentProxy.saveApplyFamilyDebt(applyVo, accountId);*/
+		currentProxy.saveApplyFamilyDebt(applyVo, accountId);
 		return appId;
 	}
 

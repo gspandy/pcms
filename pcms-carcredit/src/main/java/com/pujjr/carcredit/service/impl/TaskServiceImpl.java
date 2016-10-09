@@ -27,6 +27,7 @@ import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
+import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
@@ -438,6 +439,19 @@ public class TaskServiceImpl implements ITaskService
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("reconsiderApproveProcessResult", reconsiderApproveVo.getApproveResult());
 		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public void backTask(String taskId, String message) {
+		// TODO Auto-generated method stub
+		runWorkflowService.completeTask(taskId, message, null, CommandType.BACK);
+	}
+
+	@Override
+	public List<WorkflowProcessResultPo> getWorkflowProcessResult(
+			String procInstId) {
+		// TODO Auto-generated method stub
+		return taskDao.selectWorkflowProcessResult(procInstId);
 	}
 
 

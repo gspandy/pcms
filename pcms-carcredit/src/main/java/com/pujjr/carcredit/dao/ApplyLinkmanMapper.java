@@ -18,5 +18,5 @@ public interface ApplyLinkmanMapper {
 
 	int updateByPrimaryKey(ApplyLinkman record);
 	
-	List<ApplyLinkmanVo> selectByAppId(String appId);
+	List<ApplyLinkman> selectByAppId(String appId);
 }

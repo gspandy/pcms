@@ -16,5 +16,5 @@ public interface ApplyCloesseeMapper {
 
     int updateByPrimaryKey(ApplyCloessee record);
     
-    ApplyCloesseeVo selectByAppId(String appId);
+    ApplyCloessee selectByAppId(String appId);
 }

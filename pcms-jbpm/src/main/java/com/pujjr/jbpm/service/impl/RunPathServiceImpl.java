@@ -1,8 +1,11 @@
 package com.pujjr.jbpm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,8 @@ public class RunPathServiceImpl implements IRunPathService
 {
 	@Autowired
 	private WorkflowRunPathMapper workflowRunPathDao;
-	
+	@Autowired
+	private TaskService actTaskService;
 	/**
 	 * 获取指定节点最远路径
 	 * @param procInstId 流程实例ID
@@ -73,5 +77,15 @@ public class RunPathServiceImpl implements IRunPathService
 	public WorkflowRunPath getRunPathById(String pathId)
 	{
 		return workflowRunPathDao.selectByPrimaryKey(pathId);
+	}
+
+	@Override
+	public void updateRunPathProcessTimeByTaskId(String taskId) {
+		// TODO Auto-generated method stub
+		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		WorkflowRunPath runPath = this.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		runPath.setProcessTime(new Date());
+		workflowRunPathDao.updateByPrimaryKey(runPath);
+		
 	}
 }

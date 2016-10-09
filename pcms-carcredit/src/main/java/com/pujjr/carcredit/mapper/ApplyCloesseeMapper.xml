@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pujjr.carcredit.dao.ApplyCloesseeMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplyCloesseeVo" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyCloessee" >
     <id column="ID" property="id" jdbcType="VARCHAR" />
     <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
     <result column="NAME" property="name" jdbcType="VARCHAR" />
