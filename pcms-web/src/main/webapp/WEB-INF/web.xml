@@ -15,7 +15,7 @@
   </context-param>
   <context-param>
     <param-name>webAppRootKey</param-name>
-    <param-value>gpsserver</param-value>
+    <param-value>pcms-web</param-value>
   </context-param>
   <filter>
     <filter-name>corsFilter</filter-name>
