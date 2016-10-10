@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pujjr.carcredit.dao.ApplyLinkmanMapper">
 
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.vo.ApplyLinkmanVo">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyLinkman">
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
     <result column="SEQ" jdbcType="INTEGER" property="seq" />

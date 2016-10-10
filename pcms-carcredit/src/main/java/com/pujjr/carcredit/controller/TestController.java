@@ -1,3 +1,6 @@
+/**
+ * 测试controller
+ */
 package com.pujjr.carcredit.controller;
 
 import java.io.IOException;
@@ -47,7 +50,6 @@ import com.pujjr.carcredit.service.impl.TestServiceImpl;
 public class TestController{
 	@Autowired
 	private ITestService coreServiceImpl;
-	
 	/**
 	 * rollback测试
 	 * @return
@@ -59,5 +61,4 @@ public class TestController{
 		coreServiceImpl.rollback_test();
 		return "rollback_test";
 	}
-	
 }

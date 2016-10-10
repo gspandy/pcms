@@ -14,7 +14,6 @@ import com.pujjr.carcredit.domain.ApplyFinance;
 import com.pujjr.carcredit.domain.ApplyTenantCar;
 import com.pujjr.carcredit.domain.ApplyTenantHouse;
 import com.pujjr.carcredit.po.ApplyInfoPo;
-import com.pujjr.carcredit.service.impl.ApplyServiceImpl;
 import com.pujjr.carcredit.vo.ApplyCloesseeVo;
 import com.pujjr.carcredit.vo.ApplyFamilyDebtVo;
 import com.pujjr.carcredit.vo.ApplyFinanceVo;
@@ -24,8 +23,8 @@ import com.pujjr.carcredit.vo.ApplyTenantVo;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 
-@Service
-@Transactional(rollbackFor=Exception.class) 
+//@Service
+//@Transactional(rollbackFor=Exception.class) 
 public interface IApplyService 
 {
 	public void tempSaveApply();

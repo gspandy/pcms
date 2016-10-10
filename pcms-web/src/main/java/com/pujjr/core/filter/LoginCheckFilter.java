@@ -54,14 +54,14 @@ public class LoginCheckFilter implements Filter {
 	    	final String authHeader = req.getHeader("Authorization");
 	        try 
 	        {
-	        	final Claims claims = Jwts.parser().setSigningKey("secretkey")
+	        	/*final Claims claims = Jwts.parser().setSigningKey("secretkey")
     	                .parseClaimsJws(authHeader).getBody();
 	            String userid=claims.getSubject();
 	            ServletContext sc = req.getSession().getServletContext();
 	            XmlWebApplicationContext cxt = (XmlWebApplicationContext)WebApplicationContextUtils.getWebApplicationContext(sc);
 	            ISysAccountService sysAccountService = (ISysAccountService)cxt.getBean(ISysAccountService.class);
 	            SysAccount sysAccount = sysAccountService.getSysAccountByAccountId(userid);
-	            request.setAttribute("account", sysAccount);
+	            request.setAttribute("account", sysAccount);*/
 	        	filterChain.doFilter(request,response); 
 	        }
 	        catch (SignatureException  e) 

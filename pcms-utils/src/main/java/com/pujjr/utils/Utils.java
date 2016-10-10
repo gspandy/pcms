@@ -14,11 +14,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.BeanUtils;
+
 
 
 public class Utils {
 	
 	public static int seq=0;
+	
+	/**
+	 * 对象属性拷贝
+	 * @param source 数据源对象
+	 * @param target 目标对象
+	 * @author pujjr 2016-10-09
+	 */
+	public static void copyProperties(Object source, Object target){
+		if(source != null)
+			BeanUtils.copyProperties(source, target);
+		else
+			target = null;
+	}
 	
 	public static String convertStr2Utf8(String value) throws UnsupportedEncodingException
 	{

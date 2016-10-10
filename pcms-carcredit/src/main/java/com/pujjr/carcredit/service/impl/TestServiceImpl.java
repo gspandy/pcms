@@ -15,13 +15,12 @@ import com.pujjr.carcredit.service.ITestService;
 public class TestServiceImpl implements ITestService{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	
 	public void rollback_test(){
 		System.out.println("CoreServiceImpl2->rollback_test");
 		String sql = "insert into test1(userId,couse,point,id) values('1','1','1','1')";
 		jdbcTemplate.update(sql);
-//		throw new RuntimeException("ttttttttttttttt");
+		throw new RuntimeException("ttttttttttttttt");
 //		throw new NullPointerException("ttttttttttttttttttt");
-		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	}
 }

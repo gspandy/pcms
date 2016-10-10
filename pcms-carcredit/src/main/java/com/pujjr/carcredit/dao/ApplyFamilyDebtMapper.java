@@ -16,5 +16,5 @@ public interface ApplyFamilyDebtMapper {
 
     int updateByPrimaryKey(ApplyFamilyDebt record);
     
-    ApplyFamilyDebtVo selectByAppId(String appId);
+    ApplyFamilyDebt selectByAppId(String appId);
 }

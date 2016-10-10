@@ -16,5 +16,5 @@ public interface ApplyTenantMapper {
 
     int updateByPrimaryKey(ApplyTenant record);
     
-    ApplyTenantVo selectByAppId(String appId);
+    ApplyTenant selectByAppId(String appId);
 }
