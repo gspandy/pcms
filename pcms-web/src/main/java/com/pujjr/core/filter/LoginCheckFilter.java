@@ -51,9 +51,9 @@ public class LoginCheckFilter implements Filter {
 	    }
 	    else
 	    {
-	    	final String authHeader = req.getHeader("Authorization");
 	        try 
 	        {
+	        	final String authHeader = req.getHeader("Authorization");
 	        	final Claims claims = Jwts.parser().setSigningKey("secretkey")
     	                .parseClaimsJws(authHeader).getBody();
 	            String userid=claims.getSubject();
@@ -67,6 +67,11 @@ public class LoginCheckFilter implements Filter {
 	        catch (SignatureException  e) 
 	        {
 	            res.setStatus(401);
+	            return;
+	        }
+	        catch (IllegalArgumentException e)
+	        {
+	        	res.setStatus(401);
 	            return;
 	        }
 	        

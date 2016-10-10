@@ -82,12 +82,12 @@ public class TestController extends BaseController {
 		FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
 	}
 	
-	@RequestMapping(value="/getFile/{appId}",method=RequestMethod.GET)
-	public void getWorkflowImg(String fileName,
+	@RequestMapping(value="/img/{fileName}", method=RequestMethod.GET)
+	public void getWorkflowImg(@PathVariable String fileName,
 								HttpServletRequest request,
 								HttpServletResponse response) throws IOException
 	{
-		String filePath="d:\\file\\"+Utils.convertStr2Utf8(fileName);
+		String filePath="d:\\file\\"+Utils.convertStr2Utf8(fileName+".jpg");
 		byte[] imgBytes =  FileUtils.readFileToByteArray(new File(filePath));
 		InputStream imgStream = new ByteArrayInputStream(imgBytes);
 		OutputStream stream = response.getOutputStream();
