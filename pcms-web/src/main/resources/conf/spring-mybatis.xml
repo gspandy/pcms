@@ -124,9 +124,5 @@
 	<aop:aspectj-autoproxy proxy-target-class="true"  expose-proxy="true"/>
 	<bean class="com.pujjr.carcredit.aspect.ApplyOperHisAspect"/>
 	
-	<!-- 定时任务-消息推送扫描 -->
-	<bean id="messagePushScanImpl" class="com.pujjr.push.scheduler.impl.MessagePushScanImpl"></bean>
-	<task:scheduled-tasks>
-	  <task:scheduled ref="messagePushScanImpl" method="messagePushScan" cron="${messagepush_scan_scheduler.timeCronExpression}" />
-	</task:scheduled-tasks>
+	
 </beans>
