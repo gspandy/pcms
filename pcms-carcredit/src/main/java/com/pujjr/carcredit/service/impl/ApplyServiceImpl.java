@@ -233,17 +233,17 @@ public class ApplyServiceImpl implements IApplyService {
 			ApplyFinanceVo afv = finances.get(i);
 			if(afv.isSelect()){
 				String id = afv.getId();
+				try {
+					afv.setCarStyleId(afv.getCarStyle().getCarSerialId());
+				} catch (Exception e) {
+					afv.setCarStyleId("");
+				}
+				try {
+					afv.setGpsLvlId(afv.getGpsLvl().getId());
+				} catch (Exception e) {
+					afv.setGpsLvlId("");
+				}
 				if((id == null || "".equals(id))){//add
-					try {
-						afv.setCarStyleId(afv.getCarStyle().getCarSerialId());
-					} catch (Exception e) {
-						afv.setCarStyleId("");
-					}
-					try {
-						afv.setGpsLvlId(afv.getGpsLvl().getId());
-					} catch (Exception e) {
-						afv.setGpsLvlId("");
-					}
 					afv.setId(Utils.get16UUID());
 //					afv.setSeq(i);
 					afv.setAppId(appId);
@@ -409,7 +409,6 @@ public class ApplyServiceImpl implements IApplyService {
 				}
 			}
 		}
-		
 	}
 	
 	/**
