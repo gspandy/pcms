@@ -2,12 +2,14 @@ package com.pujjr.push.intercepter;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
@@ -15,7 +17,7 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 //@Configuration
 @Component
 //public class TlmsHandShakeIntercepter implements HandshakeInterceptor{
-public class TlmsHandShakeIntercepter extends HttpSessionHandshakeInterceptor{
+public class PcmsHandShakeIntercepter extends HttpSessionHandshakeInterceptor{
 //	HandshakeInterceptor
 //	HttpSessionHandshakeInterceptor
 	@Override

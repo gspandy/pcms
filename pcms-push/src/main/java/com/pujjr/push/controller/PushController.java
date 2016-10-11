@@ -13,6 +13,7 @@ import org.springframework.web.socket.WebSocketSession;
 
 import com.pujjr.push.handler.PcmsWebSocketHandler;
 
+
 @Controller
 public class PushController {
 	@ResponseBody
@@ -20,15 +21,19 @@ public class PushController {
 	public void startPush(){
 		System.out.println("PushController->startPush");
 		ArrayList<WebSocketSession> sessionList = PcmsWebSocketHandler.sessionList;
+		int openCnt = 0;
 		for(WebSocketSession webSocketSession:sessionList){
 			String sendToClient = webSocketSession.getAttributes().get("userName").toString();
 			try {
-				webSocketSession.sendMessage(new TextMessage(sendToClient));
+				if(webSocketSession.isOpen()){
+					openCnt++;
+					webSocketSession.sendMessage(new TextMessage(sendToClient));
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 		}
-		System.out.println(sessionList);
+		System.out.println("sessionList:"+sessionList+"|当前链接数openCnt："+openCnt);
 	}
 }
