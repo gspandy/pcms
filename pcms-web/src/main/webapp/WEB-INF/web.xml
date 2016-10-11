@@ -15,7 +15,7 @@
   </context-param>
   <context-param>
     <param-name>webAppRootKey</param-name>
-    <param-value>gpsserver</param-value>
+    <param-value>pcms-web</param-value>
   </context-param>
   <filter>
     <filter-name>corsFilter</filter-name>
@@ -86,5 +86,9 @@
   <servlet-mapping>
     <servlet-name>SpringMVC</servlet-name>
     <url-pattern>/public/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpringMVC</servlet-name>
+    <url-pattern>/image/*</url-pattern>
   </servlet-mapping>
 </web-app>
