@@ -125,4 +125,15 @@
       UPDATE_ID = #{updateId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_directory 
+  	where 1=1 
+  	<if test="enabled == true">
+  		and enabled= true
+  	</if>
+  </select>
+  <select id="selectSubDirectory" resultMap="BaseResultMap">
+  	select * from t_directory
+  	where PARENT_ID = #{parentId}
+  </select>
 </mapper>
