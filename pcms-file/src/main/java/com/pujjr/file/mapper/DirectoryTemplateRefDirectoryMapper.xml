@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.DirectoryTemplateRefDirectoryMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.file.domain.DirectoryTemplateRefDirectory" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="TPL_ID" property="tplId" jdbcType="VARCHAR" />
+    <result column="DIR_ID" property="dirId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TPL_ID, DIR_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_directory_template_ref_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_directory_template_ref_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.file.domain.DirectoryTemplateRefDirectory" >
+    insert into t_directory_template_ref_directory (ID, TPL_ID, DIR_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR}, #{dirId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.file.domain.DirectoryTemplateRefDirectory" >
+    insert into t_directory_template_ref_directory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="tplId != null" >
+        TPL_ID,
+      </if>
+      <if test="dirId != null" >
+        DIR_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="dirId != null" >
+        #{dirId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.file.domain.DirectoryTemplateRefDirectory" >
+    update t_directory_template_ref_directory
+    <set >
+      <if test="tplId != null" >
+        TPL_ID = #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="dirId != null" >
+        DIR_ID = #{dirId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.file.domain.DirectoryTemplateRefDirectory" >
+    update t_directory_template_ref_directory
+    set TPL_ID = #{tplId,jdbcType=VARCHAR},
+      DIR_ID = #{dirId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

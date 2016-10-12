@@ -31,7 +31,7 @@ public interface SysWorkgroupMapper {
     									   			@Param("dealerId")String dealerId,
     									   			@Param("groups")List<SysWorkgroup> groups,
     									   			@Param("candidateAccounts")List<String> candidateAccounts);
-    List<HashMap> selectWorkgroupOnlineAccountList(@Param("groups")List<SysWorkgroup> groups);
+    List<HashMap> selectWorkgroupOnlineAccountList(@Param("groups")List<SysWorkgroup> groups,@Param("checkOnline")boolean checkOnline);
     
     SysWorkgroup selectByName(@Param("workgroupName")String workgroupName);
 }

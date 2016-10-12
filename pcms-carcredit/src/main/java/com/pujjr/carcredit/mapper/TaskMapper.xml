@@ -80,21 +80,21 @@
 			  	left join sys_account b on a.SYSACCOUNT_ID = b.id
 			  	left join act_ru_task c on b.account_id = c.assignee_
 		  	where 
-				a.WORKGROUP_ID = '41757f87fe683ec1' 
+				a.WORKGROUP_ID = #{workgroupId}
 				<![CDATA[
 					and timestampdiff(SECOND,b.last_heartbeat_time,now()) <= 30
 				]]>
 		  		group by b.account_id
 	</select>
 	<select id="selectTaskAssignCntInfo" resultType="HashMap">
-		select a.assignee as assignee , b.account_name as accountName,a.cnt as curTaskCnt ,d.max_task_cnt as maxTaskCnt , d.workgroup_id as workgroupId
+		select b.account_id as assignee , b.account_name as accountName,if(a.cnt  is null ,0,a.cnt) as curTaskCnt ,d.max_task_cnt as maxTaskCnt , d.workgroup_id as workgroupId
 		from
 		(
 			select assignee_ as assignee,count(*) as cnt
 			from act_ru_task 
 			group by assignee_
 		) a 
-		inner join  sys_account  b on a.assignee = b.account_id
+		right join  sys_account  b on a.assignee = b.account_id
 		inner join t_rule_member_taskcnt d on d.account_id = b.id
 		and d.id in 
 		<foreach item="item" index="index" collection="taskCntRuleIds"

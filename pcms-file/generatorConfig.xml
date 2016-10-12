@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		
+	
+	<context id="mysqlMybatis"  defaultModelType="conditional" >
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt5?characterEncoding=UTF-8" userId="asd"
+			password="asd" />
+		
+		<javaModelGenerator targetPackage="com.pujjr.file.domain"
+			targetProject="pcms-file/src/main/java" />
+		<sqlMapGenerator targetPackage="com.pujjr.file.mapper"
+			targetProject="pcms-file/src/main/java" />
+		<javaClientGenerator targetPackage="com.pujjr.file.dao"
+			targetProject="pcms-file/src/main/java" type="XMLMAPPER" />
+			
+		<table tableName="T_DIRECTORY" domainObjectName="Directory" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_FILE" domainObjectName="DirectoryFile" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_TEMPLATE" domainObjectName="DirectoryTemplate" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_CATEGORY" domainObjectName="DirectoryCategory" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_TEMPLATE_REF_DIRECTORY" domainObjectName="DirectoryTemplateRefDirectory" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_TEMPLATE_CATEGORY" domainObjectName="DirectoryTemplateCategory" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_DIRECTORY_TEMPLATE_CATEGORY_REF_DIRECTORY" domainObjectName="DirectoryTemplateCategoryRefDirectory" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+	</context>
+</generatorConfiguration>

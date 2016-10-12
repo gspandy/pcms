@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.DirectoryFileMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.file.domain.DirectoryFile" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DIR_ID" property="dirId" jdbcType="VARCHAR" />
+    <result column="BUSINESS_ID" property="businessId" jdbcType="VARCHAR" />
+    <result column="OSS_KEY" property="ossKey" jdbcType="VARCHAR" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+    <result column="FILE_SIZE" property="fileSize" jdbcType="INTEGER" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DIR_ID, BUSINESS_ID, OSS_KEY, FILE_NAME, FILE_TYPE, FILE_SIZE, CREATE_TIME, CREATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_directory_file
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_directory_file
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.file.domain.DirectoryFile" >
+    insert into t_directory_file (ID, DIR_ID, BUSINESS_ID, 
+      OSS_KEY, FILE_NAME, FILE_TYPE, 
+      FILE_SIZE, CREATE_TIME, CREATE_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{dirId,jdbcType=VARCHAR}, #{businessId,jdbcType=VARCHAR}, 
+      #{ossKey,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
+      #{fileSize,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.file.domain.DirectoryFile" >
+    insert into t_directory_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="dirId != null" >
+        DIR_ID,
+      </if>
+      <if test="businessId != null" >
+        BUSINESS_ID,
+      </if>
+      <if test="ossKey != null" >
+        OSS_KEY,
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME,
+      </if>
+      <if test="fileType != null" >
+        FILE_TYPE,
+      </if>
+      <if test="fileSize != null" >
+        FILE_SIZE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dirId != null" >
+        #{dirId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="ossKey != null" >
+        #{ossKey,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.file.domain.DirectoryFile" >
+    update t_directory_file
+    <set >
+      <if test="dirId != null" >
+        DIR_ID = #{dirId,jdbcType=VARCHAR},
+      </if>
+      <if test="businessId != null" >
+        BUSINESS_ID = #{businessId,jdbcType=VARCHAR},
+      </if>
+      <if test="ossKey != null" >
+        OSS_KEY = #{ossKey,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        FILE_SIZE = #{fileSize,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.file.domain.DirectoryFile" >
+    update t_directory_file
+    set DIR_ID = #{dirId,jdbcType=VARCHAR},
+      BUSINESS_ID = #{businessId,jdbcType=VARCHAR},
+      OSS_KEY = #{ossKey,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      FILE_SIZE = #{fileSize,jdbcType=INTEGER},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

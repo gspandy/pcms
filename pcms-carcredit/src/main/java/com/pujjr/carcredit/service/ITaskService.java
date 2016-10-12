@@ -36,7 +36,7 @@ public interface ITaskService
 	
 	public ProcessTaskUserBo getProcessTaskAccount(String productCode,double financeAmount,String dealerId,String workgroupId,List<String> candidateAccounts);
 	
-	public List<OnlineAcctPo>  getOnlineAcctInfo(String workgroupId);
+	public List<OnlineAcctPo>  getOnlineAcctInfo(String workgroupId,boolean checkOnline);
 	
 	public void commitSignContract(SignContractVo signContractVo,String taskId,String operId);
 	

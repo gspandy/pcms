@@ -156,7 +156,11 @@ public class TaskController extends BaseController
 			throw new Exception("未配置系统参数check-group-name");
 		}
 		SysWorkgroup group = workgroupService.getWorkgroupByName(sysParam.getParamValue());
-		List<OnlineAcctPo> poList = taskService.getOnlineAcctInfo(group.getId());
+		List<OnlineAcctPo> poList = taskService.getOnlineAcctInfo(group.getId(),false);
+		if(poList == null)
+		{
+			return null;
+		}
 		List<OnlineAcctVo> voList = new ArrayList<OnlineAcctVo>();
 		for(OnlineAcctPo po : poList)
 		{

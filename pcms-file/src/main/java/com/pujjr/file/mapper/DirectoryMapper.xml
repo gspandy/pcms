@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.DirectoryMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.file.domain.Directory" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="DIR_NAME" property="dirName" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, DIR_NAME, PARENT_ID, ENABLED, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.file.domain.Directory" >
+    insert into t_directory (ID, DIR_NAME, PARENT_ID, 
+      ENABLED, CREATE_TIME, CREATE_ID, 
+      UPDATE_TIME, UPDATE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{dirName,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
+      #{enabled,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.file.domain.Directory" >
+    insert into t_directory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="dirName != null" >
+        DIR_NAME,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="dirName != null" >
+        #{dirName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.file.domain.Directory" >
+    update t_directory
+    <set >
+      <if test="dirName != null" >
+        DIR_NAME = #{dirName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.file.domain.Directory" >
+    update t_directory
+    set DIR_NAME = #{dirName,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

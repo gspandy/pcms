@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +21,10 @@ import com.pujjr.base.domain.ProductRule;
 import com.pujjr.base.domain.ProductSettle;
 import com.pujjr.base.domain.ProductType;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.domain.SysBranchDealer;
 import com.pujjr.base.service.IProductService;
+import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.ProductPeriodVo;
 import com.pujjr.base.vo.ProductSettleVo;
@@ -31,6 +36,8 @@ public class ProductController  extends BaseController
 {
 	@Autowired
 	private IProductService productService;
+	@Autowired
+	private ISysBranchService sysBranchService;
 	
 	@RequestMapping(value="/producttype",method=RequestMethod.GET)
 	public List<ProductType> getProductTypeList()
@@ -233,9 +240,21 @@ public class ProductController  extends BaseController
 		return productService.getAllEnableProductList();
 	}
 	@RequestMapping(value="/branchenable",method=RequestMethod.GET)
-	public List<Product> getBranchEnableProductList()
+	public List<Product> getBranchEnableProductList(HttpServletRequest request) throws Exception
 	{
-		return productService.getBranchEnableProductList("18d321e29300db69");
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		SysBranchDealer  sysBranchDealer = sysBranchService.getDealerByBranchId(account.getBranchId());
+		if(sysBranchDealer == null)
+		{
+			throw new Exception("所属机构不存在");
+		}
+		return productService.getBranchEnableProductList(sysBranchDealer.getBranchId());
+	}
+	@RequestMapping(value="/branchenable/{branchCode}",method=RequestMethod.GET)
+	public List<Product> getBranchEnableProductListByBranchCode(@PathVariable String branchCode)
+	{
+		SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
+		return productService.getBranchEnableProductList(sysBranch.getId());
 	}
 	
  }
