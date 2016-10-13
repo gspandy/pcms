@@ -1,5 +1,7 @@
 package com.pujjr.file.dao;
 
+import java.util.List;
+
 import com.pujjr.file.domain.DirectoryCategory;
 
 public interface DirectoryCategoryMapper {
@@ -14,4 +16,6 @@ public interface DirectoryCategoryMapper {
     int updateByPrimaryKeySelective(DirectoryCategory record);
 
     int updateByPrimaryKey(DirectoryCategory record);
+    
+    List<DirectoryCategory>  selectAll();
 }

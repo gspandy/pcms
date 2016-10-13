@@ -2,8 +2,10 @@ package com.pujjr.file.service;
 
 import java.util.List;
 
-import com.pujjr.file.domain.DirectoryTemplate;
+import org.springframework.stereotype.Service;
 
+import com.pujjr.file.domain.DirectoryTemplate;
+@Service
 public interface ITemplateService 
 {
 	List<DirectoryTemplate> getTemplateList(boolean enabled);

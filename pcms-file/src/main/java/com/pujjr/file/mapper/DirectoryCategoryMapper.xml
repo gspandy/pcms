@@ -114,4 +114,7 @@
       UPDATE_ID = #{updateId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_directory_category order by CREATE_TIME
+  </select>
 </mapper>

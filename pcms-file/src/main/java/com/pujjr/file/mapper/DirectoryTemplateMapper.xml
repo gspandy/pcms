@@ -114,4 +114,10 @@
       UPDATE_ID = #{updateId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_directory_template
+  	<if test="enabled==true">
+  		ENABLED = true
+  	</if>
+  </select>
 </mapper>
