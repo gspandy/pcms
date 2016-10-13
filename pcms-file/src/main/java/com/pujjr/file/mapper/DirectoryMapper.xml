@@ -136,4 +136,11 @@
   	select * from t_directory
   	where PARENT_ID = #{parentId}
   </select>
+  <select id="selectDirectoryByTemplateId" resultMap="BaseResultMap">
+  	select b.* 
+  	from T_DIRECTORY_TEMPLATE_REF_DIRECTORY a
+  	inner join T_DIRECTORY b on a.DIR_ID = b.id
+  	where a.TPL_ID = #{templateId}
+  	and b.enabled=true
+  </select>
 </mapper>

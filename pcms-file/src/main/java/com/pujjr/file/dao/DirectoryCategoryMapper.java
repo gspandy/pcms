@@ -2,6 +2,8 @@ package com.pujjr.file.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.file.domain.DirectoryCategory;
 
 public interface DirectoryCategoryMapper {
@@ -18,4 +20,6 @@ public interface DirectoryCategoryMapper {
     int updateByPrimaryKey(DirectoryCategory record);
     
     List<DirectoryCategory>  selectAll();
+    
+    List<DirectoryCategory> selectCatetoryByTemplateId(@Param("templateId")String templateId);
 }

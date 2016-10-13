@@ -15,5 +15,6 @@ public interface ICategoryService
 	void modifyCategory(DirectoryCategory record);
 	
 	void deleteCategoryById(String id);
-	
+
+	List<DirectoryCategory> getCategoryByTemplateId(String templateId);
 }

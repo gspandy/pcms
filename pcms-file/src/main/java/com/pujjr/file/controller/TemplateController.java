@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.file.domain.Directory;
+import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.domain.DirectoryTemplate;
 import com.pujjr.file.service.ITemplateService;
 import com.pujjr.utils.Utils;
@@ -55,5 +57,15 @@ public class TemplateController extends BaseController
 	public void deleteTemplate(@PathVariable String id)
 	{
 		templateService.deleteTemplateById(id);
+	}
+	@RequestMapping(value="/{templateId}/saveTemplateDirectory",method=RequestMethod.POST)
+	public void saveTemplateDirectory(@PathVariable String templateId,@RequestBody List<Directory> records)
+	{
+		templateService.saveTemplateDirectory(templateId, records);
+	}
+	@RequestMapping(value="/{templateId}/saveTemplateCategory",method=RequestMethod.POST)
+	public void saveTemplateCategory(@PathVariable String templateId,@RequestBody List<DirectoryCategory> records)
+	{
+		templateService.saveTemplateCategory(templateId, records);
 	}
 }

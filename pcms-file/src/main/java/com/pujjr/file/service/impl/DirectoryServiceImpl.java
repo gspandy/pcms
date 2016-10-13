@@ -46,4 +46,10 @@ public class DirectoryServiceImpl implements IDirectoryService
 		return directoryDao.selectSubDirectory(parentId);
 	}
 
+	@Override
+	public List<Directory> getDirectoryByTemplateId(String templateId) {
+		// TODO Auto-generated method stub
+		return directoryDao.selectDirectoryByTemplateId(templateId);
+	}
+
 }

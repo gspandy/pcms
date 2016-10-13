@@ -117,4 +117,10 @@
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from t_directory_category order by CREATE_TIME
   </select>
+  <select id="selectCatetoryByTemplateId" resultMap="BaseResultMap">
+  	select b.* 
+  	from T_DIRECTORY_TEMPLATE_CATEGORY a 
+  	left join T_DIRECTORY_CATEGORY b on a.CATEGORY_ID = b.id
+  	where a.TPL_ID = #{templateId}
+  </select>
 </mapper>

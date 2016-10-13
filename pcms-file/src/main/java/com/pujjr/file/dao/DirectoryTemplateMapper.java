@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryTemplate;
 
 public interface DirectoryTemplateMapper {
@@ -20,4 +21,6 @@ public interface DirectoryTemplateMapper {
     int updateByPrimaryKey(DirectoryTemplate record);
     
     List<DirectoryTemplate> selectAll(@Param("enabled")boolean enabled);
+    
+    int deleteTemplateRefDir(@Param("templateId")String templateId);
 }

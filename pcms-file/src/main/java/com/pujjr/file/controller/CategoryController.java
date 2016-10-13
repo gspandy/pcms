@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.service.ICategoryService;
 import com.pujjr.utils.Utils;
@@ -51,5 +52,10 @@ public class CategoryController extends BaseController
 	public void deleteCategory(@PathVariable String id)
 	{
 		categoryService.deleteCategoryById(id);
+	}
+	@RequestMapping(value="/template/{templateId}",method=RequestMethod.GET)
+	public List<DirectoryCategory> getCategoryByTemplateId(@PathVariable String templateId)
+	{
+		return categoryService.getCategoryByTemplateId(templateId);
 	}
 }

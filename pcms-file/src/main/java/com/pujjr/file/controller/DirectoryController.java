@@ -60,4 +60,9 @@ public class DirectoryController  extends BaseController
 	{
 		return directoryService.getSubDirectoryList(parentId);
 	}
+	@RequestMapping(value="/template/{templateId}",method=RequestMethod.GET)
+	public List<Directory> getDirectoryByTemplateId(@PathVariable String templateId)
+	{
+		return directoryService.getDirectoryByTemplateId(templateId);
+	}
 }

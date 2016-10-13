@@ -120,4 +120,8 @@
   		ENABLED = true
   	</if>
   </select>
+  <delete id="deleteTemplateRefDir">
+  	delete from  T_DIRECTORY_TEMPLATE_REF_DIRECTORY
+  	where TPL_ID = #{templateId}
+  </delete>
 </mapper>

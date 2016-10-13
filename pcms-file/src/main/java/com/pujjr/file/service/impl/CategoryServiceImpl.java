@@ -38,4 +38,10 @@ public class CategoryServiceImpl implements ICategoryService {
 		categoryDao.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public List<DirectoryCategory> getCategoryByTemplateId(String templateId) {
+		// TODO Auto-generated method stub
+		return categoryDao.selectCatetoryByTemplateId(templateId);
+	}
+
 }

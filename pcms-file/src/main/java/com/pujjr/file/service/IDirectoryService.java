@@ -17,4 +17,6 @@ public interface IDirectoryService
 	void delelteDirectoryById(String id) throws Exception;
 	
 	List<Directory> getSubDirectoryList(String parentId);
+	
+	List<Directory> getDirectoryByTemplateId(String templateId);
 }

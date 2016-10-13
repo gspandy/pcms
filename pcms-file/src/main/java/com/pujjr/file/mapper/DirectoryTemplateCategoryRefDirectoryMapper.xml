@@ -79,4 +79,7 @@
       REQUIRED = #{required,jdbcType=BIT}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <delete id="deleteByTplCategoryId">
+  	delete from t_directory_template_category_ref_directory where TPL_CATEGORY_ID = #{tplCategoryId}
+  </delete>
 </mapper>

@@ -68,4 +68,19 @@
       CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectUnContainListByTemplateId" resultMap="BaseResultMap">
+  	select * from 
+  	t_directory_template_category
+  	where TPL_ID = #{templateId}
+  	and CATEGORY_ID not in 
+  	<foreach item="item" index="index" collection="categoryIds"
+			open="(" separator="," close=")">
+				#{item}
+	</foreach>
+  </select>
+  <select id="selectByTplIdAndCategoryId" resultMap="BaseResultMap">
+  	select * from t_directory_template_category
+  	where TPL_ID = #{tplId} and CATEGORY_ID = #{categoryId}
+  </select>
 </mapper>

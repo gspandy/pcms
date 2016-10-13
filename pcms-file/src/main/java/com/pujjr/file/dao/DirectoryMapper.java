@@ -22,4 +22,7 @@ public interface DirectoryMapper {
     List<Directory> selectAll(@Param("enabled")boolean enabled);
     
     List<Directory> selectSubDirectory(@Param("parentId")String parentId);
+    
+    List<Directory> selectDirectoryByTemplateId(@Param("templateId")String templateId);
+    
 }
