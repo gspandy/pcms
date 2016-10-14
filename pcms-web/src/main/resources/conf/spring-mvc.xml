@@ -20,6 +20,8 @@
 	com.pujjr.*.controller">
 	</context:component-scan>
 	
+	
+	
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 		    <ref bean="byteArrayHttpMessageConverter"/>

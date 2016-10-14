@@ -98,8 +98,8 @@ public class ApplyServiceImpl implements IApplyService {
 	@Autowired
 	private GpsLvlMapper gpsLvlMapper;
 	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+//	@Autowired
+//	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
 	@Qualifier("applyDaoImpl")

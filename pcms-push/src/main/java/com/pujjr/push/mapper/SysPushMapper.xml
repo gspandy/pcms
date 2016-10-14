@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.push.dao.SysPushMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.push.domain.SysPush">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TARGET" jdbcType="VARCHAR" property="target" />
+    <result column="MESSAGE" jdbcType="VARCHAR" property="message" />
+    <result column="PARAMETER" jdbcType="VARCHAR" property="parameter" />
+    <result column="CHANNEL_FLAG" jdbcType="VARCHAR" property="channelFlag" />
+    <result column="SEND_FLAG" jdbcType="VARCHAR" property="sendFlag" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TARGET, MESSAGE, PARAMETER, CHANNEL_FLAG, SEND_FLAG, CREATE_TIME, SEND_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_push
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_push
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.push.domain.SysPush">
+    insert into sys_push (ID, TARGET, MESSAGE, 
+      PARAMETER, CHANNEL_FLAG, SEND_FLAG, 
+      CREATE_TIME, SEND_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, 
+      #{parameter,jdbcType=VARCHAR}, #{channelFlag,jdbcType=VARCHAR}, #{sendFlag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.push.domain.SysPush">
+    insert into sys_push
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="target != null">
+        TARGET,
+      </if>
+      <if test="message != null">
+        MESSAGE,
+      </if>
+      <if test="parameter != null">
+        PARAMETER,
+      </if>
+      <if test="channelFlag != null">
+        CHANNEL_FLAG,
+      </if>
+      <if test="sendFlag != null">
+        SEND_FLAG,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="sendTime != null">
+        SEND_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="channelFlag != null">
+        #{channelFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFlag != null">
+        #{sendFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.push.domain.SysPush">
+    update sys_push
+    <set>
+      <if test="target != null">
+        TARGET = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="message != null">
+        MESSAGE = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null">
+        PARAMETER = #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="channelFlag != null">
+        CHANNEL_FLAG = #{channelFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="sendFlag != null">
+        SEND_FLAG = #{sendFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.push.domain.SysPush">
+    update sys_push
+    set TARGET = #{target,jdbcType=VARCHAR},
+      MESSAGE = #{message,jdbcType=VARCHAR},
+      PARAMETER = #{parameter,jdbcType=VARCHAR},
+      CHANNEL_FLAG = #{channelFlag,jdbcType=VARCHAR},
+      SEND_FLAG = #{sendFlag,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      SEND_TIME = #{sendTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <select id="selectByAcconutId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_push
+    where ACCOUNTID = #{accountId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectCommonList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_push
+    where
+    <if test="accountId != null">
+	 account_id = #{accountId,jdbcType=VARCHAR}
+	</if>
+	<if test="channleFlag != null">
+	 channel_flag = #{channelFlag,jdbcType=VARCHAR}
+	</if>
+	<if test="sendFlag != null">
+	 send_flag = #{sendFlag,jdbcType=VARCHAR}
+	</if>
+	order by create_time 
+  </select>
+  
+  <select id="selectCommon" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_push
+    where
+	<if test="accountId != null">
+	 ACCOUNT_ID = #{accountId,jdbcType=VARCHAR}
+	</if>
+	<if test="channleFlag != null">
+	 channel_flag = #{channelFlag,jdbcType=VARCHAR}
+	</if>
+	<if test="sendFlag != null">
+	 send_flag = #{sendFlag,jdbcType=VARCHAR}
+	</if>
+    order by create_time 
+  </select>
+</mapper>

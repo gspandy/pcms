@@ -15,15 +15,15 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 @EnableWebSocket
 public class PcmsWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
 	@Autowired
-	private WebSocketHandler tlmsWebSocketHandler;
+	private WebSocketHandler pcmsWebSocketHandler;
 	@Autowired
-	private HandshakeInterceptor tlmsHandShakeIntercepter;
+	private HandshakeInterceptor pcmsHandShakeIntercepter;
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		System.out.println("register websocket handler");
-		registry.addHandler(tlmsWebSocketHandler, "/service/server").addInterceptors(tlmsHandShakeIntercepter);
-		/*registry.addHandler(tlmsWebSocketHandler, "/sockjs/tlmsWebSocketServer/info").addInterceptors(tlmsHandShakeIntercepter).withSockJS();*/
+		registry.addHandler(pcmsWebSocketHandler, "/websocket/server").addInterceptors(pcmsHandShakeIntercepter);
+		registry.addHandler(pcmsWebSocketHandler, "/websocket/sockjs").addInterceptors(pcmsHandShakeIntercepter).withSockJS();
 	}
 //	@Bean
 //	public WebSocketHandler tlmsWebSocketHandler(){

@@ -19,7 +19,11 @@ import com.pujjr.carcredit.dao.HisOperMapper;
 import com.pujjr.carcredit.domain.HisBeanMap;
 import com.pujjr.carcredit.domain.HisOper;
 import com.pujjr.utils.Utils;
-
+/**
+ * 表单操作历史记录aspect
+ * @author pujjr
+ *
+ */
 @Aspect 
 public class ApplyOperHisAspect {
 	@Autowired

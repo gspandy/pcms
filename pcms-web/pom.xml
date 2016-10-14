@@ -12,7 +12,7 @@
 	<packaging>war</packaging>
 	<name>pcms-web Maven Webapp</name>
 	<url>http://maven.apache.org</url>
-	<dependencies>
+	<dependencies> 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
