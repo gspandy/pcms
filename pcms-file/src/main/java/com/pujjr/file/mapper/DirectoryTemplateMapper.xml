@@ -116,8 +116,9 @@
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from t_directory_template
+  	where 1=1
   	<if test="enabled==true">
-  		ENABLED = true
+  		and ENABLED = true
   	</if>
   </select>
   <delete id="deleteTemplateRefDir">

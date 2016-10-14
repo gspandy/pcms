@@ -246,7 +246,7 @@ public class ProductController  extends BaseController
 		SysBranchDealer  sysBranchDealer = sysBranchService.getDealerByBranchId(account.getBranchId());
 		if(sysBranchDealer == null)
 		{
-			throw new Exception("所属机构不存在");
+			throw new Exception("当前机构不是经销商不能提交订单");
 		}
 		return productService.getBranchEnableProductList(sysBranchDealer.getBranchId());
 	}

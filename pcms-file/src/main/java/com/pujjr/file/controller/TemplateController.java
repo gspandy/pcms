@@ -19,6 +19,7 @@ import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.domain.DirectoryTemplate;
 import com.pujjr.file.service.ITemplateService;
+import com.pujjr.file.vo.TemplateCategoryVo;
 import com.pujjr.utils.Utils;
 
 @RestController
@@ -67,5 +68,22 @@ public class TemplateController extends BaseController
 	public void saveTemplateCategory(@PathVariable String templateId,@RequestBody List<DirectoryCategory> records)
 	{
 		templateService.saveTemplateCategory(templateId, records);
+	}
+	@RequestMapping(value="/getTemplateCategoryInfo/{templateId}/{categoryId}",method=RequestMethod.GET)
+	public TemplateCategoryVo getTemplateCategoryInfo(@PathVariable String templateId,@PathVariable String categoryId)
+	{
+		return templateService.getTemplateCategoryInfo(templateId, categoryId);
+	}
+	
+	@RequestMapping(value="/saveTemplateCategoryDir/{templateId}/{categoryId}",method=RequestMethod.POST)
+	public void saveTemplateCategoryDir(@PathVariable String templateId,@PathVariable String categoryId,@RequestBody List<Directory> dirs)
+	{
+		templateService.saveTemplateCategoryDirectory(templateId, categoryId, dirs);
+	}
+	
+	@RequestMapping(value="/saveTemplateCategoryRequestDir/{templateId}/{categoryId}",method=RequestMethod.POST)
+	public void saveTemplateCategoryRequestDir(@PathVariable String templateId,@PathVariable String categoryId,@RequestBody List<Directory> dirs)
+	{
+		templateService.saveTemplateCategoryRequireDirectory(templateId, categoryId, dirs);
 	}
 }
