@@ -461,6 +461,10 @@ public class ApplyServiceImpl implements IApplyService {
 			if("".equals(appId) || appId == null)
 				appId = branchId+""+dataNow+""+productCode+""+sequence;//订单编号
 			applyExist = applyMapper.selectByPrimaryKey(id);
+			if(applyExist == null){
+				applyToDao.setCreateBranchCode(branchId);
+				applyToDao.setCreateAccountId(sysAccount.getAccountId());
+			}
 //			System.out.println("applyList.size():"+applyList.size());
 			//基本信息
 			id = Utils.get16UUID();//主键随机数
@@ -470,8 +474,7 @@ public class ApplyServiceImpl implements IApplyService {
 			applyToDao.setPeriod(applyVo.getPeriod());
 			applyToDao.setComment(applyVo.getComment());
 			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
-			applyToDao.setCreateBranchCode(branchId);
-			applyToDao.setCreateAccountId(sysAccount.getAccountId());
+			
 			applyToDao.setCustType(applyVo.getCustType());
 			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
 			applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
@@ -480,6 +483,7 @@ public class ApplyServiceImpl implements IApplyService {
 			applyToDao.setProcInstId(applyVo.getProcInstId());
 		}
 		if(applyExist == null){
+			
 			applyToDao.setCreateTime(Calendar.getInstance().getTime());//录入时间
 			applyDao.insertApply(applyToDao, accountId);
 		}else{

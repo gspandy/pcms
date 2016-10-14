@@ -26,9 +26,15 @@
 	com.pujjr.base.service,
 	com.pujjr.base.service.impl"/> -->
 	<context:component-scan base-package="com.pujjr.*.service"/>
+
 	<!-- <context:component-scan base-package="com.pujjr.carcredit.dao.impl"/>
 	<context:component-scan base-package="com.pujjr.carcredit.service.impl"/> -->
 	<context:component-scan base-package="com.pujjr.*.*.impl"/>
+
+	<!-- <context:component-scan base-package="com.pujjr.carcredit.dao.impl"/>
+	<context:component-scan base-package="com.pujjr.carcredit.service.impl"/>
+	<context:component-scan base-package="com.pujjr.file.dao.impl"/>
+	<context:component-scan base-package="com.pujjr.file.service.impl"/> -->
 	<context:component-scan base-package="com.pujjr.*.service;com.pujjr.carcredit.exthandle"/>
 	<!-- 推送相关 -->
 	<context:component-scan base-package="com.pujjr.push.config"/>
@@ -103,7 +109,7 @@
 	
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.pujjr.base.dao;com.pujjr.jbpm.dao;com.pujjr.carcredit.dao;com.pujjr.push.dao" />
+		<property name="basePackage" value="com.pujjr.base.dao;com.pujjr.jbpm.dao;com.pujjr.carcredit.dao;com.pujjr.push.dao;com.pujjr.file.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 

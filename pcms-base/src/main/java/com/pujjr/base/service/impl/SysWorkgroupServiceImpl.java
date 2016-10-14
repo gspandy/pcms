@@ -103,9 +103,9 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 	}
 
 	@Override
-	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups) {
+	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups,boolean checkOnline) {
 		// TODO Auto-generated method stub
-		return workgroupDao.selectWorkgroupOnlineAccountList(groups);
+		return workgroupDao.selectWorkgroupOnlineAccountList(groups,checkOnline);
 	}
 
 	@Override

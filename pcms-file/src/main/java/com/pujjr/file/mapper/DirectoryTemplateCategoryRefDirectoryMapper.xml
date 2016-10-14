@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.DirectoryTemplateCategoryRefDirectoryMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="TPL_CATEGORY_ID" property="tplCategoryId" jdbcType="VARCHAR" />
+    <result column="DIR_ID" property="dirId" jdbcType="VARCHAR" />
+    <result column="REQUIRED" property="required" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TPL_CATEGORY_ID, DIR_ID, REQUIRED
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_directory_template_category_ref_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_directory_template_category_ref_directory
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory" >
+    insert into t_directory_template_category_ref_directory (ID, TPL_CATEGORY_ID, DIR_ID, 
+      REQUIRED)
+    values (#{id,jdbcType=VARCHAR}, #{tplCategoryId,jdbcType=VARCHAR}, #{dirId,jdbcType=VARCHAR}, 
+      #{required,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory" >
+    insert into t_directory_template_category_ref_directory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="tplCategoryId != null" >
+        TPL_CATEGORY_ID,
+      </if>
+      <if test="dirId != null" >
+        DIR_ID,
+      </if>
+      <if test="required != null" >
+        REQUIRED,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tplCategoryId != null" >
+        #{tplCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="dirId != null" >
+        #{dirId,jdbcType=VARCHAR},
+      </if>
+      <if test="required != null" >
+        #{required,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory" >
+    update t_directory_template_category_ref_directory
+    <set >
+      <if test="tplCategoryId != null" >
+        TPL_CATEGORY_ID = #{tplCategoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="dirId != null" >
+        DIR_ID = #{dirId,jdbcType=VARCHAR},
+      </if>
+      <if test="required != null" >
+        REQUIRED = #{required,jdbcType=BIT},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory" >
+    update t_directory_template_category_ref_directory
+    set TPL_CATEGORY_ID = #{tplCategoryId,jdbcType=VARCHAR},
+      DIR_ID = #{dirId,jdbcType=VARCHAR},
+      REQUIRED = #{required,jdbcType=BIT}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByTplCategoryId">
+  	delete from t_directory_template_category_ref_directory where TPL_CATEGORY_ID = #{tplCategoryId}
+  </delete>
+</mapper>

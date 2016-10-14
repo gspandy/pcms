@@ -263,11 +263,11 @@ public class TaskServiceImpl implements ITaskService
 	}
 
 	@Override
-	public List<OnlineAcctPo> getOnlineAcctInfo(String workgroupId) {
+	public List<OnlineAcctPo> getOnlineAcctInfo(String workgroupId,boolean checkOnline) {
 		// TODO Auto-generated method stub
 		List<OnlineAcctPo> poList = new ArrayList<OnlineAcctPo>();
 		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
-		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup);
+		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,false);
 		if(listMatch.size()==0)
 		{
 			return null;

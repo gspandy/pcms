@@ -409,6 +409,7 @@
 		<module>pcms-web</module>
     <module>pcms-carcredit</module>
     <module>pcms-push</module>
+    <module>pcms-file</module>
   </modules>
   
  <build>

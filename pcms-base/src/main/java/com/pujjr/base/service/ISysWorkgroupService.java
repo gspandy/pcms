@@ -32,7 +32,7 @@ public interface ISysWorkgroupService
 	
 	public List<HashMap> getMatchRuleAccountList(String productCode, double financeAmount, String dealerId,List<SysWorkgroup> groups,List<String> candidateAccounts);
 	
-	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups);
+	public List<HashMap> getWorkgroupOnlineAccountList(List<SysWorkgroup> groups,boolean checkOnline);
 	
 	public SysWorkgroup getWorkgroupByName(String workgroupName);
 }

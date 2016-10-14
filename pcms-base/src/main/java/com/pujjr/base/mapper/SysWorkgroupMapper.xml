@@ -153,7 +153,6 @@
 		</foreach>
 		
 	</if>
-	<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
   </select>
   <select id="selectWorkgroupOnlineAccountList" resultType="HashMap">
   	select distinct g.id as taskCntRuleId
@@ -166,7 +165,9 @@
 			open="(" separator="," close=")">
 				#{item.id}
 	</foreach>
-	<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
+	<if test="checkOnline == true">
+		<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
+	</if>
   </select>
   <select id="selectByName" resultMap="BaseResultMap">
   	select * from sys_workgroup where workgroup_name =#{workgroupName}

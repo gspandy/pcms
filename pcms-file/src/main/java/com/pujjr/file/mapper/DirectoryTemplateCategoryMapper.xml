@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.DirectoryTemplateCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.file.domain.DirectoryTemplateCategory" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="TPL_ID" property="tplId" jdbcType="VARCHAR" />
+    <result column="CATEGORY_ID" property="categoryId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, TPL_ID, CATEGORY_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_directory_template_category
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_directory_template_category
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.file.domain.DirectoryTemplateCategory" >
+    insert into t_directory_template_category (ID, TPL_ID, CATEGORY_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.file.domain.DirectoryTemplateCategory" >
+    insert into t_directory_template_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="tplId != null" >
+        TPL_ID,
+      </if>
+      <if test="categoryId != null" >
+        CATEGORY_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.file.domain.DirectoryTemplateCategory" >
+    update t_directory_template_category
+    <set >
+      <if test="tplId != null" >
+        TPL_ID = #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId != null" >
+        CATEGORY_ID = #{categoryId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.file.domain.DirectoryTemplateCategory" >
+    update t_directory_template_category
+    set TPL_ID = #{tplId,jdbcType=VARCHAR},
+      CATEGORY_ID = #{categoryId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectUnContainListByTemplateId" resultMap="BaseResultMap">
+  	select * from 
+  	t_directory_template_category
+  	where TPL_ID = #{templateId}
+  	and CATEGORY_ID not in 
+  	<foreach item="item" index="index" collection="categoryIds"
+			open="(" separator="," close=")">
+				#{item}
+	</foreach>
+  </select>
+  <select id="selectByTplIdAndCategoryId" resultMap="BaseResultMap">
+  	select * from t_directory_template_category
+  	where TPL_ID = #{tplId} and CATEGORY_ID = #{categoryId}
+  </select>
+</mapper>
