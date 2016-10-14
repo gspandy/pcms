@@ -14,8 +14,8 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
-//@Configuration
-@Component
+@Configuration
+//@Component
 //public class TlmsHandShakeIntercepter implements HandshakeInterceptor{
 public class PcmsHandShakeIntercepter extends HttpSessionHandshakeInterceptor{
 //	HandshakeInterceptor
@@ -26,15 +26,15 @@ public class PcmsHandShakeIntercepter extends HttpSessionHandshakeInterceptor{
 		System.out.println("afterHandshake");
 	}
 
-/*	@Override
+	@Override
 	public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler handler,
 			Map<String, Object> attributes) throws Exception {
 		// TODO Auto-generated method stub
 		System.out.println("beforeHandshake");
 		return true;
-	}*/
+	}
 	
-	@Override
+/*	@Override
 	public boolean beforeHandshake(ServerHttpRequest request,
 			ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
@@ -45,5 +45,5 @@ public class PcmsHandShakeIntercepter extends HttpSessionHandshakeInterceptor{
 		
 		System.out.println("attributes:"+attributes);
 		return super.beforeHandshake(request, response, wsHandler, attributes);
-	}
+	}*/
 }

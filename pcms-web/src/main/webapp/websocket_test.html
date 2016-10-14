@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>websocket链接测试</title>
+</head>
+
+<!-- <script type="text/javascript" src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>   -->
+<script type="text/javascript" src="http://localhost:8080/pcms-web/websocket/sockjs"></script>
+<script type="text/javascript">  
+    var websocket = null;   
+    //var url = "http://localhost:8080/tlms-web/tlmsWebSocketServer.ctrl";  
+  
+    //发送数据
+    function sendMessage(){
+    	//webSocket.send("数据：客户端发往服务端");
+    	sendMsg = document.getElementById("inputMsg").value;
+    	webSocket.send(sendMsg);
+    }
+    
+    //断开链接
+    function disConnect(){
+    	webSocket.close();
+    }
+    
+    //链接
+    function connect() {  
+        webSocket= new WebSocket("ws://localhost:8080/pcms-web/websocket/server");
+      //事件处理方法
+        webSocket.onopen = onOpen;
+        webSocket.onclose = onClose;
+        webSocket.onmessage = onMessage;
+        webSocket.onerror = onError;
+    }
+    
+    function onOpen(openEvent){
+    	alert(openEvent)
+    }
+   
+    function onClose(evt){
+    	alert(evt);
+    }
+    
+    function onMessage(messageEvent){
+    	alert("接收服务端返回："+messageEvent.data);
+    }
+    
+    function onError(){
+    	
+    }
+    
+</script>
+<body>
+	<div>
+	待发送数据：<textarea rows="2" cols="10" id="inputMsg" name="inputMsg"></textarea>  
+	</div>
+	<div>
+		<button id="connect" onclick="connect();">链接</button>  
+	</div>
+	<div>
+		<button id="disConnect" onclick="disConnect();">断开链接</button>
+	</div>
+	<div>
+		<button id="sendMessage" onclick="sendMessage();">数据发送</button>
+	</div>
+</body>
+</html>

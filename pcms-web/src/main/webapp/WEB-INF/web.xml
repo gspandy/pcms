@@ -91,4 +91,13 @@
     <servlet-name>SpringMVC</servlet-name>
     <url-pattern>/image/*</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpringMVC</servlet-name>
+    <url-pattern>/websocket/server</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>SpringMVC</servlet-name>
+    <url-pattern>/websocket/sockjs</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
