@@ -138,4 +138,9 @@
       CREATE_ID = #{createId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_directory_file
+  	where DIR_ID = #{dirId,jdbcType=VARCHAR} and 
+      BUSINESS_ID = #{businessId,jdbcType=VARCHAR}
+  </select>
 </mapper>

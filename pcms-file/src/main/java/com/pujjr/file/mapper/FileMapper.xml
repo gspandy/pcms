@@ -7,15 +7,15 @@
     <result column="parentId" property="parentId" jdbcType="VARCHAR" />
     <result column="fileCnt" property="fileCnt" jdbcType="INTEGER" />
   </resultMap>
-  <select id="selectApplyFormCategoryDirectoryList" resultMap="CategoryDirectoryResultMap">
+  <select id="selectTemplateCategoryDirectoryList" resultMap="CategoryDirectoryResultMap">
 	select
 		aa.ID as dirId,
-		aa.DIR_NAME as dirName,
+		concat(aa.DIR_NAME,concat(concat('(',if(bb.filecnt is null,0,bb.filecnt))),')') as dirName,
 		aa.PARENT_ID as parentId,
 		if(bb.filecnt is null,0,bb.filecnt) as fileCnt
 	from
 	(
-		select e.ID,e.DIR_NAME,e.PARENT_ID,d.REQUIRED,concat(e.DIR_NAME,if(d.REQUIRED,'(必输)',''))
+		select e.ID,e.PARENT_ID,d.REQUIRED,concat(e.DIR_NAME,if(d.REQUIRED,'(必传)','')) as DIR_NAME
 		
 		from T_DIRECTORY_TEMPLATE a 
 		
@@ -27,7 +27,7 @@
 		
 		inner   join  T_DIRECTORY e on e.id = d.DIR_ID
 		
-		where c.CATEGORY_KEY = #{categoryKey} 
+		where c.CATEGORY_KEY = #{categoryKey} and a.id = #{templateId}
 	) aa
 	left join 
 	(

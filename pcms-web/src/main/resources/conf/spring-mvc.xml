@@ -20,8 +20,6 @@
 	com.pujjr.*.controller">
 	</context:component-scan>
 	
-	
-	
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 		    <ref bean="byteArrayHttpMessageConverter"/>
@@ -59,7 +57,7 @@
         </property>  
         <property name="features">  
             <util:list>  
-                <!-- <value>WriteMapNullValue</value> -->  
+                <!-- <value>WriteMapNullValue</value>  -->
                 <value>QuoteFieldNames</value>  
                 <value>WriteDateUseDateFormat</value>  
                 <value>DisableCircularReferenceDetect</value>

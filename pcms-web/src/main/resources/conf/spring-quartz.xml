@@ -37,9 +37,9 @@
 		</property>
 	</bean>
 -->
-	<!-- 定时任务-消息推送扫描 -->
+	<!-- 定时任务-消息推送扫描
 	<bean id="pushScanSchedulerImpl" class="com.pujjr.push.scheduler.impl.PushScanSchedulerImpl"></bean>
 	<task:scheduled-tasks>
 	  <task:scheduled ref="pushScanSchedulerImpl" method="pushScan" cron="${messagepush_scan_scheduler.timeCronExpression}" />
-	</task:scheduled-tasks>
+	</task:scheduled-tasks>-->
 </beans>
