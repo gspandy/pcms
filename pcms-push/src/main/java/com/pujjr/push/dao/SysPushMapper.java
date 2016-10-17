@@ -19,8 +19,9 @@ public interface SysPushMapper {
 
 	int updateByPrimaryKey(SysPush record);
 
-    
-    SysPush selectByAccountId(String accountId);
-    List<SysPush> selectCommonList(HashMap<String,String> condition);
-    SysPush selectCommon(HashMap<String,String> condition);
+	SysPush selectByAccountId(String accountId);
+
+	List<SysPush> selectCommonList(HashMap<String, String> condition);
+
+	SysPush selectCommon(HashMap<String, String> condition);
 }
