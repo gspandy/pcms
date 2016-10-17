@@ -1,221 +1,234 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.base.dao.SysBranchDealerMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysBranchDealer" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="BRANCH_ID" property="branchId" jdbcType="VARCHAR" />
-    <result column="DEALER_LEVEL" property="dealerLevel" jdbcType="VARCHAR" />
-    <result column="LOAN_CHANNEL" property="loanChannel" jdbcType="VARCHAR" />
-    <result column="BANK_ID" property="bankId" jdbcType="VARCHAR" />
-    <result column="LOAN_SUBBRANCH" property="loanSubbranch" jdbcType="VARCHAR" />
-    <result column="LOAN_ACCT_NO" property="loanAcctNo" jdbcType="VARCHAR" />
-    <result column="LOAN_ACCT_NAME" property="loanAcctName" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
-    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
-    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
-    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
-    <result column="RESERVER4" property="reserver4" jdbcType="VARCHAR" />
-    <result column="RESERVER5" property="reserver5" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.SysBranchDealerMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysBranchDealer">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="BRANCH_ID" jdbcType="VARCHAR" property="branchId" />
+    <result column="DEALER_LEVEL" jdbcType="VARCHAR" property="dealerLevel" />
+    <result column="DEALER_TYPE" jdbcType="VARCHAR" property="dealerType" />
+    <result column="LOAN_CHANNEL" jdbcType="VARCHAR" property="loanChannel" />
+    <result column="BANK_ID" jdbcType="VARCHAR" property="bankId" />
+    <result column="LOAN_SUBBRANCH" jdbcType="VARCHAR" property="loanSubbranch" />
+    <result column="LOAN_ACCT_NO" jdbcType="VARCHAR" property="loanAcctNo" />
+    <result column="LOAN_ACCT_NAME" jdbcType="VARCHAR" property="loanAcctName" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
+    <result column="RESERVER4" jdbcType="VARCHAR" property="reserver4" />
+    <result column="RESERVER5" jdbcType="VARCHAR" property="reserver5" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, BRANCH_ID, DEALER_LEVEL, LOAN_CHANNEL, BANK_ID, LOAN_SUBBRANCH, LOAN_ACCT_NO, 
-    LOAN_ACCT_NAME, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, RESERVER1, RESERVER2, 
-    RESERVER3, RESERVER4, RESERVER5
+  <sql id="Base_Column_List">
+    ID, BRANCH_ID, DEALER_LEVEL, DEALER_TYPE, LOAN_CHANNEL, BANK_ID, LOAN_SUBBRANCH, 
+    LOAN_ACCT_NO, LOAN_ACCT_NAME, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, RESERVER1, 
+    RESERVER2, RESERVER3, RESERVER4, RESERVER5
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sys_branch_dealer
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sys_branch_dealer
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.base.domain.SysBranchDealer" >
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysBranchDealer">
     insert into sys_branch_dealer (ID, BRANCH_ID, DEALER_LEVEL, 
-      LOAN_CHANNEL, BANK_ID, LOAN_SUBBRANCH, 
-      LOAN_ACCT_NO, LOAN_ACCT_NAME, CREATE_TIME, 
-      CREATE_ID, UPDATE_TIME, UPDATE_ID, 
-      RESERVER1, RESERVER2, RESERVER3, 
-      RESERVER4, RESERVER5)
+      DEALER_TYPE, LOAN_CHANNEL, BANK_ID, 
+      LOAN_SUBBRANCH, LOAN_ACCT_NO, LOAN_ACCT_NAME, 
+      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
+      UPDATE_ID, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4, RESERVER5
+      )
     values (#{id,jdbcType=VARCHAR}, #{branchId,jdbcType=VARCHAR}, #{dealerLevel,jdbcType=VARCHAR}, 
-      #{loanChannel,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, #{loanSubbranch,jdbcType=VARCHAR}, 
-      #{loanAcctNo,jdbcType=VARCHAR}, #{loanAcctName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
-      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR}, 
-      #{reserver4,jdbcType=VARCHAR}, #{reserver5,jdbcType=VARCHAR})
+      #{dealerType,jdbcType=VARCHAR}, #{loanChannel,jdbcType=VARCHAR}, #{bankId,jdbcType=VARCHAR}, 
+      #{loanSubbranch,jdbcType=VARCHAR}, #{loanAcctNo,jdbcType=VARCHAR}, #{loanAcctName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=VARCHAR}, #{reserver5,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysBranchDealer" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysBranchDealer">
     insert into sys_branch_dealer
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="branchId != null" >
+      <if test="branchId != null">
         BRANCH_ID,
       </if>
-      <if test="dealerLevel != null" >
+      <if test="dealerLevel != null">
         DEALER_LEVEL,
       </if>
-      <if test="loanChannel != null" >
+      <if test="dealerType != null">
+        DEALER_TYPE,
+      </if>
+      <if test="loanChannel != null">
         LOAN_CHANNEL,
       </if>
-      <if test="bankId != null" >
+      <if test="bankId != null">
         BANK_ID,
       </if>
-      <if test="loanSubbranch != null" >
+      <if test="loanSubbranch != null">
         LOAN_SUBBRANCH,
       </if>
-      <if test="loanAcctNo != null" >
+      <if test="loanAcctNo != null">
         LOAN_ACCT_NO,
       </if>
-      <if test="loanAcctName != null" >
+      <if test="loanAcctName != null">
         LOAN_ACCT_NAME,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME,
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME,
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID,
       </if>
-      <if test="reserver1 != null" >
+      <if test="reserver1 != null">
         RESERVER1,
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2,
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3,
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4,
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="branchId != null" >
+      <if test="branchId != null">
         #{branchId,jdbcType=VARCHAR},
       </if>
-      <if test="dealerLevel != null" >
+      <if test="dealerLevel != null">
         #{dealerLevel,jdbcType=VARCHAR},
       </if>
-      <if test="loanChannel != null" >
+      <if test="dealerType != null">
+        #{dealerType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanChannel != null">
         #{loanChannel,jdbcType=VARCHAR},
       </if>
-      <if test="bankId != null" >
+      <if test="bankId != null">
         #{bankId,jdbcType=VARCHAR},
       </if>
-      <if test="loanSubbranch != null" >
+      <if test="loanSubbranch != null">
         #{loanSubbranch,jdbcType=VARCHAR},
       </if>
-      <if test="loanAcctNo != null" >
+      <if test="loanAcctNo != null">
         #{loanAcctNo,jdbcType=VARCHAR},
       </if>
-      <if test="loanAcctName != null" >
+      <if test="loanAcctName != null">
         #{loanAcctName,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         #{updateId,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="reserver1 != null">
         #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         #{reserver3,jdbcType=VARCHAR},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         #{reserver4,jdbcType=VARCHAR},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         #{reserver5,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysBranchDealer" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysBranchDealer">
     update sys_branch_dealer
-    <set >
-      <if test="branchId != null" >
+    <set>
+      <if test="branchId != null">
         BRANCH_ID = #{branchId,jdbcType=VARCHAR},
       </if>
-      <if test="dealerLevel != null" >
+      <if test="dealerLevel != null">
         DEALER_LEVEL = #{dealerLevel,jdbcType=VARCHAR},
       </if>
-      <if test="loanChannel != null" >
+      <if test="dealerType != null">
+        DEALER_TYPE = #{dealerType,jdbcType=VARCHAR},
+      </if>
+      <if test="loanChannel != null">
         LOAN_CHANNEL = #{loanChannel,jdbcType=VARCHAR},
       </if>
-      <if test="bankId != null" >
+      <if test="bankId != null">
         BANK_ID = #{bankId,jdbcType=VARCHAR},
       </if>
-      <if test="loanSubbranch != null" >
+      <if test="loanSubbranch != null">
         LOAN_SUBBRANCH = #{loanSubbranch,jdbcType=VARCHAR},
       </if>
-      <if test="loanAcctNo != null" >
+      <if test="loanAcctNo != null">
         LOAN_ACCT_NO = #{loanAcctNo,jdbcType=VARCHAR},
       </if>
-      <if test="loanAcctName != null" >
+      <if test="loanAcctName != null">
         LOAN_ACCT_NAME = #{loanAcctName,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID = #{updateId,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="reserver1 != null">
         RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3 = #{reserver3,jdbcType=VARCHAR},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4 = #{reserver4,jdbcType=VARCHAR},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5 = #{reserver5,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysBranchDealer" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysBranchDealer">
     update sys_branch_dealer
     set BRANCH_ID = #{branchId,jdbcType=VARCHAR},
       DEALER_LEVEL = #{dealerLevel,jdbcType=VARCHAR},
+      DEALER_TYPE = #{dealerType,jdbcType=VARCHAR},
       LOAN_CHANNEL = #{loanChannel,jdbcType=VARCHAR},
       BANK_ID = #{bankId,jdbcType=VARCHAR},
       LOAN_SUBBRANCH = #{loanSubbranch,jdbcType=VARCHAR},

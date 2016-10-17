@@ -5,171 +5,181 @@ import java.util.Date;
 public class SysBranchDealer {
     private String id;
 
-    private String branchId;
+	private String branchId;
 
-    private String dealerLevel;
+	private String dealerLevel;
 
-    private String loanChannel;
+	private String dealerType;
 
-    private String bankId;
+	private String loanChannel;
 
-    private String loanSubbranch;
+	private String bankId;
 
-    private String loanAcctNo;
+	private String loanSubbranch;
 
-    private String loanAcctName;
+	private String loanAcctNo;
 
-    private Date createTime;
+	private String loanAcctName;
 
-    private String createId;
+	private Date createTime;
 
-    private Date updateTime;
+	private String createId;
 
-    private String updateId;
+	private Date updateTime;
 
-    private String reserver1;
+	private String updateId;
 
-    private String reserver2;
+	private String reserver1;
 
-    private String reserver3;
+	private String reserver2;
 
-    private String reserver4;
+	private String reserver3;
 
-    private String reserver5;
+	private String reserver4;
 
-    public String getId() {
-        return id;
-    }
+	private String reserver5;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getBranchId() {
-        return branchId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
+	public String getBranchId() {
+		return branchId;
+	}
 
-    public String getDealerLevel() {
-        return dealerLevel;
-    }
+	public void setBranchId(String branchId) {
+		this.branchId = branchId;
+	}
 
-    public void setDealerLevel(String dealerLevel) {
-        this.dealerLevel = dealerLevel;
-    }
+	public String getDealerLevel() {
+		return dealerLevel;
+	}
 
-    public String getLoanChannel() {
-        return loanChannel;
-    }
+	public void setDealerLevel(String dealerLevel) {
+		this.dealerLevel = dealerLevel;
+	}
 
-    public void setLoanChannel(String loanChannel) {
-        this.loanChannel = loanChannel;
-    }
+	public String getDealerType() {
+		return dealerType;
+	}
 
-    public String getBankId() {
-        return bankId;
-    }
+	public void setDealerType(String dealerType) {
+		this.dealerType = dealerType;
+	}
 
-    public void setBankId(String bankId) {
-        this.bankId = bankId;
-    }
+	public String getLoanChannel() {
+		return loanChannel;
+	}
 
-    public String getLoanSubbranch() {
-        return loanSubbranch;
-    }
+	public void setLoanChannel(String loanChannel) {
+		this.loanChannel = loanChannel;
+	}
 
-    public void setLoanSubbranch(String loanSubbranch) {
-        this.loanSubbranch = loanSubbranch;
-    }
+	public String getBankId() {
+		return bankId;
+	}
 
-    public String getLoanAcctNo() {
-        return loanAcctNo;
-    }
+	public void setBankId(String bankId) {
+		this.bankId = bankId;
+	}
 
-    public void setLoanAcctNo(String loanAcctNo) {
-        this.loanAcctNo = loanAcctNo;
-    }
+	public String getLoanSubbranch() {
+		return loanSubbranch;
+	}
 
-    public String getLoanAcctName() {
-        return loanAcctName;
-    }
+	public void setLoanSubbranch(String loanSubbranch) {
+		this.loanSubbranch = loanSubbranch;
+	}
 
-    public void setLoanAcctName(String loanAcctName) {
-        this.loanAcctName = loanAcctName;
-    }
+	public String getLoanAcctNo() {
+		return loanAcctNo;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setLoanAcctNo(String loanAcctNo) {
+		this.loanAcctNo = loanAcctNo;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getLoanAcctName() {
+		return loanAcctName;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setLoanAcctName(String loanAcctName) {
+		this.loanAcctName = loanAcctName;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getUpdateId() {
-        return updateId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
-    public String getReserver1() {
-        return reserver1;
-    }
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
-    public void setReserver1(String reserver1) {
-        this.reserver1 = reserver1;
-    }
+	public String getUpdateId() {
+		return updateId;
+	}
 
-    public String getReserver2() {
-        return reserver2;
-    }
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
 
-    public void setReserver2(String reserver2) {
-        this.reserver2 = reserver2;
-    }
+	public String getReserver1() {
+		return reserver1;
+	}
 
-    public String getReserver3() {
-        return reserver3;
-    }
+	public void setReserver1(String reserver1) {
+		this.reserver1 = reserver1;
+	}
 
-    public void setReserver3(String reserver3) {
-        this.reserver3 = reserver3;
-    }
+	public String getReserver2() {
+		return reserver2;
+	}
 
-    public String getReserver4() {
-        return reserver4;
-    }
+	public void setReserver2(String reserver2) {
+		this.reserver2 = reserver2;
+	}
 
-    public void setReserver4(String reserver4) {
-        this.reserver4 = reserver4;
-    }
+	public String getReserver3() {
+		return reserver3;
+	}
 
-    public String getReserver5() {
-        return reserver5;
-    }
+	public void setReserver3(String reserver3) {
+		this.reserver3 = reserver3;
+	}
 
-    public void setReserver5(String reserver5) {
-        this.reserver5 = reserver5;
-    }
+	public String getReserver4() {
+		return reserver4;
+	}
+
+	public void setReserver4(String reserver4) {
+		this.reserver4 = reserver4;
+	}
+
+	public String getReserver5() {
+		return reserver5;
+	}
+
+	public void setReserver5(String reserver5) {
+		this.reserver5 = reserver5;
+	}
 }

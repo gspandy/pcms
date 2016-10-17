@@ -7,15 +7,15 @@ import com.pujjr.base.domain.ProductRule;
 public interface ProductRuleMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ProductRule record);
+	int insert(ProductRule record);
 
-    int insertSelective(ProductRule record);
+	int insertSelective(ProductRule record);
 
-    ProductRule selectByPrimaryKey(String id);
+	ProductRule selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(ProductRule record);
+	int updateByPrimaryKeySelective(ProductRule record);
 
-    int updateByPrimaryKey(ProductRule record);
+	int updateByPrimaryKey(ProductRule record);
     
     List<ProductRule> selectAll();
 }

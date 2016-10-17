@@ -12,13 +12,19 @@ public interface IGpsService
 {
 	public List<GpsRule> getAllGpsRuleList();
 	
-	public List<GpsLvl> getGpsLvlListByBranchIdAndAmt(String branchId,double amt);
+	public void addGpsRule(GpsRule record);
 	
-	public List<GpsLvl> getGpsLvlListByBranchId(String branchId);
+	public void modifyGspRule(GpsRule record);
 	
-	public List<GpsLvl> getGpsLvlListByBranchIdAndRuleId(String branchId,String ruleId);
+	public void deleteGpsRuleById(String id) throws Exception;
 	
 	public List<GpsLvl> getAllGpsLvlList();
+	
+	public void addGpsLvl(GpsLvl record);
+	
+	public void modifyGpsLvl(GpsLvl  record);
+	
+	public void deleteGpsLvlById(String id) throws Exception;
 	
 	public List<GpsSupplier> getAllGpsSuppilerList();
 	
@@ -29,6 +35,12 @@ public interface IGpsService
 	public void deleteGpsSupplierById(String id);
 	
 	public List<GpsSupplier> getAllEnabledGpsSupplierList();
+	
+	public List<GpsLvl> getGpsLvlListByBranchIdAndAmt(String branchId,double amt);
+	
+	public List<GpsLvl> getGpsLvlListByBranchId(String branchId);
+	
+	public List<GpsLvl> getGpsLvlListByBranchIdAndRuleId(String branchId,String ruleId);
 	
 	
 	

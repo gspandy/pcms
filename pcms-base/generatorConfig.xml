@@ -70,15 +70,8 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_PRODUCT_RULE" domainObjectName="ProductRule" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 	
-		<table tableName="SYS_BRANCH_DEALER" domainObjectName="SysBranchDealer" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		<table tableName="T_BRANCH_GPS_RULE" domainObjectName="SysBranchGpsRule" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -147,8 +140,16 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		<table tableName="T_INSURANCE_COMPANY" domainObjectName="InsuranceCompany" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="SYS_BRANCH_DEALER" domainObjectName="SysBranchDealer" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
 		-->
-	<table tableName="T_INSURANCE_COMPANY" domainObjectName="InsuranceCompany" enableCountByExample="false"
+		<table tableName="T_PRODUCT_RULE" domainObjectName="ProductRule" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
