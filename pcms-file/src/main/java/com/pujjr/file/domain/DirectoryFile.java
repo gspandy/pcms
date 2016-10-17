@@ -5,91 +5,101 @@ import java.util.Date;
 public class DirectoryFile {
     private String id;
 
-    private String dirId;
+	private String dirId;
 
-    private String businessId;
+	private String businessId;
 
-    private String ossKey;
+	private String ossKey;
 
-    private String fileName;
+	private String ossKeyPreview;
 
-    private String fileType;
+	private String fileName;
 
-    private Integer fileSize;
+	private String fileType;
 
-    private Date createTime;
+	private Integer fileSize;
 
-    private String createId;
+	private Date createTime;
 
-    public String getId() {
-        return id;
-    }
+	private String createId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getDirId() {
-        return dirId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setDirId(String dirId) {
-        this.dirId = dirId;
-    }
+	public String getDirId() {
+		return dirId;
+	}
 
-    public String getBusinessId() {
-        return businessId;
-    }
+	public void setDirId(String dirId) {
+		this.dirId = dirId;
+	}
 
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
+	public String getBusinessId() {
+		return businessId;
+	}
 
-    public String getOssKey() {
-        return ossKey;
-    }
+	public void setBusinessId(String businessId) {
+		this.businessId = businessId;
+	}
 
-    public void setOssKey(String ossKey) {
-        this.ossKey = ossKey;
-    }
+	public String getOssKey() {
+		return ossKey;
+	}
 
-    public String getFileName() {
-        return fileName;
-    }
+	public void setOssKey(String ossKey) {
+		this.ossKey = ossKey;
+	}
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+	public String getOssKeyPreview() {
+		return ossKeyPreview;
+	}
 
-    public String getFileType() {
-        return fileType;
-    }
+	public void setOssKeyPreview(String ossKeyPreview) {
+		this.ossKeyPreview = ossKeyPreview;
+	}
 
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public Integer getFileSize() {
-        return fileSize;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    public void setFileSize(Integer fileSize) {
-        this.fileSize = fileSize;
-    }
+	public String getFileType() {
+		return fileType;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Integer getFileSize() {
+		return fileSize;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setFileSize(Integer fileSize) {
+		this.fileSize = fileSize;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 }

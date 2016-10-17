@@ -21,15 +21,12 @@
 			targetProject="pcms-file/src/main/java" />
 		<javaClientGenerator targetPackage="com.pujjr.file.dao"
 			targetProject="pcms-file/src/main/java" type="XMLMAPPER" />
-			
+		<!--  	
 		<table tableName="T_DIRECTORY" domainObjectName="Directory" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_DIRECTORY_FILE" domainObjectName="DirectoryFile" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		<table tableName="T_DIRECTORY_TEMPLATE" domainObjectName="DirectoryTemplate" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -50,6 +47,10 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		
+		-->
+		<table tableName="T_DIRECTORY_FILE" domainObjectName="DirectoryFile" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
 	</context>
 </generatorConfiguration>

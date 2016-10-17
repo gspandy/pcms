@@ -19,7 +19,16 @@
 	org.activiti.rest.diagram,
 	com.pujjr.*.controller">
 	</context:component-scan>
-	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:conf/jdbc.properties</value>
+				<value>classpath:conf/pcms-push.properties</value>
+				<value>classpath:conf/ali-oss.properties</value>
+			</list>
+		</property>
+	</bean>
 	<mvc:annotation-driven>
 		<mvc:message-converters>
 		    <ref bean="byteArrayHttpMessageConverter"/>
