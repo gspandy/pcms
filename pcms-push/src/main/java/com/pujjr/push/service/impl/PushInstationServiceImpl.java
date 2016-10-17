@@ -58,7 +58,7 @@ public class PushInstationServiceImpl implements IPushInstationService {
 
 	@Override
 	public void sendMessage(SysPush sysPush, WebSocketSession session) {
-		logger.info("sendMessage");
+//		logger.info("sendMessage");
 		// TODO Auto-generated method stub
 		try {
 			session.sendMessage(new TextMessage(sysPush.getMessage()));

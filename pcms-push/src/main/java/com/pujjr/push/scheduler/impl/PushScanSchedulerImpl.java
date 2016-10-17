@@ -12,9 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSONObject;
-import com.pujjr.push.dao.IPushDao;
 import com.pujjr.push.dao.SysPushMapper;
 import com.pujjr.push.domain.SysPush;
 import com.pujjr.push.enumeration.EChannelFlag;
@@ -33,9 +31,9 @@ public class PushScanSchedulerImpl implements IPushScanScheduler{
 	@Override
 	public void pushScan() {
 		// TODO Auto-generated method stub
-		logger.debug("扫描消息推送表sys_push");
+//		logger.debug("扫描消息推送表sys_push");
 		Object obj = AopContext.currentProxy();
-		System.out.println(obj);
+//		System.out.println(obj);
 		List<SysPush> sysPushList = pushService.selectWillPush();
 		for(SysPush tempSysPush:sysPushList){
 			String channelFlag = tempSysPush.getChannelFlag();
@@ -53,6 +51,6 @@ public class PushScanSchedulerImpl implements IPushScanScheduler{
 				pushService.weixinToUser(tempSysPush);
 			}
 		}
-		logger.debug(JSONObject.toJSONString(sysPushList));
+//		logger.debug(JSONObject.toJSONString(sysPushList));
 	}
 }
