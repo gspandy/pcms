@@ -31,9 +31,9 @@ public class PushScanSchedulerImpl implements IPushScanScheduler{
 	@Override
 	public void pushScan() {
 		// TODO Auto-generated method stub
-		logger.debug("扫描消息推送表sys_push");
+//		logger.debug("扫描消息推送表sys_push");
 		Object obj = AopContext.currentProxy();
-		System.out.println(obj);
+//		System.out.println(obj);
 		List<SysPush> sysPushList = pushService.selectWillPush();
 		for(SysPush tempSysPush:sysPushList){
 			String channelFlag = tempSysPush.getChannelFlag();
@@ -51,6 +51,6 @@ public class PushScanSchedulerImpl implements IPushScanScheduler{
 				pushService.weixinToUser(tempSysPush);
 			}
 		}
-		logger.debug(JSONObject.toJSONString(sysPushList));
+//		logger.debug(JSONObject.toJSONString(sysPushList));
 	}
 }

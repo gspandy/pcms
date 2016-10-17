@@ -52,4 +52,10 @@ public class DirectoryServiceImpl implements IDirectoryService
 		return directoryDao.selectDirectoryByTemplateId(templateId);
 	}
 
+	@Override
+	public List<Directory> getTemplateCategoryDirectory(String templateId, String categoryId, boolean required) {
+		// TODO Auto-generated method stub
+		return directoryDao.selectTemplateCategoryDirectory(templateId, categoryId, required);
+	}
+
 }

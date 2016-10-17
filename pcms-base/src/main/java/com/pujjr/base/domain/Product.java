@@ -28,6 +28,8 @@ public class Product {
     private String repayMode;
 
     private String productRuleId;
+    
+    private String directoryTemplateId;
 
     private Boolean enable;
 
@@ -137,7 +139,15 @@ public class Product {
         this.productRuleId = productRuleId;
     }
 
-    public Boolean getEnable() {
+    public String getDirectoryTemplateId() {
+		return directoryTemplateId;
+	}
+
+	public void setDirectoryTemplateId(String directoryTemplateId) {
+		this.directoryTemplateId = directoryTemplateId;
+	}
+
+	public Boolean getEnable() {
         return enable;
     }
 

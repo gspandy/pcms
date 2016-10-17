@@ -29,12 +29,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.pujjr</groupId>
-			<artifactId>pcms-push</artifactId>
+			<artifactId>pcms-file</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.pujjr</groupId>
-			<artifactId>pcms-file</artifactId>
+			<artifactId>pcms-push</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

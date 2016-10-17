@@ -14,6 +14,7 @@
     <result column="DAY_EXTEND_RATE" property="dayExtendRate" jdbcType="DOUBLE" />
     <result column="REPAY_MODE" property="repayMode" jdbcType="VARCHAR" />
     <result column="PRODUCT_RULE_ID" property="productRuleId" jdbcType="VARCHAR" />
+    <result column="DIRECTORY_TEMPLATE_ID" property="directoryTemplateId" jdbcType="VARCHAR" />
     <result column="ENABLE" property="enable" jdbcType="BIT" />
     <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
     <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
@@ -27,7 +28,7 @@
   <sql id="Base_Column_List" >
     ID, PRODUCT_TYPE_ID, PRODUCT_NAME, PRODUCT_CODE, LOAN_CONDITION, MIN_LOAN_AMOUNT, 
     MAX_LOAN_AMOUNT, YEAR_RATE, DAY_LATE_RATE, DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID, 
-    ENABLE, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+    DIRECTORY_TEMPLATE_ID,ENABLE, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -43,13 +44,13 @@
     insert into t_product (ID, PRODUCT_TYPE_ID, PRODUCT_NAME, 
       PRODUCT_CODE, LOAN_CONDITION, MIN_LOAN_AMOUNT, 
       MAX_LOAN_AMOUNT, YEAR_RATE, DAY_LATE_RATE, 
-      DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID, 
+      DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID,DIRECTORY_TEMPLATE_ID 
       ENABLE, CREATE_TIME, CREATE_ID, 
       UPDATE_TIME, UPDATE_ID)
     values (#{id,jdbcType=VARCHAR}, #{productTypeId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
       #{productCode,jdbcType=VARCHAR}, #{loanCondition,jdbcType=VARCHAR}, #{minLoanAmount,jdbcType=DOUBLE}, 
       #{maxLoanAmount,jdbcType=DOUBLE}, #{yearRate,jdbcType=DOUBLE}, #{dayLateRate,jdbcType=DOUBLE}, 
-      #{dayExtendRate,jdbcType=DOUBLE}, #{repayMode,jdbcType=VARCHAR}, #{productRuleId,jdbcType=VARCHAR}, 
+      #{dayExtendRate,jdbcType=DOUBLE}, #{repayMode,jdbcType=VARCHAR}, #{productRuleId,jdbcType=VARCHAR}, #{directoryTemplateId,jdbcType=VARCHAR}, 
       #{enable,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR})
   </insert>
@@ -91,6 +92,9 @@
       </if>
       <if test="productRuleId != null" >
         PRODUCT_RULE_ID,
+      </if>
+      <if test="directoryTemplateId != null" >
+        DIRECTORY_TEMPLATE_ID,
       </if>
       <if test="enable != null" >
         ENABLE,
@@ -145,6 +149,9 @@
       <if test="productRuleId != null" >
         #{productRuleId,jdbcType=VARCHAR},
       </if>
+      <if test="directoryTemplateId != null" >
+        #{directoryTemplateId,jdbcType=VARCHAR},
+      </if>
       <if test="enable != null" >
         #{enable,jdbcType=BIT},
       </if>
@@ -198,6 +205,9 @@
       <if test="productRuleId != null" >
         PRODUCT_RULE_ID = #{productRuleId,jdbcType=VARCHAR},
       </if>
+      <if test="directoryTemplateId != null">
+      	DIRECTORY_TEMPLATE_ID = #{directoryTemplateId,jdbcType=VARCHAR},
+      </if>
       <if test="enable != null" >
         ENABLE = #{enable,jdbcType=BIT},
       </if>
@@ -229,6 +239,7 @@
       DAY_EXTEND_RATE = #{dayExtendRate,jdbcType=DOUBLE},
       REPAY_MODE = #{repayMode,jdbcType=VARCHAR},
       PRODUCT_RULE_ID = #{productRuleId,jdbcType=VARCHAR},
+      DIRECTORY_TEMPLATE_ID = #{directoryTemplateId,jdbcType=VARCHAR},
       ENABLE = #{enable,jdbcType=BIT},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       CREATE_ID = #{createId,jdbcType=VARCHAR},

@@ -143,4 +143,14 @@
   	where a.TPL_ID = #{templateId}
   	and b.enabled=true
   </select>
+  <select id="selectTemplateCategoryDirectory" resultMap="BaseResultMap">
+  	select c.*
+  	from T_DIRECTORY_TEMPLATE_CATEGORY a 
+  	inner join T_DIRECTORY_TEMPLATE_CATEGORY_REF_DIRECTORY b on a.id = b.TPL_CATEGORY_ID
+  	inner join T_DIRECTORY c on b.DIR_ID = c.id
+  	where a.TPL_ID = #{templateId} and a.CATEGORY_ID = #{categoryId}
+  	<if test="required == true">
+  		and b.REQUIRED = true
+  	</if>
+  </select>
 </mapper>

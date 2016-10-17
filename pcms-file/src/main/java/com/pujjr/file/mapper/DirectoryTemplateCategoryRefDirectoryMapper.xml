@@ -82,4 +82,7 @@
   <delete id="deleteByTplCategoryId">
   	delete from t_directory_template_category_ref_directory where TPL_CATEGORY_ID = #{tplCategoryId}
   </delete>
+  <select id="selectByTplCategoryIdAndDirId" resultMap="BaseResultMap">
+  	select * from t_directory_template_category_ref_directory where  TPL_CATEGORY_ID = #{tplCategoryId} and DIR_ID =#{dirId}
+  </select>
 </mapper>

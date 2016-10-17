@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.file.dao.FileMapper" >
+  <resultMap id="CategoryDirectoryResultMap" type="com.pujjr.file.po.CategoryDirectoryPo" >
+    <result column="dirId" property="dirId" jdbcType="VARCHAR" />
+    <result column="dirName" property="dirName" jdbcType="VARCHAR" />
+    <result column="parentId" property="parentId" jdbcType="VARCHAR" />
+    <result column="fileCnt" property="fileCnt" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectTemplateCategoryDirectoryList" resultMap="CategoryDirectoryResultMap">
+	select
+		aa.ID as dirId,
+		concat(aa.DIR_NAME,concat(concat('(',if(bb.filecnt is null,0,bb.filecnt))),')') as dirName,
+		aa.PARENT_ID as parentId,
+		if(bb.filecnt is null,0,bb.filecnt) as fileCnt
+	from
+	(
+		select e.ID,e.PARENT_ID,d.REQUIRED,concat(e.DIR_NAME,if(d.REQUIRED,'(必传)','')) as DIR_NAME
+		
+		from T_DIRECTORY_TEMPLATE a 
+		
+		inner join T_DIRECTORY_TEMPLATE_CATEGORY b on a.id = b.TPL_ID 
+		
+		inner join T_DIRECTORY_CATEGORY c on c.id = b.CATEGORY_ID 
+		
+		inner join T_DIRECTORY_TEMPLATE_CATEGORY_REF_DIRECTORY d on b.id = d.TPL_CATEGORY_ID 
+		
+		inner   join  T_DIRECTORY e on e.id = d.DIR_ID
+		
+		where c.CATEGORY_KEY = #{categoryKey} and a.id = #{templateId}
+	) aa
+	left join 
+	(
+		select 
+		DIR_ID,count(*) as filecnt
+		from T_DIRECTORY_FILE  
+		where BUSINESS_ID = #{appId}
+		group by  DIR_ID
+	) bb  on aa.ID = bb.DIR_ID
+  </select>
+</mapper>

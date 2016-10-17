@@ -3,9 +3,11 @@ package com.pujjr.file.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pujjr.file.dao.DirectoryMapper;
 import com.pujjr.file.dao.DirectoryTemplateCategoryMapper;
 import com.pujjr.file.dao.DirectoryTemplateCategoryRefDirectoryMapper;
 import com.pujjr.file.dao.DirectoryTemplateMapper;
@@ -14,8 +16,11 @@ import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.domain.DirectoryTemplate;
 import com.pujjr.file.domain.DirectoryTemplateCategory;
+import com.pujjr.file.domain.DirectoryTemplateCategoryRefDirectory;
 import com.pujjr.file.domain.DirectoryTemplateRefDirectory;
+import com.pujjr.file.service.IDirectoryService;
 import com.pujjr.file.service.ITemplateService;
+import com.pujjr.file.vo.TemplateCategoryVo;
 import com.pujjr.utils.Utils;
 @Service
 public class TemplateServiceImpl implements ITemplateService {
@@ -28,6 +33,8 @@ public class TemplateServiceImpl implements ITemplateService {
 	private DirectoryTemplateCategoryMapper templateCategoryDao;
 	@Autowired
 	private DirectoryTemplateCategoryRefDirectoryMapper templateCategoryRefDirDao;
+	@Autowired
+	private DirectoryMapper directoryDao;
 	
 	@Override
 	public List<DirectoryTemplate> getTemplateList(boolean enabled) {
@@ -96,6 +103,49 @@ public class TemplateServiceImpl implements ITemplateService {
 				po.setCategoryId(categoryId);
 				templateCategoryDao.insert(po);
 			}
+		}
+	}
+
+	@Override
+	public TemplateCategoryVo getTemplateCategoryInfo(String templateId, String categoryId) {
+		// TODO Auto-generated method stub
+		TemplateCategoryVo vo = new TemplateCategoryVo();
+		DirectoryTemplateCategory templateCategory = templateCategoryDao.selectByTplIdAndCategoryId(templateId, categoryId);
+		BeanUtils.copyProperties(templateCategory, vo);
+		List<Directory> templateCategoryDirs = directoryDao.selectTemplateCategoryDirectory(templateId, categoryId, false);
+		vo.setTemplateCategoryDirs(templateCategoryDirs);
+		List<Directory> templateCategoryRequireDirs = directoryDao.selectTemplateCategoryDirectory(templateId, categoryId, true);
+		vo.setTemplateCategoryRequireDirs(templateCategoryRequireDirs);
+		return vo;
+	}
+
+	@Override
+	public void saveTemplateCategoryDirectory(String templateId, String categoryId, List<Directory> records) {
+		// TODO Auto-generated method stub
+		//先删除模板分类的目录信息
+		DirectoryTemplateCategory templateCategory = templateCategoryDao.selectByTplIdAndCategoryId(templateId, categoryId);
+		templateCategoryRefDirDao.deleteByTplCategoryId(templateCategory.getId());
+		//建立模板分类与目录关联关系
+		for(Directory record : records)
+		{
+			DirectoryTemplateCategoryRefDirectory po = new DirectoryTemplateCategoryRefDirectory();
+			po.setId(Utils.get16UUID());
+			po.setDirId(record.getId());
+			po.setRequired(false);
+			po.setTplCategoryId(templateCategory.getId());
+			templateCategoryRefDirDao.insert(po);
+		}
+	}
+
+	@Override
+	public void saveTemplateCategoryRequireDirectory(String templateId, String categoryId, List<Directory> records) {
+		// TODO Auto-generated method stub
+		DirectoryTemplateCategory tplCategory = templateCategoryDao.selectByTplIdAndCategoryId(templateId, categoryId);
+		for(Directory record : records)
+		{
+			DirectoryTemplateCategoryRefDirectory po = templateCategoryRefDirDao.selectByTplCategoryIdAndDirId(tplCategory.getId(), record.getId());
+			po.setRequired(true);
+			templateCategoryRefDirDao.updateByPrimaryKey(po);
 		}
 	}
 

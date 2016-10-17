@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.domain.DirectoryTemplate;
+import com.pujjr.file.vo.TemplateCategoryVo;
 @Service
 public interface ITemplateService 
 {
@@ -21,4 +22,11 @@ public interface ITemplateService
 	void saveTemplateDirectory(String templateId,List<Directory> records);
 	
 	void saveTemplateCategory(String templateId,List<DirectoryCategory> records);
+	
+	TemplateCategoryVo getTemplateCategoryInfo(String templateId,String categoryId);
+	
+	void saveTemplateCategoryDirectory(String templateId,String categoryId,List<Directory> records);
+	
+	void saveTemplateCategoryRequireDirectory(String templateId,String categoryId,List<Directory> records);
+	
 }

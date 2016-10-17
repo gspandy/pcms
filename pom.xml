@@ -191,11 +191,13 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.1.0</version>
 			</dependency>
+			<!-- 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
 				<version>2.8.0</version>
 			</dependency>
+			 -->
 			<dependency>
 			    <groupId>com.whalin</groupId>
 			    <artifactId>Memcached-Java-Client</artifactId>
@@ -215,7 +217,8 @@
 			</dependency>
 			
 			<!-- websocket 相关 -->
-			<!-- <dependency>  
+			<!--  
+			<dependency>  
 			    <groupId>com.fasterxml.jackson.core</groupId>  
 			    <artifactId>jackson-core</artifactId>  
 			    <version>2.3.0</version>  
@@ -382,14 +385,12 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 			</dependency>
+			<!-- 
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
 			</dependency>
-			<dependency>
-			    <groupId>com.whalin</groupId>
-			    <artifactId>Memcached-Java-Client</artifactId>
-			</dependency>
+			 -->
 		
 			<!-- aspect包 -->
 			<dependency>

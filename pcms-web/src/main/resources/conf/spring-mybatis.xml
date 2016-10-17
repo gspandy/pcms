@@ -18,38 +18,26 @@
                         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
              			http://www.springframework.org/schema/task 
              			http://www.springframework.org/schema/task/spring-task-4.0.xsd">
-	<!-- <context:component-scan base-package="
-	com.pujjr.carcredit.service,
-	com.pujjr.carcredit.service.impl,
-	com.pujjr.jbpm.service,
-	com.pujjr.jbpm.service.impl,
-	com.pujjr.base.service,
-	com.pujjr.base.service.impl"/> -->
-	<context:component-scan base-package="com.pujjr.*.service"/>
-
-	<!-- <context:component-scan base-package="com.pujjr.carcredit.dao.impl"/>
-	<context:component-scan base-package="com.pujjr.carcredit.service.impl"/> -->
-	<context:component-scan base-package="com.pujjr.*.*.impl"/>
-
-	<!-- <context:component-scan base-package="com.pujjr.carcredit.dao.impl"/>
-	<context:component-scan base-package="com.pujjr.carcredit.service.impl"/>
-	<context:component-scan base-package="com.pujjr.file.dao.impl"/>
-	<context:component-scan base-package="com.pujjr.file.service.impl"/> -->
-	<context:component-scan base-package="com.pujjr.*.service;com.pujjr.carcredit.exthandle"/>
-	<!-- 推送相关 -->
-	<context:component-scan base-package="com.pujjr.push.config"/>
-    <context:component-scan base-package="com.pujjr.push.handler"/>
-	<context:component-scan base-package="com.pujjr.push.intercepter"/>
-	<!-- 扫描定时任务相关 -->
-	<!-- <context:component-scan base-package="com.pujjr.push.scheduler.impl"/> -->
-	<!-- <context:component-scan base-package="com.tlms.core.servlce.impl"/> -->
+    
+             			
+	<context:component-scan base-package="com.pujjr.carcredit.service,com.pujjr.carcredit.service.impl,com.pujjr.carcredit.dao.impl"/>
+	<context:component-scan base-package="com.pujjr.jbpm.service,com.pujjr.jbpm.service.impl"/>
+	<context:component-scan base-package="com.pujjr.base.service,com.pujjr.base.service.impl"/>
+	<context:component-scan base-package="com.pujjr.file.dao.impl,com.pujjr.file.service.impl"/>
+	<context:component-scan base-package="com.pujjr.carcredit.exthandle"/>
+	<context:component-scan base-package="com.pujjr.push.service.impl,com.pujjr.push.config,com.pujjr.push.handler,com.pujjr.push.intercepter"/>
+	
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:conf/jdbc.properties" />
+		<property name="locations">
+			<list>
+				<value>classpath:conf/jdbc.properties</value>
+				<value>classpath:conf/pcms-push.properties</value>
+			</list>
+		</property>
 	</bean>
-
-	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource"
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
 		<property name="driverClassName">
 			<value>${jdbc_driverClassName}</value>
@@ -96,20 +84,10 @@
 			<value>clientEncoding=UTF-8</value>
 		</property>
 	</bean>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
-		destroy-method="close"
-		p:driverClassName="${jdbc_driverClassName}"
-		p:url="${jdbc_url}"
-		p:username="${jdbc_username}"
-		p:password="${jdbc_password}"/>
-	
-	<!-- 服务层扫描 -->
-	<!-- <context:component-scan base-package="com.pujjr"></context:component-scan> -->
 	
 	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.pujjr.base.dao;com.pujjr.jbpm.dao;com.pujjr.carcredit.dao;com.pujjr.push.dao;com.pujjr.file.dao" />
+		<property name="basePackage" value="com.pujjr.base.dao;com.pujjr.jbpm.dao;com.pujjr.carcredit.dao;com.pujjr.file.dao;com.pujjr.push.dao" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
 
@@ -127,7 +105,7 @@
 	</bean>
 	<tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
 	
-<!-- 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/> -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/>
 
 	<!-- aop -->
 	<aop:aspectj-autoproxy proxy-target-class="true"  expose-proxy="true"/>

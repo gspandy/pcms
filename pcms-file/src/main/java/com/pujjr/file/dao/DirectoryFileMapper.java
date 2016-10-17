@@ -1,5 +1,9 @@
 package com.pujjr.file.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.file.domain.DirectoryFile;
 
 public interface DirectoryFileMapper {
@@ -14,4 +18,7 @@ public interface DirectoryFileMapper {
     int updateByPrimaryKeySelective(DirectoryFile record);
 
     int updateByPrimaryKey(DirectoryFile record);
+    
+    List<DirectoryFile> selectAll(@Param("businessId")String businessId,@Param("dirId")String dirId);
+   
 }
