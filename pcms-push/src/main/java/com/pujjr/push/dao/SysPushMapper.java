@@ -23,4 +23,5 @@ public interface SysPushMapper {
     SysPush selectByAccountId(String accountId);
     List<SysPush> selectCommonList(HashMap<String,String> condition);
     SysPush selectCommon(HashMap<String,String> condition);
+   
 }

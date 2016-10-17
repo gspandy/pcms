@@ -12,9 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSONObject;
-import com.pujjr.push.dao.IPushDao;
 import com.pujjr.push.dao.SysPushMapper;
 import com.pujjr.push.domain.SysPush;
 import com.pujjr.push.enumeration.EChannelFlag;

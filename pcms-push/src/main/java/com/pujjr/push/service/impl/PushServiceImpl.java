@@ -1,6 +1,8 @@
 package com.pujjr.push.service.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-
-import com.pujjr.push.dao.IPushDao;
+import com.pujjr.push.dao.SysPushMapper;
 import com.pujjr.push.domain.SysPush;
+import com.pujjr.push.enumeration.ESendFlag;
 import com.pujjr.push.scheduler.IPushScanScheduler;
 import com.pujjr.push.service.IPushInstationService;
 import com.pujjr.push.service.IPushMailService;
@@ -25,7 +27,7 @@ import com.pujjr.push.service.IPushWeiXinService;
 public class PushServiceImpl implements IPushService{
 	private Logger logger = Logger.getLogger(PushServiceImpl.class);
 	@Autowired
-	private IPushDao pushDaoImpl;
+	private SysPushMapper sysPushMapper;
 	@Autowired
 	private IPushInstationService pushInstationService;
 	@Autowired
@@ -37,13 +39,17 @@ public class PushServiceImpl implements IPushService{
 	@Override
 	public List<SysPush> selectWillPush() {
 		// TODO Auto-generated method stub
-		return pushDaoImpl.selectWillPush();
+		HashMap<String,String> condition = new HashMap<String,String>();
+		condition.put("sendFlag", ESendFlag.WILL_SEND.getCode());
+		List<SysPush> sysPushList = new ArrayList<SysPush>();
+		sysPushList = sysPushMapper.selectCommonList(condition);
+		return sysPushList;
 	}
 	
 	@Override
 	public int updateSysPush(SysPush sysPush) {
 		// TODO Auto-generated method stub
-		pushDaoImpl.updateByPrimaryKey(sysPush);
+		sysPushMapper.updateByPrimaryKey(sysPush);
 		return 0;
 	}
 	

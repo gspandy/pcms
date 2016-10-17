@@ -17,14 +17,14 @@
   </properties>
   <dependencies>
 		<!-- websocket 相关 -->
-		<dependency>  
+		<!-- <dependency>  
 		    <groupId>com.fasterxml.jackson.core</groupId>  
 		    <artifactId>jackson-core</artifactId>   
 		</dependency>  
 		<dependency>  
 		    <groupId>com.fasterxml.jackson.core</groupId>  
 		    <artifactId>jackson-databind</artifactId>  
-		</dependency>  
+		</dependency>   -->
 		<dependency>  
 		   <groupId>org.springframework</groupId>  
 		   <artifactId>spring-websocket</artifactId>  
