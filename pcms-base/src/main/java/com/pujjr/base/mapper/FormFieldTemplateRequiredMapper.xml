@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.FormFieldTemplateRequiredMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.FormFieldTemplateRequiredKey" >
+    <id column="FIELD_ID" property="fieldId" jdbcType="VARCHAR" />
+    <id column="TPL_ID" property="tplId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.pujjr.base.domain.FormFieldTemplateRequiredKey" >
+    delete from t_form_field_template_required
+    where FIELD_ID = #{fieldId,jdbcType=VARCHAR}
+      and TPL_ID = #{tplId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.FormFieldTemplateRequiredKey" >
+    insert into t_form_field_template_required (FIELD_ID, TPL_ID)
+    values (#{fieldId,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.FormFieldTemplateRequiredKey" >
+    insert into t_form_field_template_required
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fieldId != null" >
+        FIELD_ID,
+      </if>
+      <if test="tplId != null" >
+        TPL_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fieldId != null" >
+        #{fieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteByTemplateId">
+  	delete from t_form_field_template_required where TPL_ID = #{templateId}
+  </delete>
+</mapper>

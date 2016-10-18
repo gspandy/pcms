@@ -9,15 +9,15 @@ import com.pujjr.base.domain.Product;
 public interface ProductMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(Product record);
+	int insert(Product record);
 
-    int insertSelective(Product record);
+	int insertSelective(Product record);
 
-    Product selectByPrimaryKey(String id);
+	Product selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(Product record);
+	int updateByPrimaryKeySelective(Product record);
 
-    int updateByPrimaryKey(Product record);
+	int updateByPrimaryKey(Product record);
     
     List<Product> selectAllByProductTypeId(@Param("productTypeId")String productTypeId);
     

@@ -86,10 +86,12 @@
     <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
     <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
     <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="PRODUCT_TYPE_NAME" property="productTypeName" jdbcType="VARCHAR"/>
   </resultMap>
   <select id="selectListByWorkgroupId" resultMap="ProductResultMap">
-  	select b.* from t_rule_product a
+  	select b.*,c.PRODUCT_TYPE_NAME from t_rule_product a
   	left join t_product b on a.PRODUCT_CODE = b.PRODUCT_CODE 
+  	left join t_product_type c on b.PRODUCT_TYPE_ID = c.id
     where a.WORKGROUP_ID = #{workgroupId}
   </select>
   <delete id="deleteByWorkgroupId">

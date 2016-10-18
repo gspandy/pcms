@@ -7,139 +7,141 @@ import java.util.List;
 public class Product {
     private String id;
 
-    private String productTypeId;
+	private String productTypeId;
 
-    private String productName;
+	private String productName;
 
-    private String productCode;
+	private String productCode;
 
-    private String loanCondition;
+	private String loanCondition;
 
-    private Double minLoanAmount;
+	private Double minLoanAmount;
 
-    private Double maxLoanAmount;
+	private Double maxLoanAmount;
 
-    private Double yearRate;
+	private Double yearRate;
 
-    private Double dayLateRate;
+	private Double dayLateRate;
 
-    private Double dayExtendRate;
+	private Double dayExtendRate;
 
-    private String repayMode;
+	private String repayMode;
 
-    private String productRuleId;
-    
-    private String directoryTemplateId;
+	private String productRuleId;
 
-    private Boolean enable;
+	private String directoryTemplateId;
 
-    private Date createTime;
+	private Boolean enable;
 
-    private String createId;
+	private Date createTime;
 
-    private Date updateTime;
+	private String createId;
 
-    private String updateId;
-    
-    
+	private Date updateTime;
 
-    public String getId() {
-        return id;
-    }
+	private String updateId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private String formTemplateId;
 
-    public String getProductTypeId() {
-        return productTypeId;
-    }
 
-    public void setProductTypeId(String productTypeId) {
-        this.productTypeId = productTypeId;
-    }
 
-    public String getProductName() {
-        return productName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getProductCode() {
-        return productCode;
-    }
+	public String getProductTypeId() {
+		return productTypeId;
+	}
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
+	public void setProductTypeId(String productTypeId) {
+		this.productTypeId = productTypeId;
+	}
 
-    public String getLoanCondition() {
-        return loanCondition;
-    }
+	public String getProductName() {
+		return productName;
+	}
 
-    public void setLoanCondition(String loanCondition) {
-        this.loanCondition = loanCondition;
-    }
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
 
-    public Double getMinLoanAmount() {
-        return minLoanAmount;
-    }
+	public String getProductCode() {
+		return productCode;
+	}
 
-    public void setMinLoanAmount(Double minLoanAmount) {
-        this.minLoanAmount = minLoanAmount;
-    }
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
 
-    public Double getMaxLoanAmount() {
-        return maxLoanAmount;
-    }
+	public String getLoanCondition() {
+		return loanCondition;
+	}
 
-    public void setMaxLoanAmount(Double maxLoanAmount) {
-        this.maxLoanAmount = maxLoanAmount;
-    }
+	public void setLoanCondition(String loanCondition) {
+		this.loanCondition = loanCondition;
+	}
 
-    public Double getYearRate() {
-        return yearRate;
-    }
+	public Double getMinLoanAmount() {
+		return minLoanAmount;
+	}
 
-    public void setYearRate(Double yearRate) {
-        this.yearRate = yearRate;
-    }
+	public void setMinLoanAmount(Double minLoanAmount) {
+		this.minLoanAmount = minLoanAmount;
+	}
 
-    public Double getDayLateRate() {
-        return dayLateRate;
-    }
+	public Double getMaxLoanAmount() {
+		return maxLoanAmount;
+	}
 
-    public void setDayLateRate(Double dayLateRate) {
-        this.dayLateRate = dayLateRate;
-    }
+	public void setMaxLoanAmount(Double maxLoanAmount) {
+		this.maxLoanAmount = maxLoanAmount;
+	}
 
-    public Double getDayExtendRate() {
-        return dayExtendRate;
-    }
+	public Double getYearRate() {
+		return yearRate;
+	}
 
-    public void setDayExtendRate(Double dayExtendRate) {
-        this.dayExtendRate = dayExtendRate;
-    }
+	public void setYearRate(Double yearRate) {
+		this.yearRate = yearRate;
+	}
 
-    public String getRepayMode() {
-        return repayMode;
-    }
+	public Double getDayLateRate() {
+		return dayLateRate;
+	}
 
-    public void setRepayMode(String repayMode) {
-        this.repayMode = repayMode;
-    }
+	public void setDayLateRate(Double dayLateRate) {
+		this.dayLateRate = dayLateRate;
+	}
 
-    public String getProductRuleId() {
-        return productRuleId;
-    }
+	public Double getDayExtendRate() {
+		return dayExtendRate;
+	}
 
-    public void setProductRuleId(String productRuleId) {
-        this.productRuleId = productRuleId;
-    }
+	public void setDayExtendRate(Double dayExtendRate) {
+		this.dayExtendRate = dayExtendRate;
+	}
 
-    public String getDirectoryTemplateId() {
+	public String getRepayMode() {
+		return repayMode;
+	}
+
+	public void setRepayMode(String repayMode) {
+		this.repayMode = repayMode;
+	}
+
+	public String getProductRuleId() {
+		return productRuleId;
+	}
+
+	public void setProductRuleId(String productRuleId) {
+		this.productRuleId = productRuleId;
+	}
+
+	public String getDirectoryTemplateId() {
 		return directoryTemplateId;
 	}
 
@@ -148,44 +150,53 @@ public class Product {
 	}
 
 	public Boolean getEnable() {
-        return enable;
-    }
+		return enable;
+	}
 
-    public void setEnable(Boolean enable) {
-        this.enable = enable;
-    }
+	public void setEnable(Boolean enable) {
+		this.enable = enable;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 
-    public String getUpdateId() {
-        return updateId;
-    }
+	public String getUpdateId() {
+		return updateId;
+	}
 
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
+
+	public String getFormTemplateId() {
+		return formTemplateId;
+	}
+
+	public void setFormTemplateId(String formTemplateId) {
+		this.formTemplateId = formTemplateId;
+	}
+
     
     private SysDictData repayModeDict;
 
@@ -196,7 +207,7 @@ public class Product {
 	public void setRepayModeDict(SysDictData repayModeDict) {
 		this.repayModeDict = repayModeDict;
 	}
-	//产品日罚息
+	//产品日罚�?
 	private List<ProductSettle> productSettleList = new ArrayList<ProductSettle>();
 
 	public List<ProductSettle> getProductSettleList() {
@@ -206,7 +217,7 @@ public class Product {
 	public void setProductSettleList(List<ProductSettle> productSettleList) {
 		this.productSettleList = productSettleList;
 	}
-	//产品可选期数
+	//产品可�?期数
 	private List<ProductPeriod> productPeriodList = new ArrayList<ProductPeriod>();
 
 	public List<ProductPeriod> getProductPeriodList() {
@@ -225,6 +236,16 @@ public class Product {
 
 	public void setProductRule(ProductRule productRule) {
 		this.productRule = productRule;
+	}
+	//产品分类名称
+	private String productTypeName;
+
+	public String getProductTypeName() {
+		return productTypeName;
+	}
+
+	public void setProductTypeName(String productTypeName) {
+		this.productTypeName = productTypeName;
 	}
 	
 	

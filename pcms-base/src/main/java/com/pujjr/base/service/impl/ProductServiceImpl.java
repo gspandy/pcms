@@ -13,11 +13,13 @@ import com.pujjr.base.dao.ProductPeriodMapper;
 import com.pujjr.base.dao.ProductRuleMapper;
 import com.pujjr.base.dao.ProductSettleMapper;
 import com.pujjr.base.dao.ProductTypeMapper;
+import com.pujjr.base.domain.FormField;
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.ProductPeriod;
 import com.pujjr.base.domain.ProductRule;
 import com.pujjr.base.domain.ProductSettle;
 import com.pujjr.base.domain.ProductType;
+import com.pujjr.base.service.IFormFieldService;
 import com.pujjr.base.service.IProductService;
 @Service
 public class ProductServiceImpl implements IProductService 
@@ -32,6 +34,8 @@ public class ProductServiceImpl implements IProductService
 	private ProductSettleMapper productSettleDao;
 	@Autowired
 	private ProductPeriodMapper productPeriodDao;
+	@Autowired
+	private IFormFieldService formFieldService;
 	
 	public List<ProductType> getProductTypeList() {
 		// TODO Auto-generated method stub
@@ -137,6 +141,14 @@ public class ProductServiceImpl implements IProductService
 	public Product getProductByProductCode(String productCode) {
 		// TODO Auto-generated method stub
 		return productDao.selectProductByProductCode(productCode);
+	}
+
+	@Override
+	public List<FormField> getProductFormRequiredFieldList(String productId) {
+		// TODO Auto-generated method stub
+		Product product = productDao.selectByPrimaryKey(productId);
+		String formTplId = product.getFormTemplateId();
+		return formFieldService.getTemplateRequiredFormField(formTplId);
 	}
 
 }

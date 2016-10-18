@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.FormFieldMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.FormField" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="FIELD_NAME" property="fieldName" jdbcType="VARCHAR" />
+    <result column="FIELD_ID" property="fieldId" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, FIELD_NAME, FIELD_ID, PARENT_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_form_field
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_form_field
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.FormField" >
+    insert into t_form_field (ID, FIELD_NAME, FIELD_ID, 
+      PARENT_ID)
+    values (#{id,jdbcType=VARCHAR}, #{fieldName,jdbcType=VARCHAR}, #{fieldId,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.FormField" >
+    insert into t_form_field
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="fieldName != null" >
+        FIELD_NAME,
+      </if>
+      <if test="fieldId != null" >
+        FIELD_ID,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldName != null" >
+        #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldId != null" >
+        #{fieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.FormField" >
+    update t_form_field
+    <set >
+      <if test="fieldName != null" >
+        FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="fieldId != null" >
+        FIELD_ID = #{fieldId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.FormField" >
+    update t_form_field
+    set FIELD_NAME = #{fieldName,jdbcType=VARCHAR},
+      FIELD_ID = #{fieldId,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select * from t_form_field
+  </select>
+  <select id="selectChildList" resultMap="BaseResultMap">
+  	select * from t_form_field where PARENT_ID = #{parentId}
+  </select>
+  <select id="selectTemplateRequireFieldList" resultMap="BaseResultMap">
+  	select b.* from T_FORM_FIELD_TEMPLATE_REQUIRED a
+  	left join T_FORM_FIELD b on a.FIELD_ID = b.id
+  	where a.TPL_ID = #{tplId}
+  </select>
+</mapper>
