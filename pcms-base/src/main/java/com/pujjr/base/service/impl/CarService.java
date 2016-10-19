@@ -12,6 +12,7 @@ import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.service.ICarService;
+import com.pujjr.base.vo.QueryParamCarBrandVo;
 @Service
 public class CarService implements ICarService {
 	
@@ -23,27 +24,27 @@ public class CarService implements ICarService {
 	private CarStyleMapper carStyleDao;
 	
 	@Override
-	public List<CarBrand> getCarBrandList() {
+	public List<CarBrand> getCarBrandList(QueryParamCarBrandVo params) {
 		// TODO Auto-generated method stub
-		return carBrandDao.selectAll();
+		return carBrandDao.selectAll(params);
 	}
 
 	@Override
 	public void addCarBrand(CarBrand record) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarBrand(CarBrand record) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarBrand(String id) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -53,21 +54,21 @@ public class CarService implements ICarService {
 	}
 
 	@Override
-	public void addCarSerial(String carBrandId, CarSerial record) {
+	public void addCarSerial(CarSerial record) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarSerial(CarSerial record) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarSerial(String id) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -77,21 +78,21 @@ public class CarService implements ICarService {
 	}
 
 	@Override
-	public void addCarStyle(String carSerialId, String CarStyle) {
+	public void addCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
-
+		carStyleDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
-
+		carStyleDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarStyle(String id) {
 		// TODO Auto-generated method stub
-
+		carStyleDao.deleteByPrimaryKey(id);
 	}
 
 	@Override

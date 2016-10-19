@@ -68,7 +68,11 @@
       PREFIX_LETTER = #{prefixLetter,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectAll" resultMap="BaseResultMap">
-  	select * from t_car_brand
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="com.pujjr.base.vo.QueryParamCarBrandVo">
+  	select * from t_car_brand 
+ 	where 1=1 
+ 	<if test="params.brandName != null and params.brandName!=''">
+ 		and BRAND_NAME = #{params.brandName}
+ 	</if>
   </select>
 </mapper>

@@ -18,5 +18,7 @@ public interface CarStyleMapper {
 
     int updateByPrimaryKey(CarStyle record);
     
+    int deleteByPrimaryKey(String id);
+    
     List<CarStyle> selectAllByCarSerialId(@Param("carSerialId")String carSerialId);
 }
