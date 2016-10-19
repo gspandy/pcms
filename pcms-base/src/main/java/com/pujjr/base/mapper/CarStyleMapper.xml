@@ -7,11 +7,12 @@
     <result column="CAR_STYLE_NAME" jdbcType="VARCHAR" property="carStyleName" />
     <result column="DISPLACEMENT" jdbcType="DOUBLE" property="displacement" />
     <result column="GUIDE_PRICE" jdbcType="DOUBLE" property="guidePrice" />
-    <association property="carBrand" column="CAR_SERIAL_ID" select="selectCarBrand"></association>
-    <association property="carSerial" column="CAR_SERIAL_ID" select="selectCarSerial"></association>
+    <result column="INDEX_STR" jdbcType="VARCHAR" property="indexStr" />
+     <association column="CAR_SERIAL_ID" property="carBrand" select="selectCarBrand" />
+    <association column="CAR_SERIAL_ID" property="carSerial" select="selectCarSerial" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, CAR_SERIAL_ID, CAR_STYLE_NAME, DISPLACEMENT, GUIDE_PRICE
+    ID, CAR_SERIAL_ID, CAR_STYLE_NAME, DISPLACEMENT, GUIDE_PRICE, INDEX_STR
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -25,9 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.pujjr.base.domain.CarStyle">
     insert into t_car_style (ID, CAR_SERIAL_ID, CAR_STYLE_NAME, 
-      DISPLACEMENT, GUIDE_PRICE)
+      DISPLACEMENT, GUIDE_PRICE, INDEX_STR
+      )
     values (#{id,jdbcType=VARCHAR}, #{carSerialId,jdbcType=VARCHAR}, #{carStyleName,jdbcType=VARCHAR}, 
-      #{displacement,jdbcType=DOUBLE}, #{guidePrice,jdbcType=DOUBLE})
+      #{displacement,jdbcType=DOUBLE}, #{guidePrice,jdbcType=DOUBLE}, #{indexStr,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.base.domain.CarStyle">
     insert into t_car_style
@@ -47,6 +50,9 @@
       <if test="guidePrice != null">
         GUIDE_PRICE,
       </if>
+      <if test="indexStr != null">
+        INDEX_STR,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -63,6 +69,9 @@
       </if>
       <if test="guidePrice != null">
         #{guidePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="indexStr != null">
+        #{indexStr,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -81,6 +90,9 @@
       <if test="guidePrice != null">
         GUIDE_PRICE = #{guidePrice,jdbcType=DOUBLE},
       </if>
+      <if test="indexStr != null">
+        INDEX_STR = #{indexStr,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -89,13 +101,22 @@
     set CAR_SERIAL_ID = #{carSerialId,jdbcType=VARCHAR},
       CAR_STYLE_NAME = #{carStyleName,jdbcType=VARCHAR},
       DISPLACEMENT = #{displacement,jdbcType=DOUBLE},
-      GUIDE_PRICE = #{guidePrice,jdbcType=DOUBLE}
+      GUIDE_PRICE = #{guidePrice,jdbcType=DOUBLE},
+      INDEX_STR = #{indexStr,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectAllByCarSerialId" resultMap="BaseResultMap">
-  	select * from t_car_style where CAR_SERIAL_ID = #{carSerialId}
+
+  <select id="selectAll" parameterType="com.pujjr.base.vo.QueryParamCarStyleVo" resultMap="BaseResultMap">
+  	select * from t_car_style style
+  	left join t_car_serial serial on style.CAR_SERIAL_ID = serial.id
+  	where 1=1
+  	<if test="param.carSerialId!=null and param.carSerialId!=''">
+  		and CAR_SERIAL_ID = #{param.carSerialId}
+  	</if>
+  	<if test="param.carBrandId!=null and param.carBrandId!=''">
+  		and CAR_BRAND_ID = #{param.carBrandId}
+  	</if>
   </select>
-  <!-- 关联查询车辆品牌信息-->
   <resultMap id="CarBrandResultMap" type="com.pujjr.base.domain.CarBrand">
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="BRAND_NAME" jdbcType="VARCHAR" property="brandName" />
@@ -106,7 +127,6 @@
 	left join t_car_serial b on a.id = b.car_brand_id 
 	where b.id = #{CAR_SERIAL_ID}
   </select>
-  <!-- 关联查询车辆系列信息 -->
   <resultMap id="CarSerialResultMap" type="com.pujjr.base.domain.CarSerial">
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="CAR_BRAND_ID" jdbcType="VARCHAR" property="carBrandId" />

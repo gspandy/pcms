@@ -21,5 +21,7 @@ public interface CarBrandMapper {
 
     int updateByPrimaryKey(CarBrand record);
     
-    public List<CarBrand> selectAll(@Param("params")QueryParamCarBrandVo params);
+    List<CarBrand> selectAll(@Param("params")QueryParamCarBrandVo params);
+    
+    CarBrand selectBrandBySerialId(@Param("carSerialId")String carSerialId); 
 }

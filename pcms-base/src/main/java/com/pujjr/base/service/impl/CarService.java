@@ -13,6 +13,8 @@ import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.service.ICarService;
 import com.pujjr.base.vo.QueryParamCarBrandVo;
+import com.pujjr.base.vo.QueryParamCarSerialVo;
+import com.pujjr.base.vo.QueryParamCarStyleVo;
 @Service
 public class CarService implements ICarService {
 	
@@ -48,9 +50,10 @@ public class CarService implements ICarService {
 	}
 
 	@Override
-	public List<CarSerial> getCarSerialByCarBrandId(String id) {
+	public List<CarSerial> getCarSerialList(QueryParamCarSerialVo param) 
+	{
 		// TODO Auto-generated method stub
-		return carSerialDao.selectAllByCarBrandId(id);
+		return carSerialDao.selectAll(param);
 	}
 
 	@Override
@@ -72,20 +75,29 @@ public class CarService implements ICarService {
 	}
 
 	@Override
-	public List<CarStyle> getCarStyleByCarSerialId(String id) {
+	public List<CarStyle> getCarStyleList(QueryParamCarStyleVo param) {
 		// TODO Auto-generated method stub
-		return carStyleDao.selectAllByCarSerialId(id);
+		return carStyleDao.selectAll(param);
 	}
 
 	@Override
 	public void addCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
+		//查找品牌及车系
+		CarBrand brand = carBrandDao.selectBrandBySerialId(record.getCarSerialId());
+		CarSerial serial = carSerialDao.selectByPrimaryKey(record.getCarSerialId());
+		//创建索引字段品牌名称-车系-车型-排量
+		record.setIndexStr(brand.getBrandName()+"-"+serial.getCarSerialName()+"-"+record.getCarStyleName()+"-"+record.getDisplacement());
 		carStyleDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
+		CarBrand brand = carBrandDao.selectBrandBySerialId(record.getCarSerialId());
+		CarSerial serial = carSerialDao.selectByPrimaryKey(record.getCarSerialId());
+		//创建索引字段品牌名称-车系-车型-排量
+		record.setIndexStr(brand.getBrandName()+"-"+serial.getCarSerialName()+"-"+record.getCarStyleName()+"-"+record.getDisplacement());
 		carStyleDao.updateByPrimaryKey(record);
 	}
 

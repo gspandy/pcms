@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.base.domain.CarSerial;
+import com.pujjr.base.vo.QueryParamCarSerialVo;
 
 public interface CarSerialMapper {
 
@@ -20,5 +21,5 @@ public interface CarSerialMapper {
 
     int updateByPrimaryKey(CarSerial record);
     
-    List<CarSerial> selectAllByCarBrandId(@Param("carBrandId")String carBrandId);
+    List<CarSerial> selectAll(@Param("param")QueryParamCarSerialVo param);
 }

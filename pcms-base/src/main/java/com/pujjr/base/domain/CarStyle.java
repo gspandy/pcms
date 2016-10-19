@@ -11,6 +11,8 @@ public class CarStyle {
 
 	private Double guidePrice;
 
+	private String indexStr;
+
 	public String getId() {
 		return id;
 	}
@@ -50,9 +52,18 @@ public class CarStyle {
 	public void setGuidePrice(Double guidePrice) {
 		this.guidePrice = guidePrice;
 	}
-	//扩展属性-车辆所属品牌
+
+	public String getIndexStr() {
+		return indexStr;
+	}
+
+	public void setIndexStr(String indexStr) {
+		this.indexStr = indexStr;
+	}
+
+	//扩展属性品牌
 	private CarBrand carBrand;
-	//扩展属性-车辆所属车系
+	//扩展属性车系
 	private CarSerial carSerial;
 
 	public CarBrand getCarBrand() {

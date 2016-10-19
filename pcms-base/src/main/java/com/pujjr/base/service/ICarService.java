@@ -6,6 +6,8 @@ import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.vo.QueryParamCarBrandVo;
+import com.pujjr.base.vo.QueryParamCarSerialVo;
+import com.pujjr.base.vo.QueryParamCarStyleVo;
 
 public interface ICarService 
 {
@@ -17,7 +19,7 @@ public interface ICarService
 	
 	public void deleteCarBrand(String id);
 	
-	public List<CarSerial> getCarSerialByCarBrandId(String id);
+	public List<CarSerial> getCarSerialList(QueryParamCarSerialVo param);
 	
 	public void addCarSerial(CarSerial record);
 	
@@ -25,7 +27,7 @@ public interface ICarService
 	
 	public void deleteCarSerial(String id);
 	
-	public List<CarStyle> getCarStyleByCarSerialId(String id);
+	public List<CarStyle> getCarStyleList(QueryParamCarStyleVo param);
 	
 	public void addCarStyle(CarStyle record);
 	

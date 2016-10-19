@@ -72,7 +72,12 @@
   	select * from t_car_brand 
  	where 1=1 
  	<if test="params.brandName != null and params.brandName!=''">
- 		and BRAND_NAME = #{params.brandName}
+ 		and BRAND_NAME like CONCAT('%',CONCAT(#{params.brandName},'%'))
  	</if>
+  </select>
+  <select id="selectBrandBySerialId" resultMap="BaseResultMap">
+  	select * from t_car_brand a
+  	left join t_car_serial b on b.CAR_BRAND_ID = a.id
+  	where b.ID = #{carSerialId}
   </select>
 </mapper>
