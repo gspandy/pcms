@@ -4,35 +4,39 @@ import java.util.Date;
 
 
 public class Apply {
-    public String id;
+    private String id;
 
-	public String appId;
+	private String appId;
 
-	public String productCode;
+	private String productCode;
 
-	public Integer period;
+	private Integer period;
 
-	public String comment;
+	private String comment;
 
-	public String status;
+	private String status;
 
-	public String createBranchCode;
+	private String createBranchCode;
 
-	public String createAccountId;
+	private String createAccountId;
 
-	public Date createTime;
+	private Date createTime;
 
-	public String custType;
+	private String custType;
 
-	public Double totalFinanceAmt;
+	private Double totalFinanceAmt;
 
-	public Double totalLoanAmt;
+	private Double totalLoanAmt;
 
-	public Double monthRent;
+	private Double monthRent;
 
-	public Date approveDate;
+	private Date approveDate;
 
-	public String procInstId;
+	private String procInstId;
+
+	private Date cancelDate;
+
+	private Date refuseDate;
 
 	public String getId() {
 		return id;
@@ -154,4 +158,19 @@ public class Apply {
 		this.procInstId = procInstId;
 	}
 
+	public Date getCancelDate() {
+		return cancelDate;
+	}
+
+	public void setCancelDate(Date cancelDate) {
+		this.cancelDate = cancelDate;
+	}
+
+	public Date getRefuseDate() {
+		return refuseDate;
+	}
+
+	public void setRefuseDate(Date refuseDate) {
+		this.refuseDate = refuseDate;
+	}
 }

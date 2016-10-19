@@ -46,6 +46,30 @@ public class ApplyController extends BaseController {
 	@Value("${pcms.sys_mode}") 
 	private String sysMode = "debug";
 	
+	/**
+	 * 查询申请订单表信息 2016-10-19
+	 * @param applyVo
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/apply/select/{appid}",method=RequestMethod.GET)
+	@ResponseBody
+	public ApplyVo applySelect(@PathVariable String appid,HttpServletRequest request) throws Exception{
+		return applyService.getApplyInfo(appid);
+	}
+	
+	/**
+	 * 更新申请订单表信息 2016-10-19
+	 * @param applyVo
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/apply/update",method=RequestMethod.POST)
+	@ResponseBody
+	public void applyUpdate(@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception{
+		applyService.updateApply(applyVo);
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="/apply/{id}/{name}",method=RequestMethod.GET)
 	public JSONArray clientInfoQuery(@PathVariable String id,@PathVariable String name){
@@ -65,7 +89,6 @@ public class ApplyController extends BaseController {
 	public HashMap<String,Object> applySave(@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		String appId = "";
-		System.out.println("ApplyController->sysMode："+sysMode);
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		if("debug".equals(sysMode))
 			appId = applyService.saveApply(applyVo,"333");
@@ -77,7 +100,7 @@ public class ApplyController extends BaseController {
 	}
 	
 	/**
-	 * 查询未提交订单
+	 * 查询未提交订单列表
 	 * @param applyVo
 	 * @return
 	 * @throws Exception 
@@ -105,7 +128,7 @@ public class ApplyController extends BaseController {
 	}
 	
 	/**
-	 * 查询未提交订单列表
+	 * 查询订单详情
 	 * @param applyVo
 	 * @return
 	 * @throws Exception 

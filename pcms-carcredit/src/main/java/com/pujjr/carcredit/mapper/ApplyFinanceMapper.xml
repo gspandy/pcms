@@ -33,24 +33,15 @@
     <result column="INIT_PAY_AMOUNT" jdbcType="DOUBLE" property="initPayAmount" />
     <result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
     <result column="FINANCE_FEE" jdbcType="DOUBLE" property="financeFee" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, APP_ID, SEQ, CAR_STYLE_ID, SALE_PRICE, INIT_PAY_PERCENT, IS_FINANCE_GPS, GPS_LVL_ID, 
     GPS_FEE, IS_PURCHASE_TAX, PURCHASE_TAX, IS_SERVICE_FEE, SERVICE_FEE, IS_INSURANCE_FEE, 
     INSURANCE_FEE, IS_DELAY_INSURANCE_FEE, DELAY_INSURANCE_FEE, IS_TRANSFER_FEE, TRANSFER_FEE, 
     IS_ADDON_FEE, ADDON_FEE, ASSESS_FEE, CAR_COLOR, CAR_MANU, CAR_VIN, CAR_ENGINE_NO, 
-    ASSESS_PRICE, COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, FINANCE_FEE
+    ASSESS_PRICE, COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, FINANCE_FEE, COMMENT
   </sql>
-  
-  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	 select 
-    <include refid="Base_Column_List" />
-    from t_apply_finance
-    where app_id = #{appId,jdbcType=VARCHAR}
-    order by seq
-  </select>
-  
-  
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
@@ -72,7 +63,7 @@
       ASSESS_FEE, CAR_COLOR, CAR_MANU, 
       CAR_VIN, CAR_ENGINE_NO, ASSESS_PRICE, 
       COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, 
-      FINANCE_FEE)
+      FINANCE_FEE, COMMENT)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
       #{carStyleId,jdbcType=VARCHAR}, #{salePrice,jdbcType=DOUBLE}, #{initPayPercent,jdbcType=DOUBLE}, 
       #{isFinanceGps,jdbcType=BIT}, #{gpsLvlId,jdbcType=VARCHAR}, #{gpsFee,jdbcType=DOUBLE}, 
@@ -83,7 +74,7 @@
       #{assessFee,jdbcType=DOUBLE}, #{carColor,jdbcType=VARCHAR}, #{carManu,jdbcType=VARCHAR}, 
       #{carVin,jdbcType=VARCHAR}, #{carEngineNo,jdbcType=VARCHAR}, #{assessPrice,jdbcType=DOUBLE}, 
       #{collateral,jdbcType=DOUBLE}, #{initPayAmount,jdbcType=DOUBLE}, #{financeAmount,jdbcType=DOUBLE}, 
-      #{financeFee,jdbcType=DOUBLE})
+      #{financeFee,jdbcType=DOUBLE}, #{comment,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
     insert into t_apply_finance
@@ -181,6 +172,9 @@
       <if test="financeFee != null">
         FINANCE_FEE,
       </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -275,6 +269,9 @@
       </if>
       <if test="financeFee != null">
         #{financeFee,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -371,6 +368,9 @@
       <if test="financeFee != null">
         FINANCE_FEE = #{financeFee,jdbcType=DOUBLE},
       </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -405,9 +405,18 @@
       COLLATERAL = #{collateral,jdbcType=DOUBLE},
       INIT_PAY_AMOUNT = #{initPayAmount,jdbcType=DOUBLE},
       FINANCE_AMOUNT = #{financeAmount,jdbcType=DOUBLE},
-      FINANCE_FEE = #{financeFee,jdbcType=DOUBLE}
+      FINANCE_FEE = #{financeFee,jdbcType=DOUBLE},
+      COMMENT = #{comment,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from t_apply_finance
+    where app_id = #{appId,jdbcType=VARCHAR}
+    order by seq
+  </select>
   <select id="selectListByAppId" resultMap="BaseResultMap">
   	select * from t_apply_finance where APP_ID = #{appId} 
   	order by seq

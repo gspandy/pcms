@@ -17,11 +17,13 @@
     <result column="MONTH_RENT" jdbcType="DOUBLE" property="monthRent" />
     <result column="APPROVE_DATE" jdbcType="DATE" property="approveDate" />
     <result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
+    <result column="CANCEL_DATE" jdbcType="DATE" property="cancelDate" />
+    <result column="REFUSE_DATE" jdbcType="DATE" property="refuseDate" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, APP_ID, PRODUCT_CODE, PERIOD, COMMENT, STATUS, CREATE_BRANCH_CODE, CREATE_ACCOUNT_ID, 
     CREATE_TIME, CUST_TYPE, TOTAL_FINANCE_AMT, TOTAL_LOAN_AMT, MONTH_RENT, APPROVE_DATE, 
-    PROC_INST_ID
+    PROC_INST_ID, CANCEL_DATE, REFUSE_DATE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -38,14 +40,14 @@
       PERIOD, COMMENT, STATUS, 
       CREATE_BRANCH_CODE, CREATE_ACCOUNT_ID, CREATE_TIME, 
       CUST_TYPE, TOTAL_FINANCE_AMT, TOTAL_LOAN_AMT, 
-      MONTH_RENT, APPROVE_DATE, PROC_INST_ID
-      )
+      MONTH_RENT, APPROVE_DATE, PROC_INST_ID, 
+      CANCEL_DATE, REFUSE_DATE)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR}, 
       #{period,jdbcType=INTEGER}, #{comment,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
       #{createBranchCode,jdbcType=VARCHAR}, #{createAccountId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{custType,jdbcType=VARCHAR}, #{totalFinanceAmt,jdbcType=DOUBLE}, #{totalLoanAmt,jdbcType=DOUBLE}, 
-      #{monthRent,jdbcType=DOUBLE}, #{approveDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR}
-      )
+      #{monthRent,jdbcType=DOUBLE}, #{approveDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR}, 
+      #{cancelDate,jdbcType=DATE}, #{refuseDate,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.Apply">
     insert into t_apply
@@ -95,6 +97,12 @@
       <if test="procInstId != null">
         PROC_INST_ID,
       </if>
+      <if test="cancelDate != null">
+        CANCEL_DATE,
+      </if>
+      <if test="refuseDate != null">
+        REFUSE_DATE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -141,6 +149,12 @@
       </if>
       <if test="procInstId != null">
         #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelDate != null">
+        #{cancelDate,jdbcType=DATE},
+      </if>
+      <if test="refuseDate != null">
+        #{refuseDate,jdbcType=DATE},
       </if>
     </trim>
   </insert>
@@ -189,6 +203,12 @@
       <if test="procInstId != null">
         PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
       </if>
+      <if test="cancelDate != null">
+        CANCEL_DATE = #{cancelDate,jdbcType=DATE},
+      </if>
+      <if test="refuseDate != null">
+        REFUSE_DATE = #{refuseDate,jdbcType=DATE},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -207,11 +227,13 @@
       TOTAL_LOAN_AMT = #{totalLoanAmt,jdbcType=DOUBLE},
       MONTH_RENT = #{monthRent,jdbcType=DOUBLE},
       APPROVE_DATE = #{approveDate,jdbcType=DATE},
-      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      CANCEL_DATE = #{cancelDate,jdbcType=DATE},
+      REFUSE_DATE = #{refuseDate,jdbcType=DATE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   
-  <!-- ��ѯδ�ύ���� -->
+  <!-- ???��?????? -->
   <resultMap id="applyVoResultMap" type="com.pujjr.carcredit.vo.ApplyVo">
   	<id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="APP_ID" jdbcType="VARCHAR" property="appId" />

@@ -1,63 +1,116 @@
 package com.pujjr.carcredit.domain;
 
+import java.util.Date;
+
 public class ApplyTenantCar {
-    public String id;
+    private String id;
 
-    public String appId;
+	private String appId;
 
-    public Integer seq;
+	private Integer seq;
 
-    public String carBrand;
+	private String carBrand;
 
-    public String carDetail;
+	private String carDetail;
 
-    public String carStatus;
+	private String carStatus;
 
-    public String getId() {
-        return id;
-    }
+	private Date registerDate;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Double loanAmount;
 
-    public String getAppId() {
-        return appId;
-    }
+	private Double loanBalance;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	private Double monthRent;
 
-    public Integer getSeq() {
-        return seq;
-    }
+	private String comment;
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getCarBrand() {
-        return carBrand;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setCarBrand(String carBrand) {
-        this.carBrand = carBrand;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getCarDetail() {
-        return carDetail;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setCarDetail(String carDetail) {
-        this.carDetail = carDetail;
-    }
+	public Integer getSeq() {
+		return seq;
+	}
 
-    public String getCarStatus() {
-        return carStatus;
-    }
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
 
-    public void setCarStatus(String carStatus) {
-        this.carStatus = carStatus;
-    }
+	public String getCarBrand() {
+		return carBrand;
+	}
+
+	public void setCarBrand(String carBrand) {
+		this.carBrand = carBrand;
+	}
+
+	public String getCarDetail() {
+		return carDetail;
+	}
+
+	public void setCarDetail(String carDetail) {
+		this.carDetail = carDetail;
+	}
+
+	public String getCarStatus() {
+		return carStatus;
+	}
+
+	public void setCarStatus(String carStatus) {
+		this.carStatus = carStatus;
+	}
+
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+
+	public Double getLoanAmount() {
+		return loanAmount;
+	}
+
+	public void setLoanAmount(Double loanAmount) {
+		this.loanAmount = loanAmount;
+	}
+
+	public Double getLoanBalance() {
+		return loanBalance;
+	}
+
+	public void setLoanBalance(Double loanBalance) {
+		this.loanBalance = loanBalance;
+	}
+
+	public Double getMonthRent() {
+		return monthRent;
+	}
+
+	public void setMonthRent(Double monthRent) {
+		this.monthRent = monthRent;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 }

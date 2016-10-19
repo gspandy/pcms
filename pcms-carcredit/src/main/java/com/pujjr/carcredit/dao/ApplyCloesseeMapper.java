@@ -6,15 +6,15 @@ import com.pujjr.carcredit.vo.ApplyCloesseeVo;
 public interface ApplyCloesseeMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ApplyCloessee record);
+	int insert(ApplyCloessee record);
 
-    int insertSelective(ApplyCloessee record);
+	int insertSelective(ApplyCloessee record);
 
-    ApplyCloessee selectByPrimaryKey(String id);
+	ApplyCloessee selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(ApplyCloessee record);
+	int updateByPrimaryKeySelective(ApplyCloessee record);
 
-    int updateByPrimaryKey(ApplyCloessee record);
+	int updateByPrimaryKey(ApplyCloessee record);
     
     ApplyCloessee selectByAppId(String appId);
 }

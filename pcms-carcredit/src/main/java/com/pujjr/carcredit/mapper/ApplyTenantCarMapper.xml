@@ -1,116 +1,172 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.ApplyTenantCarMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyTenantCar" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="SEQ" property="seq" jdbcType="INTEGER" />
-    <result column="CAR_BRAND" property="carBrand" jdbcType="VARCHAR" />
-    <result column="CAR_DETAIL" property="carDetail" jdbcType="VARCHAR" />
-    <result column="CAR_STATUS" property="carStatus" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.ApplyTenantCarMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyTenantCar">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="CAR_BRAND" jdbcType="VARCHAR" property="carBrand" />
+    <result column="CAR_DETAIL" jdbcType="VARCHAR" property="carDetail" />
+    <result column="CAR_STATUS" jdbcType="VARCHAR" property="carStatus" />
+    <result column="REGISTER_DATE" jdbcType="DATE" property="registerDate" />
+    <result column="LOAN_AMOUNT" jdbcType="DOUBLE" property="loanAmount" />
+    <result column="LOAN_BALANCE" jdbcType="DOUBLE" property="loanBalance" />
+    <result column="MONTH_RENT" jdbcType="DOUBLE" property="monthRent" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, SEQ, CAR_BRAND, CAR_DETAIL, CAR_STATUS
+  <sql id="Base_Column_List">
+    ID, APP_ID, SEQ, CAR_BRAND, CAR_DETAIL, CAR_STATUS, REGISTER_DATE, LOAN_AMOUNT, LOAN_BALANCE, 
+    MONTH_RENT, COMMENT
   </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_tenant_car
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_apply_tenant_car
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar">
+    insert into t_apply_tenant_car (ID, APP_ID, SEQ, 
+      CAR_BRAND, CAR_DETAIL, CAR_STATUS, 
+      REGISTER_DATE, LOAN_AMOUNT, LOAN_BALANCE, 
+      MONTH_RENT, COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{carBrand,jdbcType=VARCHAR}, #{carDetail,jdbcType=VARCHAR}, #{carStatus,jdbcType=VARCHAR}, 
+      #{registerDate,jdbcType=DATE}, #{loanAmount,jdbcType=DOUBLE}, #{loanBalance,jdbcType=DOUBLE}, 
+      #{monthRent,jdbcType=DOUBLE}, #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar">
+    insert into t_apply_tenant_car
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="carBrand != null">
+        CAR_BRAND,
+      </if>
+      <if test="carDetail != null">
+        CAR_DETAIL,
+      </if>
+      <if test="carStatus != null">
+        CAR_STATUS,
+      </if>
+      <if test="registerDate != null">
+        REGISTER_DATE,
+      </if>
+      <if test="loanAmount != null">
+        LOAN_AMOUNT,
+      </if>
+      <if test="loanBalance != null">
+        LOAN_BALANCE,
+      </if>
+      <if test="monthRent != null">
+        MONTH_RENT,
+      </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="carBrand != null">
+        #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carDetail != null">
+        #{carDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="carStatus != null">
+        #{carStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="registerDate != null">
+        #{registerDate,jdbcType=DATE},
+      </if>
+      <if test="loanAmount != null">
+        #{loanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="loanBalance != null">
+        #{loanBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="monthRent != null">
+        #{monthRent,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar">
+    update t_apply_tenant_car
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="carBrand != null">
+        CAR_BRAND = #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="carDetail != null">
+        CAR_DETAIL = #{carDetail,jdbcType=VARCHAR},
+      </if>
+      <if test="carStatus != null">
+        CAR_STATUS = #{carStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="registerDate != null">
+        REGISTER_DATE = #{registerDate,jdbcType=DATE},
+      </if>
+      <if test="loanAmount != null">
+        LOAN_AMOUNT = #{loanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="loanBalance != null">
+        LOAN_BALANCE = #{loanBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="monthRent != null">
+        MONTH_RENT = #{monthRent,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar">
+    update t_apply_tenant_car
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      CAR_BRAND = #{carBrand,jdbcType=VARCHAR},
+      CAR_DETAIL = #{carDetail,jdbcType=VARCHAR},
+      CAR_STATUS = #{carStatus,jdbcType=VARCHAR},
+      REGISTER_DATE = #{registerDate,jdbcType=DATE},
+      LOAN_AMOUNT = #{loanAmount,jdbcType=DOUBLE},
+      LOAN_BALANCE = #{loanBalance,jdbcType=DOUBLE},
+      MONTH_RENT = #{monthRent,jdbcType=DOUBLE},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
   
-  <select id="selectByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_apply_tenant_car
     where app_id = #{appId,jdbcType=VARCHAR}
     order by seq
   </select>
-  
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_apply_tenant_car
-    where ID = #{id,jdbcType=VARCHAR}
-    order by seq
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-    delete from t_apply_tenant_car
-    where ID = #{id,jdbcType=VARCHAR}
-  </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar" >
-    insert into t_apply_tenant_car (ID, APP_ID, SEQ, 
-      CAR_BRAND, CAR_DETAIL, CAR_STATUS
-      )
-    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
-      #{carBrand,jdbcType=VARCHAR}, #{carDetail,jdbcType=VARCHAR}, #{carStatus,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar" >
-    insert into t_apply_tenant_car
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        ID,
-      </if>
-      <if test="appId != null" >
-        APP_ID,
-      </if>
-      <if test="seq != null" >
-        SEQ,
-      </if>
-      <if test="carBrand != null" >
-        CAR_BRAND,
-      </if>
-      <if test="carDetail != null" >
-        CAR_DETAIL,
-      </if>
-      <if test="carStatus != null" >
-        CAR_STATUS,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=VARCHAR},
-      </if>
-      <if test="appId != null" >
-        #{appId,jdbcType=VARCHAR},
-      </if>
-      <if test="seq != null" >
-        #{seq,jdbcType=INTEGER},
-      </if>
-      <if test="carBrand != null" >
-        #{carBrand,jdbcType=VARCHAR},
-      </if>
-      <if test="carDetail != null" >
-        #{carDetail,jdbcType=VARCHAR},
-      </if>
-      <if test="carStatus != null" >
-        #{carStatus,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar" >
-    update t_apply_tenant_car
-    <set >
-      <if test="appId != null" >
-        APP_ID = #{appId,jdbcType=VARCHAR},
-      </if>
-      <if test="seq != null" >
-        SEQ = #{seq,jdbcType=INTEGER},
-      </if>
-      <if test="carBrand != null" >
-        CAR_BRAND = #{carBrand,jdbcType=VARCHAR},
-      </if>
-      <if test="carDetail != null" >
-        CAR_DETAIL = #{carDetail,jdbcType=VARCHAR},
-      </if>
-      <if test="carStatus != null" >
-        CAR_STATUS = #{carStatus,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ID = #{id,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyTenantCar" >
-    update t_apply_tenant_car
-    set APP_ID = #{appId,jdbcType=VARCHAR},
-      SEQ = #{seq,jdbcType=INTEGER},
-      CAR_BRAND = #{carBrand,jdbcType=VARCHAR},
-      CAR_DETAIL = #{carDetail,jdbcType=VARCHAR},
-      CAR_STATUS = #{carStatus,jdbcType=VARCHAR}
-    where ID = #{id,jdbcType=VARCHAR}
-  </update>
 </mapper>

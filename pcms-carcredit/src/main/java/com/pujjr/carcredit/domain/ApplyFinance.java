@@ -1,67 +1,69 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyFinance {
-    public String id;
+    private String id;
 
-	public String appId;
+	private String appId;
 
-	public Integer seq;
+	private Integer seq;
 
-	public String carStyleId;
+	private String carStyleId;
 
-	public Double salePrice;
+	private Double salePrice;
 
-	public Double initPayPercent;
+	private Double initPayPercent;
 
-	public Boolean isFinanceGps;
+	private Boolean isFinanceGps;
 
-	public String gpsLvlId;
+	private String gpsLvlId;
 
-	public Double gpsFee;
+	private Double gpsFee;
 
-	public Boolean isPurchaseTax;
+	private Boolean isPurchaseTax;
 
-	public Double purchaseTax;
+	private Double purchaseTax;
 
-	public Boolean isServiceFee;
+	private Boolean isServiceFee;
 
-	public Double serviceFee;
+	private Double serviceFee;
 
-	public Boolean isInsuranceFee;
+	private Boolean isInsuranceFee;
 
-	public Double insuranceFee;
+	private Double insuranceFee;
 
-	public Boolean isDelayInsuranceFee;
+	private Boolean isDelayInsuranceFee;
 
-	public Double delayInsuranceFee;
+	private Double delayInsuranceFee;
 
-	public Boolean isTransferFee;
+	private Boolean isTransferFee;
 
-	public Double transferFee;
+	private Double transferFee;
 
-	public Boolean isAddonFee;
+	private Boolean isAddonFee;
 
-	public Double addonFee;
+	private Double addonFee;
 
-	public Double assessFee;
+	private Double assessFee;
 
-	public String carColor;
+	private String carColor;
 
-	public String carManu;
+	private String carManu;
 
-	public String carVin;
+	private String carVin;
 
-	public String carEngineNo;
+	private String carEngineNo;
 
-	public Double assessPrice;
+	private Double assessPrice;
 
-	public Double collateral;
+	private Double collateral;
 
-	public Double initPayAmount;
+	private Double initPayAmount;
 
-	public Double financeAmount;
+	private Double financeAmount;
 
-	public Double financeFee;
+	private Double financeFee;
+
+	private String comment;
 
 	public String getId() {
 		return id;
@@ -309,5 +311,13 @@ public class ApplyFinance {
 
 	public void setFinanceFee(Double financeFee) {
 		this.financeFee = financeFee;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

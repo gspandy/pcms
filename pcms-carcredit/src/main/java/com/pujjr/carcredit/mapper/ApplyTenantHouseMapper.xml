@@ -1,130 +1,175 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.carcredit.dao.ApplyTenantHouseMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyTenantHouse" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="SEQ" property="seq" jdbcType="INTEGER" />
-    <result column="ADDR_PROVINCE" property="addrProvince" jdbcType="VARCHAR" />
-    <result column="ADDR_CITY" property="addrCity" jdbcType="VARCHAR" />
-    <result column="ADDR_COUNTY" property="addrCounty" jdbcType="VARCHAR" />
-    <result column="ADDR_EXT" property="addrExt" jdbcType="VARCHAR" />
-    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.ApplyTenantHouseMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyTenantHouse">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="ADDR_PROVINCE" jdbcType="VARCHAR" property="addrProvince" />
+    <result column="ADDR_CITY" jdbcType="VARCHAR" property="addrCity" />
+    <result column="ADDR_COUNTY" jdbcType="VARCHAR" property="addrCounty" />
+    <result column="ADDR_EXT" jdbcType="VARCHAR" property="addrExt" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="AREA" jdbcType="DOUBLE" property="area" />
+    <result column="LOAN_AMOUNT" jdbcType="DOUBLE" property="loanAmount" />
+    <result column="LOAN_BALANCE" jdbcType="DOUBLE" property="loanBalance" />
+    <result column="MONTH_RENT" jdbcType="DOUBLE" property="monthRent" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, SEQ, ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, ADDR_EXT, STATUS
+  <sql id="Base_Column_List">
+    ID, APP_ID, SEQ, ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, ADDR_EXT, STATUS, AREA, LOAN_AMOUNT, 
+    LOAN_BALANCE, MONTH_RENT, COMMENT
   </sql>
-  
-  <select id="selectByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
-    <include refid="Base_Column_List" />
-    from t_apply_tenant_house
-    where app_id = #{appId,jdbcType=VARCHAR}
-    order by seq
-  </select>
-  
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_apply_tenant_house
     where ID = #{id,jdbcType=VARCHAR}
-    order by seq
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_apply_tenant_house
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse">
     insert into t_apply_tenant_house (ID, APP_ID, SEQ, 
       ADDR_PROVINCE, ADDR_CITY, ADDR_COUNTY, 
-      ADDR_EXT, STATUS)
+      ADDR_EXT, STATUS, AREA, 
+      LOAN_AMOUNT, LOAN_BALANCE, MONTH_RENT, 
+      COMMENT)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
       #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, #{addrCounty,jdbcType=VARCHAR}, 
-      #{addrExt,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+      #{addrExt,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{area,jdbcType=DOUBLE}, 
+      #{loanAmount,jdbcType=DOUBLE}, #{loanBalance,jdbcType=DOUBLE}, #{monthRent,jdbcType=DOUBLE}, 
+      #{comment,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse">
     insert into t_apply_tenant_house
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="seq != null" >
+      <if test="seq != null">
         SEQ,
       </if>
-      <if test="addrProvince != null" >
+      <if test="addrProvince != null">
         ADDR_PROVINCE,
       </if>
-      <if test="addrCity != null" >
+      <if test="addrCity != null">
         ADDR_CITY,
       </if>
-      <if test="addrCounty != null" >
+      <if test="addrCounty != null">
         ADDR_COUNTY,
       </if>
-      <if test="addrExt != null" >
+      <if test="addrExt != null">
         ADDR_EXT,
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         STATUS,
       </if>
+      <if test="area != null">
+        AREA,
+      </if>
+      <if test="loanAmount != null">
+        LOAN_AMOUNT,
+      </if>
+      <if test="loanBalance != null">
+        LOAN_BALANCE,
+      </if>
+      <if test="monthRent != null">
+        MONTH_RENT,
+      </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="seq != null" >
+      <if test="seq != null">
         #{seq,jdbcType=INTEGER},
       </if>
-      <if test="addrProvince != null" >
+      <if test="addrProvince != null">
         #{addrProvince,jdbcType=VARCHAR},
       </if>
-      <if test="addrCity != null" >
+      <if test="addrCity != null">
         #{addrCity,jdbcType=VARCHAR},
       </if>
-      <if test="addrCounty != null" >
+      <if test="addrCounty != null">
         #{addrCounty,jdbcType=VARCHAR},
       </if>
-      <if test="addrExt != null" >
+      <if test="addrExt != null">
         #{addrExt,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        #{area,jdbcType=DOUBLE},
+      </if>
+      <if test="loanAmount != null">
+        #{loanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="loanBalance != null">
+        #{loanBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="monthRent != null">
+        #{monthRent,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse">
     update t_apply_tenant_house
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="seq != null" >
+      <if test="seq != null">
         SEQ = #{seq,jdbcType=INTEGER},
       </if>
-      <if test="addrProvince != null" >
+      <if test="addrProvince != null">
         ADDR_PROVINCE = #{addrProvince,jdbcType=VARCHAR},
       </if>
-      <if test="addrCity != null" >
+      <if test="addrCity != null">
         ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
       </if>
-      <if test="addrCounty != null" >
+      <if test="addrCounty != null">
         ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
       </if>
-      <if test="addrExt != null" >
+      <if test="addrExt != null">
         ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
       </if>
-      <if test="status != null" >
+      <if test="status != null">
         STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null">
+        AREA = #{area,jdbcType=DOUBLE},
+      </if>
+      <if test="loanAmount != null">
+        LOAN_AMOUNT = #{loanAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="loanBalance != null">
+        LOAN_BALANCE = #{loanBalance,jdbcType=DOUBLE},
+      </if>
+      <if test="monthRent != null">
+        MONTH_RENT = #{monthRent,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyTenantHouse">
     update t_apply_tenant_house
     set APP_ID = #{appId,jdbcType=VARCHAR},
       SEQ = #{seq,jdbcType=INTEGER},
@@ -132,7 +177,20 @@
       ADDR_CITY = #{addrCity,jdbcType=VARCHAR},
       ADDR_COUNTY = #{addrCounty,jdbcType=VARCHAR},
       ADDR_EXT = #{addrExt,jdbcType=VARCHAR},
-      STATUS = #{status,jdbcType=VARCHAR}
+      STATUS = #{status,jdbcType=VARCHAR},
+      AREA = #{area,jdbcType=DOUBLE},
+      LOAN_AMOUNT = #{loanAmount,jdbcType=DOUBLE},
+      LOAN_BALANCE = #{loanBalance,jdbcType=DOUBLE},
+      MONTH_RENT = #{monthRent,jdbcType=DOUBLE},
+      COMMENT = #{comment,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectByAppId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_tenant_house
+    where app_id = #{appId,jdbcType=VARCHAR}
+    order by seq
+  </select>
 </mapper>
