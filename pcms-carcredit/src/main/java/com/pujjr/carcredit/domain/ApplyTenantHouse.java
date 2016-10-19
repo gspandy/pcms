@@ -1,83 +1,133 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyTenantHouse {
-    public String id;
+    private String id;
 
-    public String appId;
+	private String appId;
 
-    public Integer seq;
+	private Integer seq;
 
-    public String addrProvince;
+	private String addrProvince;
 
-    public String addrCity;
+	private String addrCity;
 
-    public String addrCounty;
+	private String addrCounty;
 
-    public String addrExt;
+	private String addrExt;
 
-    public String status;
+	private String status;
 
-    public String getId() {
-        return id;
-    }
+	private Double area;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Double loanAmount;
 
-    public String getAppId() {
-        return appId;
-    }
+	private Double loanBalance;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	private Double monthRent;
 
-    public Integer getSeq() {
-        return seq;
-    }
+	private String comment;
 
-    public void setSeq(Integer seq) {
-        this.seq = seq;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAddrProvince() {
-        return addrProvince;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAddrProvince(String addrProvince) {
-        this.addrProvince = addrProvince;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getAddrCity() {
-        return addrCity;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setAddrCity(String addrCity) {
-        this.addrCity = addrCity;
-    }
+	public Integer getSeq() {
+		return seq;
+	}
 
-    public String getAddrCounty() {
-        return addrCounty;
-    }
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
 
-    public void setAddrCounty(String addrCounty) {
-        this.addrCounty = addrCounty;
-    }
+	public String getAddrProvince() {
+		return addrProvince;
+	}
 
-    public String getAddrExt() {
-        return addrExt;
-    }
+	public void setAddrProvince(String addrProvince) {
+		this.addrProvince = addrProvince;
+	}
 
-    public void setAddrExt(String addrExt) {
-        this.addrExt = addrExt;
-    }
+	public String getAddrCity() {
+		return addrCity;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public void setAddrCity(String addrCity) {
+		this.addrCity = addrCity;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public String getAddrCounty() {
+		return addrCounty;
+	}
+
+	public void setAddrCounty(String addrCounty) {
+		this.addrCounty = addrCounty;
+	}
+
+	public String getAddrExt() {
+		return addrExt;
+	}
+
+	public void setAddrExt(String addrExt) {
+		this.addrExt = addrExt;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Double getArea() {
+		return area;
+	}
+
+	public void setArea(Double area) {
+		this.area = area;
+	}
+
+	public Double getLoanAmount() {
+		return loanAmount;
+	}
+
+	public void setLoanAmount(Double loanAmount) {
+		this.loanAmount = loanAmount;
+	}
+
+	public Double getLoanBalance() {
+		return loanBalance;
+	}
+
+	public void setLoanBalance(Double loanBalance) {
+		this.loanBalance = loanBalance;
+	}
+
+	public Double getMonthRent() {
+		return monthRent;
+	}
+
+	public void setMonthRent(Double monthRent) {
+		this.monthRent = monthRent;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 }

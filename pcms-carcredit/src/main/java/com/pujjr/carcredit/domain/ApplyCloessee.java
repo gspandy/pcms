@@ -1,203 +1,213 @@
 package com.pujjr.carcredit.domain;
 
 public class ApplyCloessee {
-    public String id;
+    private String id;
 
-    public String appId;
+	private String appId;
 
-    public String name;
+	private String name;
 
-    public String idType;
+	private String idType;
 
-    public String idNo;
+	private String idNo;
 
-    public String mobile;
+	private String mobile;
 
-    public String qq;
+	private String qq;
 
-    public String weixin;
+	private String weixin;
 
-    public String unitName;
+	private String unitName;
 
-    public String unitType;
+	private String unitType;
 
-    public String unitIndustry;
+	private String unitIndustry;
 
-    public String unitTel;
+	private String unitTel;
 
-    public String rank;
+	private String rank;
 
-    public String rankName;
+	private String rankName;
 
-    public String unitAddrProvince;
+	private String unitAddrProvince;
 
-    public String unitAddrCity;
+	private String unitAddrCity;
 
-    public String unitAddrCounty;
+	private String unitAddrCounty;
 
-    public String unitAddrExt;
+	private String unitAddrExt;
 
-    public Double monthIncome;
+	private Double monthIncome;
 
-    public Double yearIncome;
+	private Double yearIncome;
 
-    public String getId() {
-        return id;
-    }
+	private String relation;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getIdType() {
-        return idType;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
+	public String getIdType() {
+		return idType;
+	}
 
-    public String getIdNo() {
-        return idNo;
-    }
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
 
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
-    }
+	public String getIdNo() {
+		return idNo;
+	}
 
-    public String getMobile() {
-        return mobile;
-    }
+	public void setIdNo(String idNo) {
+		this.idNo = idNo;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+	public String getMobile() {
+		return mobile;
+	}
 
-    public String getQq() {
-        return qq;
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
+	public String getQq() {
+		return qq;
+	}
 
-    public String getWeixin() {
-        return weixin;
-    }
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
 
-    public void setWeixin(String weixin) {
-        this.weixin = weixin;
-    }
+	public String getWeixin() {
+		return weixin;
+	}
 
-    public String getUnitName() {
-        return unitName;
-    }
+	public void setWeixin(String weixin) {
+		this.weixin = weixin;
+	}
 
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
-    }
+	public String getUnitName() {
+		return unitName;
+	}
 
-    public String getUnitType() {
-        return unitType;
-    }
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
 
-    public void setUnitType(String unitType) {
-        this.unitType = unitType;
-    }
+	public String getUnitType() {
+		return unitType;
+	}
 
-    public String getUnitIndustry() {
-        return unitIndustry;
-    }
+	public void setUnitType(String unitType) {
+		this.unitType = unitType;
+	}
 
-    public void setUnitIndustry(String unitIndustry) {
-        this.unitIndustry = unitIndustry;
-    }
+	public String getUnitIndustry() {
+		return unitIndustry;
+	}
 
-    public String getUnitTel() {
-        return unitTel;
-    }
+	public void setUnitIndustry(String unitIndustry) {
+		this.unitIndustry = unitIndustry;
+	}
 
-    public void setUnitTel(String unitTel) {
-        this.unitTel = unitTel;
-    }
+	public String getUnitTel() {
+		return unitTel;
+	}
 
-    public String getRank() {
-        return rank;
-    }
+	public void setUnitTel(String unitTel) {
+		this.unitTel = unitTel;
+	}
 
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
+	public String getRank() {
+		return rank;
+	}
 
-    public String getRankName() {
-        return rankName;
-    }
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
 
-    public void setRankName(String rankName) {
-        this.rankName = rankName;
-    }
+	public String getRankName() {
+		return rankName;
+	}
 
-    public String getUnitAddrProvince() {
-        return unitAddrProvince;
-    }
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
 
-    public void setUnitAddrProvince(String unitAddrProvince) {
-        this.unitAddrProvince = unitAddrProvince;
-    }
+	public String getUnitAddrProvince() {
+		return unitAddrProvince;
+	}
 
-    public String getUnitAddrCity() {
-        return unitAddrCity;
-    }
+	public void setUnitAddrProvince(String unitAddrProvince) {
+		this.unitAddrProvince = unitAddrProvince;
+	}
 
-    public void setUnitAddrCity(String unitAddrCity) {
-        this.unitAddrCity = unitAddrCity;
-    }
+	public String getUnitAddrCity() {
+		return unitAddrCity;
+	}
 
-    public String getUnitAddrCounty() {
-        return unitAddrCounty;
-    }
+	public void setUnitAddrCity(String unitAddrCity) {
+		this.unitAddrCity = unitAddrCity;
+	}
 
-    public void setUnitAddrCounty(String unitAddrCounty) {
-        this.unitAddrCounty = unitAddrCounty;
-    }
+	public String getUnitAddrCounty() {
+		return unitAddrCounty;
+	}
 
-    public String getUnitAddrExt() {
-        return unitAddrExt;
-    }
+	public void setUnitAddrCounty(String unitAddrCounty) {
+		this.unitAddrCounty = unitAddrCounty;
+	}
 
-    public void setUnitAddrExt(String unitAddrExt) {
-        this.unitAddrExt = unitAddrExt;
-    }
+	public String getUnitAddrExt() {
+		return unitAddrExt;
+	}
 
-    public Double getMonthIncome() {
-        return monthIncome;
-    }
+	public void setUnitAddrExt(String unitAddrExt) {
+		this.unitAddrExt = unitAddrExt;
+	}
 
-    public void setMonthIncome(Double monthIncome) {
-        this.monthIncome = monthIncome;
-    }
+	public Double getMonthIncome() {
+		return monthIncome;
+	}
 
-    public Double getYearIncome() {
-        return yearIncome;
-    }
+	public void setMonthIncome(Double monthIncome) {
+		this.monthIncome = monthIncome;
+	}
 
-    public void setYearIncome(Double yearIncome) {
-        this.yearIncome = yearIncome;
-    }
+	public Double getYearIncome() {
+		return yearIncome;
+	}
+
+	public void setYearIncome(Double yearIncome) {
+		this.yearIncome = yearIncome;
+	}
+
+	public String getRelation() {
+		return relation;
+	}
+
+	public void setRelation(String relation) {
+		this.relation = relation;
+	}
 }

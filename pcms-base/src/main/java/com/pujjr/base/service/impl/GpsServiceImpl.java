@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.pujjr.base.dao.GpsLvlMapper;
 import com.pujjr.base.dao.GpsRuleMapper;
 import com.pujjr.base.dao.GpsSupplierMapper;
+import com.pujjr.base.dao.SysBranchGpsRuleMapper;
 import com.pujjr.base.domain.GpsLvl;
 import com.pujjr.base.domain.GpsRule;
 import com.pujjr.base.domain.GpsSupplier;
@@ -22,6 +23,8 @@ public class GpsServiceImpl implements IGpsService {
 	private GpsLvlMapper gpsLvlDao;
 	@Autowired
 	private GpsSupplierMapper gpsSupplierDao;
+	@Autowired
+	private SysBranchGpsRuleMapper branchGpsRuleDao;
 
 	public List<GpsRule> getAllGpsRuleList() {
 		// TODO Auto-generated method stub
@@ -82,6 +85,50 @@ public class GpsServiceImpl implements IGpsService {
 	public List<GpsSupplier> getAllEnabledGpsSupplierList() {
 		// TODO Auto-generated method stub
 		return gpsSupplierDao.selectAll(true);
+	}
+
+	@Override
+	public void addGpsRule(GpsRule record) {
+		// TODO Auto-generated method stub
+		gpsRuleDao.insert(record);
+	}
+
+	@Override
+	public void modifyGspRule(GpsRule record) {
+		// TODO Auto-generated method stub
+		gpsRuleDao.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public void deleteGpsRuleById(String id) throws Exception {
+		// TODO Auto-generated method stub
+		if(branchGpsRuleDao.getRecordSize(null, id)>0)
+		{
+			throw new Exception("有机构引用此规则，请先取消引用");
+		}
+		gpsRuleDao.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public void addGpsLvl(GpsLvl record) {
+		// TODO Auto-generated method stub
+		gpsLvlDao.insert(record);
+	}
+
+	@Override
+	public void modifyGpsLvl(GpsLvl record) {
+		// TODO Auto-generated method stub
+		gpsLvlDao.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public void deleteGpsLvlById(String id) throws Exception {
+		// TODO Auto-generated method stub
+		if(branchGpsRuleDao.getRecordSize(id, null)>0)
+		{
+			throw new Exception("有机构引用此GPS档位，请先取消引用");
+		}
+		gpsLvlDao.deleteByPrimaryKey(id);
 	}
 
 }

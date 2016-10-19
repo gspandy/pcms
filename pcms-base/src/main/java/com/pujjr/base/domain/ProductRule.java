@@ -5,251 +5,271 @@ import java.util.Date;
 public class ProductRule {
     private String id;
 
-    private String ruleName;
+	private String ruleName;
 
-    private Double minSalePrice;
+	private Double minSalePrice;
 
-    private Double maxSalePrice;
+	private Double maxSalePrice;
 
-    private Double minInitPayPercent;
+	private Double minInitPayPercent;
 
-    private Double maxInitPayPercent;
+	private Double maxInitPayPercent;
 
-    private Double minServiceFee;
+	private Double minServiceFee;
 
-    private Double maxServiceFee;
+	private Double maxServiceFee;
 
-    private Double minInsuranceFee;
+	private Double serviceFeePercent;
 
-    private Double maxInsuranceFee;
+	private Double minInsuranceFee;
 
-    private Double minDelayInsuranceFee;
+	private Double maxInsuranceFee;
 
-    private Double maxDelayInsuranceFee;
+	private Double insuranceFeePercent;
 
-    private Double minTransferFee;
+	private Double minDelayInsuranceFee;
 
-    private Double maxTransferFee;
+	private Double maxDelayInsuranceFee;
 
-    private Double minAddonFee;
+	private Double minTransferFee;
 
-    private Double maxAddonFee;
+	private Double maxTransferFee;
 
-    private Boolean enableAssessFee;
+	private Double minAddonFee;
 
-    private Boolean isTotalRefinance;
+	private Double maxAddonFee;
 
-    private Boolean hasServiceFee;
+	private Boolean enableAssessFee;
 
-    private Boolean hasPurchaseTax;
+	private Boolean isTotalRefinance;
 
-    private String ruleComment;
+	private Boolean hasServiceFee;
 
-    private Date createTime;
+	private Boolean hasPurchaseTax;
 
-    private String createId;
+	private String ruleComment;
 
-    private Date updateTime;
+	private Date createTime;
 
-    private String updateId;
+	private String createId;
 
-    public String getId() {
-        return id;
-    }
+	private Date updateTime;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private String updateId;
 
-    public String getRuleName() {
-        return ruleName;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Double getMinSalePrice() {
-        return minSalePrice;
-    }
+	public String getRuleName() {
+		return ruleName;
+	}
 
-    public void setMinSalePrice(Double minSalePrice) {
-        this.minSalePrice = minSalePrice;
-    }
+	public void setRuleName(String ruleName) {
+		this.ruleName = ruleName;
+	}
 
-    public Double getMaxSalePrice() {
-        return maxSalePrice;
-    }
+	public Double getMinSalePrice() {
+		return minSalePrice;
+	}
 
-    public void setMaxSalePrice(Double maxSalePrice) {
-        this.maxSalePrice = maxSalePrice;
-    }
+	public void setMinSalePrice(Double minSalePrice) {
+		this.minSalePrice = minSalePrice;
+	}
 
-    public Double getMinInitPayPercent() {
-        return minInitPayPercent;
-    }
+	public Double getMaxSalePrice() {
+		return maxSalePrice;
+	}
 
-    public void setMinInitPayPercent(Double minInitPayPercent) {
-        this.minInitPayPercent = minInitPayPercent;
-    }
+	public void setMaxSalePrice(Double maxSalePrice) {
+		this.maxSalePrice = maxSalePrice;
+	}
 
-    public Double getMaxInitPayPercent() {
-        return maxInitPayPercent;
-    }
+	public Double getMinInitPayPercent() {
+		return minInitPayPercent;
+	}
 
-    public void setMaxInitPayPercent(Double maxInitPayPercent) {
-        this.maxInitPayPercent = maxInitPayPercent;
-    }
+	public void setMinInitPayPercent(Double minInitPayPercent) {
+		this.minInitPayPercent = minInitPayPercent;
+	}
 
-    public Double getMinServiceFee() {
-        return minServiceFee;
-    }
+	public Double getMaxInitPayPercent() {
+		return maxInitPayPercent;
+	}
 
-    public void setMinServiceFee(Double minServiceFee) {
-        this.minServiceFee = minServiceFee;
-    }
-
-    public Double getMaxServiceFee() {
-        return maxServiceFee;
-    }
-
-    public void setMaxServiceFee(Double maxServiceFee) {
-        this.maxServiceFee = maxServiceFee;
-    }
-
-    public Double getMinInsuranceFee() {
-        return minInsuranceFee;
-    }
-
-    public void setMinInsuranceFee(Double minInsuranceFee) {
-        this.minInsuranceFee = minInsuranceFee;
-    }
-
-    public Double getMaxInsuranceFee() {
-        return maxInsuranceFee;
-    }
-
-    public void setMaxInsuranceFee(Double maxInsuranceFee) {
-        this.maxInsuranceFee = maxInsuranceFee;
-    }
-
-    public Double getMinDelayInsuranceFee() {
-        return minDelayInsuranceFee;
-    }
-
-    public void setMinDelayInsuranceFee(Double minDelayInsuranceFee) {
-        this.minDelayInsuranceFee = minDelayInsuranceFee;
-    }
-
-    public Double getMaxDelayInsuranceFee() {
-        return maxDelayInsuranceFee;
-    }
-
-    public void setMaxDelayInsuranceFee(Double maxDelayInsuranceFee) {
-        this.maxDelayInsuranceFee = maxDelayInsuranceFee;
-    }
-
-    public Double getMinTransferFee() {
-        return minTransferFee;
-    }
-
-    public void setMinTransferFee(Double minTransferFee) {
-        this.minTransferFee = minTransferFee;
-    }
-
-    public Double getMaxTransferFee() {
-        return maxTransferFee;
-    }
-
-    public void setMaxTransferFee(Double maxTransferFee) {
-        this.maxTransferFee = maxTransferFee;
-    }
-
-    public Double getMinAddonFee() {
-        return minAddonFee;
-    }
-
-    public void setMinAddonFee(Double minAddonFee) {
-        this.minAddonFee = minAddonFee;
-    }
-
-    public Double getMaxAddonFee() {
-        return maxAddonFee;
-    }
-
-    public void setMaxAddonFee(Double maxAddonFee) {
-        this.maxAddonFee = maxAddonFee;
-    }
-
-    public Boolean getEnableAssessFee() {
-        return enableAssessFee;
-    }
-
-    public void setEnableAssessFee(Boolean enableAssessFee) {
-        this.enableAssessFee = enableAssessFee;
-    }
-
-    public Boolean getIsTotalRefinance() {
-        return isTotalRefinance;
-    }
-
-    public void setIsTotalRefinance(Boolean isTotalRefinance) {
-        this.isTotalRefinance = isTotalRefinance;
-    }
-
-    public Boolean getHasServiceFee() {
-        return hasServiceFee;
-    }
-
-    public void setHasServiceFee(Boolean hasServiceFee) {
-        this.hasServiceFee = hasServiceFee;
-    }
-
-    public Boolean getHasPurchaseTax() {
-        return hasPurchaseTax;
-    }
-
-    public void setHasPurchaseTax(Boolean hasPurchaseTax) {
-        this.hasPurchaseTax = hasPurchaseTax;
-    }
-
-    public String getRuleComment() {
-        return ruleComment;
-    }
-
-    public void setRuleComment(String ruleComment) {
-        this.ruleComment = ruleComment;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateId() {
-        return createId;
-    }
-
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateId() {
-        return updateId;
-    }
-
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public void setMaxInitPayPercent(Double maxInitPayPercent) {
+		this.maxInitPayPercent = maxInitPayPercent;
+	}
+
+	public Double getMinServiceFee() {
+		return minServiceFee;
+	}
+
+	public void setMinServiceFee(Double minServiceFee) {
+		this.minServiceFee = minServiceFee;
+	}
+
+	public Double getMaxServiceFee() {
+		return maxServiceFee;
+	}
+
+	public void setMaxServiceFee(Double maxServiceFee) {
+		this.maxServiceFee = maxServiceFee;
+	}
+
+	public Double getServiceFeePercent() {
+		return serviceFeePercent;
+	}
+
+	public void setServiceFeePercent(Double serviceFeePercent) {
+		this.serviceFeePercent = serviceFeePercent;
+	}
+
+	public Double getMinInsuranceFee() {
+		return minInsuranceFee;
+	}
+
+	public void setMinInsuranceFee(Double minInsuranceFee) {
+		this.minInsuranceFee = minInsuranceFee;
+	}
+
+	public Double getMaxInsuranceFee() {
+		return maxInsuranceFee;
+	}
+
+	public void setMaxInsuranceFee(Double maxInsuranceFee) {
+		this.maxInsuranceFee = maxInsuranceFee;
+	}
+
+	public Double getInsuranceFeePercent() {
+		return insuranceFeePercent;
+	}
+
+	public void setInsuranceFeePercent(Double insuranceFeePercent) {
+		this.insuranceFeePercent = insuranceFeePercent;
+	}
+
+	public Double getMinDelayInsuranceFee() {
+		return minDelayInsuranceFee;
+	}
+
+	public void setMinDelayInsuranceFee(Double minDelayInsuranceFee) {
+		this.minDelayInsuranceFee = minDelayInsuranceFee;
+	}
+
+	public Double getMaxDelayInsuranceFee() {
+		return maxDelayInsuranceFee;
+	}
+
+	public void setMaxDelayInsuranceFee(Double maxDelayInsuranceFee) {
+		this.maxDelayInsuranceFee = maxDelayInsuranceFee;
+	}
+
+	public Double getMinTransferFee() {
+		return minTransferFee;
+	}
+
+	public void setMinTransferFee(Double minTransferFee) {
+		this.minTransferFee = minTransferFee;
+	}
+
+	public Double getMaxTransferFee() {
+		return maxTransferFee;
+	}
+
+	public void setMaxTransferFee(Double maxTransferFee) {
+		this.maxTransferFee = maxTransferFee;
+	}
+
+	public Double getMinAddonFee() {
+		return minAddonFee;
+	}
+
+	public void setMinAddonFee(Double minAddonFee) {
+		this.minAddonFee = minAddonFee;
+	}
+
+	public Double getMaxAddonFee() {
+		return maxAddonFee;
+	}
+
+	public void setMaxAddonFee(Double maxAddonFee) {
+		this.maxAddonFee = maxAddonFee;
+	}
+
+	public Boolean getEnableAssessFee() {
+		return enableAssessFee;
+	}
+
+	public void setEnableAssessFee(Boolean enableAssessFee) {
+		this.enableAssessFee = enableAssessFee;
+	}
+
+	public Boolean getIsTotalRefinance() {
+		return isTotalRefinance;
+	}
+
+	public void setIsTotalRefinance(Boolean isTotalRefinance) {
+		this.isTotalRefinance = isTotalRefinance;
+	}
+
+	public Boolean getHasServiceFee() {
+		return hasServiceFee;
+	}
+
+	public void setHasServiceFee(Boolean hasServiceFee) {
+		this.hasServiceFee = hasServiceFee;
+	}
+
+	public Boolean getHasPurchaseTax() {
+		return hasPurchaseTax;
+	}
+
+	public void setHasPurchaseTax(Boolean hasPurchaseTax) {
+		this.hasPurchaseTax = hasPurchaseTax;
+	}
+
+	public String getRuleComment() {
+		return ruleComment;
+	}
+
+	public void setRuleComment(String ruleComment) {
+		this.ruleComment = ruleComment;
+	}
+
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public String getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
 }

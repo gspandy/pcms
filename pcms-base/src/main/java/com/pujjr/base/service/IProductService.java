@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.pujjr.base.domain.FormField;
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.ProductPeriod;
 import com.pujjr.base.domain.ProductRule;
@@ -49,5 +50,8 @@ public interface IProductService
 	public void deleteBranchProduct(String branchId);
 	
 	public Product getProductByProductCode(String productCode);
+	
+	public List<FormField> getProductFormRequiredFieldList(String productId);
+	
 	
 }

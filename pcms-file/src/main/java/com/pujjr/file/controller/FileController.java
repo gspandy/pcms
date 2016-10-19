@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.OSSObject;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.service.IApplyService;
@@ -40,6 +43,15 @@ public class FileController extends BaseController
 	private IFileService fileService;
 	@Autowired
 	private IApplyService applyService;
+	@Value("${endpoint}")
+	private String endpoint;
+	@Value("${accessKeyId}")
+	private String accessKeyId;
+	@Value("${accessKeySecret}")
+	private String accessKeySecret;
+	@Value("${bucketName}")
+	private String bucketName;
+	
 	@RequestMapping(value="/getApplyFormCategoryDirectoryList/{appId}/{categoryKey}",method=RequestMethod.GET)
 	public List<CategoryDirectoryPo>  getApplyFormCategoryDirectoryList(@PathVariable String appId,@PathVariable String categoryKey)
 	{
@@ -50,20 +62,7 @@ public class FileController extends BaseController
 	@RequestMapping(value="/uploadFile/{businessId}/{dirId}")
 	public void uploadFile(@Param("file")MultipartFile file,@PathVariable String businessId,@PathVariable String dirId,HttpServletRequest request) throws IOException{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		String fileId = Utils.get16UUID();
-		String fileSuffix = Utils.getFileSuffix(file.getOriginalFilename());
-		String filePath="d:\\file\\"+fileId+fileSuffix;
-		FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
-		DirectoryFile fileMetaInfo = new DirectoryFile();
-		fileMetaInfo.setId(fileId);
-		fileMetaInfo.setBusinessId(businessId);
-		fileMetaInfo.setDirId(dirId);
-		fileMetaInfo.setFileName(file.getOriginalFilename());
-		fileMetaInfo.setFileSize(Integer.parseInt(String.valueOf(file.getSize()/1024)));
-		fileMetaInfo.setFileType(fileSuffix);
-		fileMetaInfo.setCreateId(sysAccount.getAccountId());
-		fileMetaInfo.setCreateTime(new Date());
-		fileService.saveFile(fileMetaInfo);
+		fileService.saveFile(file, businessId, dirId, sysAccount.getAccountId());
 	}
 	@RequestMapping(value="/listFile/{businessId}/{dirId}")
 	public List<DirectoryFile> getDirectoryFileList(@PathVariable String businessId,@PathVariable String dirId)
@@ -76,9 +75,13 @@ public class FileController extends BaseController
 								HttpServletRequest request,
 								HttpServletResponse response) throws IOException
 	{
-		String filePath="d:\\file\\"+Utils.convertStr2Utf8(fileId+".jpg");
-		byte[] imgBytes =  FileUtils.readFileToByteArray(new File(filePath));
-		InputStream imgStream = new ByteArrayInputStream(imgBytes);
+		DirectoryFile file = fileService.getFileInfo(fileId);
+		String ossKey = file.getOssKey();
+		
+		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		OSSObject ossObject = ossClient.getObject(bucketName, ossKey);
+		
+		InputStream imgStream = ossObject.getObjectContent();
 		OutputStream stream = response.getOutputStream();
 		int len = 0;
 	    byte[] b = new byte[1024];
@@ -86,8 +89,11 @@ public class FileController extends BaseController
 	    {
 	        stream.write(b, 0, len);
 	    }
+	    imgStream.close();
 	    stream.flush();
         stream.close();
+     // 关闭client
+        ossClient.shutdown();
 	}
 	@RequestMapping(value="/batchMoveFileToDir/{dirId}",method=RequestMethod.POST)
 	public void batchMoveFileToDir(@PathVariable String dirId,@RequestBody List<DirectoryFile> listFile)
@@ -98,6 +104,11 @@ public class FileController extends BaseController
 			fileIds.add(file.getId());
 		}
 		fileService.batchMoveFileToDir(dirId, fileIds);
+	}
+	@RequestMapping(value="/{fileId}",method=RequestMethod.DELETE)
+	public void deleteFile(@PathVariable String fileId) throws Exception
+	{
+		fileService.deleteFile(fileId);
 	}
 	
 }

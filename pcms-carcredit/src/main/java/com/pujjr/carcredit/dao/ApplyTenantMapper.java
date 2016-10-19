@@ -6,15 +6,15 @@ import com.pujjr.carcredit.vo.ApplyTenantVo;
 public interface ApplyTenantMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ApplyTenant record);
+	int insert(ApplyTenant record);
 
-    int insertSelective(ApplyTenant record);
+	int insertSelective(ApplyTenant record);
 
-    ApplyTenant selectByPrimaryKey(String id);
+	ApplyTenant selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(ApplyTenant record);
+	int updateByPrimaryKeySelective(ApplyTenant record);
 
-    int updateByPrimaryKey(ApplyTenant record);
+	int updateByPrimaryKey(ApplyTenant record);
     
     ApplyTenant selectByAppId(String appId);
 }

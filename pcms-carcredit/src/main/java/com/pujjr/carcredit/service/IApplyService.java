@@ -46,4 +46,16 @@ public interface IApplyService
 //	public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
 	public void commitApplyTask(ApplyVo applyVo,SysAccount sysAccount);
 	public List<ApplyFinance> getApplyFinanceList(String appId);
+	/**
+	 * 获取t_apply表信息
+	 * @param appId
+	 * @return
+	 */
+	public ApplyVo getApplyInfo(String appId);
+	/**
+	 * 更新t_apply表信息
+	 * @param applyVo
+	 * @return
+	 */
+	public int updateApply(ApplyVo applyVo);
 }

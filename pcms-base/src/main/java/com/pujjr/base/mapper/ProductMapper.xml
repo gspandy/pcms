@@ -1,232 +1,245 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.base.dao.ProductMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.Product" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="PRODUCT_TYPE_ID" property="productTypeId" jdbcType="VARCHAR" />
-    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
-    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
-    <result column="LOAN_CONDITION" property="loanCondition" jdbcType="VARCHAR" />
-    <result column="MIN_LOAN_AMOUNT" property="minLoanAmount" jdbcType="DOUBLE" />
-    <result column="MAX_LOAN_AMOUNT" property="maxLoanAmount" jdbcType="DOUBLE" />
-    <result column="YEAR_RATE" property="yearRate" jdbcType="DOUBLE" />
-    <result column="DAY_LATE_RATE" property="dayLateRate" jdbcType="DOUBLE" />
-    <result column="DAY_EXTEND_RATE" property="dayExtendRate" jdbcType="DOUBLE" />
-    <result column="REPAY_MODE" property="repayMode" jdbcType="VARCHAR" />
-    <result column="PRODUCT_RULE_ID" property="productRuleId" jdbcType="VARCHAR" />
-    <result column="DIRECTORY_TEMPLATE_ID" property="directoryTemplateId" jdbcType="VARCHAR" />
-    <result column="ENABLE" property="enable" jdbcType="BIT" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
-    <association select="selectRepayModeDictData" column="REPAY_MODE" property="repayModeDict"></association>
-    <association property="productRule" column="PRODUCT_RULE_ID" select="selectProductRule"></association>
-    <collection property="productSettleList" column="ID" select="selectProductSettleList" ofType="com.pujjr.base.domain.ProductSettle"></collection>
-    <collection property="productPeriodList" column="ID" select="selectProductPeriodList" ofType="com.pujjr.base.domain.ProductPeriod"></collection>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.Product">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="PRODUCT_TYPE_ID" jdbcType="VARCHAR" property="productTypeId" />
+    <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+    <result column="LOAN_CONDITION" jdbcType="VARCHAR" property="loanCondition" />
+    <result column="MIN_LOAN_AMOUNT" jdbcType="DOUBLE" property="minLoanAmount" />
+    <result column="MAX_LOAN_AMOUNT" jdbcType="DOUBLE" property="maxLoanAmount" />
+    <result column="YEAR_RATE" jdbcType="DOUBLE" property="yearRate" />
+    <result column="DAY_LATE_RATE" jdbcType="DOUBLE" property="dayLateRate" />
+    <result column="DAY_EXTEND_RATE" jdbcType="DOUBLE" property="dayExtendRate" />
+    <result column="REPAY_MODE" jdbcType="VARCHAR" property="repayMode" />
+    <result column="PRODUCT_RULE_ID" jdbcType="VARCHAR" property="productRuleId" />
+    <result column="DIRECTORY_TEMPLATE_ID" jdbcType="VARCHAR" property="directoryTemplateId" />
+    <result column="ENABLE" jdbcType="BIT" property="enable" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="FORM_TEMPLATE_ID" jdbcType="VARCHAR" property="formTemplateId" />
+    <association column="REPAY_MODE" property="repayModeDict" select="selectRepayModeDictData" />
+    <association column="PRODUCT_RULE_ID" property="productRule" select="selectProductRule" />
+    <association column="PRODUCT_TYPE_ID" property="productTypeName" select="selectProductTypeName"/>
+    <collection column="ID" ofType="com.pujjr.base.domain.ProductSettle" property="productSettleList" select="selectProductSettleList" />
+    <collection column="ID" ofType="com.pujjr.base.domain.ProductPeriod" property="productPeriodList" select="selectProductPeriodList" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     ID, PRODUCT_TYPE_ID, PRODUCT_NAME, PRODUCT_CODE, LOAN_CONDITION, MIN_LOAN_AMOUNT, 
     MAX_LOAN_AMOUNT, YEAR_RATE, DAY_LATE_RATE, DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID, 
-    DIRECTORY_TEMPLATE_ID,ENABLE, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+    DIRECTORY_TEMPLATE_ID, ENABLE, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID, FORM_TEMPLATE_ID
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_product
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_product
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.base.domain.Product" >
+  <insert id="insert" parameterType="com.pujjr.base.domain.Product">
     insert into t_product (ID, PRODUCT_TYPE_ID, PRODUCT_NAME, 
       PRODUCT_CODE, LOAN_CONDITION, MIN_LOAN_AMOUNT, 
       MAX_LOAN_AMOUNT, YEAR_RATE, DAY_LATE_RATE, 
-      DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID,DIRECTORY_TEMPLATE_ID 
-      ENABLE, CREATE_TIME, CREATE_ID, 
-      UPDATE_TIME, UPDATE_ID)
+      DAY_EXTEND_RATE, REPAY_MODE, PRODUCT_RULE_ID, 
+      DIRECTORY_TEMPLATE_ID, ENABLE, CREATE_TIME, 
+      CREATE_ID, UPDATE_TIME, UPDATE_ID, 
+      FORM_TEMPLATE_ID)
     values (#{id,jdbcType=VARCHAR}, #{productTypeId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
       #{productCode,jdbcType=VARCHAR}, #{loanCondition,jdbcType=VARCHAR}, #{minLoanAmount,jdbcType=DOUBLE}, 
       #{maxLoanAmount,jdbcType=DOUBLE}, #{yearRate,jdbcType=DOUBLE}, #{dayLateRate,jdbcType=DOUBLE}, 
-      #{dayExtendRate,jdbcType=DOUBLE}, #{repayMode,jdbcType=VARCHAR}, #{productRuleId,jdbcType=VARCHAR}, #{directoryTemplateId,jdbcType=VARCHAR}, 
-      #{enable,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR})
+      #{dayExtendRate,jdbcType=DOUBLE}, #{repayMode,jdbcType=VARCHAR}, #{productRuleId,jdbcType=VARCHAR}, 
+      #{directoryTemplateId,jdbcType=VARCHAR}, #{enable,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{formTemplateId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.base.domain.Product" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.Product">
     insert into t_product
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="productTypeId != null" >
+      <if test="productTypeId != null">
         PRODUCT_TYPE_ID,
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         PRODUCT_NAME,
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         PRODUCT_CODE,
       </if>
-      <if test="loanCondition != null" >
+      <if test="loanCondition != null">
         LOAN_CONDITION,
       </if>
-      <if test="minLoanAmount != null" >
+      <if test="minLoanAmount != null">
         MIN_LOAN_AMOUNT,
       </if>
-      <if test="maxLoanAmount != null" >
+      <if test="maxLoanAmount != null">
         MAX_LOAN_AMOUNT,
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         YEAR_RATE,
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         DAY_LATE_RATE,
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         DAY_EXTEND_RATE,
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         REPAY_MODE,
       </if>
-      <if test="productRuleId != null" >
+      <if test="productRuleId != null">
         PRODUCT_RULE_ID,
       </if>
-      <if test="directoryTemplateId != null" >
+      <if test="directoryTemplateId != null">
         DIRECTORY_TEMPLATE_ID,
       </if>
-      <if test="enable != null" >
+      <if test="enable != null">
         ENABLE,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME,
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME,
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID,
       </if>
+      <if test="formTemplateId != null">
+        FORM_TEMPLATE_ID,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="productTypeId != null" >
+      <if test="productTypeId != null">
         #{productTypeId,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         #{productCode,jdbcType=VARCHAR},
       </if>
-      <if test="loanCondition != null" >
+      <if test="loanCondition != null">
         #{loanCondition,jdbcType=VARCHAR},
       </if>
-      <if test="minLoanAmount != null" >
+      <if test="minLoanAmount != null">
         #{minLoanAmount,jdbcType=DOUBLE},
       </if>
-      <if test="maxLoanAmount != null" >
+      <if test="maxLoanAmount != null">
         #{maxLoanAmount,jdbcType=DOUBLE},
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         #{yearRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         #{dayLateRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         #{dayExtendRate,jdbcType=DOUBLE},
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         #{repayMode,jdbcType=VARCHAR},
       </if>
-      <if test="productRuleId != null" >
+      <if test="productRuleId != null">
         #{productRuleId,jdbcType=VARCHAR},
       </if>
-      <if test="directoryTemplateId != null" >
+      <if test="directoryTemplateId != null">
         #{directoryTemplateId,jdbcType=VARCHAR},
       </if>
-      <if test="enable != null" >
+      <if test="enable != null">
         #{enable,jdbcType=BIT},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="formTemplateId != null">
+        #{formTemplateId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.Product" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.Product">
     update t_product
-    <set >
-      <if test="productTypeId != null" >
+    <set>
+      <if test="productTypeId != null">
         PRODUCT_TYPE_ID = #{productTypeId,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
       </if>
-      <if test="loanCondition != null" >
+      <if test="loanCondition != null">
         LOAN_CONDITION = #{loanCondition,jdbcType=VARCHAR},
       </if>
-      <if test="minLoanAmount != null" >
+      <if test="minLoanAmount != null">
         MIN_LOAN_AMOUNT = #{minLoanAmount,jdbcType=DOUBLE},
       </if>
-      <if test="maxLoanAmount != null" >
+      <if test="maxLoanAmount != null">
         MAX_LOAN_AMOUNT = #{maxLoanAmount,jdbcType=DOUBLE},
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         YEAR_RATE = #{yearRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         DAY_LATE_RATE = #{dayLateRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         DAY_EXTEND_RATE = #{dayExtendRate,jdbcType=DOUBLE},
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         REPAY_MODE = #{repayMode,jdbcType=VARCHAR},
       </if>
-      <if test="productRuleId != null" >
+      <if test="productRuleId != null">
         PRODUCT_RULE_ID = #{productRuleId,jdbcType=VARCHAR},
       </if>
       <if test="directoryTemplateId != null">
-      	DIRECTORY_TEMPLATE_ID = #{directoryTemplateId,jdbcType=VARCHAR},
+        DIRECTORY_TEMPLATE_ID = #{directoryTemplateId,jdbcType=VARCHAR},
       </if>
-      <if test="enable != null" >
+      <if test="enable != null">
         ENABLE = #{enable,jdbcType=BIT},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="formTemplateId != null">
+        FORM_TEMPLATE_ID = #{formTemplateId,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.Product" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.Product">
     update t_product
     set PRODUCT_TYPE_ID = #{productTypeId,jdbcType=VARCHAR},
       PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
@@ -244,9 +257,11 @@
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       CREATE_ID = #{createId,jdbcType=VARCHAR},
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
-      UPDATE_ID = #{updateId,jdbcType=VARCHAR}
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      FORM_TEMPLATE_ID = #{formTemplateId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
   <select id="selectAllByProductTypeId" resultMap="BaseResultMap">
   	select * from t_product 
   	where product_type_id = #{productTypeId}
@@ -260,15 +275,15 @@
     <result column="ENABLED" jdbcType="BIT" property="enabled" />
   </resultMap>
   
-  <select id="selectRepayModeDictData" resultMap="SysDictDataMap" parameterType="String">
+  <select id="selectRepayModeDictData" parameterType="String" resultMap="SysDictDataMap">
   	select * from SYS_DICT_DATA where DICT_DATA_CODE =#{REPAY_MODE}
   </select>
   
-  <resultMap id="ProductSettleResultMap" type="com.pujjr.base.domain.ProductSettle" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
-    <result column="PERIOD" property="period" jdbcType="INTEGER" />
-    <result column="REATE" property="reate" jdbcType="DOUBLE" />
+  <resultMap id="ProductSettleResultMap" type="com.pujjr.base.domain.ProductSettle">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="PERIOD" jdbcType="INTEGER" property="period" />
+    <result column="REATE" jdbcType="DOUBLE" property="reate" />
   </resultMap>
   
   <select id="selectProductSettleList" parameterType="String" resultMap="ProductSettleResultMap">
@@ -276,11 +291,11 @@
   	where PRODUCT_ID = #{id} order by period 
   </select>
   
-  <resultMap id="ProductPeriodtMap" type="com.pujjr.base.domain.ProductPeriod" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="PRODUCT_ID" property="productId" jdbcType="VARCHAR" />
-    <result column="PERIOD" property="period" jdbcType="INTEGER" />
-    <result column="FINANCE_FEE" property="financeFee" jdbcType="DOUBLE" />
+  <resultMap id="ProductPeriodtMap" type="com.pujjr.base.domain.ProductPeriod">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="PERIOD" jdbcType="INTEGER" property="period" />
+    <result column="FINANCE_FEE" jdbcType="DOUBLE" property="financeFee" />
   </resultMap>
   
   <select id="selectProductPeriodList" parameterType="String" resultMap="ProductPeriodtMap">
@@ -288,32 +303,32 @@
   	where PRODUCT_ID = #{id} order by period 
   </select>
   
-  <resultMap id="ProductRuleResultMap" type="com.pujjr.base.domain.ProductRule" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="RULE_NAME" property="ruleName" jdbcType="VARCHAR" />
-    <result column="MIN_SALE_PRICE" property="minSalePrice" jdbcType="DOUBLE" />
-    <result column="MAX_SALE_PRICE" property="maxSalePrice" jdbcType="DOUBLE" />
-    <result column="MIN_INIT_PAY_PERCENT" property="minInitPayPercent" jdbcType="DOUBLE" />
-    <result column="MAX_INIT_PAY_PERCENT" property="maxInitPayPercent" jdbcType="DOUBLE" />
-    <result column="MIN_SERVICE_FEE" property="minServiceFee" jdbcType="DOUBLE" />
-    <result column="MAX_SERVICE_FEE" property="maxServiceFee" jdbcType="DOUBLE" />
-    <result column="MIN_INSURANCE_FEE" property="minInsuranceFee" jdbcType="DOUBLE" />
-    <result column="MAX_INSURANCE_FEE" property="maxInsuranceFee" jdbcType="DOUBLE" />
-    <result column="MIN_DELAY_INSURANCE_FEE" property="minDelayInsuranceFee" jdbcType="DOUBLE" />
-    <result column="MAX_DELAY_INSURANCE_FEE" property="maxDelayInsuranceFee" jdbcType="DOUBLE" />
-    <result column="MIN_TRANSFER_FEE" property="minTransferFee" jdbcType="DOUBLE" />
-    <result column="MAX_TRANSFER_FEE" property="maxTransferFee" jdbcType="DOUBLE" />
-    <result column="MIN_ADDON_FEE" property="minAddonFee" jdbcType="DOUBLE" />
-    <result column="MAX_ADDON_FEE" property="maxAddonFee" jdbcType="DOUBLE" />
-    <result column="ENABLE_ASSESS_FEE" property="enableAssessFee" jdbcType="BIT" />
-    <result column="IS_TOTAL_REFINANCE" property="isTotalRefinance" jdbcType="BIT" />
-    <result column="HAS_SERVICE_FEE" property="hasServiceFee" jdbcType="BIT" />
-    <result column="HAS_PURCHASE_TAX" property="hasPurchaseTax" jdbcType="BIT" />
-    <result column="RULE_COMMENT" property="ruleComment" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+  <resultMap id="ProductRuleResultMap" type="com.pujjr.base.domain.ProductRule">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RULE_NAME" jdbcType="VARCHAR" property="ruleName" />
+    <result column="MIN_SALE_PRICE" jdbcType="DOUBLE" property="minSalePrice" />
+    <result column="MAX_SALE_PRICE" jdbcType="DOUBLE" property="maxSalePrice" />
+    <result column="MIN_INIT_PAY_PERCENT" jdbcType="DOUBLE" property="minInitPayPercent" />
+    <result column="MAX_INIT_PAY_PERCENT" jdbcType="DOUBLE" property="maxInitPayPercent" />
+    <result column="MIN_SERVICE_FEE" jdbcType="DOUBLE" property="minServiceFee" />
+    <result column="MAX_SERVICE_FEE" jdbcType="DOUBLE" property="maxServiceFee" />
+    <result column="MIN_INSURANCE_FEE" jdbcType="DOUBLE" property="minInsuranceFee" />
+    <result column="MAX_INSURANCE_FEE" jdbcType="DOUBLE" property="maxInsuranceFee" />
+    <result column="MIN_DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="minDelayInsuranceFee" />
+    <result column="MAX_DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="maxDelayInsuranceFee" />
+    <result column="MIN_TRANSFER_FEE" jdbcType="DOUBLE" property="minTransferFee" />
+    <result column="MAX_TRANSFER_FEE" jdbcType="DOUBLE" property="maxTransferFee" />
+    <result column="MIN_ADDON_FEE" jdbcType="DOUBLE" property="minAddonFee" />
+    <result column="MAX_ADDON_FEE" jdbcType="DOUBLE" property="maxAddonFee" />
+    <result column="ENABLE_ASSESS_FEE" jdbcType="BIT" property="enableAssessFee" />
+    <result column="IS_TOTAL_REFINANCE" jdbcType="BIT" property="isTotalRefinance" />
+    <result column="HAS_SERVICE_FEE" jdbcType="BIT" property="hasServiceFee" />
+    <result column="HAS_PURCHASE_TAX" jdbcType="BIT" property="hasPurchaseTax" />
+    <result column="RULE_COMMENT" jdbcType="VARCHAR" property="ruleComment" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
   </resultMap>
   
   <select id="selectProductRule" parameterType="String" resultMap="ProductRuleResultMap">
@@ -330,6 +345,7 @@
   	inner join t_branch_product b on a.id = b.branch_id
   	inner join t_product c on b.product_id = c.id
   	where a.id = #{branchId}
+  	order by c.product_name,c.year_rate
   </select>
   
   <delete id="deleteBranchProduct">
@@ -339,5 +355,9 @@
   
   <select id="selectProductByProductCode" resultMap="BaseResultMap">
   	select * from t_product where PRODUCT_CODE = #{productCode}
+  </select>
+  
+  <select id="selectProductTypeName" resultType="String">
+  	select PRODUCT_TYPE_NAME from T_PRODUCT_TYPE where ID = #{PRODUCT_TYPE_ID}
   </select>
 </mapper>

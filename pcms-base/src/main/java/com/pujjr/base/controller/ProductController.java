@@ -2,6 +2,7 @@ package com.pujjr.base.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.domain.FormField;
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.ProductPeriod;
 import com.pujjr.base.domain.ProductRule;
@@ -255,6 +257,17 @@ public class ProductController  extends BaseController
 	{
 		SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
 		return productService.getBranchEnableProductList(sysBranch.getId());
+	}
+	@RequestMapping(value="/getProductFormRequiredMap/{productId}",method=RequestMethod.GET)
+	public HashMap<String,Object> getProductFormRequiredMap(@PathVariable String productId)
+	{
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		List<FormField> requiredList = productService.getProductFormRequiredFieldList(productId);
+		for(FormField item : requiredList)
+		{
+			map.put(item.getFieldId(), true);
+		}
+		return map;
 	}
 	
  }

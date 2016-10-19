@@ -7,15 +7,15 @@ import com.pujjr.carcredit.domain.ApplyTenantCar;
 public interface ApplyTenantCarMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ApplyTenantCar record);
+	int insert(ApplyTenantCar record);
 
-    int insertSelective(ApplyTenantCar record);
+	int insertSelective(ApplyTenantCar record);
 
-    ApplyTenantCar selectByPrimaryKey(String id);
+	ApplyTenantCar selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(ApplyTenantCar record);
+	int updateByPrimaryKeySelective(ApplyTenantCar record);
 
-    int updateByPrimaryKey(ApplyTenantCar record);
+	int updateByPrimaryKey(ApplyTenantCar record);
     
     List<ApplyTenantCar> selectByAppId(String appId);
 }

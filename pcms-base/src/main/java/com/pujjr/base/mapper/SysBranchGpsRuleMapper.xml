@@ -43,4 +43,14 @@
       </if>
     </trim>
   </insert>
+  <select id="getRecordSize" resultType="Integer">
+  	select count(*) from t_branch_gps_rule
+  	where 1=1
+  	<if test="gpsLvlId!=null and gpsLvlId!=''">
+  		and GPS_LVL_ID = #{gpsLvlId}
+  	</if>
+  	<if test="gpsRuleId !=null and gpsRuleId!=''">
+  		and GPS_RULE_ID = #{gpsRuleId}
+  	</if>
+  </select>
 </mapper>

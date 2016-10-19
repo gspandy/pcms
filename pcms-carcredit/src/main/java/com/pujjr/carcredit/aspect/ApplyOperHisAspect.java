@@ -41,7 +41,10 @@ public class ApplyOperHisAspect {
 		String id = afterJson.getString("id");
 		String className = "";
 		String tableName = "";
-		Field[] fields = object.getClass().getFields();
+		Field[] fields = object.getClass().getDeclaredFields();
+		for (int i = 0; i < fields.length; i++) {
+			fields[i].setAccessible(true);
+		}
 		System.out.println("fields.length"+fields.length);
 //		System.out.println("PreGreetingAspect->target");
 		System.out.println("对象类名 ："+object.getClass().getName());

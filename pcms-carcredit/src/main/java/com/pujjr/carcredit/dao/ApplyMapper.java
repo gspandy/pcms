@@ -22,7 +22,6 @@ public interface ApplyMapper {
 
 	int updateByPrimaryKey(Apply record);
 
-
 	int updateByAppidSelective(Apply record);
 
 	Apply selectByAppid(@Param("appId")String appId);
