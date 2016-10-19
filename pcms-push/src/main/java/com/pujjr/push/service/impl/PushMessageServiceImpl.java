@@ -20,7 +20,6 @@ import com.pujjr.utils.HttpUtil;
 
 @Service
 public class PushMessageServiceImpl implements IPushMessageService {
-	
 	private Logger logger = Logger.getLogger(PushMessageServiceImpl.class);
 	@Value("${sms.message_url}")
 	private String messageUrl;
