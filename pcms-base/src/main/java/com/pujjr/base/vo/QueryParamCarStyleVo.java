@@ -5,6 +5,16 @@ public class QueryParamCarStyleVo  extends QueryParamPageVo
 	private String carSerialId;
 	
 	private String carBrandId;
+	
+	private String indexStr;
+
+	public String getIndexStr() {
+		return indexStr;
+	}
+
+	public void setIndexStr(String indexStr) {
+		this.indexStr = indexStr;
+	}
 
 	public String getCarSerialId() {
 		return carSerialId;

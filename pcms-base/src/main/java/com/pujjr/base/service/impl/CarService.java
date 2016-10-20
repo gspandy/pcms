@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.pujjr.base.dao.CarBrandMapper;
 import com.pujjr.base.dao.CarSerialMapper;
@@ -77,6 +78,25 @@ public class CarService implements ICarService {
 	@Override
 	public List<CarStyle> getCarStyleList(QueryParamCarStyleVo param) {
 		// TODO Auto-generated method stub
+		if((param.getCarBrandId()!=null && param.getCarBrandId()!="") || (param.getCarSerialId()!=null && param.getCarSerialId()!=""))
+		{
+			param.setIndexStr("");
+		}
+		if(param.getIndexStr()!=null && param.getIndexStr()!="")
+		{
+			String indexStr = param.getIndexStr();
+			indexStr =StringUtils.trimAllWhitespace(indexStr);
+			StringBuffer buf = new StringBuffer();
+			buf.append("%");
+			for(int i=0;i<indexStr.length();i++)
+			{
+				buf.append(indexStr.substring(i, i+1));
+				buf.append("%");
+			}
+			param.setCarBrandId("");
+			param.setCarSerialId("");
+			param.setIndexStr(buf.toString());
+		}
 		return carStyleDao.selectAll(param);
 	}
 
@@ -112,5 +132,6 @@ public class CarService implements ICarService {
 		// TODO Auto-generated method stub
 		return carStyleDao.selectByPrimaryKey(id);
 	}
+
 
 }
