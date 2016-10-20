@@ -57,4 +57,6 @@ public interface ITaskService
 	public void backTask(String taskId,String message);
 	
 	public List<WorkflowProcessResultPo> getWorkflowProcessResult(String procInstId);
+	
+	public void checkTaskHasUploadFile(String templateId,String categoryKey,String businessId) throws Exception;
 }

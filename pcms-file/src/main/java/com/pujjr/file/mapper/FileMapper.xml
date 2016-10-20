@@ -6,10 +6,12 @@
     <result column="dirName" property="dirName" jdbcType="VARCHAR" />
     <result column="parentId" property="parentId" jdbcType="VARCHAR" />
     <result column="fileCnt" property="fileCnt" jdbcType="INTEGER" />
+    <result column="required" property="required" jdbcType="BIT" />
   </resultMap>
   <select id="selectTemplateCategoryDirectoryList" resultMap="CategoryDirectoryResultMap">
 	select
 		aa.ID as dirId,
+		aa.REQUIRED as required,
 		concat(aa.DIR_NAME,concat(concat('(',if(bb.filecnt is null,0,bb.filecnt))),')') as dirName,
 		aa.PARENT_ID as parentId,
 		if(bb.filecnt is null,0,bb.filecnt) as fileCnt
@@ -37,5 +39,10 @@
 		where BUSINESS_ID = #{appId}
 		group by  DIR_ID
 	) bb  on aa.ID = bb.DIR_ID
+  </select>
+  <select id="selectApplyProductTemplateId" resultType="String">
+  	select b.DIRECTORY_TEMPLATE_ID  from t_apply a
+  	left join t_product b on a.PRODUCT_CODE = b.PRODUCT_CODE
+  	where a.APP_ID = #{appId}
   </select>
 </mapper>

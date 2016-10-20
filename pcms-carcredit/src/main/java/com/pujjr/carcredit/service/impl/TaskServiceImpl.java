@@ -34,6 +34,7 @@ import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.DirectoryCategoryEnum;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
 import com.pujjr.carcredit.vo.SignCommitType;
@@ -41,6 +42,8 @@ import com.pujjr.carcredit.vo.SignContractVo;
 import com.pujjr.carcredit.vo.SignFinanceDetailVo;
 import com.pujjr.carcredit.vo.TaskCommitType;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
+import com.pujjr.file.po.CategoryDirectoryPo;
+import com.pujjr.file.service.IFileService;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
@@ -71,6 +74,8 @@ public class TaskServiceImpl implements ITaskService
 	private ISignContractService signContractService;
 	@Autowired
 	private ReconsiderMapper reconsiderDao;
+	@Autowired
+	private IFileService fileService;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -79,7 +84,11 @@ public class TaskServiceImpl implements ITaskService
 
 	public void commitApplyTask(ApplyVo applyVo, String operId) throws Exception {
 		// TODO Auto-generated method stub
+		
 		String businessKey = applyService.saveApply(applyVo, operId);
+		//检查文件是否已上传完成
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("productCode", applyVo.getProduct().getProductCode());
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
@@ -452,6 +461,22 @@ public class TaskServiceImpl implements ITaskService
 			String procInstId) {
 		// TODO Auto-generated method stub
 		return taskDao.selectWorkflowProcessResult(procInstId);
+	}
+
+	@Override
+	public void checkTaskHasUploadFile(String templateId, String categoryKey, String businessId) throws Exception {
+		// TODO Auto-generated method stub
+		List<CategoryDirectoryPo> list = fileService.getTemplateCategoryDirectoryList(templateId, categoryKey, businessId);
+		for(CategoryDirectoryPo po : list)
+		{
+			if(po.isRequired())
+			{
+				if(po.getFileCnt()==0)
+				{
+					throw new Exception(po.getDirName()+"必须上传文件!");
+				}
+			}
+		}
 	}
 
 

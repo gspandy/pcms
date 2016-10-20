@@ -28,8 +28,6 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.OSSObject;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
-import com.pujjr.carcredit.service.IApplyService;
-import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.file.domain.DirectoryFile;
 import com.pujjr.file.po.CategoryDirectoryPo;
 import com.pujjr.file.service.IFileService;
@@ -41,8 +39,6 @@ public class FileController extends BaseController
 {
 	@Autowired
 	private IFileService fileService;
-	@Autowired
-	private IApplyService applyService;
 	@Value("${endpoint}")
 	private String endpoint;
 	@Value("${accessKeyId}")
@@ -55,8 +51,8 @@ public class FileController extends BaseController
 	@RequestMapping(value="/getApplyFormCategoryDirectoryList/{appId}/{categoryKey}",method=RequestMethod.GET)
 	public List<CategoryDirectoryPo>  getApplyFormCategoryDirectoryList(@PathVariable String appId,@PathVariable String categoryKey)
 	{
-		ApplyVo vo = applyService.getApplyDetail(appId);
-		return fileService.getTemplateCategoryDirectoryList(vo.getProduct().getDirectoryTemplateId(),categoryKey, appId); 
+		String dirTplId = fileService.getApplyProductTemplateId(appId);
+		return fileService.getTemplateCategoryDirectoryList(dirTplId,categoryKey, appId); 
 	}
 	
 	@RequestMapping(value="/uploadFile/{businessId}/{dirId}")
