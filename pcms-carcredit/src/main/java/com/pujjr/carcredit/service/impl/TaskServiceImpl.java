@@ -95,7 +95,21 @@ public class TaskServiceImpl implements ITaskService
 		vars.put("assigneeType", "1");
 		runWorkflowService.startProcess("PCCA", businessKey, vars);
 	}
+
+	@Override
+	public void commitReApplyTask(ApplyVo applyVo, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		String businessKey = applyService.saveApply(applyVo, operId);
+		//检查文件是否已上传完成
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
 	
+	@Override
+	public void commitPreCheckTask(String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
 	public void commitCheckTask(ApplyVo applyVo,ApplyCheckVo checkVo, String taskId,String operId) throws Exception {
 		// TODO Auto-generated method stub
 		//1、保存申请单变更信息
@@ -478,6 +492,8 @@ public class TaskServiceImpl implements ITaskService
 			}
 		}
 	}
+
+
 
 
 }

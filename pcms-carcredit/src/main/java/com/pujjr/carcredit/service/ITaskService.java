@@ -28,6 +28,10 @@ public interface ITaskService
 	
 	public void commitApplyTask(ApplyVo applyVo,String operId) throws Exception;
 	
+	public void commitReApplyTask(ApplyVo applyVo,String taskId,String operId) throws Exception;
+	
+	public void commitPreCheckTask(String taskId,String operId) throws Exception;
+	
 	public void commitCheckTask(ApplyVo applyVo,ApplyCheckVo checkVo,String taskId,String operId) throws Exception;
 	
 	public void commitApproveTask(ApplyVo applyVo,ApplyApproveVo approveVo,String taskId,String operId) throws Exception;

@@ -115,6 +115,14 @@ public class TaskController extends BaseController
 		taskService.commitApplyTask(applyVo, sysAccount.getAccountId());
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/commitReApplyTask/{taskId}",method=RequestMethod.POST)
+	public void commitReApplyTask(@PathVariable String taskId,@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitReApplyTask(applyVo, taskId, sysAccount.getAccountId());
+	}
+	
 	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
 	public TaskVo getTaskByTaskId(@PathVariable String taskId) throws Exception
 	{
@@ -128,6 +136,12 @@ public class TaskController extends BaseController
 		vo.setId(task.getId());
 		vo.setName(task.getName());
 		return vo;
+	}
+	@RequestMapping(value="/commitPreCheckTask/{taskId}",method=RequestMethod.POST)
+	public void commitPreCheckTask(@PathVariable String taskId,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitPreCheckTask(taskId, sysAccount.getAccountId());
 	}
 	@RequestMapping(value="/commitCheckTask/{taskId}",method=RequestMethod.POST)
 	public void commitCheckTask(@PathVariable String taskId,@RequestBody TaskCheckCommitVo params,HttpServletRequest request) throws Exception
