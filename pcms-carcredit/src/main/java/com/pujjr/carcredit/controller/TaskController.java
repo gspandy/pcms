@@ -123,6 +123,14 @@ public class TaskController extends BaseController
 		taskService.commitReApplyTask(applyVo, taskId, sysAccount.getAccountId());
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/commitSupplyCheckTask/{taskId}",method=RequestMethod.POST)
+	public void commitSupplyCheckTask(@PathVariable String taskId,@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitSupplyCheckTask(applyVo, taskId, sysAccount.getAccountId());
+	}
+	
 	@RequestMapping(value="/{taskId}",method=RequestMethod.GET)
 	public TaskVo getTaskByTaskId(@PathVariable String taskId) throws Exception
 	{
@@ -131,10 +139,24 @@ public class TaskController extends BaseController
 		{
 			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
 		}
-		runPathService.updateRunPathProcessTimeByTaskId(taskId);
 		TaskVo vo = new TaskVo();
 		vo.setId(task.getId());
 		vo.setName(task.getName());
+		
+		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		if(runPath.getProcessTime()==null)
+		{
+			runPathService.updateRunPathProcessTimeByTaskId(taskId);
+		}
+		//如果任务是被退回时，则在提示信息加入退回原因
+		WorkflowRunPath parentRunPath = runPathService.getRunPathById(runPath.getParentUsertaskPathId());
+		if(runPath.getInJumpType().equals(CommandType.BACK.name()))
+		{
+			vo.setTips("退回原因："+parentRunPath.getMessage());
+		}else
+		{
+			vo.setTips(parentRunPath.getMessage());
+		}
 		return vo;
 	}
 	@RequestMapping(value="/commitPreCheckTask/{taskId}",method=RequestMethod.POST)
@@ -213,10 +235,12 @@ public class TaskController extends BaseController
 				vars.put("checkAssignee", assignee.getAccountId());
 				runWorkflowService.completeTask(task.getTaskId(), "", vars, CommandType.COMMIT);
 				result.put("procResult", "分配成功，任务执行人"+assignee.getAccountId());
+				result.put("procStatus", true);
 			}
 			else
 			{
 				result.put("procResult", "未找到满足条件的任务执行者");
+				result.put("procStatus", false);
 			}
 			procResultList.add(result);
 			
@@ -259,17 +283,38 @@ public class TaskController extends BaseController
 		signVo.setSignFinanceList(dtlListVo);
 		return signVo;
 	}
-	@RequestMapping(value="/commitSignContractTask/{taskId}",method=RequestMethod.POST)
-	public void commitSignContractTask(@PathVariable String taskId,@RequestBody SignContractVo params,HttpServletRequest request)
+	@RequestMapping(value="/saveSignContractInfo",method=RequestMethod.POST)
+	public void saveSignContractInfo(@RequestBody SignContractVo params,HttpServletRequest request)
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		taskService.commitSignContract(params, taskId, sysAccount.getAccountId());
+		taskService.saveSignContractInfo(params, sysAccount.getAccountId());
 	}
-	@RequestMapping(value="/commitLoanCheckTask/{taskId}",method=RequestMethod.POST)
-	public void commitLoanCheckTask(@PathVariable String taskId,@RequestBody SignContractVo params,HttpServletRequest request)
+	
+	@RequestMapping(value="/commitSignContractTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void commitSignContractTask(@PathVariable String taskId,@PathVariable String appId,HttpServletRequest request) throws Exception
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		taskService.commitLoanCheck(params, taskId, sysAccount.getAccountId());
+		taskService.commitSignContract(appId, taskId, sysAccount.getAccountId());
+	}
+	
+	@RequestMapping(value="/saveLoanCheckInfo",method=RequestMethod.POST)
+	public void saveLoanCheckInfo(@RequestBody SignContractVo params,HttpServletRequest request)
+	{
+		taskService.saveLoanCheckInfo(params);
+	}
+	
+	@RequestMapping(value="/commitSupplyLoanCheckTask/{taskId}",method=RequestMethod.POST)
+	public void commitSupplyLoanCheckTask(@PathVariable String taskId,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitSupplyLoanCheckTask(taskId, sysAccount.getAccountId());
+	}
+	
+	@RequestMapping(value="/commitLoanCheckTask/{taskId}/{commitType}",method=RequestMethod.POST)
+	public void commitLoanCheckTask(@PathVariable String taskId,@PathVariable String commitType,@RequestBody SignContractVo params,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitLoanCheck(params,commitType, taskId, sysAccount.getAccountId());
 	}
 	@RequestMapping(value="/commitPrevLoanApproveTask/{taskId}",method=RequestMethod.POST)
 	public void commitPrevLoanApproveTask(@PathVariable String taskId,HttpServletRequest request)

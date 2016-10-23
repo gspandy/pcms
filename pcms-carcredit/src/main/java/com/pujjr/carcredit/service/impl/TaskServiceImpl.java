@@ -112,8 +112,6 @@ public class TaskServiceImpl implements ITaskService
 	}
 	public void commitCheckTask(ApplyVo applyVo,ApplyCheckVo checkVo, String taskId,String operId) throws Exception {
 		// TODO Auto-generated method stub
-		//1、保存申请单变更信息
-		applyService.saveApply(applyVo, operId);
 		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if(task == null)
 		{
@@ -124,51 +122,57 @@ public class TaskServiceImpl implements ITaskService
 		{
 			throw new Exception("提交任务失败,任务ID"+taskId+"对应路径不存在 ");
 		}
-		
-		//2、保存审核信息
-		CheckResult checkResult = new CheckResult();
-		String taskBusinessId = Utils.get16UUID();
-		checkResult.setId(taskBusinessId);
-		checkResult.setAppId(applyVo.getAppId());
-		checkResult.setNetCheckResult(checkVo.getNetCheckResult());
-		checkResult.setNetCheckNotPassReason(checkVo.getNetCheckNotPassReason());
-		checkResult.setNetCheckComment(checkVo.getNetCheckComment());
-		checkResult.setTelCheckResult(checkVo.getTelCheckResult());
-		checkResult.setTelCheckNotPassReason(checkVo.getTelCheckNotPassReason());
-		checkResult.setTelCheckComment(checkVo.getTelCheckComment());
-		checkResultDao.insert(checkResult);
-		
-		//3、保存任务处理结果信息
-		TaskProcessResult taskProcessResult = new TaskProcessResult();
-		taskProcessResult.setId(Utils.get16UUID());
-		taskProcessResult.setRunPathId(runpath.getId());
-		taskProcessResult.setProcessResult(checkVo.getResult());
-		//建议通过
-		if(checkVo.getResult().equals(TaskCommitType.SUGGEST_PASS))
+		//如果是审核补充资料，则不保存审核信息
+		if(!checkVo.getResult().equals(TaskCommitType.CHECK_SUPPLY_INFO))
 		{
-			taskProcessResult.setProcessResultDesc("建议通过");
+			//1、检查审核资料必传项，保存申请单变更信息
+			checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.CHECK.getKey(), applyVo.getAppId());
+			applyService.saveApply(applyVo, operId);
+			//2、保存审核信息
+			CheckResult checkResult = new CheckResult();
+			String taskBusinessId = Utils.get16UUID();
+			checkResult.setId(taskBusinessId);
+			checkResult.setAppId(applyVo.getAppId());
+			checkResult.setNetCheckResult(checkVo.getNetCheckResult());
+			checkResult.setNetCheckNotPassReason(checkVo.getNetCheckNotPassReason());
+			checkResult.setNetCheckComment(checkVo.getNetCheckComment());
+			checkResult.setTelCheckResult(checkVo.getTelCheckResult());
+			checkResult.setTelCheckNotPassReason(checkVo.getTelCheckNotPassReason());
+			checkResult.setTelCheckComment(checkVo.getTelCheckComment());
+			checkResultDao.insert(checkResult);
+			
+			//3、保存任务处理结果信息
+			TaskProcessResult taskProcessResult = new TaskProcessResult();
+			taskProcessResult.setId(Utils.get16UUID());
+			taskProcessResult.setRunPathId(runpath.getId());
+			taskProcessResult.setProcessResult(checkVo.getResult());
+			//建议通过
+			if(checkVo.getResult().equals(TaskCommitType.SUGGEST_PASS))
+			{
+				taskProcessResult.setProcessResultDesc("建议通过");
+			}
+			else if(checkVo.getResult().equals(TaskCommitType.SUGGEST_CONDITION_LOAN))
+			{
+				taskProcessResult.setProcessResultDesc(checkVo.getLoanExtConditon());
+			}
+			else if(checkVo.getResult().equals(TaskCommitType.SUGGEST_CANCEL))
+			{
+				taskProcessResult.setProcessResultDesc(checkVo.getCancelReason());
+			}
+			else
+			{
+				taskProcessResult.setProcessResultDesc(checkVo.getRejectReason());
+			}
+			taskProcessResult.setComment(checkVo.getComment());
+			taskProcessResult.setTaskBusinessId(taskBusinessId);
+			taskProcessResultDao.insert(taskProcessResult);
 		}
-		else if(checkVo.getResult().equals(TaskCommitType.SUGGEST_CONDITION_LOAN))
-		{
-			taskProcessResult.setProcessResultDesc(checkVo.getLoanExtConditon());
-		}
-		else if(checkVo.getResult().equals(TaskCommitType.SUGGEST_CANCEL))
-		{
-			taskProcessResult.setProcessResultDesc(checkVo.getCancelReason());
-		}
-		else
-		{
-			taskProcessResult.setProcessResultDesc(checkVo.getRejectReason());
-		}
-		taskProcessResult.setComment(checkVo.getComment());
-		taskProcessResult.setTaskBusinessId(taskBusinessId);
-		taskProcessResultDao.insert(taskProcessResult);
 		
 		//4、放入流程变量
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("checkProcessResult", checkVo.getResult());
 		
-		runWorkflowService.completeTask(taskId, "提交任务",vars, CommandType.COMMIT);
+		runWorkflowService.completeTask(taskId, checkVo.getComment(),vars, CommandType.COMMIT);
 	}
 
 	public void commitApproveTask(ApplyVo applyVo, ApplyApproveVo approveVo, String taskId, String operId) throws Exception {
@@ -321,8 +325,9 @@ public class TaskServiceImpl implements ITaskService
 		return poList;
 	}
 
+
 	@Override
-	public void commitSignContract(SignContractVo signContractVo,String taskId,String operId) {
+	public void saveSignContractInfo(SignContractVo signContractVo, String operId) {
 		// TODO Auto-generated method stub
 		String appId = signContractVo.getAppId();
 		SignContract signContractPo = new SignContract();
@@ -355,13 +360,21 @@ public class TaskServiceImpl implements ITaskService
 			detailPo.setFinanceId(item.getApplyFinance().getId());
 			signContractService.addSignFinanceDetail(detailPo);
 		}
+	}
+	
+	@Override
+	public void commitSignContract(String appId,String taskId,String operId) throws Exception {
+		// TODO Auto-generated method stub
+		ApplyVo applyVo = applyService.getApplyDetail(appId);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), applyVo.getAppId());
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("signType", SignCommitType.SIGN);
 		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
 	}
 
+
 	@Override
-	public void commitLoanCheck(SignContractVo signContractVo, String taskId, String operId) {
+	public void saveLoanCheckInfo(SignContractVo signContractVo) {
 		// TODO Auto-generated method stub
 		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
 		{
@@ -370,7 +383,33 @@ public class TaskServiceImpl implements ITaskService
 			//这里只更新放款复核信息
 			signContractService.modifySignFinanceDetail(detailPo);
 		}
+	}
+	
+
+	@Override
+	public void commitSupplyLoanCheckTask(String taskId, String operId) {
+		// TODO Auto-generated method stub
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+	
+	@Override
+	public void commitLoanCheck(SignContractVo signContractVo, String commitType,String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		if(!commitType.equals(TaskCommitType.LOANCHECK_SUPPLY_INFO))
+		{
+			ApplyVo applyVo = applyService.getApplyDetail(signContractVo.getAppId());
+			checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.LOANCHECK.getKey(), applyVo.getAppId());
+			for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
+			{
+				SignFinanceDetail detailPo = new SignFinanceDetail();
+				BeanUtils.copyProperties(item.getSignFinanceDetail(), detailPo);
+				//这里只更新放款复核信息
+				signContractService.modifySignFinanceDetail(detailPo);
+			}
+		}
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("loanCheckCommitType", commitType);
+		runWorkflowService.completeTask(taskId, signContractVo.getSupplyLoanInfoComment(), vars, CommandType.COMMIT);
 	}
 
 	@Override
@@ -493,7 +532,14 @@ public class TaskServiceImpl implements ITaskService
 		}
 	}
 
-
+	@Override
+	public void commitSupplyCheckTask(ApplyVo applyVo, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		String businessKey = applyService.saveApply(applyVo, operId);
+		//检查文件是否已上传完成
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
 
 
 }
