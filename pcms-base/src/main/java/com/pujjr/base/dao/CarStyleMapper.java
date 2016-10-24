@@ -5,18 +5,21 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.vo.QueryParamCarStyleVo;
 
 public interface CarStyleMapper {
 
-    int insert(CarStyle record);
+    int deleteByPrimaryKey(String id);
 
-    int insertSelective(CarStyle record);
+	int insert(CarStyle record);
 
-    CarStyle selectByPrimaryKey(String id);
+	int insertSelective(CarStyle record);
 
-    int updateByPrimaryKeySelective(CarStyle record);
+	CarStyle selectByPrimaryKey(String id);
 
-    int updateByPrimaryKey(CarStyle record);
+	int updateByPrimaryKeySelective(CarStyle record);
+
+	int updateByPrimaryKey(CarStyle record);
     
-    List<CarStyle> selectAllByCarSerialId(@Param("carSerialId")String carSerialId);
+    List<CarStyle> selectAll(@Param("param")QueryParamCarStyleVo param);
 }

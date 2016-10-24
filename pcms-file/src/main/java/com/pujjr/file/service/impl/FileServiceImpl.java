@@ -141,6 +141,12 @@ public class FileServiceImpl implements IFileService
 		
 	}
 
+	@Override
+	public String getApplyProductTemplateId(String appId) {
+		// TODO Auto-generated method stub
+		return fileDao.selectApplyProductTemplateId(appId);
+	}
+
 	
 
 }

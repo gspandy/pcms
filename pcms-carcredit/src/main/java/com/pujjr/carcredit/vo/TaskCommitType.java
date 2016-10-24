@@ -26,4 +26,8 @@ public class TaskCommitType
 	public static String RECONSIDER_PASS = "tjlx401";
 	//复议审批拒绝
 	public static String RECONSIDER_REJECT = "tjlx402";
+	//审核补充资料
+	public static String CHECK_SUPPLY_INFO = "shbczl";
+	//补充放款资料
+	public static String LOANCHECK_SUPPLY_INFO = "bcfkzl";
 }

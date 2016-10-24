@@ -9,4 +9,6 @@ import com.pujjr.file.po.CategoryDirectoryPo;
 public interface FileMapper 
 {
 	public List<CategoryDirectoryPo> selectTemplateCategoryDirectoryList(@Param("templateId")String templateId,@Param("categoryKey")String categoryKey,@Param("appId")String appId);
+	
+	public String selectApplyProductTemplateId(@Param("appId") String appId);
 }

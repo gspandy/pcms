@@ -354,6 +354,6 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
-  	select * from t_product_rule
+  	select * from t_product_rule group by RULE_NAME
   </select>
 </mapper>

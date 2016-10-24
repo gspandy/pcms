@@ -79,7 +79,10 @@
       CAR_SERIAL_NAME = #{carSerialName,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectAllByCarBrandId" resultMap="BaseResultMap">
-  	select * from t_car_serial where CAR_BRAND_ID =#{carBrandId};
+  <select id="selectAll" parameterType="com.pujjr.base.vo.QueryParamCarSerialVo" resultMap="BaseResultMap">
+  	select * from t_car_serial where 1=1 
+  	<if test="param.carBrandId !=null and param.carBrandId !=''">
+  		and CAR_BRAND_ID  =#{param.carBrandId}
+  	</if>
   </select>
 </mapper>

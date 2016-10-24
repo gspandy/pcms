@@ -5,7 +5,15 @@ public class CategoryDirectoryPo
 	private String dirId;
 	private String dirName;
 	private String parentId;
+	private boolean required;
 	private int fileCnt;
+	
+	public boolean isRequired() {
+		return required;
+	}
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
 	
 	public String getDirId() {
 		return dirId;

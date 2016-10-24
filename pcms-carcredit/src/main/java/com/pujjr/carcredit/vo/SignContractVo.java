@@ -10,7 +10,17 @@ public class SignContractVo extends SignContract
 	private String loanSubBranch;
 	private String loanAcctNo;
 	private String loanAcctName;
+	//补充放款资料备注
+	private String supplyLoanInfoComment;
 	
+	public String getSupplyLoanInfoComment() {
+		return supplyLoanInfoComment;
+	}
+
+	public void setSupplyLoanInfoComment(String supplyLoanInfoComment) {
+		this.supplyLoanInfoComment = supplyLoanInfoComment;
+	}
+
 	private List<SignFinanceDetailVo> signFinanceList;
 
 	public List<SignFinanceDetailVo> getSignFinanceList() {

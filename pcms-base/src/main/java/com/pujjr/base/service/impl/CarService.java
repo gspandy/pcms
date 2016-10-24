@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.pujjr.base.dao.CarBrandMapper;
 import com.pujjr.base.dao.CarSerialMapper;
@@ -12,6 +13,9 @@ import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.service.ICarService;
+import com.pujjr.base.vo.QueryParamCarBrandVo;
+import com.pujjr.base.vo.QueryParamCarSerialVo;
+import com.pujjr.base.vo.QueryParamCarStyleVo;
 @Service
 public class CarService implements ICarService {
 	
@@ -23,75 +27,104 @@ public class CarService implements ICarService {
 	private CarStyleMapper carStyleDao;
 	
 	@Override
-	public List<CarBrand> getCarBrandList() {
+	public List<CarBrand> getCarBrandList(QueryParamCarBrandVo params) {
 		// TODO Auto-generated method stub
-		return carBrandDao.selectAll();
+		return carBrandDao.selectAll(params);
 	}
 
 	@Override
 	public void addCarBrand(CarBrand record) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarBrand(CarBrand record) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarBrand(String id) {
 		// TODO Auto-generated method stub
-
+		carBrandDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
-	public List<CarSerial> getCarSerialByCarBrandId(String id) {
+	public List<CarSerial> getCarSerialList(QueryParamCarSerialVo param) 
+	{
 		// TODO Auto-generated method stub
-		return carSerialDao.selectAllByCarBrandId(id);
+		return carSerialDao.selectAll(param);
 	}
 
 	@Override
-	public void addCarSerial(String carBrandId, CarSerial record) {
+	public void addCarSerial(CarSerial record) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarSerial(CarSerial record) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarSerial(String id) {
 		// TODO Auto-generated method stub
-
+		carSerialDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
-	public List<CarStyle> getCarStyleByCarSerialId(String id) {
+	public List<CarStyle> getCarStyleList(QueryParamCarStyleVo param) {
 		// TODO Auto-generated method stub
-		return carStyleDao.selectAllByCarSerialId(id);
+		if((param.getCarBrandId()!=null && param.getCarBrandId()!="") || (param.getCarSerialId()!=null && param.getCarSerialId()!=""))
+		{
+			param.setIndexStr("");
+		}
+		if(param.getIndexStr()!=null && param.getIndexStr()!="")
+		{
+			String indexStr = param.getIndexStr();
+			indexStr =StringUtils.trimAllWhitespace(indexStr);
+			StringBuffer buf = new StringBuffer();
+			buf.append("%");
+			for(int i=0;i<indexStr.length();i++)
+			{
+				buf.append(indexStr.substring(i, i+1));
+				buf.append("%");
+			}
+			param.setCarBrandId("");
+			param.setCarSerialId("");
+			param.setIndexStr(buf.toString());
+		}
+		return carStyleDao.selectAll(param);
 	}
 
 	@Override
-	public void addCarStyle(String carSerialId, String CarStyle) {
+	public void addCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
-
+		//查找品牌及车系
+		CarBrand brand = carBrandDao.selectBrandBySerialId(record.getCarSerialId());
+		CarSerial serial = carSerialDao.selectByPrimaryKey(record.getCarSerialId());
+		//创建索引字段品牌名称-车系-车型-排量
+		record.setIndexStr(brand.getBrandName()+"-"+serial.getCarSerialName()+"-"+record.getCarStyleName()+"-"+record.getDisplacement());
+		carStyleDao.insert(record);
 	}
 
 	@Override
 	public void modifyCarStyle(CarStyle record) {
 		// TODO Auto-generated method stub
-
+		CarBrand brand = carBrandDao.selectBrandBySerialId(record.getCarSerialId());
+		CarSerial serial = carSerialDao.selectByPrimaryKey(record.getCarSerialId());
+		//创建索引字段品牌名称-车系-车型-排量
+		record.setIndexStr(brand.getBrandName()+"-"+serial.getCarSerialName()+"-"+record.getCarStyleName()+"-"+record.getDisplacement());
+		carStyleDao.updateByPrimaryKey(record);
 	}
 
 	@Override
 	public void deleteCarStyle(String id) {
 		// TODO Auto-generated method stub
-
+		carStyleDao.deleteByPrimaryKey(id);
 	}
 
 	@Override
@@ -99,5 +132,6 @@ public class CarService implements ICarService {
 		// TODO Auto-generated method stub
 		return carStyleDao.selectByPrimaryKey(id);
 	}
+
 
 }

@@ -312,8 +312,10 @@
     <result column="MAX_INIT_PAY_PERCENT" jdbcType="DOUBLE" property="maxInitPayPercent" />
     <result column="MIN_SERVICE_FEE" jdbcType="DOUBLE" property="minServiceFee" />
     <result column="MAX_SERVICE_FEE" jdbcType="DOUBLE" property="maxServiceFee" />
+    <result column="SERVICE_FEE_PERCENT" jdbcType="DOUBLE" property="serviceFeePercent" />
     <result column="MIN_INSURANCE_FEE" jdbcType="DOUBLE" property="minInsuranceFee" />
     <result column="MAX_INSURANCE_FEE" jdbcType="DOUBLE" property="maxInsuranceFee" />
+    <result column="INSURANCE_FEE_PERCENT" jdbcType="DOUBLE" property="insuranceFeePercent" />
     <result column="MIN_DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="minDelayInsuranceFee" />
     <result column="MAX_DELAY_INSURANCE_FEE" jdbcType="DOUBLE" property="maxDelayInsuranceFee" />
     <result column="MIN_TRANSFER_FEE" jdbcType="DOUBLE" property="minTransferFee" />

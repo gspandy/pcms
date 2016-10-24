@@ -28,6 +28,12 @@ public interface ITaskService
 	
 	public void commitApplyTask(ApplyVo applyVo,String operId) throws Exception;
 	
+	public void commitReApplyTask(ApplyVo applyVo,String taskId,String operId) throws Exception;
+	
+	public void commitSupplyCheckTask(ApplyVo applyVo,String taskId,String operId) throws Exception;
+	
+	public void commitPreCheckTask(String taskId,String operId) throws Exception;
+	
 	public void commitCheckTask(ApplyVo applyVo,ApplyCheckVo checkVo,String taskId,String operId) throws Exception;
 	
 	public void commitApproveTask(ApplyVo applyVo,ApplyApproveVo approveVo,String taskId,String operId) throws Exception;
@@ -38,9 +44,15 @@ public interface ITaskService
 	
 	public List<OnlineAcctPo>  getOnlineAcctInfo(String workgroupId,boolean checkOnline);
 	
-	public void commitSignContract(SignContractVo signContractVo,String taskId,String operId);
+	public void saveSignContractInfo(SignContractVo signContractVo,String operId);
 	
-	public void commitLoanCheck(SignContractVo signContractVo,String taskId,String operId);
+	public void commitSignContract(String appId,String taskId,String operId) throws Exception;
+	
+	public void saveLoanCheckInfo(SignContractVo signContractVo);
+	
+	public void commitLoanCheck(SignContractVo signContractVo,String commitType,String taskId,String operId) throws Exception;
+	
+	public void commitSupplyLoanCheckTask(String taskId,String operId);
 	
 	public void commitPrevLoanApprove(String taskId,String operId);
 	
@@ -57,4 +69,6 @@ public interface ITaskService
 	public void backTask(String taskId,String message);
 	
 	public List<WorkflowProcessResultPo> getWorkflowProcessResult(String procInstId);
+	
+	public void checkTaskHasUploadFile(String templateId,String categoryKey,String businessId) throws Exception;
 }
