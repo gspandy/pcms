@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.CallBackResultMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.CallBackResult">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RUN_PATH_ID" jdbcType="VARCHAR" property="runPathId" />
+    <result column="TASK_BUSINESS_ID" jdbcType="VARCHAR" property="taskBusinessId" />
+    <result column="IS_SELF_LISTEN" jdbcType="BIT" property="isSelfListen" />
+    <result column="IS_SELF_SIGN" jdbcType="BIT" property="isSelfSign" />
+    <result column="CALLBACK_RESULT" jdbcType="VARCHAR" property="callbackResult" />
+    <result column="IS_SELF_AUTH" jdbcType="BIT" property="isSelfAuth" />
+    <result column="IS_KNOW_FINANCE_CAR_INFO" jdbcType="BIT" property="isKnowFinanceCarInfo" />
+    <result column="IS_KNOW_FINANCE_AMT_INFO" jdbcType="BIT" property="isKnowFinanceAmtInfo" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, RUN_PATH_ID, TASK_BUSINESS_ID, IS_SELF_LISTEN, IS_SELF_SIGN, CALLBACK_RESULT, 
+    IS_SELF_AUTH, IS_KNOW_FINANCE_CAR_INFO, IS_KNOW_FINANCE_AMT_INFO, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_callback_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_callback_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.CallBackResult">
+    insert into t_callback_result (ID, RUN_PATH_ID, TASK_BUSINESS_ID, 
+      IS_SELF_LISTEN, IS_SELF_SIGN, CALLBACK_RESULT, 
+      IS_SELF_AUTH, IS_KNOW_FINANCE_CAR_INFO, IS_KNOW_FINANCE_AMT_INFO, 
+      COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{runPathId,jdbcType=VARCHAR}, #{taskBusinessId,jdbcType=VARCHAR}, 
+      #{isSelfListen,jdbcType=BIT}, #{isSelfSign,jdbcType=BIT}, #{callbackResult,jdbcType=VARCHAR}, 
+      #{isSelfAuth,jdbcType=BIT}, #{isKnowFinanceCarInfo,jdbcType=BIT}, #{isKnowFinanceAmtInfo,jdbcType=BIT}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.CallBackResult">
+    insert into t_callback_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="runPathId != null">
+        RUN_PATH_ID,
+      </if>
+      <if test="taskBusinessId != null">
+        TASK_BUSINESS_ID,
+      </if>
+      <if test="isSelfListen != null">
+        IS_SELF_LISTEN,
+      </if>
+      <if test="isSelfSign != null">
+        IS_SELF_SIGN,
+      </if>
+      <if test="callbackResult != null">
+        CALLBACK_RESULT,
+      </if>
+      <if test="isSelfAuth != null">
+        IS_SELF_AUTH,
+      </if>
+      <if test="isKnowFinanceCarInfo != null">
+        IS_KNOW_FINANCE_CAR_INFO,
+      </if>
+      <if test="isKnowFinanceAmtInfo != null">
+        IS_KNOW_FINANCE_AMT_INFO,
+      </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="runPathId != null">
+        #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null">
+        #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelfListen != null">
+        #{isSelfListen,jdbcType=BIT},
+      </if>
+      <if test="isSelfSign != null">
+        #{isSelfSign,jdbcType=BIT},
+      </if>
+      <if test="callbackResult != null">
+        #{callbackResult,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelfAuth != null">
+        #{isSelfAuth,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceCarInfo != null">
+        #{isKnowFinanceCarInfo,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceAmtInfo != null">
+        #{isKnowFinanceAmtInfo,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.CallBackResult">
+    update t_callback_result
+    <set>
+      <if test="runPathId != null">
+        RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null">
+        TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelfListen != null">
+        IS_SELF_LISTEN = #{isSelfListen,jdbcType=BIT},
+      </if>
+      <if test="isSelfSign != null">
+        IS_SELF_SIGN = #{isSelfSign,jdbcType=BIT},
+      </if>
+      <if test="callbackResult != null">
+        CALLBACK_RESULT = #{callbackResult,jdbcType=VARCHAR},
+      </if>
+      <if test="isSelfAuth != null">
+        IS_SELF_AUTH = #{isSelfAuth,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceCarInfo != null">
+        IS_KNOW_FINANCE_CAR_INFO = #{isKnowFinanceCarInfo,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceAmtInfo != null">
+        IS_KNOW_FINANCE_AMT_INFO = #{isKnowFinanceAmtInfo,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.CallBackResult">
+    update t_callback_result
+    set RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR},
+      IS_SELF_LISTEN = #{isSelfListen,jdbcType=BIT},
+      IS_SELF_SIGN = #{isSelfSign,jdbcType=BIT},
+      CALLBACK_RESULT = #{callbackResult,jdbcType=VARCHAR},
+      IS_SELF_AUTH = #{isSelfAuth,jdbcType=BIT},
+      IS_KNOW_FINANCE_CAR_INFO = #{isKnowFinanceCarInfo,jdbcType=BIT},
+      IS_KNOW_FINANCE_AMT_INFO = #{isKnowFinanceAmtInfo,jdbcType=BIT},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

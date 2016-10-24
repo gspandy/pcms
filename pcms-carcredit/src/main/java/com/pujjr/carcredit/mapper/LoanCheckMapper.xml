@@ -442,4 +442,8 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByAppId" resultMap="BaseResultMap">
+  	select * from t_loan_check 
+  	where APP_ID = #{appId}
+  </select>
 </mapper>

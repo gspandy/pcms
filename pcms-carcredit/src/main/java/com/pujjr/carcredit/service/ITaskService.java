@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.domain.CallBackResult;
+import com.pujjr.carcredit.domain.CheckResult;
+import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -48,7 +51,7 @@ public interface ITaskService
 	
 	public void commitSignContract(String appId,String taskId,String operId) throws Exception;
 	
-	public void saveLoanCheckInfo(SignContractVo signContractVo);
+	public void saveLoanCheckInfo(SignContractVo signContractVo,String operId);
 	
 	public void commitLoanCheck(SignContractVo signContractVo,String commitType,String taskId,String operId) throws Exception;
 	
@@ -71,4 +74,8 @@ public interface ITaskService
 	public List<WorkflowProcessResultPo> getWorkflowProcessResult(String procInstId);
 	
 	public void checkTaskHasUploadFile(String templateId,String categoryKey,String businessId) throws Exception;
+	
+	public LoanCheck getLoanCheckInfoByAppId(String appId);
+	
+	public void commitCallBackTask(CallBackResult result , String appId,String taskId,String operId) throws Exception;
 }

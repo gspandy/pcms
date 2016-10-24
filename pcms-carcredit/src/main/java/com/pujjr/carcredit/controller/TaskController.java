@@ -33,6 +33,8 @@ import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.CallBackResult;
+import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -281,6 +283,9 @@ public class TaskController extends BaseController
 			dtlListVo.add(dtlVo);
 		}
 		signVo.setSignFinanceList(dtlListVo);
+		//查询放款复核信息
+		LoanCheck loanCheck = taskService.getLoanCheckInfoByAppId(appId);
+		signVo.setLoanCheck(loanCheck);
 		return signVo;
 	}
 	@RequestMapping(value="/saveSignContractInfo",method=RequestMethod.POST)
@@ -300,7 +305,8 @@ public class TaskController extends BaseController
 	@RequestMapping(value="/saveLoanCheckInfo",method=RequestMethod.POST)
 	public void saveLoanCheckInfo(@RequestBody SignContractVo params,HttpServletRequest request)
 	{
-		taskService.saveLoanCheckInfo(params);
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.saveLoanCheckInfo(params,sysAccount.getAccountId());
 	}
 	
 	@RequestMapping(value="/commitSupplyLoanCheckTask/{taskId}",method=RequestMethod.POST)
@@ -385,5 +391,11 @@ public class TaskController extends BaseController
 			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
 		}
 		return taskService.getWorkflowProcessResult(task.getProcessInstanceId());
+	}
+	@RequestMapping(value="/commitCallBackTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void commitCallBackTask(@RequestBody CallBackResult result,@PathVariable String appId,@PathVariable String taskId,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitCallBackTask(result, appId, taskId, sysAccount.getAccountId());
 	}
 }

@@ -16,11 +16,15 @@ import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.dao.CallBackResultMapper;
 import com.pujjr.carcredit.dao.CheckResultMapper;
+import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
+import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CheckResult;
+import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -76,6 +80,10 @@ public class TaskServiceImpl implements ITaskService
 	private ReconsiderMapper reconsiderDao;
 	@Autowired
 	private IFileService fileService;
+	@Autowired
+	private LoanCheckMapper loanCheckDao;
+	@Autowired
+	private CallBackResultMapper callBackResultDao;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -212,7 +220,7 @@ public class TaskServiceImpl implements ITaskService
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", approveVo.getResult());
 
-		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
 	}
 
 	@Override
@@ -374,8 +382,9 @@ public class TaskServiceImpl implements ITaskService
 
 
 	@Override
-	public void saveLoanCheckInfo(SignContractVo signContractVo) {
+	public void saveLoanCheckInfo(SignContractVo signContractVo,String operId) {
 		// TODO Auto-generated method stub
+		//保存保险信息
 		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
 		{
 			SignFinanceDetail detailPo = new SignFinanceDetail();
@@ -383,6 +392,26 @@ public class TaskServiceImpl implements ITaskService
 			//这里只更新放款复核信息
 			signContractService.modifySignFinanceDetail(detailPo);
 		}
+		//保存放款复核结果
+		if(loanCheckDao.selectByAppId(signContractVo.getAppId())==null)
+		{
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setAppId(signContractVo.getAppId());
+			po.setId(Utils.get16UUID());
+			po.setCreateId(operId);
+			po.setCreateTime(new Date());
+			loanCheckDao.insert(po);
+		}
+		else
+		{
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setUpdateId(operId);
+			po.setUpdateTime(new Date());
+			loanCheckDao.updateByPrimaryKey(po);
+		}
+		
 	}
 	
 
@@ -406,6 +435,22 @@ public class TaskServiceImpl implements ITaskService
 				//这里只更新放款复核信息
 				signContractService.modifySignFinanceDetail(detailPo);
 			}
+		}
+		// 保存放款复核结果
+		if (loanCheckDao.selectByAppId(signContractVo.getAppId()) == null) {
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setAppId(signContractVo.getAppId());
+			po.setId(Utils.get16UUID());
+			po.setCreateId(operId);
+			po.setCreateTime(new Date());
+			loanCheckDao.insert(po);
+		} else {
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setUpdateId(operId);
+			po.setUpdateTime(new Date());
+			loanCheckDao.updateByPrimaryKey(po);
 		}
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("loanCheckCommitType", commitType);
@@ -539,6 +584,33 @@ public class TaskServiceImpl implements ITaskService
 		//检查文件是否已上传完成
 		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public LoanCheck getLoanCheckInfoByAppId(String appId) {
+		// TODO Auto-generated method stub
+		return loanCheckDao.selectByAppId(appId);
+	}
+
+	@Override
+	public void commitCallBackTask(CallBackResult result, String appId, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
+		result.setId(Utils.get16UUID());
+		result.setTaskBusinessId(appId);
+		result.setRunPathId(runPath.getId());
+		callBackResultDao.insert(result);
+		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
 	}
 
 
