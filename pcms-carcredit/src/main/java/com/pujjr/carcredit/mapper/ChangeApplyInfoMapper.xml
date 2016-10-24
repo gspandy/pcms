@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.ChangeApplyInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ChangeApplyInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="RUN_PATH_ID" property="runPathId" jdbcType="VARCHAR" />
+    <result column="TASK_BUSINESS_ID" property="taskBusinessId" jdbcType="VARCHAR" />
+    <result column="CHANGE_RESULT" property="changeResult" jdbcType="VARCHAR" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RUN_PATH_ID, TASK_BUSINESS_ID, CHANGE_RESULT, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_change_apply_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_change_apply_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.ChangeApplyInfo" >
+    insert into t_change_apply_info (ID, RUN_PATH_ID, TASK_BUSINESS_ID, 
+      CHANGE_RESULT, COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{runPathId,jdbcType=VARCHAR}, #{taskBusinessId,jdbcType=VARCHAR}, 
+      #{changeResult,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ChangeApplyInfo" >
+    insert into t_change_apply_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="runPathId != null" >
+        RUN_PATH_ID,
+      </if>
+      <if test="taskBusinessId != null" >
+        TASK_BUSINESS_ID,
+      </if>
+      <if test="changeResult != null" >
+        CHANGE_RESULT,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="runPathId != null" >
+        #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null" >
+        #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="changeResult != null" >
+        #{changeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.ChangeApplyInfo" >
+    update t_change_apply_info
+    <set >
+      <if test="runPathId != null" >
+        RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null" >
+        TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+      <if test="changeResult != null" >
+        CHANGE_RESULT = #{changeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ChangeApplyInfo" >
+    update t_change_apply_info
+    set RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR},
+      CHANGE_RESULT = #{changeResult,jdbcType=VARCHAR},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByRunPathId" resultMap="BaseResultMap">
+  	select * from t_change_apply_info
+  	where RUN_PATH_ID = #{runPathId}
+  </select>
+</mapper>

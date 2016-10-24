@@ -17,12 +17,16 @@ import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.dao.CallBackResultMapper;
+import com.pujjr.carcredit.dao.CancelApplyInfoMapper;
+import com.pujjr.carcredit.dao.ChangeApplyInfoMapper;
 import com.pujjr.carcredit.dao.CheckResultMapper;
 import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.CallBackResult;
+import com.pujjr.carcredit.domain.CancelApplyInfo;
+import com.pujjr.carcredit.domain.ChangeApplyInfo;
 import com.pujjr.carcredit.domain.CheckResult;
 import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
@@ -38,6 +42,8 @@ import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.CancelApplyInfoVo;
+import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
 import com.pujjr.carcredit.vo.DirectoryCategoryEnum;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
@@ -84,6 +90,10 @@ public class TaskServiceImpl implements ITaskService
 	private LoanCheckMapper loanCheckDao;
 	@Autowired
 	private CallBackResultMapper callBackResultDao;
+	@Autowired
+	private ChangeApplyInfoMapper changeApplyInfoDao;
+	@Autowired
+	private CancelApplyInfoMapper cancelApplyInfoDao;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -605,12 +615,146 @@ public class TaskServiceImpl implements ITaskService
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
 		
-		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
 		result.setId(Utils.get16UUID());
 		result.setTaskBusinessId(appId);
-		result.setRunPathId(runPath.getId());
+		result.setRunPathId(runpath.getId());
 		callBackResultDao.insert(result);
 		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitChangeApplyInfoTask(ChangeApplyInfo info, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		info.setId(Utils.get16UUID());
+		info.setTaskBusinessId(appId);
+		info.setRunPathId(runpath.getId());
+		changeApplyInfoDao.insert(info);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("signType", SignCommitType.CHANGE);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public ChangeApplyInfo getLatestChangeApplyInfo(String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//获取上级人工任务信息
+		String parentUserTaskRunPathId = runpath.getParentUsertaskPathId();
+		//获取变更申请信息
+		ChangeApplyInfo po = changeApplyInfoDao.selectByRunPathId(parentUserTaskRunPathId);
+		
+		return po;
+		
+	}
+
+	@Override
+	public void commitApproveChangeApplyInfoTask(ChangeApplyInfoVo vo, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//保存审批处理结果
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("approveChangeProcResult",vo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitCancelApplyTask(CancelApplyInfo info, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		info.setId(Utils.get16UUID());
+		info.setTaskBusinessId(appId);
+		info.setRunPathId(runpath.getId());
+		cancelApplyInfoDao.insert(info);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("signType", SignCommitType.CANCEL);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public CancelApplyInfo getLatestCancelApplyInfo(String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//获取上级人工任务信息
+		String parentUserTaskRunPathId = runpath.getParentUsertaskPathId();
+		//获取取消申请信息
+		CancelApplyInfo po = cancelApplyInfoDao.selectByRunPathId(parentUserTaskRunPathId);
+		
+		return po;
+	}
+
+	@Override
+	public void commitApprvoeCancelApply(CancelApplyInfoVo vo,String appId,String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//保存审批处理结果
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("approveCancelProcResult",vo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
 	}
 
 

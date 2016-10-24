@@ -34,6 +34,8 @@ import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.domain.ApplyFinance;
 import com.pujjr.carcredit.domain.CallBackResult;
+import com.pujjr.carcredit.domain.CancelApplyInfo;
+import com.pujjr.carcredit.domain.ChangeApplyInfo;
 import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
@@ -49,6 +51,8 @@ import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyFinanceVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.CancelApplyInfoVo;
+import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
@@ -397,5 +401,44 @@ public class TaskController extends BaseController
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitCallBackTask(result, appId, taskId, sysAccount.getAccountId());
+	}
+	@RequestMapping(value="/commitChangeApplyInfoTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void commitChangeApplyInfoTask(@RequestBody ChangeApplyInfo info,@PathVariable String appId,@PathVariable String taskId) throws Exception
+	{
+		taskService.commitChangeApplyInfoTask(info, appId, taskId);
+	}
+	
+	@RequestMapping(value="/getLatestChangeApplyInfo/{taskId}",method=RequestMethod.GET)
+	public ChangeApplyInfoVo getLatestChangeApplyInfo(@PathVariable String taskId) throws Exception
+	{
+		ChangeApplyInfoVo vo = new ChangeApplyInfoVo();
+		ChangeApplyInfo info = taskService.getLatestChangeApplyInfo(taskId);
+		BeanUtils.copyProperties(info, vo);
+		return vo;
+	}
+	@RequestMapping(value="/commitApproveChangeApplyInfoTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void  commitApproveChangeApplyInfoTask(@RequestBody ChangeApplyInfoVo vo ,@PathVariable String appId,@PathVariable String taskId) throws Exception
+	{
+		taskService.commitApproveChangeApplyInfoTask(vo, appId, taskId);
+	}
+	
+	@RequestMapping(value="/commitCancelApplyInfoTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void commitCancelApplyInfoTask(@RequestBody CancelApplyInfo info,@PathVariable String appId,@PathVariable String taskId) throws Exception
+	{
+		taskService.commitCancelApplyTask(info, appId, taskId);
+	}
+	
+	@RequestMapping(value="/getLatestCancelApplyInfo/{taskId}",method=RequestMethod.GET)
+	public CancelApplyInfoVo getLatestCancelApplyInfo(@PathVariable String taskId) throws Exception
+	{
+		CancelApplyInfoVo vo = new CancelApplyInfoVo();
+		CancelApplyInfo info = taskService.getLatestCancelApplyInfo(taskId);
+		BeanUtils.copyProperties(info, vo);
+		return vo;
+	}
+	@RequestMapping(value="/commitApproveCancelApplyInfoTask/{appId}/{taskId}",method=RequestMethod.POST)
+	public void  commitApproveCancelApplyInfoTask(@RequestBody CancelApplyInfoVo vo ,@PathVariable String appId,@PathVariable String taskId) throws Exception
+	{
+		taskService.commitApprvoeCancelApply(vo, appId, taskId);
 	}
 }
