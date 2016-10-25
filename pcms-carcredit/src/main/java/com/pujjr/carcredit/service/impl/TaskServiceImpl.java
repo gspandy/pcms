@@ -164,8 +164,9 @@ public class TaskServiceImpl implements ITaskService
 			checkResultDao.insert(checkResult);
 			
 			//3、保存任务处理结果信息
+			String procId = Utils.get16UUID();
 			TaskProcessResult taskProcessResult = new TaskProcessResult();
-			taskProcessResult.setId(Utils.get16UUID());
+			taskProcessResult.setId(procId);
 			taskProcessResult.setRunPathId(runpath.getId());
 			taskProcessResult.setProcessResult(checkVo.getResult());
 			//建议通过

@@ -286,6 +286,16 @@ public class TaskController extends BaseController
 		{
 			//查询申请融资信息签约信息
 			SignFinanceDetail dtl = signContractService.getSignFinanceDetailByApplyFinanceId(l.getId());
+			//如果没有签约融资信息则车架号、发动机号、车辆颜色以申请单为准
+			if(dtl==null)
+			{
+				dtl = new SignFinanceDetail();
+				dtl.setCarColor(l.getCarColor());
+				dtl.setCarVin(l.getCarVin());
+				dtl.setCarEngineNo(l.getCarEngineNo());
+				
+			}
+		
 			SignFinanceDetailVo dtlVo = new SignFinanceDetailVo();
 			dtlVo.setApplyFinance(l);
 			dtlVo.setSignFinanceDetail(dtl);
