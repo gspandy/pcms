@@ -1,6 +1,7 @@
 package com.pujjr.base.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,5 +62,9 @@ public class SysAccountController  extends BaseController
 		SysAccount sysAccount  = (SysAccount)request.getAttribute("account");
 		sysAccountService.modifySysAccountLoginStatus(sysAccount.getId(),"dlzt02", null);
 	}
-	
+	@RequestMapping(value="/authmenu/{accountId}",method=RequestMethod.GET)
+	public List<HashMap<String,Object>> getSysAccountAuthMenuList(@PathVariable String accountId)
+	{
+		return sysAccountService.getAccountAuthMenu(accountId);
+	}
 }

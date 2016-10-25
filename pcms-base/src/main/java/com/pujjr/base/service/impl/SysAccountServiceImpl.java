@@ -1,6 +1,7 @@
 package com.pujjr.base.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,12 @@ public class SysAccountServiceImpl implements ISysAccountService
 	public List<SysAccount> getOnlineSysAccountByWorkgroupId(String workgroupId) {
 		// TODO Auto-generated method stub
 		return sysAccountDao.selectOnlineListByWorkgroupId(workgroupId, new Date());
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getAccountAuthMenu(String accountId) {
+		// TODO Auto-generated method stub
+		return sysAccountDao.selectAccountAuthMenu(accountId);
 	}
 
 

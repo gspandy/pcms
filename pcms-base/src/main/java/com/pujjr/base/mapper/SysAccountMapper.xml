@@ -358,4 +358,19 @@
   <select id="selectAccountAssigneTaskCnt" parameterType="String" resultMap="TaskCntResultMap">
   	select * from t_rule_member_taskcnt where ACCOUNT_ID = #{ID}
   </select>
+  <select id="selectAccountAuthMenu" resultType="HashMap">
+  	select distinct sysmenu.MENU_ID as menuId
+	from SYS_MENU sysmenu where sysmenu.ID  in 
+	(
+       		select sysrolemenu.MENU_ID from SYS_ROLE_MENU sysrolemenu where sysrolemenu.ROLE_ID in 
+       		(
+              		select sysrole.ID from SYS_ROLE sysrole where sysrole.ID in 
+              		(
+				select sysaccountrole.ROLE_ID from SYS_ACCOUNT_ROLE sysaccountrole
+				left join SYS_ACCOUNT sysAccount on sysAccount.ID = sysaccountrole.ACCOUNT_ID 
+				where sysAccount.ACCOUNT_ID = #{accountId}
+			)
+      		 )
+	)   order by sysmenu.MENU_ID asc
+  </select>
 </mapper>

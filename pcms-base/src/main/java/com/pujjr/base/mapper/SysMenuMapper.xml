@@ -132,4 +132,10 @@
   	select * from sys_menu
   	where PARENT_ID =#{parentId}
   </select>
+  <select id="selectRoleMenuList" resultMap="BaseResultMap">
+  	select b.*
+  	from SYS_ROLE_MENU a
+  	left join SYS_MENU b on a.MENU_ID = b.id
+  	where a.ROLE_ID = #{roleId} 
+  </select>
 </mapper>

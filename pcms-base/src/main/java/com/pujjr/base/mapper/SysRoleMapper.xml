@@ -128,4 +128,15 @@
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from sys_role
   </select>
+  <delete id="deleteRoleMenuList">
+  	delete from sys_role_menu where role_id = #{roleId}
+  </delete>
+  <select id="selectAccountRoleList" resultMap="BaseResultMap">
+  	select a.* from SYS_ROLE a
+  	left join SYS_ACCOUNT_ROLE b on a.id = b.ROLE_ID 
+  	where b.ACCOUNT_ID = #{accountId}
+  </select>
+  <delete id="deleteAccountRole">
+  	delete from sys_account_role where ACCOUNT_ID = #{accountId}
+  </delete>
 </mapper>

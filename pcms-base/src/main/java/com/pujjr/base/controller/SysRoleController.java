@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysMenu;
 import com.pujjr.base.domain.SysRole;
 import com.pujjr.base.service.ISysRoleService;
 import com.pujjr.utils.Utils;
@@ -22,12 +23,12 @@ import com.pujjr.utils.Utils;
 public class SysRoleController extends BaseController
 {
 	@Autowired
-	private ISysRoleService SysRoleService;
+	private ISysRoleService sysRoleService;
 
 	@RequestMapping(method=RequestMethod.GET)
 	public List<SysRole> getAllSysRoleList()
 	{
-		return SysRoleService.getSysRoleList();
+		return sysRoleService.getSysRoleList();
 	}
 	@RequestMapping(method=RequestMethod.POST)
 	public void addSysRole(@RequestBody SysRole SysRole,HttpServletRequest request)
@@ -36,7 +37,7 @@ public class SysRoleController extends BaseController
 		SysRole.setId(Utils.get16UUID());
 		SysRole.setCreateId(sysAccount.getAccountId());
 		SysRole.setCreateTime(new Date());
-		SysRoleService.addSysRole(SysRole);
+		sysRoleService.addSysRole(SysRole);
 	}
 	@RequestMapping(value="/{id}",method=RequestMethod.PUT)
 	public void modifySysRole(@RequestBody SysRole record,HttpServletRequest request)
@@ -44,12 +45,33 @@ public class SysRoleController extends BaseController
 		SysAccount sysAccount  = (SysAccount)request.getAttribute("account");
 		record.setUpdateId(sysAccount.getAccountId());
 		record.setUpdateTime(new Date());
-		SysRoleService.modifySysRole(record);
+		sysRoleService.modifySysRole(record);
 	}
 	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
 	public void deletSysRoleById(@PathVariable String id) throws Exception
 	{
-		SysRoleService.deleteSysRoleById(id);
+		sysRoleService.deleteSysRoleById(id);
+	}
+	@RequestMapping(value="/{roleId}/menulist",method=RequestMethod.GET)
+	public List<SysMenu> getSysRoleMenuList(@PathVariable String roleId)
+	{
+		return sysRoleService.getRoleMenuList(roleId);
+	}
+	@RequestMapping(value="/{roleId}/saveSysRoelMenuList",method=RequestMethod.POST)
+	public void saveSysRoleMenuList(@PathVariable String roleId,@RequestBody List<SysMenu> menus)
+	{
+		sysRoleService.saveRoleMenuList(roleId, menus);
+	}
+	
+	@RequestMapping(value="/getAccountRoleList/{accountId}",method=RequestMethod.GET)
+	public List<SysRole> getAccountRoleList(@PathVariable String accountId)
+	{
+		return sysRoleService.getAccountRoleList(accountId);
+	}
+	@RequestMapping(value="/{accountId}/saveAccountRoleList",method=RequestMethod.POST)
+	public void saveAccountRoleList(@PathVariable String accountId,@RequestBody List<SysRole> roles)
+	{
+		sysRoleService.saveAccountRoleList(accountId, roles);
 	}
 	
 }

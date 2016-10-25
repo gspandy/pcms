@@ -22,4 +22,6 @@ public interface SysMenuMapper {
     List<SysMenu> selectAllSysMenuList();
     
     List<SysMenu> selectChildSysMenuList(@Param("parentId")String parentId);
+    
+    List<SysMenu> selectRoleMenuList(@Param("roleId")String roleId);
 }
