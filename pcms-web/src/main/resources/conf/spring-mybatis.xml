@@ -35,6 +35,7 @@
 				<value>classpath:conf/jdbc.properties</value>
 				<value>classpath:conf/pcms-push.properties</value>
 				<value>classpath:conf/ali-oss.properties</value>
+				<value>classpath:conf/task-assignee.properties</value>
 			</list>
 		</property>
 	</bean>

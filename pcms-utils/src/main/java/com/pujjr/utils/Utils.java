@@ -79,6 +79,11 @@ public class Utils {
 	{
 		return (int) ((endDate.getTime()-beginDate.getTime())/(24*60*60*1000)+1);
 	}
+	/**比较时间大小**/
+	public static int compareDateTime(Date beginDate,Date endDate)
+	{
+		return (int)(endDate.getTime()-beginDate.getTime());
+	}
 	/**
 	 * 按照指定格式获取当前日期
 	 * **/

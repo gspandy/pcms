@@ -166,7 +166,7 @@
 				#{item.id}
 	</foreach>
 	<if test="checkOnline == true">
-		<![CDATA[and timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 30]]>
+		<![CDATA[and (timestampdiff(SECOND,f.last_heartbeat_time,now()) <= 60 and timestampdiff(SECOND,f.last_heartbeat_time,now()) >=0) ]]>
 	</if>
   </select>
   <select id="selectByName" resultMap="BaseResultMap">

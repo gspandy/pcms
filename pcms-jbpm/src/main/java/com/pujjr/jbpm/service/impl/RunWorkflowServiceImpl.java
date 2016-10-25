@@ -123,6 +123,7 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 				WorkflowRunPath backNodeRunPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), nodeParam.getBackNodeId());
 				ProcessHandleHelper.setBackNode(backNodeRunPath);
 				processNextCommand.setDestNodeId(nodeParam.getBackNodeId());
+				
 			}
 			else
 			{

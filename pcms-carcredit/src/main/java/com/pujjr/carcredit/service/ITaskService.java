@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
 import com.pujjr.carcredit.domain.ChangeApplyInfo;
@@ -94,6 +95,9 @@ public interface ITaskService
 	public CancelApplyInfo getLatestCancelApplyInfo(String taskId) throws Exception;
 	//提交审批取消申请
 	public void commitApprvoeCancelApply(CancelApplyInfoVo vo,String appId,String taskId) throws Exception;
-	
+	//查询自动分单信息
+	public AutoAssigneeConfig getAutoAssigneeConfigInfo();
+	//设置自动分单信息
+	public void setAutoAssigneeConfigInfo(AutoAssigneeConfig params);
 	
 }

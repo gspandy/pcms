@@ -2,15 +2,16 @@ package com.pujjr.carcredit.vo;
 
 public class CancelApplyInfoVo {
 
-	private String changeResult;
+	private String cancelResult;
 	private String comment;
 	private String approveResult;
 	private String approveComment;
-	public String getChangeResult() {
-		return changeResult;
+	
+	public String getCancelResult() {
+		return cancelResult;
 	}
-	public void setChangeResult(String changeResult) {
-		this.changeResult = changeResult;
+	public void setCancelResult(String cancelResult) {
+		this.cancelResult = cancelResult;
 	}
 	public String getComment() {
 		return comment;

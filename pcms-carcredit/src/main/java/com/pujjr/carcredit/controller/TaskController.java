@@ -1,6 +1,8 @@
 package com.pujjr.carcredit.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +35,7 @@ import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
 import com.pujjr.carcredit.domain.ChangeApplyInfo;
@@ -51,6 +54,7 @@ import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyFinanceVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.AutoAssigneeConfigVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
@@ -68,6 +72,7 @@ import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.jbpm.service.IRunWorkflowService;
+import com.pujjr.utils.Utils;
 
 @RestController
 @RequestMapping("/task")
@@ -440,5 +445,59 @@ public class TaskController extends BaseController
 	public void  commitApproveCancelApplyInfoTask(@RequestBody CancelApplyInfoVo vo ,@PathVariable String appId,@PathVariable String taskId) throws Exception
 	{
 		taskService.commitApprvoeCancelApply(vo, appId, taskId);
+	}
+	@RequestMapping(value="/getAutoAssigneeConfigInfo",method=RequestMethod.GET)
+	public AutoAssigneeConfigVo getAutoAssigneeConfigInfo() throws ParseException
+	{
+		AutoAssigneeConfig config =  taskService.getAutoAssigneeConfigInfo();
+		AutoAssigneeConfigVo vo = new AutoAssigneeConfigVo();
+		vo.setId(config.getId());
+		vo.setEnabled(config.getEnabled());
+		String startDate = Utils.getFormatDate(config.getStartTime(), "yyyyMMdd");
+		String startHour = Utils.getFormatDate(config.getStartTime(), "HH");
+		String startMinute = Utils.getFormatDate(config.getStartTime(), "mm");
+		String endDate = Utils.getFormatDate(config.getEndTime(), "yyyyMMdd");
+		String endHour = Utils.getFormatDate(config.getEndTime(), "HH");
+		String endMinute = Utils.getFormatDate(config.getEndTime(), "mm");
+		vo.setStartDate(Utils.str82date(startDate));
+		vo.setStartHour(startHour);
+		vo.setStartMinute(startMinute);
+		vo.setEndDate(Utils.str82date(endDate));
+		vo.setEndHour(endHour);
+		vo.setEndMinute(endMinute);
+		
+		return vo;
+	}
+	@RequestMapping(value="/setAutoAssigneeConfigInfo",method=RequestMethod.POST)
+	public void setAutoAssigneeConfigInfo(@RequestBody AutoAssigneeConfigVo vo) throws Exception
+	{
+		AutoAssigneeConfig po = new AutoAssigneeConfig();
+		po.setId(vo.getId());
+		po.setEnabled(vo.isEnabled());
+		//如果是开启自动分单，需进行参数判断
+		if(vo.isEnabled())
+		{
+			if(vo.getStartDate()==null||vo.getStartHour()==null||vo.getStartMinute()==null||vo.getStartHour()==""||vo.getStartMinute()=="")
+			{
+				throw new Exception("开始时间不能为空");
+			}
+			if(vo.getEndDate()==null || vo.getEndHour()==null || vo.getEndMinute()==null || vo.getEndHour()==""||vo.getEndMinute()=="")
+			{
+				throw new Exception("结束时间不能为空 ");
+			}
+			
+			String startTime = Utils.getFormatDate(vo.getStartDate(), "yyyy-MM-dd")+" "+vo.getStartHour()+":"+vo.getStartMinute();
+			Date start = Utils.str2time(startTime);
+			po.setStartTime(start);
+			String endTime = Utils.getFormatDate(vo.getEndDate(), "yyyy-MM-dd")+" "+vo.getEndHour()+":"+vo.getEndMinute();
+			Date end = Utils.str2time(endTime);
+			if(Utils.compareDateTime(start, end)<0)
+			{
+				throw new Exception("开始时间不能大于结束时间 ");
+			}
+			po.setEndTime(Utils.str2time(endTime));
+		}
+		
+		taskService.setAutoAssigneeConfigInfo(po);
 	}
 }

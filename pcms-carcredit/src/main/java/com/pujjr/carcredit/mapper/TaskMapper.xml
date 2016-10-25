@@ -82,7 +82,7 @@
 		  	where 
 				a.WORKGROUP_ID = #{workgroupId}
 				<![CDATA[
-					and timestampdiff(SECOND,b.last_heartbeat_time,now()) <= 30
+					and (timestampdiff(SECOND,b.last_heartbeat_time,now()) <= 60 and timestampdiff(SECOND,b.last_heartbeat_time,now()) >= 0)
 				]]>
 		  		group by b.account_id
 	</select>

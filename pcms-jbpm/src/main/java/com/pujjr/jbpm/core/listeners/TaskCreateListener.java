@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 import com.pujjr.jbpm.core.command.AbstractExecutionCommand;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
+import com.pujjr.jbpm.core.exception.NoAssigneeException;
 import com.pujjr.jbpm.core.handle.ITaskAssigneeHandle;
 import com.pujjr.jbpm.core.ProcessHandleHelper;
 import com.pujjr.jbpm.domain.WorkflowNodeAssignee;
@@ -36,7 +37,7 @@ public class TaskCreateListener implements EventHandler
 	@Autowired
 	private IConfigWorkflowService configWorkflowService;
 	
-	public void handle(ActivitiEvent event) 
+	public void handle(ActivitiEvent event)
 	{
 		// TODO Auto-generated method stub
 		TaskEntity taskEntity = (TaskEntity) ((ActivitiEntityEventImpl)event).getEntity();
@@ -58,9 +59,19 @@ public class TaskCreateListener implements EventHandler
 			if(nextCommand.getCommandType().equals(CommandType.BACK)||nextCommand.getCommandType().equals(CommandType.BACT_TO_STARTER))
 			{
 				WorkflowRunPath refRunPath = runPathService.getRunPathById(runPath.getRefPathId());
-				taskEntity.setAssignee(refRunPath.getAssignee());
-				publishAssignEvent(taskEntity);
-				runPath.setAssignee(refRunPath.getAssignee());
+				if(refRunPath != null)
+				{
+					taskEntity.setAssignee(refRunPath.getAssignee());
+					publishAssignEvent(taskEntity);
+					runPath.setAssignee(refRunPath.getAssignee());
+				}
+				else
+				{
+					taskEntity.setAssignee("V0002");
+					publishAssignEvent(taskEntity);
+					runPath.setAssignee("V0002");
+				}
+				
 			}
 			else
 			{

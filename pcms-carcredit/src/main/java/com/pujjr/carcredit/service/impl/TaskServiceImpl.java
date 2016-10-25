@@ -16,6 +16,7 @@ import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
 import com.pujjr.carcredit.dao.CallBackResultMapper;
 import com.pujjr.carcredit.dao.CancelApplyInfoMapper;
 import com.pujjr.carcredit.dao.ChangeApplyInfoMapper;
@@ -24,6 +25,7 @@ import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
+import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
 import com.pujjr.carcredit.domain.ChangeApplyInfo;
@@ -94,6 +96,8 @@ public class TaskServiceImpl implements ITaskService
 	private ChangeApplyInfoMapper changeApplyInfoDao;
 	@Autowired
 	private CancelApplyInfoMapper cancelApplyInfoDao;
+	@Autowired
+	private AutoAssigneeConfigMapper autoAssigneeConfigDao;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -312,7 +316,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		List<OnlineAcctPo> poList = new ArrayList<OnlineAcctPo>();
 		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
-		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,false);
+		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,checkOnline);
 		if(listMatch.size()==0)
 		{
 			return null;
@@ -755,6 +759,18 @@ public class TaskServiceImpl implements ITaskService
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("approveCancelProcResult",vo.getApproveResult());
 		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public AutoAssigneeConfig getAutoAssigneeConfigInfo() {
+		// TODO Auto-generated method stub
+		return autoAssigneeConfigDao.selectByPrimaryKey("1");
+	}
+
+	@Override
+	public void setAutoAssigneeConfigInfo(AutoAssigneeConfig params) {
+		// TODO Auto-generated method stub
+		autoAssigneeConfigDao.updateByPrimaryKey(params);
 	}
 
 
