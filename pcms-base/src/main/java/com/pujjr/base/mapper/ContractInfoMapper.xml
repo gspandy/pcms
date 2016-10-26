@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ContractInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ContractInfo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="CONTRACT_NAME" property="contractName" jdbcType="VARCHAR" />
+    <result column="CONTRACT_KEY" property="contractKey" jdbcType="VARCHAR" />
+    <result column="OSS_KEY" property="ossKey" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, CONTRACT_NAME, CONTRACT_KEY, OSS_KEY, ENABLED, CREATE_ID, CREATE_TIME, UPDATE_ID, 
+    UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_contract_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_contract_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ContractInfo" >
+    insert into t_contract_info (ID, CONTRACT_NAME, CONTRACT_KEY, 
+      OSS_KEY, ENABLED, CREATE_ID, 
+      CREATE_TIME, UPDATE_ID, UPDATE_TIME
+      )
+    values (#{id,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{contractKey,jdbcType=VARCHAR}, 
+      #{ossKey,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ContractInfo" >
+    insert into t_contract_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="contractName != null" >
+        CONTRACT_NAME,
+      </if>
+      <if test="contractKey != null" >
+        CONTRACT_KEY,
+      </if>
+      <if test="ossKey != null" >
+        OSS_KEY,
+      </if>
+      <if test="enabled != null" >
+        ENABLED,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null" >
+        #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractKey != null" >
+        #{contractKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ossKey != null" >
+        #{ossKey,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ContractInfo" >
+    update t_contract_info
+    <set >
+      <if test="contractName != null" >
+        CONTRACT_NAME = #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractKey != null" >
+        CONTRACT_KEY = #{contractKey,jdbcType=VARCHAR},
+      </if>
+      <if test="ossKey != null" >
+        OSS_KEY = #{ossKey,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null" >
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null" >
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ContractInfo" >
+    update t_contract_info
+    set CONTRACT_NAME = #{contractName,jdbcType=VARCHAR},
+      CONTRACT_KEY = #{contractKey,jdbcType=VARCHAR},
+      OSS_KEY = #{ossKey,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectContractInfoList" resultMap="BaseResultMap">
+  	select * from t_contract_info
+  </select>
+  <select id="selectContractInfoByKey" resultMap="BaseResultMap">
+  	select * from t_contract_info where CONTRACT_KEY = #{contractKey}
+  </select>
+  <select id="selectContractInfoListByContractTemplateId" resultMap="BaseResultMap">
+  	select * from T_CONTRACT_TEMPLATE_REF_CONTRACT  a
+  	left join t_contract_info b on a.CONTRACT_ID = b.id
+  	where a.TPL_ID = #{templateId}
+  	<if test="enabled == true">
+  		and b.ENABLED = true
+  	</if>
+  </select>
+</mapper>
