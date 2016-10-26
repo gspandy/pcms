@@ -64,4 +64,10 @@ public class SysAreaServiceImpl implements ISysAreaService {
 		return sysAreaDao.selectAllByParentIdAndAreaType(cityId, "qylx03");
 	}
 
+	@Override
+	public String getAreaNameById(String id) {
+		// TODO Auto-generated method stub
+		return sysAreaDao.selectByPrimaryKey(id).getAreaName();
+	}
+
 }
