@@ -18,8 +18,7 @@
                         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
              			http://www.springframework.org/schema/task 
              			http://www.springframework.org/schema/task/spring-task-4.0.xsd">
-    
-             			
+         			
 	<context:component-scan base-package="com.pujjr.carcredit.service,com.pujjr.carcredit.service.impl,com.pujjr.carcredit.dao.impl"/>
 	<context:component-scan base-package="com.pujjr.jbpm.service,com.pujjr.jbpm.service.impl"/>
 	<context:component-scan base-package="com.pujjr.base.service,com.pujjr.base.service.impl"/>

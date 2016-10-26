@@ -23,6 +23,40 @@ public class Utils {
 	public static int seq=0;
 	
 	/**
+	 * @param date 给定日期
+	 * @param interval 间隔天数，示例：5：5天以后;-6:6天以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterDay(Date date,int interval){
+		String afterYear = "";
+		Calendar calender = Calendar.getInstance();
+		calender.add(Calendar.DAY_OF_MONTH, interval);
+		return calender.getTime();
+	}
+	/**
+	 * @param date 给定日期
+	 * @param interval 间隔月份，示例：5：5个月以后;-6:6个月以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterMonth(Date date,int interval){
+		String afterYear = "";
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, interval);
+		return calendar.getTime();
+	}
+	/**
+	 * @param date 给定日期
+	 * @param interval 间隔年份，示例：5：5年以后;-6:6年以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterYear(Date date,int interval){
+		String afterYear = "";
+		Calendar calender = Calendar.getInstance();
+		calender.add(Calendar.YEAR, interval);
+		return calender.getTime();
+	}
+	
+	/**
 	 * 对象属性拷贝
 	 * @param source 数据源对象
 	 * @param target 目标对象

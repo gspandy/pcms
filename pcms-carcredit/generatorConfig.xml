@@ -22,6 +22,38 @@
 		<javaClientGenerator targetPackage="com.pujjr.carcredit.dao"
 			targetProject="pcms-carcredit/src/main/java" type="XMLMAPPER" />
 		
+		<!-- <table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<table tableName="T_APPLY_COLESSEE" domainObjectName="ApplyCloessee" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<!-- <table tableName="T_APPLY_FINANCE" domainObjectName="ApplyFinance" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<!-- 
+		<table tableName="T_APPLY_TENANT" domainObjectName="ApplyTenant" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		 <!-- <table tableName="T_APPLY_TENANT_HOUSE" domainObjectName="ApplyTenantHouse" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_TENANT_CAR" domainObjectName="ApplyTenantCar" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> -->
+		<!--
+		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		 -->
+		
 		<!-- 历史记录表配置开始 -->
 		<!-- 
 		<table tableName="T_HIS_BEANMAP" domainObjectName="HisBeanMap" enableCountByExample="false"
@@ -32,49 +64,24 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> 
-		
 		<table tableName="T_HIS_OPER" domainObjectName="HisOper" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		
-		<table tableName="T_APPLY" domainObjectName="Apply" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
-		<table tableName="T_APPLY_FINANCE" domainObjectName="ApplyFinance" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		
-		<table tableName="T_APPLY_TENANT" domainObjectName="ApplyTenant" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		
-		<table tableName="T_APPLY_TENANT_HOUSE" domainObjectName="ApplyTenantHouse" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		
-		<table tableName="T_APPLY_TENANT_CAR" domainObjectName="ApplyTenantCar" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
+		
+		
 		
 		<table tableName="T_APPLY_FAMILY_DEBT" domainObjectName="ApplyFamilyDebt" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		
-		<table tableName="T_APPLY_COLESSEE" domainObjectName="ApplyCloessee" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		
 		<table tableName="T_APPLY_SPOUSE" domainObjectName="ApplySpouse" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -111,10 +118,10 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		
-		<table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
+		<!-- <table tableName="test1" domainObjectName="Test1" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		</table> -->
 		<!-- <table tableName="t_apply2" domainObjectName="Apply2" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
