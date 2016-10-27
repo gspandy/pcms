@@ -11,7 +11,15 @@ public class LeaseCarVo {
 	private String carEngineNo;
 	private String carColor;
 	private String carManu;
+	private String styleId;
+	
 
+	public String getStyleId() {
+		return styleId;
+	}
+	public void setStyleId(String styleId) {
+		this.styleId = styleId;
+	}
 	public String getPlateNo() {
 		return plateNo;
 	}

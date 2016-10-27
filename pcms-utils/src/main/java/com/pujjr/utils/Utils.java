@@ -69,6 +69,7 @@ public class Utils {
 	public static Date getDateAfterMonth(Date date,int interval){
 		String afterYear = "";
 		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
 		calendar.add(Calendar.MONTH, interval);
 		return calendar.getTime();
 	}

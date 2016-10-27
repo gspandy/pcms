@@ -41,28 +41,30 @@ import com.pujjr.utils.Utils;
 @Controller
 @RequestMapping(value="/print")
 public class PrintController extends BaseController {
+	private Logger logger = Logger.getLogger(PrintController.class);
 	@Autowired
 	private IPrintService printServiceImpl;
 	@Value("${pcms.sys_mode}") 
 	private String sysMode = "debug";
 	
 	/**
-	 * 打印租赁合同
+	 * 打印租赁合同(测试)
 	 * @param request
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/leasecontract",method=RequestMethod.GET)
+	@RequestMapping(value="/leasecontract/{appId}/{contractKey}",method=RequestMethod.GET)
 	@ResponseBody
-	public void applySelect(HttpServletRequest request) throws Exception{
-//		System.out.println("request.getSession().getServletContext():"+);
-		String url = request.getSession().getServletContext().getRealPath("");
-		printServiceImpl.prtLeaseContract("2008", "WZXK161020N10136",url);
+	public void applySelect(HttpServletRequest request,@PathVariable String appId,@PathVariable String contractKey) throws Exception{
+		String contextPath = request.getSession().getServletContext().getRealPath("");
+		printServiceImpl.prtLeaseContract("WZXK161020N10136",contextPath,contractKey);
 	}
 	@RequestMapping(value="/generateContract/{appId}/{contractKey}",method=RequestMethod.GET)
 	@ResponseBody
-	public HashMap<String,Object> generateContract(String appId,String contractKey)
+	public HashMap<String,Object> generateContract(@PathVariable String appId,@PathVariable String contractKey,HttpServletRequest request)
 	{
-		String contractFileOSSKey = printServiceImpl.generateContract(appId, contractKey);
+		logger.debug("appId:"+appId+"|contractKey:"+contractKey);
+		String contextPath = request.getSession().getServletContext().getRealPath("");
+		String contractFileOSSKey = printServiceImpl.generateContract(appId,contractKey,contextPath);
 		HashMap<String,Object> map = new HashMap<String,Object>();
 		map.put("osskey", contractFileOSSKey);
 		return map;
