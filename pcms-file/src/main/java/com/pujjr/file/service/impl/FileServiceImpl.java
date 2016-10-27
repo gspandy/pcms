@@ -2,9 +2,15 @@ package com.pujjr.file.service.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.poifs.crypt.dsig.facets.OOXMLSignatureFacet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 import com.pujjr.file.dao.DirectoryFileMapper;
 import com.pujjr.file.dao.FileMapper;
 import com.pujjr.file.domain.DirectoryFile;
@@ -145,6 +153,52 @@ public class FileServiceImpl implements IFileService
 	public String getApplyProductTemplateId(String appId) {
 		// TODO Auto-generated method stub
 		return fileDao.selectApplyProductTemplateId(appId);
+	}
+
+	@Override
+	public void savePrintFile(File file, String businessId, String operId) {
+		String fileId = Utils.get16UUID();
+//		String originalName = file.getOriginalFilename();
+		String originalName = file.getName();
+		String fileSuffix = Utils.getFileSuffix(originalName);
+		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		try
+		{
+			if (ossClient.doesBucketExist(bucketName)) {
+				System.out.println("您已经创建Bucket：" + bucketName + "。");
+			} else {
+				System.out.println("您的Bucket不存在，创建Bucket：" + bucketName + "。");
+				// 创建Bucket。详细请参看“SDK手册 > Java-SDK > 管理Bucket”。
+				// 链接地址是：https://help.aliyun.com/document_detail/oss/sdk/java-sdk/manage_bucket.html?spm=5176.docoss/sdk/java-sdk/init
+				ossClient.createBucket(bucketName);
+			}
+			//上传原始文件至OSS
+			String ossKey = "resource/"+businessId+"/print"+"/"+originalName;
+			ossClient.putObject(bucketName, ossKey, new FileInputStream(file));
+			//保存文件信息
+			DirectoryFile fileMetaInfo = new DirectoryFile();
+			fileMetaInfo.setId(fileId);
+			fileMetaInfo.setBusinessId(businessId);
+//			fileMetaInfo.setDirId(dirId);
+			fileMetaInfo.setOssKey(ossKey);
+//			fileMetaInfo.setOssKeyPreview(ossKeyPreview);
+			fileMetaInfo.setFileName(file.getName());
+			fileMetaInfo.setFileSize(Integer.parseInt(String.valueOf(file.length()/1024)));
+			fileMetaInfo.setFileType(fileSuffix);
+			fileMetaInfo.setCreateId(operId);
+			fileMetaInfo.setCreateTime(new Date());
+			directoryFileDao.insert(fileMetaInfo);
+		}catch (OSSException oe) {
+			oe.printStackTrace();
+		} catch (ClientException ce) {
+			ce.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			ossClient.shutdown();
+		}
+		
+		
 	}
 
 	

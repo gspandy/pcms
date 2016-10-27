@@ -1,5 +1,7 @@
 package com.pujjr.file.service;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +26,11 @@ public interface IFileService
 	void deleteFile(String fileId) throws Exception;
 	
 	String getApplyProductTemplateId(String appId);
+	/**
+	 * 上传待打印文件到oos
+	 * @param bucketName
+	 * @param ossKey
+	 * @param inputStream
+	 */
+	void savePrintFile(File file, String businessId, String operId);
 }

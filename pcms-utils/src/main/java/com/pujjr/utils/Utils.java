@@ -1,6 +1,7 @@
 package com.pujjr.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +23,66 @@ import org.springframework.beans.BeanUtils;
 public class Utils {
 	
 	public static int seq=0;
+	
+	/**
+	 * 递归所有父类field
+	 * @param obj 当前递归对象
+	 * @param fieldList 所有field列表
+	 */
+	public static void getField(Class obj,List<Field> fieldList){
+		Field[] fields = obj.getDeclaredFields();
+		if(!obj.getName().equals("java.lang.Object")){
+			for (Field field : fields) {
+				field.setAccessible(true);
+				fieldList.add(field);
+			}
+			Utils.getField(obj.getSuperclass(), fieldList);
+		}
+	}
+	/**
+	 * 获取对象所有field
+	 * @param obj
+	 * @return
+	 */
+	public static List<Field> getFieldList(Class obj){
+		List<Field> fieldList = new LinkedList<Field>();
+		Utils.getField(obj, fieldList);
+		return fieldList;
+	}
+	
+	/**
+	 * @param date 给定日期
+	 * @param interval 间隔天数，示例：5：5天以后;-6:6天以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterDay(Date date,int interval){
+		String afterYear = "";
+		Calendar calender = Calendar.getInstance();
+		calender.add(Calendar.DAY_OF_MONTH, interval);
+		return calender.getTime();
+	}
+	/**
+	 * @param date 给定日期
+	 * @param interval 间隔月份，示例：5：5个月以后;-6:6个月以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterMonth(Date date,int interval){
+		String afterYear = "";
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.MONTH, interval);
+		return calendar.getTime();
+	}
+	/**
+	 * @param date 给定日期
+	 * @param interval 间隔年份，示例：5：5年以后;-6:6年以前
+	 * @return 间隔后日期
+	 */
+	public static Date getDateAfterYear(Date date,int interval){
+		String afterYear = "";
+		Calendar calender = Calendar.getInstance();
+		calender.add(Calendar.YEAR, interval);
+		return calender.getTime();
+	}
 	
 	/**
 	 * 对象属性拷贝

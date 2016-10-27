@@ -402,6 +402,17 @@
 			    <artifactId>aspectjweaver</artifactId>
 			</dependency>
 			
+			<!-- pdf打印相关 -->
+			<dependency>
+			    <groupId>com.lowagie</groupId>
+			    <artifactId>itext</artifactId>
+			    <version>4.2.1</version>
+			</dependency>
+			<dependency>
+			    <groupId>com.itextpdf</groupId>
+			    <artifactId>itext-asian</artifactId>
+			    <version>5.2.0</version>
+			</dependency>
 	</dependencies>
 	<modules>
 		<module>pcms-jbpm</module>

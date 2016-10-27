@@ -5,6 +5,8 @@ public class ApplyCloessee {
 
 	private String appId;
 
+	private String type;
+
 	private String name;
 
 	private String idType;
@@ -57,6 +59,14 @@ public class ApplyCloessee {
 
 	public void setAppId(String appId) {
 		this.appId = appId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getName() {
@@ -210,4 +220,6 @@ public class ApplyCloessee {
 	public void setRelation(String relation) {
 		this.relation = relation;
 	}
+
+	
 }
