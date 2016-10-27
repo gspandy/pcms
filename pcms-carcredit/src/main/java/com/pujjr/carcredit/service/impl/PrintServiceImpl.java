@@ -40,12 +40,11 @@ public class PrintServiceImpl implements IPrintService {
 		PdfStamper pdfStamper = null;
 		File file = null;
 		try {
+			//测试：读取本地末班
 			pdfReader = new PdfReader(classPath+"/pdf/tpl/1-融资租赁合同-套打-模板.pdf");
-//			pdfReader = new PdfReader(classPath+"/pdf/tpl/checkboxes.pdf");
-//			os = new FileOutputStream("d:\\潽金融资租赁有限公司抵押合同B-print.pdf");
-//			File file = new File(classPath+"/pdf/print/潽金融资租赁有限公司抵押合同B-print.pdf");
+			//生产：读取存储上模板
+//			pdfReader = new PdfReader();
 			file = new File(url+"/print/1-融资租赁合同-print.pdf");
-			
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -62,97 +61,15 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			//获取贷款合同打印数据源
 			LeaseConstractVo leaseConstractVo = printDataSrcServiceImpl.getPrintLeaseConstract(businessId);
-			
-			fields.setField("name1","");
-			fields.setField("phone1","18723290801");
-			fields.setField("name2","云南南天电子信息产业股份有限公司");
-			fields.setField("phone2","023-63517181");
-			fields.setField("isTenant", "");
-//			fields.setField("isGuarantor", "");
-			
-			fields.setField("isIdCard1", "");
-//			fields.setField("isPassport1", "");
-//			fields.setField("isOrgCodeId1", "");
-//			fields.setField("isIdCard2", "");
-//			fields.setField("isPassport2", "");
-			fields.setField("isOrgCodeId2", "");
-			
-			fields.setField("ctfNo1", "ctfNo1");
-			fields.setField("address1", "重庆市两江新区黄山大道中段56号B1栋11层");
-			fields.setField("ctfNo2", "ctfNo2");
-			fields.setField("address2", "重庆市两江新区黄山大道中段56号B1栋11层重庆市两江新区黄山大道中段56号B1栋11层");
-			
-			fields.setField("isSalePrice", "");
-			fields.setField("isPurchaseTax", "");
-			fields.setField("isGpsFee", "");
-			fields.setField("isFinanceFee", "");
-			fields.setField("isServiceFee", "");
-			fields.setField("isTransferFee", "");
-			fields.setField("isInsruanceFee", "");
-			fields.setField("isAddonFee", "");
-			fields.setField("isDelayInsuranceFee", "");
-			
-			fields.setField("salePrice", "salePrice");
-			fields.setField("purchaseTax", "purchaseTax");
-			fields.setField("gpsFee", "gpsFee");
-			fields.setField("financeFee", "financeFee");
-			fields.setField("serviceFee", "serviceFee");
-			fields.setField("transferFee", "transferFee");
-			fields.setField("insruanceFee", "insruanceFee");
-			fields.setField("addonFee", "addonFee");
-			fields.setField("delayInsuranceFee", "delayInsuranceFee");
-			
-			fields.setField("totalCarPrice", "totalCarPrice");
-			fields.setField("addFee", "addFee");
-			fields.setField("collateral", "collateral");
-			fields.setField("initPayAmount", "initPayAmount");
-			fields.setField("totalFianceAmt", "totalFianceAmt");
-			fields.setField("totalLoanAmt", "totalLoanAmt");
-			fields.setField("monthRent", "monthRent");
-			fields.setField("manageFee", "manageFee");
-			fields.setField("repayDate", leaseConstractVo.getRepayDate());
-			
-			fields.setField("plateNo1", "plateNo1");
-			fields.setField("plateNo2", "plateNo2");
-			fields.setField("plateNo3", "plateNo3");
-			fields.setField("carBrand1", "carBrand1");
-			fields.setField("carBrand2", "carBrand2");
-			fields.setField("carBrand3", "carBrand3");
-			fields.setField("carVin1", "carVin1");
-			fields.setField("carVin2", "carVin2");
-			fields.setField("carVin3", "carVin3");
-			fields.setField("carEngine1", "carEngine1");
-			fields.setField("carEngine2", "carEngine2");
-			fields.setField("carEngine3", "carEngine3");
-			fields.setField("carColor1", "carColor1");
-			fields.setField("carColor2", "carColor2");
-			fields.setField("carColor3", "carColor3");
-			fields.setField("carManu1", "carManu1");
-			fields.setField("carManu2", "carManu2");
-			fields.setField("carManu3", "carManu3");
-			fields.setField("startYear", "2012");
-			fields.setField("startMonth", "12");
-			fields.setField("startDay", "10");
-			fields.setField("endYear", "2016");
-			fields.setField("endMonth", "10");
-			fields.setField("endDay", "11");
-			fields.setField("totalMonth", "110");
-			
-			fields.setField("loanAcctNo", "loanAcctNo");
-			fields.setField("loadBankName", "loadBankName");
-			fields.setField("loadAcctName", "loadAcctName");
-			fields.setField("repayAcctNo", "repayAcctNo");
-			fields.setField("repayBankName", "repayBankName");
-			fields.setField("repayAcctName", "repayAcctName");
-			
+			printDataSrcServiceImpl.setAcroFields(fields,leaseConstractVo);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
-		//删除临时文件
+//		生产：文件上传存储
+//		删除临时文件
 //		file.delete();
 	}
 	@Override

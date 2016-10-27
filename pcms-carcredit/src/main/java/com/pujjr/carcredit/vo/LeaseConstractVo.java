@@ -55,14 +55,14 @@ public class LeaseConstractVo {
 	private double totalTranserFee;
 	private double totalInsuranceFee;
 	private double totalAddonFee;
-	private double totalDelayInsuranceFeee;
+	private double totalDelayInsuranceFee;
 	
 	private double totalCarPrice;
 	private double addFee;
 	private double collateral;
 	private double initPayAmt;
 	private double totalFinanceAmt;
-	private double totalLoan;
+	private double totalLoanAmt;
 	private double monthRent;
 	private double manageFee;
 	private String repayDate;
@@ -94,7 +94,7 @@ public class LeaseConstractVo {
 	private String carManu2;
 	private String carManu3;
 	
-	private String loanActName;
+	private String loanAcctName;
 	private String loanBankName;
 	private String loanAcctNo;
 	private String repayAcctName;
@@ -348,11 +348,11 @@ public class LeaseConstractVo {
 	public void setTotalAddonFee(double totalAddonFee) {
 		this.totalAddonFee = totalAddonFee;
 	}
-	public double getTotalDelayInsuranceFeee() {
-		return totalDelayInsuranceFeee;
+	public double getTotalDelayInsuranceFee() {
+		return totalDelayInsuranceFee;
 	}
-	public void setTotalDelayInsuranceFeee(double totalDelayInsuranceFeee) {
-		this.totalDelayInsuranceFeee = totalDelayInsuranceFeee;
+	public void setTotalDelayInsuranceFee(double totalDelayInsuranceFee) {
+		this.totalDelayInsuranceFee = totalDelayInsuranceFee;
 	}
 	public double getTotalCarPrice() {
 		return totalCarPrice;
@@ -384,11 +384,11 @@ public class LeaseConstractVo {
 	public void setTotalFinanceAmt(double totalFinanceAmt) {
 		this.totalFinanceAmt = totalFinanceAmt;
 	}
-	public double getTotalLoan() {
-		return totalLoan;
+	public double getTotalLoanAmt() {
+		return totalLoanAmt;
 	}
-	public void setTotalLoan(double totalLoan) {
-		this.totalLoan = totalLoan;
+	public void setTotalLoanAmt(double totalLoanAmt) {
+		this.totalLoanAmt = totalLoanAmt;
 	}
 	public double getMonthRent() {
 		return monthRent;
@@ -542,13 +542,11 @@ public class LeaseConstractVo {
 	public void setCarManu3(String carManu3) {
 		this.carManu3 = carManu3;
 	}
-
-
-	public String getLoanActName() {
-		return loanActName;
+	public String getLoanAcctName() {
+		return loanAcctName;
 	}
-	public void setLoanActName(String loanActName) {
-		this.loanActName = loanActName;
+	public void setLoanAcctName(String loanAcctName) {
+		this.loanAcctName = loanAcctName;
 	}
 	public String getLoanBankName() {
 		return loanBankName;
