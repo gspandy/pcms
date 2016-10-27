@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
+import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
@@ -115,7 +117,11 @@ public class TaskServiceImpl implements ITaskService
 		vars.put("productCode", applyVo.getProduct().getProductCode());
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		vars.put("assigneeType", "1");
-		runWorkflowService.startProcess("PCCA", businessKey, vars);
+		ProcessInstance instance = runWorkflowService.startProcess("PCCA", businessKey, vars);
+		//保存流程实例ID至申请单
+		Apply apply = applyService.getApply(businessKey);
+		apply.setProcInstId(instance.getProcessInstanceId());
+		applyService.updateApply(apply);
 	}
 
 	@Override

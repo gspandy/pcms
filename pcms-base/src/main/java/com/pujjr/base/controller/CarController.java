@@ -145,8 +145,26 @@ public class CarController extends BaseController {
 		return carService.getCarStyleList(param);
 	}
 	@RequestMapping(value="/style/pagelist",method=RequestMethod.GET)
-	public PageVo getCarStylePageList(QueryParamCarStyleVo param)
+	public PageVo getCarStylePageList(QueryParamCarStyleVo param,HttpServletRequest request)
 	{
+		HashMap<String,Object> applyInfo = carCreditBusinessService.getApplyInfo(param.getAppId());
+		String branchId="";
+		if(applyInfo==null)
+		{
+			SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+			branchId = sysAccount.getBranchId();
+		}
+		else
+		{
+			String branchCode = applyInfo.get("CREATE_BRANCH_CODE").toString();
+			SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
+			branchId = sysBranch.getId();
+		}
+		
+		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(branchId);
+		String carTemplateId = dealer.getReserver2();
+		param.setCarTemplateId(carTemplateId);
+		
 		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
 		List<CarStyle> list = carService.getCarStyleList(param);
 		PageVo page=new PageVo();

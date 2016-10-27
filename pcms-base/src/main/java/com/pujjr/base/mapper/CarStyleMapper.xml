@@ -107,17 +107,23 @@
   </update>
 
   <select id="selectAll" parameterType="com.pujjr.base.vo.QueryParamCarStyleVo" resultMap="BaseResultMap">
-  	select * from t_car_style style
-  	left join t_car_serial serial on style.CAR_SERIAL_ID = serial.id
-  	where 1=1
-  	<if test="param.carSerialId!=null and param.carSerialId!=''">
+ 	<if test="param.indexStr==null or param.indexStr==''">
+ 		select * from t_car_style style
+  		left join t_car_serial serial on style.CAR_SERIAL_ID = serial.id
+  		where 1=1
+  		<if test="param.carSerialId!=null and param.carSerialId!=''">
   		and style.CAR_SERIAL_ID = #{param.carSerialId}
-  	</if>
-  	<if test="param.carBrandId!=null and param.carBrandId!=''">
+  		</if>
+  		<if test="param.carBrandId!=null and param.carBrandId!=''">
   		and serial.CAR_BRAND_ID = #{param.carBrandId}
-  	</if>
+  		</if>
+ 	</if>
   	<if test="param.indexStr!=null and param.indexStr!=''">
-  		and style.INDEX_STR like #{param.indexStr}
+  		select c.*
+  		from T_CAR_TEMPLATE a
+  		left join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and b.TPL_ID = #{param.carTemplateId} and b.CAR_DATA_TYPE ='serial')
+  		left join T_CAR_STYLE c on  b.CAR_DATA_ID = c.CAR_SERIAL_ID
+  		where c.INDEX_STR like #{param.indexStr}
   	</if>
   </select>
   <resultMap id="CarBrandResultMap" type="com.pujjr.base.domain.CarBrand">
