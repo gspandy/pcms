@@ -167,7 +167,6 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		<table tableName="SYS_MENU" domainObjectName="SysMenu" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -184,7 +183,28 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-	
+		<table tableName="T_CONTRACT_INFO" domainObjectName="ContractInfo" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_CONTRACT_TEMPLATE" domainObjectName="ContractTemplate" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_CONTRACT_TEMPLATE_REF_CONTRACT" domainObjectName="ContractTemplateRefContract" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="T_CAR_TEMPLATE" domainObjectName="CarTemplate" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_CAR_TEMPLATE_CHOICE" domainObjectName="CarTemplateChoice" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
 		
 	</context>
 </generatorConfiguration>

@@ -71,13 +71,22 @@
   <select id="selectAll" resultMap="BaseResultMap" parameterType="com.pujjr.base.vo.QueryParamCarBrandVo">
   	select * from t_car_brand 
  	where 1=1 
- 	<if test="params.brandName != null and params.brandName!=''">
- 		and BRAND_NAME like CONCAT('%',CONCAT(#{params.brandName},'%'))
+ 	<if test="params != null">
+ 		<if test="params.brandName != null and params.brandName!=''">
+ 			and BRAND_NAME like CONCAT('%',CONCAT(#{params.brandName},'%'))
+ 		</if>
  	</if>
+
   </select>
   <select id="selectBrandBySerialId" resultMap="BaseResultMap">
   	select * from t_car_brand a
   	left join t_car_serial b on b.CAR_BRAND_ID = a.id
   	where b.ID = #{carSerialId}
+  </select>
+  <select id="selectCarBrandListByTemplateId" resultMap="BaseResultMap">
+  	select c.* 
+  	from T_CAR_TEMPLATE a 
+  	left join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and a.id=#{templateId} and b.CAR_DATA_TYPE ='brand') 
+  	left join T_CAR_BRAND c  on b.CAR_DATA_ID = c.id
   </select>
 </mapper>

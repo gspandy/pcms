@@ -79,7 +79,7 @@ public class SysDictServiceImpl implements ISysDictService {
 	@Override
 	public SysDictData getDictDataByDictDateCode(String dictDataCode) {
 		// TODO Auto-generated method stub
-		return null;
+		return sysDictDataDao.selectByDictDataCode(dictDataCode);
 	}
 
 }

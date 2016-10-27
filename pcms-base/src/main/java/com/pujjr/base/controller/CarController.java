@@ -1,6 +1,11 @@
 package com.pujjr.base.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +20,16 @@ import com.github.pagehelper.PageHelper;
 import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.domain.CarTemplate;
+import com.pujjr.base.domain.CarTemplateChoice;
 import com.pujjr.base.domain.ProductRule;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.domain.SysBranchDealer;
+import com.pujjr.base.service.ICarCreditBusinessService;
 import com.pujjr.base.service.ICarService;
+import com.pujjr.base.service.ISysBranchService;
+import com.pujjr.base.vo.CarTreeVo;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.QueryParamCarBrandVo;
 import com.pujjr.base.vo.QueryParamCarSerialVo;
@@ -30,6 +42,10 @@ public class CarController extends BaseController {
 	
 	@Autowired
 	private ICarService carService;
+	@Autowired
+	private ICarCreditBusinessService carCreditBusinessService;
+	@Autowired
+	private ISysBranchService sysBranchService;
 	
 	@RequestMapping(value="/brand",method=RequestMethod.GET)
 	public List<CarBrand> getAllCarBrand()
@@ -138,4 +154,146 @@ public class CarController extends BaseController {
 		page.setData(list);
 		return page;
 	}
+	@RequestMapping(value="/template",method=RequestMethod.GET)
+	public List<CarTemplate> getCarTemplateList()
+	{
+		return carService.getCarTemplateList();
+	}
+	@RequestMapping(value="/template",method=RequestMethod.POST)
+	public void addCarTemplate(@RequestBody CarTemplate record,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		record.setId(Utils.get16UUID());
+		record.setCreateId(sysAccount.getAccountId());
+		record.setCreateTime(new Date());
+		carService.addCarTemplate(record);
+	}
+	@RequestMapping(value="/template/{templateId}",method=RequestMethod.PUT)
+	public void modifyCarTemplate(@RequestBody CarTemplate record,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		record.setUpdateId(sysAccount.getAccountId());
+		record.setUpdateTime(new Date());
+		carService.modifyCarTemplate(record);
+	}
+	@RequestMapping(value="/template/{templateId}",method=RequestMethod.DELETE)
+	public void deleteCarTemplateById(@PathVariable String templateId)
+	{
+		carService.deleteCarTemplateById(templateId);
+	}
+	/**
+	 * 创建一个车辆数据的树形数据
+	 * **/
+	@RequestMapping(value="/getCarTreeList",method=RequestMethod.GET)
+	public List<CarTreeVo> getCarTreeList()
+	{
+		List<CarTreeVo> list = new ArrayList<CarTreeVo>();
+		//创建顶级节点
+		CarTreeVo lvlTop = new CarTreeVo();
+		
+		lvlTop.setId("top0001");
+		lvlTop.setLabel("车辆信息 ");
+		lvlTop.setType("0");
+		lvlTop.setParentId("0000");
+		list.add(lvlTop);
+		//获取车辆品牌加入顶级节点
+		List<CarBrand> carBrandList = carService.getCarBrandList(null);
+		for(CarBrand brandItem : carBrandList)
+		{
+			CarTreeVo brandNode = new CarTreeVo();
+			brandNode.setId(brandItem.getId());
+			brandNode.setLabel(brandItem.getBrandName());
+			brandNode.setType("brand");
+			brandNode.setParentId("top0001");
+			list.add(brandNode);
+			QueryParamCarSerialVo serialParamVo =new QueryParamCarSerialVo();
+			serialParamVo.setCarBrandId(brandItem.getId());
+			List<CarSerial> carSerialList = carService.getCarSerialList(serialParamVo);
+			for(CarSerial serialItem : carSerialList)
+			{
+				CarTreeVo serialNode = new CarTreeVo();
+				serialNode.setId(serialItem.getId());
+				serialNode.setLabel(serialItem.getCarSerialName());
+				serialNode.setType("serial");
+				serialNode.setParentId(brandItem.getId());
+				list.add(serialNode);
+			}
+		}
+		return list;
+		
+	}
+	@RequestMapping(value="/getCarTemplateChoiceList/{templateId}",method=RequestMethod.GET)
+	public List<CarTemplateChoice> getCarTemplateChoiceList(@PathVariable String templateId)
+	{
+		return carService.getCarTemplateChoiceList(templateId);
+	}
+	@RequestMapping(value="/saveCarTemplateChoice/{templateId}",method=RequestMethod.POST)
+	public void saveCarTemplateChoice(@PathVariable String templateId,@RequestBody List<CarTreeVo> vos)
+	{
+		List<CarTemplateChoice> list = new ArrayList<CarTemplateChoice>();
+		for(CarTreeVo vo : vos)
+		{
+			if(vo.getType().equals("brand")||vo.getType().equals("serial"))
+			{
+				CarTemplateChoice po = new CarTemplateChoice();
+				po.setId(Utils.get16UUID());
+				po.setTplId(templateId);
+				po.setCarDataType(vo.getType());
+				po.setCarDataId(vo.getId());
+				list.add(po);
+			}
+			
+		}
+		carService.saveCarTemplateChoice(templateId, list);
+	}
+	
+	@RequestMapping(value="/getCurrentApplyEnabledCarBrand/{appId}",method=RequestMethod.GET)
+	public List<CarBrand> getCurrentApplyEnabledCarBrand(@PathVariable String appId,HttpServletRequest request)
+	{
+		//查询这个申请单是否存在，如果不存在则认为是新单，此时通过账户信息获取账户机构信息得到车型选择模板ID
+		HashMap<String,Object> applyInfo = carCreditBusinessService.getApplyInfo(appId);
+		String branchId="";
+		if(applyInfo==null)
+		{
+			SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+			branchId = sysAccount.getBranchId();
+		}
+		else
+		{
+			String branchCode = applyInfo.get("CREATE_BRANCH_CODE").toString();
+			SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
+			branchId = sysBranch.getId();
+		}
+		
+		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(branchId);
+		String carTemplateId = dealer.getReserver2();
+		List<CarBrand> carBrandList = carService.getCarBrandListByTemplateId(carTemplateId);
+		return carBrandList;
+	}
+	
+	@RequestMapping(value="/getCurrentApplyEnabledCarSerial/{appId}/{carBrandId}",method=RequestMethod.GET)
+	public List<CarSerial> getCurrentApplyEnabledCarSerial(@PathVariable String appId,@PathVariable String carBrandId,HttpServletRequest request)
+	{
+		//查询这个申请单是否存在，如果不存在则认为是新单，此时通过账户信息获取账户机构信息得到车型选择模板ID
+		HashMap<String,Object> applyInfo = carCreditBusinessService.getApplyInfo(appId);
+		String branchId="";
+		if(applyInfo==null)
+		{
+			SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+			branchId = sysAccount.getBranchId();
+		}
+		else
+		{
+			String branchCode = applyInfo.get("CREATE_BRANCH_CODE").toString();
+			SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
+			branchId = sysBranch.getId();
+		}
+		
+		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(branchId);
+		String carTemplateId = dealer.getReserver2();
+		List<CarSerial> carSerialList = carService.getCarSerialListByTemplateIdAndCarBrandId(carTemplateId, carBrandId);
+		return carSerialList;
+	}
+	
+	
 }

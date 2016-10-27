@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.ApplyCloessee">
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
     <result column="NAME" jdbcType="VARCHAR" property="name" />
     <result column="ID_TYPE" jdbcType="VARCHAR" property="idType" />
     <result column="ID_NO" jdbcType="VARCHAR" property="idNo" />
@@ -25,8 +26,8 @@
     <result column="RELATION" jdbcType="VARCHAR" property="relation" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, APP_ID, NAME, ID_TYPE, ID_NO, MOBILE, QQ, WEIXIN, UNIT_NAME, UNIT_TYPE, UNIT_INDUSTRY, 
-    UNIT_TEL, RANK, RANK_NAME, UNIT_ADDR_PROVINCE, UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, 
+    ID, APP_ID, TYPE, NAME, ID_TYPE, ID_NO, MOBILE, QQ, WEIXIN, UNIT_NAME, UNIT_TYPE, 
+    UNIT_INDUSTRY, UNIT_TEL, RANK, RANK_NAME, UNIT_ADDR_PROVINCE, UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, 
     UNIT_ADDR_EXT, MONTH_INCOME, YEAR_INCOME, RELATION
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -40,22 +41,22 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.pujjr.carcredit.domain.ApplyCloessee">
-    insert into t_apply_colessee (ID, APP_ID, NAME, 
-      ID_TYPE, ID_NO, MOBILE, 
-      QQ, WEIXIN, UNIT_NAME, 
-      UNIT_TYPE, UNIT_INDUSTRY, UNIT_TEL, 
-      RANK, RANK_NAME, UNIT_ADDR_PROVINCE, 
-      UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, UNIT_ADDR_EXT, 
-      MONTH_INCOME, YEAR_INCOME, RELATION
-      )
-    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
-      #{idType,jdbcType=VARCHAR}, #{idNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
-      #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
-      #{unitType,jdbcType=VARCHAR}, #{unitIndustry,jdbcType=VARCHAR}, #{unitTel,jdbcType=VARCHAR}, 
-      #{rank,jdbcType=VARCHAR}, #{rankName,jdbcType=VARCHAR}, #{unitAddrProvince,jdbcType=VARCHAR}, 
-      #{unitAddrCity,jdbcType=VARCHAR}, #{unitAddrCounty,jdbcType=VARCHAR}, #{unitAddrExt,jdbcType=VARCHAR}, 
-      #{monthIncome,jdbcType=DOUBLE}, #{yearIncome,jdbcType=DOUBLE}, #{relation,jdbcType=VARCHAR}
-      )
+    insert into t_apply_colessee (ID, APP_ID, TYPE, 
+      NAME, ID_TYPE, ID_NO, 
+      MOBILE, QQ, WEIXIN, 
+      UNIT_NAME, UNIT_TYPE, UNIT_INDUSTRY, 
+      UNIT_TEL, RANK, RANK_NAME, 
+      UNIT_ADDR_PROVINCE, UNIT_ADDR_CITY, UNIT_ADDR_COUNTY, 
+      UNIT_ADDR_EXT, MONTH_INCOME, YEAR_INCOME, 
+      RELATION)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{idType,jdbcType=VARCHAR}, #{idNo,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{weixin,jdbcType=VARCHAR}, 
+      #{unitName,jdbcType=VARCHAR}, #{unitType,jdbcType=VARCHAR}, #{unitIndustry,jdbcType=VARCHAR}, 
+      #{unitTel,jdbcType=VARCHAR}, #{rank,jdbcType=VARCHAR}, #{rankName,jdbcType=VARCHAR}, 
+      #{unitAddrProvince,jdbcType=VARCHAR}, #{unitAddrCity,jdbcType=VARCHAR}, #{unitAddrCounty,jdbcType=VARCHAR}, 
+      #{unitAddrExt,jdbcType=VARCHAR}, #{monthIncome,jdbcType=DOUBLE}, #{yearIncome,jdbcType=DOUBLE}, 
+      #{relation,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyCloessee">
     insert into t_apply_colessee
@@ -65,6 +66,9 @@
       </if>
       <if test="appId != null">
         APP_ID,
+      </if>
+      <if test="type != null">
+        TYPE,
       </if>
       <if test="name != null">
         NAME,
@@ -131,6 +135,9 @@
       <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         #{name,jdbcType=VARCHAR},
       </if>
@@ -196,6 +203,9 @@
       <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=VARCHAR},
+      </if>
       <if test="name != null">
         NAME = #{name,jdbcType=VARCHAR},
       </if>
@@ -259,6 +269,7 @@
   <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.ApplyCloessee">
     update t_apply_colessee
     set APP_ID = #{appId,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=VARCHAR},
       NAME = #{name,jdbcType=VARCHAR},
       ID_TYPE = #{idType,jdbcType=VARCHAR},
       ID_NO = #{idNo,jdbcType=VARCHAR},

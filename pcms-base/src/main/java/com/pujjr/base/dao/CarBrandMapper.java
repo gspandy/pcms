@@ -24,4 +24,6 @@ public interface CarBrandMapper {
     List<CarBrand> selectAll(@Param("params")QueryParamCarBrandVo params);
     
     CarBrand selectBrandBySerialId(@Param("carSerialId")String carSerialId); 
+    
+    List<CarBrand> selectCarBrandListByTemplateId(@Param("templateId")String templateId);
 }
