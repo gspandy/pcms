@@ -20,4 +20,6 @@ public interface SysDictDataMapper {
 	int updateByPrimaryKey(SysDictData record);
     
     List<SysDictData> selectAllWithFilter(@Param("dictTypeId")String dictTypeId,@Param("dictTypeCode")String dictTypeCode);
+    
+    SysDictData selectByDictDataCode(@Param("dictDataCode")String dictDataCode);
 }

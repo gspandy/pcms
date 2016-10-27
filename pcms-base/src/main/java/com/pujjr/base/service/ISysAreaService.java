@@ -25,4 +25,5 @@ public interface ISysAreaService
 	
 	public List<SysArea> getCountyByCityId(String cityId);
 	
+	public String getAreaNameById(String id);
 }

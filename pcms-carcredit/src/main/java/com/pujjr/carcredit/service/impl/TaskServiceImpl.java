@@ -16,11 +16,21 @@ import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
+import com.pujjr.carcredit.dao.CallBackResultMapper;
+import com.pujjr.carcredit.dao.CancelApplyInfoMapper;
+import com.pujjr.carcredit.dao.ChangeApplyInfoMapper;
 import com.pujjr.carcredit.dao.CheckResultMapper;
+import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
+import com.pujjr.carcredit.domain.AutoAssigneeConfig;
+import com.pujjr.carcredit.domain.CallBackResult;
+import com.pujjr.carcredit.domain.CancelApplyInfo;
+import com.pujjr.carcredit.domain.ChangeApplyInfo;
 import com.pujjr.carcredit.domain.CheckResult;
+import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -34,6 +44,8 @@ import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.CancelApplyInfoVo;
+import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
 import com.pujjr.carcredit.vo.DirectoryCategoryEnum;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
@@ -76,6 +88,16 @@ public class TaskServiceImpl implements ITaskService
 	private ReconsiderMapper reconsiderDao;
 	@Autowired
 	private IFileService fileService;
+	@Autowired
+	private LoanCheckMapper loanCheckDao;
+	@Autowired
+	private CallBackResultMapper callBackResultDao;
+	@Autowired
+	private ChangeApplyInfoMapper changeApplyInfoDao;
+	@Autowired
+	private CancelApplyInfoMapper cancelApplyInfoDao;
+	@Autowired
+	private AutoAssigneeConfigMapper autoAssigneeConfigDao;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -142,8 +164,9 @@ public class TaskServiceImpl implements ITaskService
 			checkResultDao.insert(checkResult);
 			
 			//3、保存任务处理结果信息
+			String procId = Utils.get16UUID();
 			TaskProcessResult taskProcessResult = new TaskProcessResult();
-			taskProcessResult.setId(Utils.get16UUID());
+			taskProcessResult.setId(procId);
 			taskProcessResult.setRunPathId(runpath.getId());
 			taskProcessResult.setProcessResult(checkVo.getResult());
 			//建议通过
@@ -212,7 +235,7 @@ public class TaskServiceImpl implements ITaskService
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", approveVo.getResult());
 
-		runWorkflowService.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
 	}
 
 	@Override
@@ -294,7 +317,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		List<OnlineAcctPo> poList = new ArrayList<OnlineAcctPo>();
 		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
-		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,false);
+		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,checkOnline);
 		if(listMatch.size()==0)
 		{
 			return null;
@@ -374,8 +397,9 @@ public class TaskServiceImpl implements ITaskService
 
 
 	@Override
-	public void saveLoanCheckInfo(SignContractVo signContractVo) {
+	public void saveLoanCheckInfo(SignContractVo signContractVo,String operId) {
 		// TODO Auto-generated method stub
+		//保存保险信息
 		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
 		{
 			SignFinanceDetail detailPo = new SignFinanceDetail();
@@ -383,6 +407,26 @@ public class TaskServiceImpl implements ITaskService
 			//这里只更新放款复核信息
 			signContractService.modifySignFinanceDetail(detailPo);
 		}
+		//保存放款复核结果
+		if(loanCheckDao.selectByAppId(signContractVo.getAppId())==null)
+		{
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setAppId(signContractVo.getAppId());
+			po.setId(Utils.get16UUID());
+			po.setCreateId(operId);
+			po.setCreateTime(new Date());
+			loanCheckDao.insert(po);
+		}
+		else
+		{
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setUpdateId(operId);
+			po.setUpdateTime(new Date());
+			loanCheckDao.updateByPrimaryKey(po);
+		}
+		
 	}
 	
 
@@ -406,6 +450,22 @@ public class TaskServiceImpl implements ITaskService
 				//这里只更新放款复核信息
 				signContractService.modifySignFinanceDetail(detailPo);
 			}
+		}
+		// 保存放款复核结果
+		if (loanCheckDao.selectByAppId(signContractVo.getAppId()) == null) {
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setAppId(signContractVo.getAppId());
+			po.setId(Utils.get16UUID());
+			po.setCreateId(operId);
+			po.setCreateTime(new Date());
+			loanCheckDao.insert(po);
+		} else {
+			LoanCheck po = new LoanCheck();
+			BeanUtils.copyProperties(signContractVo.getLoanCheck(), po);
+			po.setUpdateId(operId);
+			po.setUpdateTime(new Date());
+			loanCheckDao.updateByPrimaryKey(po);
 		}
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("loanCheckCommitType", commitType);
@@ -539,6 +599,179 @@ public class TaskServiceImpl implements ITaskService
 		//检查文件是否已上传完成
 		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public LoanCheck getLoanCheckInfoByAppId(String appId) {
+		// TODO Auto-generated method stub
+		return loanCheckDao.selectByAppId(appId);
+	}
+
+	@Override
+	public void commitCallBackTask(CallBackResult result, String appId, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		result.setId(Utils.get16UUID());
+		result.setTaskBusinessId(appId);
+		result.setRunPathId(runpath.getId());
+		callBackResultDao.insert(result);
+		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitChangeApplyInfoTask(ChangeApplyInfo info, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		info.setId(Utils.get16UUID());
+		info.setTaskBusinessId(appId);
+		info.setRunPathId(runpath.getId());
+		changeApplyInfoDao.insert(info);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("signType", SignCommitType.CHANGE);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public ChangeApplyInfo getLatestChangeApplyInfo(String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//获取上级人工任务信息
+		String parentUserTaskRunPathId = runpath.getParentUsertaskPathId();
+		//获取变更申请信息
+		ChangeApplyInfo po = changeApplyInfoDao.selectByRunPathId(parentUserTaskRunPathId);
+		
+		return po;
+		
+	}
+
+	@Override
+	public void commitApproveChangeApplyInfoTask(ChangeApplyInfoVo vo, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//保存审批处理结果
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("approveChangeProcResult",vo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public void commitCancelApplyTask(CancelApplyInfo info, String appId, String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		info.setId(Utils.get16UUID());
+		info.setTaskBusinessId(appId);
+		info.setRunPathId(runpath.getId());
+		cancelApplyInfoDao.insert(info);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("signType", SignCommitType.CANCEL);
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public CancelApplyInfo getLatestCancelApplyInfo(String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//获取上级人工任务信息
+		String parentUserTaskRunPathId = runpath.getParentUsertaskPathId();
+		//获取取消申请信息
+		CancelApplyInfo po = cancelApplyInfoDao.selectByRunPathId(parentUserTaskRunPathId);
+		
+		return po;
+	}
+
+	@Override
+	public void commitApprvoeCancelApply(CancelApplyInfoVo vo,String appId,String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		//保存审批处理结果
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("approveCancelProcResult",vo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public AutoAssigneeConfig getAutoAssigneeConfigInfo() {
+		// TODO Auto-generated method stub
+		return autoAssigneeConfigDao.selectByPrimaryKey("1");
+	}
+
+	@Override
+	public void setAutoAssigneeConfigInfo(AutoAssigneeConfig params) {
+		// TODO Auto-generated method stub
+		autoAssigneeConfigDao.updateByPrimaryKey(params);
 	}
 
 

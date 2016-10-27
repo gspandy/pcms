@@ -1,6 +1,7 @@
 package com.pujjr.base.dao;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -29,6 +30,8 @@ public interface SysAccountMapper {
     List<SysAccount> selectOnlineListByWorkgroupId(@Param("workgroupId")String workgroupId,@Param("curTime")Date curTime);
     
     List<SysAccount> selectAllByBranchId(@Param("branchId")String branchId);
+    
+    List<HashMap<String,Object>> selectAccountAuthMenu(@Param("accountId")String accountId);
     
     
 }

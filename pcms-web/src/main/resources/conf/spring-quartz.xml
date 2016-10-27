@@ -39,7 +39,12 @@
 -->
 	<!-- 定时任务-消息推送扫描 -->
 	<bean id="pushScanSchedulerImpl" class="com.pujjr.push.scheduler.impl.PushScanSchedulerImpl"></bean>
+	
+	<!-- 定时任务-自动分配审核任务 -->
+	<bean id="autoAssigneeService" class="com.pujjr.carcredit.schedule.AutoAssigneeService"></bean>
+	
 	<task:scheduled-tasks>
 	  <task:scheduled ref="pushScanSchedulerImpl" method="pushScan" cron="${messagepush_scan_scheduler.timeCronExpression}" />
+	  <task:scheduled ref="autoAssigneeService" method="autoAssigneeCheckTask" cron="${checktask_assignee_scheduler.timeCronExpression}"/>
 	</task:scheduled-tasks>
 </beans>

@@ -68,21 +68,10 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		
-		
-		
-		
-		
-		
-		
-		
 		<table tableName="T_APPLY_FAMILY_DEBT" domainObjectName="ApplyFamilyDebt" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		
-		
-		
 		<table tableName="T_APPLY_SPOUSE" domainObjectName="ApplySpouse" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -110,10 +99,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
-		<!-- 工作流相关表生成配置结束-->
-		
-		<!-- <table tableName="T_RECONSIDER" domainObjectName="Reconsider" enableCountByExample="false"
+		<table tableName="T_RECONSIDER" domainObjectName="Reconsider" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
@@ -123,16 +109,25 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
 		<!-- <table tableName="t_apply2" domainObjectName="Apply2" enableCountByExample="false"
+		</table>
+		<table tableName="T_CALLBACK_RESULT" domainObjectName="CallBackResult" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> 
+		<table tableName="T_CHANGE_APPLY_INFO" domainObjectName="ChangeApplyInfo" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> 
+	
+		<table tableName="T_CANCEL_APPLY_INFO" domainObjectName="CancelApplyInfo" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table> 
+		-->
+		<!-- <table tableName="T_AUTO_ASSIGNEE_CONFIG" domainObjectName="AutoAssigneeConfig" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table> -->
-		<!-- <table tableName="test2" domainObjectName="Test2" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table> -->
-		<!-- <table tableName="t_apply3" domainObjectName="Apply3" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table> -->
+		
 	</context>
 </generatorConfiguration>

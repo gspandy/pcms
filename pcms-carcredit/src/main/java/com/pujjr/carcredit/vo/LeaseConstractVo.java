@@ -77,10 +77,13 @@ public class LeaseConstractVo {
 	
 	private String plateNo1;
 	private String plateNo2;
-	private String palgeNo3;
+	private String plateNo3;
 	private String carBrand1;
 	private String carBrand2;
 	private String carBrand3;
+	private String carVin1;
+	private String carVin2;
+	private String carVin3;
 	private String carEngine1;
 	private String carEngine2;
 	private String carEngine3;
@@ -91,12 +94,32 @@ public class LeaseConstractVo {
 	private String carManu2;
 	private String carManu3;
 	
-	private String loadActName;
-	private String loadBankName;
+	private String loanActName;
+	private String loanBankName;
 	private String loanAcctNo;
 	private String repayAcctName;
  	private String repayBankName;
  	private String repayAcctNo;
+ 	
+ 	
+	public String getCarVin1() {
+		return carVin1;
+	}
+	public void setCarVin1(String carVin1) {
+		this.carVin1 = carVin1;
+	}
+	public String getCarVin2() {
+		return carVin2;
+	}
+	public void setCarVin2(String carVin2) {
+		this.carVin2 = carVin2;
+	}
+	public String getCarVin3() {
+		return carVin3;
+	}
+	public void setCarVin3(String carVin3) {
+		this.carVin3 = carVin3;
+	}
 	public ApplyTenantVo getTenant() {
 		return tenant;
 	}
@@ -439,11 +462,13 @@ public class LeaseConstractVo {
 	public void setPlateNo2(String plateNo2) {
 		this.plateNo2 = plateNo2;
 	}
-	public String getPalgeNo3() {
-		return palgeNo3;
+
+
+	public String getPlateNo3() {
+		return plateNo3;
 	}
-	public void setPalgeNo3(String palgeNo3) {
-		this.palgeNo3 = palgeNo3;
+	public void setPlateNo3(String plateNo3) {
+		this.plateNo3 = plateNo3;
 	}
 	public String getCarBrand1() {
 		return carBrand1;
@@ -517,17 +542,19 @@ public class LeaseConstractVo {
 	public void setCarManu3(String carManu3) {
 		this.carManu3 = carManu3;
 	}
-	public String getLoadActName() {
-		return loadActName;
+
+
+	public String getLoanActName() {
+		return loanActName;
 	}
-	public void setLoadActName(String loadActName) {
-		this.loadActName = loadActName;
+	public void setLoanActName(String loanActName) {
+		this.loanActName = loanActName;
 	}
-	public String getLoadBankName() {
-		return loadBankName;
+	public String getLoanBankName() {
+		return loanBankName;
 	}
-	public void setLoadBankName(String loadBankName) {
-		this.loadBankName = loadBankName;
+	public void setLoanBankName(String loanBankName) {
+		this.loanBankName = loanBankName;
 	}
 	public String getLoanAcctNo() {
 		return loanAcctNo;

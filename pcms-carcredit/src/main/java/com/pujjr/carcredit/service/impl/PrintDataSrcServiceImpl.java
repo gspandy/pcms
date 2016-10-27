@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.aspectj.apache.bcel.generic.BranchHandle;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.domain.SysBranchDealer;
+import com.pujjr.base.domain.SysDictData;
+import com.pujjr.base.service.IBankService;
 import com.pujjr.base.service.ICarService;
+import com.pujjr.base.service.ISysAreaService;
+import com.pujjr.base.service.ISysBranchService;
+import com.pujjr.base.service.ISysDictService;
+import com.pujjr.carcredit.domain.ApplyCloessee;
+import com.pujjr.carcredit.domain.ApplyTenant;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.service.IApplyService;
@@ -37,10 +48,19 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 	private ISignContractService signContractServiceImpl;
 	@Autowired
 	private ICarService carServiceImpl;
+	@Autowired
+	private ISysAreaService sysAreaServiceImpl;
+	@Autowired
+	private ISysDictService sysDictServiceImpl;
+	@Autowired
+	private ISysBranchService sysBranchService;
+	@Autowired
+	private IBankService bankServiceImpl;
+	
 	/**
 	 * 获取融资车辆信息列表
-	 * @param appId
-	 * @return
+	 * @param applyVo
+	 * @return 融资车辆信息列表
 	 */
 	public List<LeaseCarVo> getLeaseCarList(ApplyVo applyVo){
 		String appId = applyVo.getAppId();
@@ -67,6 +87,89 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 		logger.debug(JSONObject.toJSONString(leaseCarList));
 		return leaseCarList;
 	}
+	/**
+	 * 设置担保人信息
+	 * @param colessee
+	 * @param leaseContractVo
+	 */
+	public void setLeaseCarVoColessee(ApplyCloessee colessee,LeaseConstractVo leaseContractVo){
+		String type = colessee.getType();
+		String typeName = "";
+		try {
+			typeName = sysDictServiceImpl.getDictDataByDictDateCode(type).getDictDataName();//承租人2/担保人类型
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.error("获取承租人2类型失败");
+		}
+		if(typeName.equals("担保人")){
+			leaseContractVo.setIsTenant("");
+		}else{
+			leaseContractVo.setIsGuarantor("");
+		}
+		leaseContractVo.setName2(colessee.getName());
+		leaseContractVo.setPhone2(colessee.getMobile());
+		//担保人证件类型
+		SysDictData sysDicData = sysDictServiceImpl.getDictDataByDictDateCode(colessee.getIdType());
+		String idTypeName = sysDicData.getDictDataName();
+		switch(idTypeName){
+		case "身份证":
+			leaseContractVo.setIsPassport2("");
+			leaseContractVo.setIsOrgCodeId2("");
+			break;
+		case "护照":
+			leaseContractVo.setIsIdCard2("");
+			leaseContractVo.setIsOrgCodeId2("");
+			break;
+		case "组织机构代码证":
+			leaseContractVo.setIsIdCard2("");
+			leaseContractVo.setIsPassport2("");
+			break;
+		}
+		//担保人证件号码
+		leaseContractVo.setCtfNo1(colessee.getIdNo());
+		//担保人地址
+		String addrProvinceName = sysAreaServiceImpl.getAreaNameById(colessee.getUnitAddrProvince());
+		String addrCityName = sysAreaServiceImpl.getAreaNameById(colessee.getUnitAddrCity());
+		String addrCountyName = sysAreaServiceImpl.getAreaNameById(colessee.getUnitAddrCounty());
+		String addrExt = colessee.getUnitAddrExt();
+		leaseContractVo.setAddress2(addrProvinceName+" "+addrCityName+" "+addrCountyName+" "+addrExt);
+	}
+	/**
+	 * 设置承租人信息
+	 * @param tenant
+	 * @param leaseContractVo
+	 */
+	public void setLeaseCarVoTenant(ApplyTenant tenant,LeaseConstractVo leaseContractVo){
+		leaseContractVo.setName1(tenant.getName());
+		leaseContractVo.setPhone1(tenant.getMobile());
+		//承租人1证件类型
+		SysDictData sysDicData = sysDictServiceImpl.getDictDataByDictDateCode(tenant.getIdType());
+		String idTypeName = sysDicData.getDictDataName();
+		switch(idTypeName){
+		case "身份证":
+			leaseContractVo.setIsPassport1("");
+			leaseContractVo.setIsOrgCodeId1("");
+			break;
+		case "护照":
+			leaseContractVo.setIsIdCard1("");
+			leaseContractVo.setIsOrgCodeId1("");
+			break;
+		case "组织机构代码证":
+			leaseContractVo.setIsIdCard1("");
+			leaseContractVo.setIsPassport1("");
+			break;
+		}
+		//承租人1证件号码
+		leaseContractVo.setCtfNo1(tenant.getIdNo());
+		//承租人1地址
+		String addrProvinceName = sysAreaServiceImpl.getAreaNameById(tenant.getAddrProvince());
+		String addrCityName = sysAreaServiceImpl.getAreaNameById(tenant.getAddrCity());
+		String addrCountyName = sysAreaServiceImpl.getAreaNameById(tenant.getAddrCounty());
+		String addrExt = tenant.getAddrExt();
+		leaseContractVo.setAddress1(addrProvinceName+" "+addrCityName+" "+addrCountyName+" "+addrExt);
+	}
+	
+	
 	@Override
 	public LeaseConstractVo getPrintLeaseConstract(String appId) {
 		// TODO Auto-generated method stub
@@ -75,6 +178,11 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 		ApplyVo applyVo = applyServiceImpl.getApplyDetail(appId);
 		logger.debug("PrintLeaseConstractVo："+JSONObject.toJSONString(applyVo));
 		BeanUtils.copyProperties(applyVo, leaseContractVo);
+		//承租人1
+		this.setLeaseCarVoTenant(applyVo.getTenant(), leaseContractVo);
+		
+		//担保人
+		this.setLeaseCarVoColessee(applyVo.getCloessee(), leaseContractVo);
 		//计算总融资信息
 		List<ApplyFinanceVo> finances = leaseContractVo.getFinances();
 		for (ApplyFinanceVo finance:finances) {
@@ -89,7 +197,6 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 			leaseContractVo.setTotalInsuranceFee(leaseContractVo.getTotalInsuranceFee() + finance.getInsuranceFee());
 			leaseContractVo.setTotalAddonFee(leaseContractVo.getTotalAddonFee() + finance.getAddonFee());
 			leaseContractVo.setTotalDelayInsuranceFeee(leaseContractVo.getTotalDelayInsuranceFeee() + finance.getDelayInsuranceFee());
-			
 			//车辆总价
 			if (finance.getInitPayAmount() == null) 
 				continue;
@@ -150,6 +257,50 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 		leaseContractVo.setTotalMonth(applyVo.getPeriod());
 		//租赁（抵押）车辆列表
 		List<LeaseCarVo> leaseCarList = this.getLeaseCarList(applyVo);
+		for (int i = 0; i < leaseCarList.size(); i++) {
+			LeaseCarVo leaseCarVo = leaseCarList.get(i);
+			if(i == 0){
+				leaseContractVo.setPlateNo1(leaseCarVo.getPlateNo());
+				leaseContractVo.setCarBrand1(leaseCarVo.getBrandSerial());
+				leaseContractVo.setCarVin1(leaseCarVo.getCarVin());
+				leaseContractVo.setCarEngine1(leaseCarVo.getCarEngineNo());
+				leaseContractVo.setCarColor1(leaseCarVo.getCarColor());
+				leaseContractVo.setCarManu1(leaseCarVo.getCarManu());
+			}else if( i == 1){
+				leaseContractVo.setPlateNo2(leaseCarVo.getPlateNo());
+				leaseContractVo.setCarBrand2(leaseCarVo.getBrandSerial());
+				leaseContractVo.setCarVin2(leaseCarVo.getCarVin());
+				leaseContractVo.setCarEngine2(leaseCarVo.getCarEngineNo());
+				leaseContractVo.setCarColor2(leaseCarVo.getCarColor());
+				leaseContractVo.setCarManu2(leaseCarVo.getCarManu());
+			}else if(i == 2){
+				leaseContractVo.setPlateNo3(leaseCarVo.getPlateNo());
+				leaseContractVo.setCarBrand3(leaseCarVo.getBrandSerial());
+				leaseContractVo.setCarVin3(leaseCarVo.getCarVin());
+				leaseContractVo.setCarEngine3(leaseCarVo.getCarEngineNo());
+				leaseContractVo.setCarColor3(leaseCarVo.getCarColor());
+				leaseContractVo.setCarManu3(leaseCarVo.getCarManu());
+			}
+		}
+		
+		//融资款项发放账户
+		String createBranchCode = applyVo.getCreateBranchCode();
+		String branchId = sysBranchService.getSysBranch("", createBranchCode).getId();
+		SysBranchDealer sysBranchDealer = sysBranchService.getDealerByBranchId(branchId);
+		if(sysBranchDealer != null){
+			leaseContractVo.setLoanActName(sysBranchDealer.getLoanAcctName());
+			BankInfo bankInfo = bankServiceImpl.getBankInfoById(sysBranchDealer.getBankId());//放款银行
+			BankInfo subBankInfo = bankServiceImpl.getBankInfoById(sysBranchDealer.getLoanSubbranch());//放款支行
+			leaseContractVo.setLoanBankName(bankInfo+"-"+subBankInfo);
+			leaseContractVo.setLoanAcctNo(sysBranchDealer.getLoanAcctNo());
+		}else{
+			logger.error("订单号："+appId+"对应经销商信息查询失败！融资贷款合同【融资款项发放账户】赋值失败");
+		}
+		//月租金还款账户
+		leaseContractVo.setRepayAcctName(signContract.getRepayAcctName());
+		BankInfo repayBank = bankServiceImpl.getBankInfoById(signContract.getRepayBankId());
+		leaseContractVo.setRepayBankName(repayBank.getBankName());
+		leaseContractVo.setRepayAcctNo(signContract.getRepayAcctNo());
 		return leaseContractVo;
 	}
 

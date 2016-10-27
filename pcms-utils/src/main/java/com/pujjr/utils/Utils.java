@@ -1,6 +1,7 @@
 package com.pujjr.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +23,32 @@ import org.springframework.beans.BeanUtils;
 public class Utils {
 	
 	public static int seq=0;
+	
+	/**
+	 * 递归所有父类field
+	 * @param obj 当前递归对象
+	 * @param fieldList 所有field列表
+	 */
+	public static void getField(Class obj,List<Field> fieldList){
+		Field[] fields = obj.getDeclaredFields();
+		if(!obj.getName().equals("java.lang.Object")){
+			for (Field field : fields) {
+				field.setAccessible(true);
+				fieldList.add(field);
+			}
+			Utils.getField(obj.getSuperclass(), fieldList);
+		}
+	}
+	/**
+	 * 获取对象所有field
+	 * @param obj
+	 * @return
+	 */
+	public static List<Field> getFieldList(Class obj){
+		List<Field> fieldList = new LinkedList<Field>();
+		Utils.getField(obj, fieldList);
+		return fieldList;
+	}
 	
 	/**
 	 * @param date 给定日期
@@ -112,6 +140,11 @@ public class Utils {
 	public static int getSpaceDay(Date beginDate,Date endDate)
 	{
 		return (int) ((endDate.getTime()-beginDate.getTime())/(24*60*60*1000)+1);
+	}
+	/**比较时间大小**/
+	public static int compareDateTime(Date beginDate,Date endDate)
+	{
+		return (int)(endDate.getTime()-beginDate.getTime());
 	}
 	/**
 	 * 按照指定格式获取当前日期

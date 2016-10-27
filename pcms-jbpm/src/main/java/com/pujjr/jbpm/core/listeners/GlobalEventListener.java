@@ -6,6 +6,7 @@ import java.util.Map;
 import org.activiti.engine.delegate.event.ActivitiEvent;
 import org.activiti.engine.delegate.event.ActivitiEventListener;
 
+import com.pujjr.jbpm.core.exception.NoAssigneeException;
 import com.pujjr.utils.SpringBeanUtils;
 
 /**

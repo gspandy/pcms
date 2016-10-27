@@ -27,5 +27,7 @@ public interface ISysDictService
 	
 	public void modifySysDictData(SysDictData record);
 	
+	public SysDictData getDictDataByDictDateCode(String dictDataCode);
+	
 	
 }

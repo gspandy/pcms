@@ -76,4 +76,10 @@ public class SysDictServiceImpl implements ISysDictService {
 		return sysDictDataDao.selectAllWithFilter(null, dictTypeCode);
 	}
 
+	@Override
+	public SysDictData getDictDataByDictDateCode(String dictDataCode) {
+		// TODO Auto-generated method stub
+		return sysDictDataDao.selectByDictDataCode(dictDataCode);
+	}
+
 }

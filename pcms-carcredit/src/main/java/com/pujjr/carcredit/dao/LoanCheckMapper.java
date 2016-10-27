@@ -1,5 +1,7 @@
 package com.pujjr.carcredit.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.carcredit.domain.LoanCheck;
 
 public interface LoanCheckMapper {
@@ -14,4 +16,6 @@ public interface LoanCheckMapper {
     int updateByPrimaryKeySelective(LoanCheck record);
 
     int updateByPrimaryKey(LoanCheck record);
+    
+    LoanCheck selectByAppId(@Param("appId")String appId);
 }

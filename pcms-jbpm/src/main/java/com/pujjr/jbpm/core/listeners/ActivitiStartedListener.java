@@ -89,8 +89,15 @@ public class ActivitiStartedListener implements EventHandler
 				ProcessNextCommand nextCmd = (ProcessNextCommand)cmd;
 				if(nextCmd.getCommandType().equals(CommandType.BACK) || nextCmd.getCommandType().equals(CommandType.BACT_TO_STARTER))
 				{
-					WorkflowRunPath backNodeRunPath = ProcessHandleHelper.getBackNode();
-					path.setRefPathId(backNodeRunPath.getId());
+					try
+					{
+						WorkflowRunPath backNodeRunPath = ProcessHandleHelper.getBackNode();
+						path.setRefPathId(backNodeRunPath.getId());
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					
 				}
 				path.setParentUsertaskPathId(nextCmd.getCurRunPathId());
 			}
