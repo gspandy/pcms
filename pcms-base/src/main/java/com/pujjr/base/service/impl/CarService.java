@@ -9,9 +9,13 @@ import org.springframework.util.StringUtils;
 import com.pujjr.base.dao.CarBrandMapper;
 import com.pujjr.base.dao.CarSerialMapper;
 import com.pujjr.base.dao.CarStyleMapper;
+import com.pujjr.base.dao.CarTemplateChoiceMapper;
+import com.pujjr.base.dao.CarTemplateMapper;
 import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.domain.CarTemplate;
+import com.pujjr.base.domain.CarTemplateChoice;
 import com.pujjr.base.service.ICarService;
 import com.pujjr.base.vo.QueryParamCarBrandVo;
 import com.pujjr.base.vo.QueryParamCarSerialVo;
@@ -25,6 +29,10 @@ public class CarService implements ICarService {
 	private CarSerialMapper carSerialDao;
 	@Autowired
 	private CarStyleMapper carStyleDao;
+	@Autowired
+	private CarTemplateMapper carTemplateDao;
+	@Autowired
+	private CarTemplateChoiceMapper carTemplateChoiceDao;
 	
 	@Override
 	public List<CarBrand> getCarBrandList(QueryParamCarBrandVo params) {
@@ -132,6 +140,59 @@ public class CarService implements ICarService {
 		// TODO Auto-generated method stub
 		return carStyleDao.selectByPrimaryKey(id);
 	}
+
+	@Override
+	public List<CarTemplate> getCarTemplateList() {
+		// TODO Auto-generated method stub
+		return carTemplateDao.selectCarTemplateList();
+	}
+
+	@Override
+	public void addCarTemplate(CarTemplate record) {
+		// TODO Auto-generated method stub
+		carTemplateDao.insert(record);
+	}
+
+	@Override
+	public void modifyCarTemplate(CarTemplate record) {
+		// TODO Auto-generated method stub
+		carTemplateDao.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public void deleteCarTemplateById(String id) {
+		// TODO Auto-generated method stub
+		carTemplateDao.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public List<CarTemplateChoice> getCarTemplateChoiceList(String templateId) {
+		// TODO Auto-generated method stub
+		return carTemplateChoiceDao.selectByTemplateId(templateId);
+	}
+
+	@Override
+	public void saveCarTemplateChoice(String templateId, List<CarTemplateChoice> list) {
+		// TODO Auto-generated method stub
+		carTemplateChoiceDao.deleteByTemplateId(templateId);
+		for(CarTemplateChoice item : list)
+		{
+			carTemplateChoiceDao.insert(item);
+		}
+	}
+
+	@Override
+	public List<CarBrand> getCarBrandListByTemplateId(String templateId) {
+		// TODO Auto-generated method stub
+		return carBrandDao.selectCarBrandListByTemplateId(templateId);
+	}
+
+	@Override
+	public List<CarSerial> getCarSerialListByTemplateIdAndCarBrandId(String templateId, String carBrandId) {
+		// TODO Auto-generated method stub
+		return carSerialDao.selectCarSerialListByTemplateIdAndCarBrandId(templateId, carBrandId);
+	}
+
 
 
 }

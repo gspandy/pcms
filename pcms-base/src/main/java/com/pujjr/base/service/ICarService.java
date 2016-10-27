@@ -5,6 +5,8 @@ import java.util.List;
 import com.pujjr.base.domain.CarBrand;
 import com.pujjr.base.domain.CarSerial;
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.domain.CarTemplate;
+import com.pujjr.base.domain.CarTemplateChoice;
 import com.pujjr.base.vo.QueryParamCarBrandVo;
 import com.pujjr.base.vo.QueryParamCarSerialVo;
 import com.pujjr.base.vo.QueryParamCarStyleVo;
@@ -36,5 +38,25 @@ public interface ICarService
 	public void deleteCarStyle(String id);
 	
 	public CarStyle getCarStyleById(String id);
+	
+	public List<CarTemplate>  getCarTemplateList();
+	
+	public void addCarTemplate(CarTemplate record);
+	
+	public void modifyCarTemplate(CarTemplate record);
+	
+	public void deleteCarTemplateById(String id);
+	
+	public List<CarTemplateChoice> getCarTemplateChoiceList(String templateId);
+	
+	public void saveCarTemplateChoice(String templateId,List<CarTemplateChoice> list);
+	
+	public List<CarBrand> getCarBrandListByTemplateId(String templateId);
+	
+	public List<CarSerial> getCarSerialListByTemplateIdAndCarBrandId(String templateId,String carBrandId);
+	
+	
+	
+	
 	
 }

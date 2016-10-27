@@ -109,7 +109,7 @@ public class TaskServiceImpl implements ITaskService
 		
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("productCode", applyVo.getProduct().getProductCode());
@@ -123,7 +123,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
 	}
 	
@@ -597,7 +597,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
 	}
 
