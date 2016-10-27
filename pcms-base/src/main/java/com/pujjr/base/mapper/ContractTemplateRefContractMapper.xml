@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ContractTemplateRefContractMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ContractTemplateRefContractKey" >
+    <id column="CONTRACT_ID" property="contractId" jdbcType="VARCHAR" />
+    <id column="TPL_ID" property="tplId" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.pujjr.base.domain.ContractTemplateRefContractKey" >
+    delete from t_contract_template_ref_contract
+    where CONTRACT_ID = #{contractId,jdbcType=VARCHAR}
+      and TPL_ID = #{tplId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ContractTemplateRefContractKey" >
+    insert into t_contract_template_ref_contract (CONTRACT_ID, TPL_ID)
+    values (#{contractId,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ContractTemplateRefContractKey" >
+    insert into t_contract_template_ref_contract
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="contractId != null" >
+        CONTRACT_ID,
+      </if>
+      <if test="tplId != null" >
+        TPL_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="contractId != null" >
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null" >
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

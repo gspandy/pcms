@@ -345,4 +345,9 @@ public class PrintServiceImpl implements IPrintService {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public String generateContract(String appId, String contractKey) {
+		// TODO Auto-generated method stub
+		return "1.pdf";
+	}
 }

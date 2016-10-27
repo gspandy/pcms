@@ -25,37 +25,56 @@ import com.pujjr.carcredit.vo.ApplyVo;
 
 //@Service
 //@Transactional(rollbackFor=Exception.class) 
-public interface IApplyService 
-{
+public interface IApplyService {
 	public void tempSaveApply();
-	public String saveApply(ApplyVo applyVo,String accountId);
-	public void saveApplyFinance(ApplyVo applyVo,String accountId);
-	public void saveApplySpouse(ApplyVo applyVo,String accountId);
-	public void saveApplyCloessee(ApplyVo applyVo,String accountId);
-	public void saveApplyLinkman(ApplyVo applyVo,String accountId);
-	public void saveApplyFamilyDebt(ApplyVo applyVo,String accountId);
-	public void saveApplyTenant(ApplyVo applyVo,String accountId);
-	public void saveApplyTenantHouse(ApplyTenantVo atv,String accountId);
-	public void saveApplyTenantCar(ApplyTenantVo atv,String accountId);
+
+	public String saveApply(ApplyVo applyVo, String accountId);
+
+	public void saveApplyFinance(ApplyVo applyVo, String accountId);
+
+	public void saveApplySpouse(ApplyVo applyVo, String accountId);
+
+	public void saveApplyCloessee(ApplyVo applyVo, String accountId);
+
+	public void saveApplyLinkman(ApplyVo applyVo, String accountId);
+
+	public void saveApplyFamilyDebt(ApplyVo applyVo, String accountId);
+
+	public void saveApplyTenant(ApplyVo applyVo, String accountId);
+
+	public void saveApplyTenantHouse(ApplyTenantVo atv, String accountId);
+
+	public void saveApplyTenantCar(ApplyTenantVo atv, String accountId);
+
 	public void commitApply();
+
 	public void deleteApply();
-	public void getUnCommitApply(String accountId,List<Apply> applyList);
+
+	public void getUnCommitApply(String accountId, List<Apply> applyList);
+
 	public ApplyVo getApplyDetail(String appId);
-	//查询指定用户未提交的申请单信息
-	List<ApplyInfoPo>  getApplyInfoList(String accountId,String status);
-//	public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
-	public void commitApplyTask(ApplyVo applyVo,SysAccount sysAccount);
+
+	// 查询指定用户未提交的申请单信息
+	List<ApplyInfoPo> getApplyInfoList(String accountId, String status);
+
+	// public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
+	public void commitApplyTask(ApplyVo applyVo, SysAccount sysAccount);
+
 	public List<ApplyFinance> getApplyFinanceList(String appId);
+
 	/**
 	 * 获取t_apply表信息
+	 * 
 	 * @param appId
 	 * @return
 	 */
-	public ApplyVo getApplyInfo(String appId);
+	public Apply getApply(String appId);
+
 	/**
 	 * 更新t_apply表信息
+	 * 
 	 * @param applyVo
 	 * @return
 	 */
-	public int updateApply(ApplyVo applyVo);
+	public int updateApply(Apply apply);
 }

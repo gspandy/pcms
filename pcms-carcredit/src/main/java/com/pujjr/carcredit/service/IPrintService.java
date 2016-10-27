@@ -43,4 +43,11 @@ public interface IPrintService {
 	 * @param businessId
 	 */
 	void prtColesseePromise(String operId,String businessId);
+	/**
+	 * 通过申请单生产指定的合同，并返回存放OSSKEY
+	 * @param appId 申请单号
+	 * @param contractKey 合同标识
+	 * **/
+	String generateContract(String appId,String contractKey);
+	
 }
