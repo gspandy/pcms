@@ -18,11 +18,13 @@ import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.itextpdf.text.pdf.AcroFields;
 import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.CarStyle;
+import com.pujjr.base.domain.ContractInfo;
 import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.domain.SysBranchDealer;
 import com.pujjr.base.domain.SysDictData;
 import com.pujjr.base.service.IBankService;
 import com.pujjr.base.service.ICarService;
+import com.pujjr.base.service.IContractService;
 import com.pujjr.base.service.ISysAreaService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.service.ISysDictService;
@@ -34,16 +36,20 @@ import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.IPrintDataSrcServcie;
 import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.vo.ApplyFinanceVo;
+import com.pujjr.carcredit.vo.ApplyTenantVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.LeaseCarVo;
-import com.pujjr.carcredit.vo.LeaseConstractVo;
+import com.pujjr.carcredit.vo.PColesseePromiseVo;
+import com.pujjr.carcredit.vo.PDeleiverReceiptVo;
+import com.pujjr.carcredit.vo.PLeaseConstractVo;
+import com.pujjr.carcredit.vo.PLoanReceiptVo;
+import com.pujjr.carcredit.vo.PMortgageContractAVo;
+import com.pujjr.carcredit.vo.PMortgageContractBVo;
+import com.pujjr.carcredit.vo.PMortgageListVo;
+import com.pujjr.carcredit.vo.PRepayRemindVo;
 import com.pujjr.carcredit.vo.SignFinanceDetailVo;
 import com.pujjr.utils.Utils;
 
-/**
- * @author tom
- *
- */
 /**
  * @author tom
  *
@@ -70,6 +76,7 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 	private ISysBranchService sysBranchService;
 	@Autowired
 	private IBankService bankServiceImpl;
+	
 	
 	public void setAcroFields(AcroFields fields,Object obj){
 		Class cls = obj.getClass();
@@ -101,6 +108,7 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 			String applyFinanceId = applyFinanceVo.getId();//融资信息编号
 			String carStyleId = applyFinanceVo.getCarStyleId();//车辆款式编号
 			LeaseCarVo leaseCarVo = new LeaseCarVo();
+			leaseCarVo.setStyleId(carStyleId);
 			leaseCarVo.setCarVin(applyFinanceVo.getCarVin());
 			leaseCarVo.setCarEngineNo(applyFinanceVo.getCarEngineNo());
 			leaseCarVo.setCarColor(applyFinanceVo.getCarColor());
@@ -123,7 +131,7 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 	 * @param colessee
 	 * @param leaseContractVo
 	 */
-	public void setLeaseCarVoColessee(ApplyCloessee colessee,LeaseConstractVo leaseContractVo){
+	public void setLeaseCarVoColessee(ApplyCloessee colessee,PLeaseConstractVo leaseContractVo){
 		String type = colessee.getType();
 		String typeName = "";
 		try {
@@ -177,7 +185,7 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 	 * @param tenant
 	 * @param leaseContractVo
 	 */
-	public void setLeaseCarVoTenant(ApplyTenant tenant,LeaseConstractVo leaseContractVo){
+	public void setLeaseCarVoTenant(ApplyTenant tenant,PLeaseConstractVo leaseContractVo){
 		leaseContractVo.setName1(tenant.getName());
 		leaseContractVo.setPhone1(tenant.getMobile());
 		//承租人1证件类型
@@ -220,11 +228,10 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 		leaseContractVo.setAddress1(addrProvinceName+" "+addrCityName+" "+addrCountyName+" "+addrExt);
 	}
 	
-	
 	@Override
-	public LeaseConstractVo getPrintLeaseConstract(String appId) {
+	public PLeaseConstractVo getPrintLeaseConstract(String appId) {
 		// TODO Auto-generated method stub
-		LeaseConstractVo leaseContractVo = new LeaseConstractVo();
+		PLeaseConstractVo leaseContractVo = new PLeaseConstractVo();
 		//获取承租人信息、担保人信息、车辆融资信息
 		ApplyVo applyVo = applyServiceImpl.getApplyDetail(appId);
 		logger.debug("PrintLeaseConstractVo："+JSONObject.toJSONString(applyVo));
@@ -362,6 +369,141 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 		leaseContractVo.setRepayBankName(repayBank.getBankName());
 		leaseContractVo.setRepayAcctNo(signContract.getRepayAcctNo());
 		return leaseContractVo;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getMortgageContractA(java.lang.String)
+	 */
+	@Override
+	public PMortgageContractAVo getMortgageContractA(String appId) {
+		// TODO Auto-generated method stub
+		PMortgageContractAVo pmca = new PMortgageContractAVo();
+		ApplyVo applyVo = applyServiceImpl.getApplyDetail(appId);
+		ApplyTenantVo applyTenantVo = applyVo.getTenant();
+		SignContract signContract = signContractServiceImpl.getSignContractByAppId(appId);
+		pmca.setContactNo(signContract.getContractNo());
+		pmca.setTenant(applyTenantVo.getName());
+		pmca.setIdNo(applyTenantVo.getIdNo());
+		pmca.setPledgerName(applyTenantVo.getName());
+		SysDictData sysDictData = sysDictServiceImpl.getDictDataByDictDateCode(applyTenantVo.getIdType());
+		if(sysDictData == null)
+			logger.error("类型编码："+applyTenantVo.getIdType()+"【获取证件类型名称失败】");
+		else
+			pmca.setPledgerCtftype(sysDictData.getDictDataName());
+		pmca.setPledgerCtfNo(applyTenantVo.getIdNo());
+		pmca.setPledgerPhone(applyTenantVo.getMobile());
+		//承租人地址
+		String addrProvinceName = sysAreaServiceImpl.getAreaNameById(applyTenantVo.getAddrProvince());
+		String addrCityName = sysAreaServiceImpl.getAreaNameById(applyTenantVo.getAddrCity());
+		String addrCountyName = sysAreaServiceImpl.getAreaNameById(applyTenantVo.getAddrCounty());
+		String addrExt = applyTenantVo.getAddrExt();
+		pmca.setPledgerAddress(addrProvinceName+" "+addrCityName+" "+addrCountyName+" "+addrExt);
+		
+		//租赁（抵押）车辆列表
+		List<LeaseCarVo> leaseCarList = this.getLeaseCarList(applyVo);
+		for (int i = 0; i < leaseCarList.size(); i++) {
+			LeaseCarVo leaseCarVo = leaseCarList.get(i);
+			if(i == 0){
+				pmca.setCarBrand(leaseCarVo.getBrandSerial());
+				pmca.setCarEnginNo(leaseCarVo.getCarEngineNo());
+				pmca.setCarModelNo(leaseCarVo.getStyleId());
+				pmca.setCarColor(leaseCarVo.getCarColor());
+				pmca.setCarFrameNo(leaseCarVo.getCarVin());
+				pmca.setCarPlateNo(leaseCarVo.getPlateNo());
+			}/*else if( i == 1){
+				leaseContractVo.setPlateNo2(leaseCarVo.getPlateNo());
+				leaseContractVo.setCarBrand2(leaseCarVo.getBrandSerial());
+				leaseContractVo.setCarVin2(leaseCarVo.getCarVin());
+				leaseContractVo.setCarEngine2(leaseCarVo.getCarEngineNo());
+				leaseContractVo.setCarColor2(leaseCarVo.getCarColor());
+				leaseContractVo.setCarManu2(leaseCarVo.getCarManu());
+			}else if(i == 2){
+				leaseContractVo.setPlateNo3(leaseCarVo.getPlateNo());
+				leaseContractVo.setCarBrand3(leaseCarVo.getBrandSerial());
+				leaseContractVo.setCarVin3(leaseCarVo.getCarVin());
+				leaseContractVo.setCarEngine3(leaseCarVo.getCarEngineNo());
+				leaseContractVo.setCarColor3(leaseCarVo.getCarColor());
+				leaseContractVo.setCarManu3(leaseCarVo.getCarManu());
+			}*/
+		}
+		
+		//提交签约日历
+		Calendar commitSignCl = Calendar.getInstance();
+		//到期还款日历
+		Calendar duDateCl = Calendar.getInstance();
+		//提交签约日期
+		Date commitSignDate = signContract.getCommitSignDate();
+		try {
+			//到期还款日
+			Date dueDate = Utils.getDateAfterMonth(commitSignDate, applyVo.getPeriod());
+			commitSignCl.setTime(commitSignDate);
+			duDateCl.setTime(dueDate);
+			//开始日期
+			pmca.setStartYear(commitSignCl.get(commitSignCl.YEAR));
+			pmca.setStartMonth(commitSignCl.get(commitSignCl.MONTH)+1);
+			pmca.setStartDay(commitSignCl.get(commitSignCl.DAY_OF_MONTH));
+			//截止日期
+			pmca.setEndYear(duDateCl.get(duDateCl.YEAR));
+			pmca.setEndMonth(duDateCl.get(duDateCl.MONTH)+1);
+			pmca.setEndDay(duDateCl.get(duDateCl.DAY_OF_MONTH));
+		} catch (Exception e) {
+			logger.error("签约信息表：提交签约日期【缺失】,租赁（抵押）期限赋值失败");
+		}
+		return pmca;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getMortgegeContractB(java.lang.String)
+	 */
+	@Override
+	public PMortgageContractBVo getMortgegeContractB(String appId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getDeleiverReceipt(java.lang.String)
+	 */
+	@Override
+	public PDeleiverReceiptVo getDeleiverReceipt(String appId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getMortgageList(java.lang.String)
+	 */
+	@Override
+	public PMortgageListVo getMortgageList(String appId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getLoanReceipt(java.lang.String)
+	 */
+	@Override
+	public PLoanReceiptVo getLoanReceipt(String appId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getRepayRemind(java.lang.String)
+	 */
+	@Override
+	public PRepayRemindVo getRepayRemind(String appId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.pujjr.carcredit.service.IPrintDataSrcServcie#getColesseePromise(java.lang.String)
+	 */
+	@Override
+	public PColesseePromiseVo getColesseePromise(String appId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

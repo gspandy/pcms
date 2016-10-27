@@ -6,7 +6,7 @@ import com.pujjr.base.domain.CarStyle;
 import com.pujjr.base.domain.Product;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 
-public class LeaseConstractVo {
+public class PLeaseConstractVo {
 	//承租人信息
 	private ApplyTenantVo tenant;
 	//共租人信息
