@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
+import com.aliyun.oss.model.OSSObject;
 import com.pujjr.base.service.IOSSService;
 @Service
 public class OSSServiceImpl implements IOSSService 
@@ -82,6 +83,13 @@ public class OSSServiceImpl implements IOSSService
 			ossClient.shutdown();
 		}
 		
+	}
+	@Override
+	public InputStream getObject(String ossKey) {
+		// TODO Auto-generated method stub
+		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		OSSObject ossObject = ossClient.getObject(bucketName, ossKey);
+		return ossObject.getObjectContent();
 	}
 
 }

@@ -512,17 +512,15 @@ public class ApplyServiceImpl implements IApplyService {
 	}
 
 	@Override
-	public ApplyVo getApplyInfo(String appId) {
+	public Apply getApply(String appId) {
 		// TODO Auto-generated method stub
 		Apply apply = applyMapper.selectByAppid(appId);
-		ApplyVo applyVo = new ApplyVo();
-		BeanUtils.copyProperties(apply, applyVo);
-		return applyVo;
+		return apply;
 	}
 
 	@Override
-	public int updateApply(ApplyVo applyVo) {
+	public int updateApply(Apply apply) {
 		// TODO Auto-generated method stub
-		return applyMapper.updateByPrimaryKey(applyVo);
+		return applyMapper.updateByPrimaryKey(apply);
 	}
 }

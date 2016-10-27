@@ -58,4 +58,13 @@ public class PrintController extends BaseController {
 		String url = request.getSession().getServletContext().getRealPath("");
 		printServiceImpl.prtLeaseContract("2008", "WZXK161020N10136",url);
 	}
+	@RequestMapping(value="/generateContract/{appId}/{contractKey}",method=RequestMethod.GET)
+	@ResponseBody
+	public HashMap<String,Object> generateContract(String appId,String contractKey)
+	{
+		String contractFileOSSKey = printServiceImpl.generateContract(appId, contractKey);
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("osskey", contractFileOSSKey);
+		return map;
+	}
 }

@@ -23,17 +23,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
+import com.pujjr.base.domain.ContractInfo;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.domain.SysBranchDealer;
 import com.pujjr.base.domain.SysParam;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.IBankService;
+import com.pujjr.base.service.IContractService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.service.ISysParamService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyFinance;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
@@ -98,6 +101,8 @@ public class TaskController extends BaseController
 	private IRunPathService runPathService;
 	@Autowired
 	private IBankService bankService;
+	@Autowired
+	private IContractService contractService;
 	
 	@RequestMapping(value="/todolist/{queryType}",method=RequestMethod.GET)
 	public PageVo getToDoTaskList(String curPage,String pageSize,@PathVariable String queryType,HttpServletRequest request)
@@ -509,5 +514,13 @@ public class TaskController extends BaseController
 		}
 		
 		taskService.setAutoAssigneeConfigInfo(po);
+	}
+	@RequestMapping(value="/getContractInfoListByAppId/{appId}",method=RequestMethod.GET)
+	public List<ContractInfo>  getContractInfoListByAppId(@PathVariable String appId)
+	{
+		Apply apply = applyService.getApply(appId);
+		SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
+		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(sysBranch.getId());
+		return contractService.getContractInfoListByContractTemplateId(dealer.getReserver1(), true);
 	}
 }

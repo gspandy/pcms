@@ -10,5 +10,7 @@ public interface IOSSService {
 	public void putObject(String ossKey,InputStream inputStream); 
 	
 	public void deleteObject(String ossKey);
+	
+	public InputStream getObject(String ossKey);
 
 }

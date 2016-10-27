@@ -54,8 +54,8 @@ public class ApplyController extends BaseController {
 	 */
 	@RequestMapping(value="/apply/select/{appid}",method=RequestMethod.GET)
 	@ResponseBody
-	public ApplyVo applySelect(@PathVariable String appid,HttpServletRequest request) throws Exception{
-		return applyService.getApplyInfo(appid);
+	public Apply applySelect(@PathVariable String appid,HttpServletRequest request) throws Exception{
+		return applyService.getApply(appid);
 	}
 	
 	/**
