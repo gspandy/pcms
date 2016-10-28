@@ -3,6 +3,8 @@
  */
 package com.pujjr.carcredit.vo;
 
+import java.util.List;
+
 /**
  * @author tom
  *
@@ -10,10 +12,11 @@ package com.pujjr.carcredit.vo;
 public class PRepayRemindVo {
 	private String accountName;
 	private String contractNo;
-	private String totalFinanceAmt;
-	private String period;
+	private double totalFinanceAmt;
+	private int period;
 	private String firstRepayDate;
-	private String firstRepayFee;
+	private double firstRepayFee;
+	private List<RepayScheduleVo> repayScheduleVoList;
 
 	private String fill_1;
 	private String fill_2;
@@ -39,6 +42,14 @@ public class PRepayRemindVo {
 	private String fill_22;
 	private String fill_23;
 	private String fill_24;
+	
+	
+	public List<RepayScheduleVo> getRepayScheduleVoList() {
+		return repayScheduleVoList;
+	}
+	public void setRepayScheduleVoList(List<RepayScheduleVo> repayScheduleVoList) {
+		this.repayScheduleVoList = repayScheduleVoList;
+	}
 	public String getAccountName() {
 		return accountName;
 	}
@@ -51,16 +62,16 @@ public class PRepayRemindVo {
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
-	public String getTotalFinanceAmt() {
+	public double getTotalFinanceAmt() {
 		return totalFinanceAmt;
 	}
-	public void setTotalFinanceAmt(String totalFinanceAmt) {
+	public void setTotalFinanceAmt(double totalFinanceAmt) {
 		this.totalFinanceAmt = totalFinanceAmt;
 	}
-	public String getPeriod() {
+	public int getPeriod() {
 		return period;
 	}
-	public void setPeriod(String period) {
+	public void setPeriod(int period) {
 		this.period = period;
 	}
 	public String getFirstRepayDate() {
@@ -69,10 +80,10 @@ public class PRepayRemindVo {
 	public void setFirstRepayDate(String firstRepayDate) {
 		this.firstRepayDate = firstRepayDate;
 	}
-	public String getFirstRepayFee() {
+	public double getFirstRepayFee() {
 		return firstRepayFee;
 	}
-	public void setFirstRepayFee(String firstRepayFee) {
+	public void setFirstRepayFee(double firstRepayFee) {
 		this.firstRepayFee = firstRepayFee;
 	}
 	public String getFill_1() {

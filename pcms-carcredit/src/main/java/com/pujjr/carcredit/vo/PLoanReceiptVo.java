@@ -9,7 +9,7 @@ package com.pujjr.carcredit.vo;
  */
 public class PLoanReceiptVo {
 	private String contractNo;
-	private String totalLoanAmt;
+	private double totalLoanAmt;
 	private String branchName;
 	public String getContractNo() {
 		return contractNo;
@@ -17,10 +17,10 @@ public class PLoanReceiptVo {
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
-	public String getTotalLoanAmt() {
+	public double getTotalLoanAmt() {
 		return totalLoanAmt;
 	}
-	public void setTotalLoanAmt(String totalLoanAmt) {
+	public void setTotalLoanAmt(double totalLoanAmt) {
 		this.totalLoanAmt = totalLoanAmt;
 	}
 	public String getBranchName() {

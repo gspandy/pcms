@@ -11,6 +11,8 @@ public class PMortgageContractAVo {
 	private String contactNo;
 	private String tenant;
 	private String idNo;
+	private double financeAmt;
+	private String financeAmtChn;
 	private String pledgerName;
 	private String pledgerCtftype;
 	private String pledgerPhone;
@@ -30,6 +32,20 @@ public class PMortgageContractAVo {
 	private int endYear;
 	private int endMonth;
 	private int endDay;
+	
+	
+	public double getFinanceAmt() {
+		return financeAmt;
+	}
+	public void setFinanceAmt(double financeAmt) {
+		this.financeAmt = financeAmt;
+	}
+	public String getFinanceAmtChn() {
+		return financeAmtChn;
+	}
+	public void setFinanceAmtChn(String financeAmtChn) {
+		this.financeAmtChn = financeAmtChn;
+	}
 	public String getContactNo() {
 		return contactNo;
 	}

@@ -28,10 +28,16 @@ import com.pujjr.base.domain.ContractInfo;
 import com.pujjr.base.service.IContractService;
 import com.pujjr.base.service.IOSSService;
 import com.pujjr.base.service.impl.OSSServiceImpl;
+import com.pujjr.carcredit.service.IPrintCheckLetter;
 import com.pujjr.carcredit.service.IPrintDataSrcServcie;
 import com.pujjr.carcredit.service.IPrintService;
+import com.pujjr.carcredit.vo.PColesseePromiseVo;
+import com.pujjr.carcredit.vo.PDeleiverReceiptVo;
 import com.pujjr.carcredit.vo.PLeaseConstractVo;
+import com.pujjr.carcredit.vo.PLoanReceiptVo;
 import com.pujjr.carcredit.vo.PMortgageContractAVo;
+import com.pujjr.carcredit.vo.PMortgageListVo;
+import com.pujjr.carcredit.vo.PRepayRemindVo;
 import com.pujjr.file.service.IFileService;
 import com.pujjr.utils.Utils;
 
@@ -53,6 +59,10 @@ public class PrintServiceImpl implements IPrintService {
 	private IOSSService ossServiceImpl;
 	@Value("${pcms.sys_mode}")
 	private String sysMode;
+	
+//	public static final String DEST = "print/8-核准函.pdf";
+	@Autowired
+	private IPrintCheckLetter printCheckLetterImpl;
 	@Override
 	public String prtLeaseContract(String businessId,String contextPath,String contractKey) {
 		logger.debug("prtLeaseContract");
@@ -105,7 +115,7 @@ public class PrintServiceImpl implements IPrintService {
 		return ossKey;
 	}
 	@Override
-	public String prtMortgageContractA(String businessId,String contextPath,String contractKey) {
+	public String prtMortgageContract(String businessId,String contextPath,String contractKey) {
 		PdfReader pdfReader = null;
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
@@ -120,9 +130,15 @@ public class PrintServiceImpl implements IPrintService {
 				pdfReader = new PdfReader(ossServiceImpl.getObject(contractInfo.getOssKey()));
 			}else{
 				//测试：读取本地模板
-				pdfReader = new PdfReader(classPath+"/pdf/tpl/2-抵押合同（版本A）-套打-无背景.pdf");
+				if("dyhtA".equals(contractKey))
+					pdfReader = new PdfReader(classPath+"/pdf/tpl/2-抵押合同（版本A）-套打-无背景.pdf");
+				else
+					pdfReader = new PdfReader(classPath+"/pdf/tpl/2-抵押合同（版本B）-套打-无背景.pdf");
 			}
-			contractName = "2-抵押合同（版本A）-"+businessId+"-"+".pdf";
+			if("dyhtA".equals(contractKey))
+				contractName = "2-抵押合同（版本A）-"+businessId+"-"+".pdf";
+			else
+				contractName = "2-抵押合同（版本B）-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
 			file = new File(contextPath+"/print/"+contractName);
 			if(file.exists())
@@ -138,39 +154,9 @@ public class PrintServiceImpl implements IPrintService {
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(6), null); 
 				System.out.println(entry.getKey());
 			}
-			PMortgageContractAVo pmca = printDataSrcServiceImpl.getMortgageContractA(businessId);
+			PMortgageContractAVo pmca = printDataSrcServiceImpl.getMortgageContract(businessId,contractKey);
 			logger.debug("pmca:"+JSONObject.toJSONString(pmca));
 			printDataSrcServiceImpl.setAcroFields(fields, pmca);
-			/*
-//					PdfMgc pdfMgc = new PdfMgc();
-			fields.setField("contactNo1", "200810405234");
-//					fields.setFieldProperty("contactNo1", "200810405234", bf, null);
-			fields.setField("tenant","ll潽金公司");
-			fields.setField("idNo","ll500383198808181994");
-			fields.setField("contactNo2","ll200810405234");
-			fields.setField("","ll200810405234");
-			fields.setField("financeAmt","ll10000");
-			fields.setField("financeAmtChn","ll壹万元整");
-			fields.setField("pledgerName","ll王二娃");
-			fields.setField("pledgerCtftype","ll身份证");
-			fields.setField("pledgerCtfNo","ll500383198808181996");
-			fields.setField("pledgerPhone","ll18723290701");
-			fields.setField("pledgerAddress","ll重庆渝北区");
-			
-			fields.setField("carBrand", "ll奔驰");
-			fields.setField("carEnginNo", "ll奔驰发动机250");
-			fields.setField("carModelNo", "ll奔驰ML300");
-			fields.setField("carColor", "ll黑色");
-			fields.setField("carFrameNo", "ll车架号110");
-			fields.setField("carPlateNo", "ll渝A8888");
-			fields.setField("startYear","2015");
-			fields.setField("startMonth","10");
-			fields.setField("startDay","21");
-			fields.setField("endYear","2016");
-			fields.setField("endMonth","11");
-			fields.setField("endDay","14");*/
-			
-			
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
@@ -180,80 +166,9 @@ public class PrintServiceImpl implements IPrintService {
 		}
 		return ossKey;
 	}
-	@Override
-	public String prtMortgageContractB(String businessId,String contextPath,String contractKey) {
-		// TODO Auto-generated method stub
-		PdfReader pdfReader = null;
-		OutputStream os = null;
-		PdfStamper pdfStamper = null;
-		String ossKey = "";
-		File file = null;
-		String contractName = "";
-		try {
-			if("run".equals(sysMode)){
-				//生产：读取存储上模板
-				ContractInfo contractInfo = contractServiceImpl.getContractInfoByKey(contractKey);
-				logger.debug("contractInfo:"+JSONObject.toJSONString(contractInfo));
-				pdfReader = new PdfReader(ossServiceImpl.getObject(contractInfo.getOssKey()));
-			}else{
-				//测试：读取本地模板
-				pdfReader = new PdfReader(classPath+"/pdf/tpl/2-抵押合同（版本B）-套打-有背景.pdf");
-			}
-			contractName = "2-抵押合同（版本B）-"+businessId+"-"+".pdf";
-			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
-			if(file.exists())
-				file.createNewFile();
-			os = new FileOutputStream(file);
-			pdfStamper = new PdfStamper(pdfReader, os);
-			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-			Font font  = new Font(FontFamily.TIMES_ROMAN, 20);
-			AcroFields fields = pdfStamper.getAcroFields();
-			Map<String, Item> map = fields.getFields();
-			for(Map.Entry<String, Item> entry:map.entrySet()){
-				System.out.println(entry.getKey());
-			}
-//			PdfMgc pdfMgc = new PdfMgc();
-			fields.setField("contactNo1", "200810405234");
-//			fields.setFieldProperty("contactNo1", "200810405234", bf, null);
-			fields.setField("tenant","ll潽金公司");
-			fields.setField("idNo","ll500383198808181994");
-			fields.setField("contactNo2","ll200810405234");
-			fields.setField("","ll200810405234");
-			fields.setField("financeAmt","ll10000");
-			fields.setField("financeAmtChn","ll壹万元整");
-			fields.setField("pledgerName","ll王二娃");
-			fields.setField("pledgerCtftype","ll身份证");
-			fields.setField("pledgerCtfNo","ll500383198808181996");
-			fields.setField("pledgerPhone","ll18723290701");
-			fields.setField("pledgerAddress","ll重庆渝北区");
-			
-			fields.setField("carBrand", "ll奔驰");
-			fields.setField("carEnginNo", "ll奔驰发动机250");
-			fields.setField("carModelNo", "ll奔驰ML300");
-			fields.setField("carColor", "ll黑色");
-			fields.setField("carFrameNo", "ll车架号110");
-			fields.setField("carPlateNo", "ll渝A8888");
-			fields.setField("startYear","2015");
-			fields.setField("startMonth","10");
-			fields.setField("startDay","21");
-			fields.setField("endYear","2016");
-			fields.setField("endMonth","11");
-			fields.setField("endDay","14");
-			
-			
-			pdfStamper.setFormFlattening(true);
-			pdfStamper.close();
-			pdfReader.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		return ossKey;
-	}
+
 	@Override
 	public String prtDeleiverReceipt(String businessId,String contextPath,String contractKey) {
-		// TODO Auto-generated method stub
 		PdfReader pdfReader = null;
 		OutputStream os = null;
 		PdfStamper pdfStamper = null;
@@ -268,9 +183,8 @@ public class PrintServiceImpl implements IPrintService {
 				pdfReader = new PdfReader(ossServiceImpl.getObject(contractInfo.getOssKey()));
 			}else{
 				//测试：读取本地模板
-				pdfReader = new PdfReader(classPath+"/pdf/tpl/3-车辆交接单-套打-模板-有背景.pdf");
+				pdfReader = new PdfReader(classPath+"/pdf/tpl/3-车辆交接单-套打-模板-无背景.pdf");
 			}
-//			File file = new File("print/2-抵押合同（版本B）-套打-print.pdf");
 			contractName = "3-车辆交接单-套打-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
 			file = new File(contextPath+"/print/"+contractName);
@@ -279,29 +193,18 @@ public class PrintServiceImpl implements IPrintService {
 			os = new FileOutputStream(file);
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-			Font font = new Font(bf,10,Font.NORMAL);
 			AcroFields fields = pdfStamper.getAcroFields();
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
 				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
-				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
-			fields.setField("carStyle","潽金carStyle租赁有限公司");
-			fields.setField("plateNo","plateNo");
-			fields.setField("carColor","云南carColor电子信息产业股份有限公司");
-			fields.setField("carEngineNo","carEngineNo");
-			fields.setField("carVin", "carVin");
-			fields.setField("dealerName", "dealerName");
-			fields.setField("tenantName", "tenantIdNo");
-			fields.setField("tenantIdNo", "tenantIdNo");
-			fields.setField("tenantPhone", "tenantPhone");
-			fields.setField("tenantSign", "tenantSign");
+			PDeleiverReceiptVo pdrv = printDataSrcServiceImpl.getDeleiverReceipt(businessId);
+			printDataSrcServiceImpl.setAcroFields(fields, pdrv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ossKey;
@@ -326,37 +229,22 @@ public class PrintServiceImpl implements IPrintService {
 				//测试：读取本地模板
 				pdfReader = new PdfReader(classPath+"/pdf/tpl/4-抵押车辆清单-模板.pdf");
 			}
-//			File file = new File("print/2-抵押合同（版本B）-套打-print.pdf");
 			contractName = "4-抵押车辆清单-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
 			file = new File(contextPath+"/print/"+contractName);
-			
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-			Font font = new Font(bf,10,Font.NORMAL);
 			AcroFields fields = pdfStamper.getAcroFields();
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
 				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
-				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
-			fields.setField("contractNo","200810405234");
-			for (int i = 0; i < carAmt; i++) {
-				fields.setField("fill_"+(6*i+2),"车牌号"+i+1);
-				fields.setField("fill_"+(6*i+3),"品牌及车型"+i+1);
-				fields.setField("fill_"+(6*i+4),"车架号"+i+1);
-				fields.setField("fill_"+(6*i+5), "发动机号"+i+1);
-				fields.setField("fill_"+(6*i+6), "车辆颜色"+i+1);
-				fields.setField("fill_"+(6*i+7), "生产商"+i+1);
-			}
-			fields.setField("carAmt", carAmt+"");
-			fields.setField("year", "2016");
-			fields.setField("month", "10");
-			fields.setField("day", "12");
+			PMortgageListVo pmlv = printDataSrcServiceImpl.getMortgageList(businessId);
+			printDataSrcServiceImpl.setMorgageListFields(fields, pmlv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
@@ -385,7 +273,6 @@ public class PrintServiceImpl implements IPrintService {
 				//测试：读取本地模板
 				pdfReader = new PdfReader(classPath+"/pdf/tpl/5-收据-模板.pdf");
 			}
-//			File file = new File("print/2-抵押合同（版本B）-套打-print.pdf");
 			contractName = "5-收据-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
 			file = new File(contextPath+"/print/"+contractName);
@@ -394,23 +281,18 @@ public class PrintServiceImpl implements IPrintService {
 			os = new FileOutputStream(file);
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-			Font font = new Font(bf,10,Font.NORMAL);
 			AcroFields fields = pdfStamper.getAcroFields();
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
 				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
-				fields.setFieldProperty(entry.getKey(), "textsize", new Float(7), null); 
-				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
+				fields.setFieldProperty(entry.getKey(), "textsize", new Float(10), null); 
 			}
-			fields.setField("contractNo", "GZZJ-HT2013-JS001");
-//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
-			fields.setField("totalLoanAmt", "8563");
-			fields.setField("branchName", "云南南天电子信息产业股份有限公司");
+			PLoanReceiptVo plrv = printDataSrcServiceImpl.getLoanReceipt(businessId);
+			printDataSrcServiceImpl.setAcroFields(fields, plrv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ossKey;
@@ -435,7 +317,6 @@ public class PrintServiceImpl implements IPrintService {
 				//测试：读取本地模板
 				pdfReader = new PdfReader(classPath+"/pdf/tpl/6-还款提醒-模板.pdf");
 			}
-//			File file = new File("print/2-抵押合同（版本B）-套打-print.pdf");
 			contractName = "6-还款提醒-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
 			file = new File(contextPath+"/print/"+contractName);
@@ -444,32 +325,18 @@ public class PrintServiceImpl implements IPrintService {
 			os = new FileOutputStream(file);
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-//			BaseFont bf = BaseFont.createFont(classPath+"/MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-			Font font = new Font(bf,10,Font.NORMAL);
 			AcroFields fields = pdfStamper.getAcroFields();
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
 				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
 				fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
-				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
-			for(int i = 0;i < period;i++){
-				fields.setField("fill_"+(i*2+1), "2015-01-01");
-				fields.setField("fill_"+(i*2+2), "8657");
-			}
-			fields.setField("accountName", "阿布拉多.艾尼瓦尔.萨迪克买买提");
-//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
-			fields.setField("contractNo", " N220160621068");
-			fields.setField("totalFinanceAmt", "云南南天电子信息产业股份有限公司");
-			fields.setField("period", "12");
-			fields.setField("firstRepayDate", "2016-12-11");
-			fields.setField("firstRepayFee", "8657");
-			
+			PRepayRemindVo prrv = printDataSrcServiceImpl.getRepayRemind(businessId);
+			printDataSrcServiceImpl.setRepayRemindFields(fields, prrv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ossKey;
@@ -500,11 +367,8 @@ public class PrintServiceImpl implements IPrintService {
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
-			System.out.println("*******************:"+file.length());
 			pdfStamper = new PdfStamper(pdfReader, os);
 			BaseFont bf = BaseFont.createFont("STSongStd-Light",  "UniGB-UCS2-H", false);
-//			BaseFont bf = BaseFont.createFont(classPath+"/MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-			Font font = new Font(bf,10,Font.NORMAL);
 			AcroFields fields = pdfStamper.getAcroFields();
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
@@ -514,30 +378,38 @@ public class PrintServiceImpl implements IPrintService {
 				else{
 					fields.setFieldProperty(entry.getKey(), "textsize", new Float(12), null); 
 				}
-				System.out.println(entry.getKey()+"|"+fields.getField(entry.getKey()));
 			}
-			for(int i = 0;i < period;i++){
-				fields.setField("fill_"+(i*2+1), "2015-01-01");
-				fields.setField("fill_"+(i*2+2), "8657");
-			}
-//			fields.setFieldProperty("contractNo","textsize",new Float(6),null);
-			fields.setField("contractNo", " N220160621068");
-			fields.setField("colesseeName", "共租人");
-			fields.setField("colesseeIdNo", "500383198808181994");
-			fields.setField("tenantName", "承租人");
-			fields.setField("tenantIdNo", "500383198808181994");
-			fields.setField("relation", "妃子");
-			
+			PColesseePromiseVo pcpv = printDataSrcServiceImpl.getColesseePromise(businessId);
+			printDataSrcServiceImpl.setAcroFields(fields, pcpv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
-			System.out.println("*******************:"+file.length());
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return ossKey;
 	}
+	
+	@Override
+	public String prtCheckLetter(String appId,String contextPath, String contractKey) {
+		int period = 12;
+		PdfReader pdfReader = null;
+		OutputStream os = null;
+		PdfStamper pdfStamper = null;
+		String ossKey = "";
+		File file = null;
+		String contractName = "";
+		try {
+			contractName = "8-核准函-"+appId+"-"+".pdf";
+			ossKey = "resource/"+appId+"/print/"+contractName;
+			printCheckLetterImpl.createPdf(appId,contextPath,ossKey);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ossKey;
+	}
+	
 	@Override
 	public String generateContract(String appId, String contractKey,String contextPath) {
 		String ossKey = "";
@@ -546,10 +418,10 @@ public class PrintServiceImpl implements IPrintService {
 			ossKey = this.prtLeaseContract(appId, contextPath, contractKey);
 			break;
 		case "dyhtA":	//抵押合同A版
-			ossKey = this.prtMortgageContractA(appId, contextPath, contractKey);;
+			ossKey = this.prtMortgageContract(appId, contextPath, contractKey);
 			break;
 		case "dyhtB":	//抵押合同B版
-			ossKey = this.prtMortgageContractB(appId, contextPath, contractKey);
+			ossKey = this.prtMortgageContract(appId, contextPath, contractKey);
 			break;
 		case "jjd":		//交接单
 			ossKey = this.prtDeleiverReceipt(appId, contextPath, contractKey);
@@ -566,7 +438,13 @@ public class PrintServiceImpl implements IPrintService {
 		case "hzcn":	//还租承诺
 			ossKey = this.prtColesseePromise(appId, contextPath, contractKey);
 			break;
+		case "hzh":		//核准函
+			ossKey = this.prtCheckLetter(appId,contextPath,contractKey);
+			break;
 		}
 		return ossKey;
 	}
+
+
+	
 }

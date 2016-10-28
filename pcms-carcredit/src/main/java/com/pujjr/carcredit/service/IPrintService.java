@@ -16,13 +16,7 @@ public interface IPrintService {
 	 * @param operId
 	 * @param businessId
 	 */
-	String prtMortgageContractA(String businessId,String contextPath,String contractKey);
-	/**
-	 * 打印抵押合同B版  print mortgatge contract B 2016-10-24
-	 * @param operId
-	 * @param businessId
-	 */
-	String prtMortgageContractB(String businessId,String contextPath,String contractKey);
+	String prtMortgageContract(String businessId,String contextPath,String contractKey);
 	/**
 	 * 打印车辆交接单print car delievery receipt
 	 * @param operId
@@ -59,5 +53,11 @@ public interface IPrintService {
 	 * @param contractKey 合同标识
 	 * **/
 	String generateContract(String appId,String contextPath,String contractKey);
+	
+	/**
+	 * 打印核准函
+	 * tom 2016年10月28日
+	 */
+	String prtCheckLetter(String appId,String contextPath,String contractKey);
 	
 }

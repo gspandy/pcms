@@ -1,6 +1,10 @@
 package com.pujjr.carcredit.service;
 
+import java.util.List;
+
 import com.itextpdf.text.pdf.AcroFields;
+import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.LeaseCarVo;
 import com.pujjr.carcredit.vo.PColesseePromiseVo;
 import com.pujjr.carcredit.vo.PDeleiverReceiptVo;
 import com.pujjr.carcredit.vo.PLeaseConstractVo;
@@ -11,8 +15,12 @@ import com.pujjr.carcredit.vo.PMortgageListVo;
 import com.pujjr.carcredit.vo.PRepayRemindVo;
 
 public interface IPrintDataSrcServcie {
-	
-	
+	/**
+	 * 获取融资车辆信息列表
+	 * @param applyVo
+	 * @return 融资车辆信息列表
+	 */
+	List<LeaseCarVo> getLeaseCarList(ApplyVo applyVo);
 	/**
 	 * 获取待打印融资合同数据
 	 * @param appId
@@ -20,19 +28,12 @@ public interface IPrintDataSrcServcie {
 	 */
 	PLeaseConstractVo getPrintLeaseConstract(String appId);
 	/**
-	 * 获取抵押合同A版数据
+	 * 获取抵押合同数据
 	 * @param appId
 	 * @return
 	 * tom 2016年10月27日
 	 */
-	PMortgageContractAVo getMortgageContractA(String appId);
-	/**
-	 * 获取抵押合同B版数据
-	 * @param appId
-	 * @return
-	 * tom 2016年10月27日
-	 */
-	PMortgageContractBVo getMortgegeContractB(String appId);
+	PMortgageContractAVo getMortgageContract(String appId,String contractKey);
 	/**
 	 * 获取车辆交接单数据
 	 * @param appId
@@ -71,8 +72,25 @@ public interface IPrintDataSrcServcie {
 	/**
 	 * pdf表单填值
 	 * @param fields 待填值pdf表单字段
-	 * @param leaseConstractVo pdf表单bean
+	 * @param obj pdf表单数据源
 	 * tom 2016年10月27日
 	 */
 	void setAcroFields(AcroFields fields, Object obj);
+	/**
+	 * 抵押清单表单填值
+	 * @param fields 待填值pdf表单字段
+	 * @param obj pdf表单数据源
+	 * tom 2016年10月27日
+	 */
+	void setMorgageListFields(AcroFields fields,Object obj);
+	/**
+	 * 还款计划表单填值
+	 * @param fields 待填值pdf表单字段
+	 * @param obj pdf表单数据源
+	 * tom 2016年10月28日
+	 */
+	void setRepayRemindFields(AcroFields fields,Object obj);
+	
+
+	
 }

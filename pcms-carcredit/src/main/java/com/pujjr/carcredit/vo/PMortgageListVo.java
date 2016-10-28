@@ -3,16 +3,20 @@
  */
 package com.pujjr.carcredit.vo;
 
+import java.util.List;
+
 /**
  * @author tom
  *
  */
 public class PMortgageListVo {
 	private String contractNo;
-	private String carAmt;
+	private int carAmt;
 	private String year;
 	private String month;
 	private String day;
+	
+	private List<LeaseCarVo> leaseCarVoList;
 	private String fill_2;
 	private String fill_3;
 	private String fill_4;
@@ -102,16 +106,24 @@ public class PMortgageListVo {
 	private String fill_88;
 	private String fill_89;
 	private String fill_90;
+	
+	
+	public List<LeaseCarVo> getLeaseCarVoList() {
+		return leaseCarVoList;
+	}
+	public void setLeaseCarVoList(List<LeaseCarVo> leaseCarVoList) {
+		this.leaseCarVoList = leaseCarVoList;
+	}
 	public String getContractNo() {
 		return contractNo;
 	}
 	public void setContractNo(String contractNo) {
 		this.contractNo = contractNo;
 	}
-	public String getCarAmt() {
+	public int getCarAmt() {
 		return carAmt;
 	}
-	public void setCarAmt(String carAmt) {
+	public void setCarAmt(int carAmt) {
 		this.carAmt = carAmt;
 	}
 	public String getYear() {
