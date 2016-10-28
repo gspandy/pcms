@@ -22,4 +22,6 @@ public interface CarSerialMapper {
     int updateByPrimaryKey(CarSerial record);
     
     List<CarSerial> selectAll(@Param("param")QueryParamCarSerialVo param);
+    
+    List<CarSerial> selectCarSerialListByTemplateIdAndCarBrandId(@Param("templateId")String templateId,@Param("carBrandId")String carBrandId);
 }

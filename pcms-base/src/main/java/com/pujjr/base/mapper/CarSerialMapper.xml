@@ -85,4 +85,11 @@
   		and CAR_BRAND_ID  =#{param.carBrandId}
   	</if>
   </select>
+  <select id="selectCarSerialListByTemplateIdAndCarBrandId" resultMap="BaseResultMap">
+  	select c.*
+  	from T_CAR_TEMPLATE a 
+  	inner join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and a.id=#{templateId} and b.CAR_DATA_TYPE ='serial') 
+  	left join T_CAR_SERIAL c  on b.CAR_DATA_ID = c.id
+  	where c.CAR_BRAND_ID = #{carBrandId}
+  </select>
 </mapper>

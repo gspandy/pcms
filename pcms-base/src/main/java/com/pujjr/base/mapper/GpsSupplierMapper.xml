@@ -7,6 +7,8 @@
     <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
     <result column="LINKMAN" jdbcType="VARCHAR" property="linkman" />
     <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="WIRED_URL" jdbcType="VARCHAR" property="wiredUrl" />
+    <result column="WIRELESS_URL" jdbcType="VARCHAR" property="wirelessUrl" />
     <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
     <result column="ENABLED" jdbcType="BIT" property="enabled" />
     <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
@@ -15,8 +17,8 @@
     <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, NAME, ADDRESS, LINKMAN, TEL, COMMENT, ENABLED, CREATE_ID, CREATE_TIME, UPDATE_ID, 
-    UPDATE_TIME
+    ID, NAME, ADDRESS, LINKMAN, TEL, WIRED_URL, WIRELESS_URL, COMMENT, ENABLED, CREATE_ID, 
+    CREATE_TIME, UPDATE_ID, UPDATE_TIME
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -30,13 +32,15 @@
   </delete>
   <insert id="insert" parameterType="com.pujjr.base.domain.GpsSupplier">
     insert into t_gps_supplier (ID, NAME, ADDRESS, 
-      LINKMAN, TEL, COMMENT, 
-      ENABLED, CREATE_ID, CREATE_TIME, 
-      UPDATE_ID, UPDATE_TIME)
+      LINKMAN, TEL, WIRED_URL, 
+      WIRELESS_URL, COMMENT, ENABLED, 
+      CREATE_ID, CREATE_TIME, UPDATE_ID, 
+      UPDATE_TIME)
     values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
-      #{linkman,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
-      #{enabled,jdbcType=BIT}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+      #{linkman,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{wiredUrl,jdbcType=VARCHAR}, 
+      #{wirelessUrl,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
+      #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.base.domain.GpsSupplier">
     insert into t_gps_supplier
@@ -55,6 +59,12 @@
       </if>
       <if test="tel != null">
         TEL,
+      </if>
+      <if test="wiredUrl != null">
+        WIRED_URL,
+      </if>
+      <if test="wirelessUrl != null">
+        WIRELESS_URL,
       </if>
       <if test="comment != null">
         COMMENT,
@@ -91,6 +101,12 @@
       <if test="tel != null">
         #{tel,jdbcType=VARCHAR},
       </if>
+      <if test="wiredUrl != null">
+        #{wiredUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="wirelessUrl != null">
+        #{wirelessUrl,jdbcType=VARCHAR},
+      </if>
       <if test="comment != null">
         #{comment,jdbcType=VARCHAR},
       </if>
@@ -126,6 +142,12 @@
       <if test="tel != null">
         TEL = #{tel,jdbcType=VARCHAR},
       </if>
+      <if test="wiredUrl != null">
+        WIRED_URL = #{wiredUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="wirelessUrl != null">
+        WIRELESS_URL = #{wirelessUrl,jdbcType=VARCHAR},
+      </if>
       <if test="comment != null">
         COMMENT = #{comment,jdbcType=VARCHAR},
       </if>
@@ -153,6 +175,8 @@
       ADDRESS = #{address,jdbcType=VARCHAR},
       LINKMAN = #{linkman,jdbcType=VARCHAR},
       TEL = #{tel,jdbcType=VARCHAR},
+      WIRED_URL = #{wiredUrl,jdbcType=VARCHAR},
+      WIRELESS_URL = #{wirelessUrl,jdbcType=VARCHAR},
       COMMENT = #{comment,jdbcType=VARCHAR},
       ENABLED = #{enabled,jdbcType=BIT},
       CREATE_ID = #{createId,jdbcType=VARCHAR},

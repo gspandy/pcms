@@ -7,6 +7,26 @@ public class QueryParamCarStyleVo  extends QueryParamPageVo
 	private String carBrandId;
 	
 	private String indexStr;
+	
+	private String appId;
+	
+	private String carTemplateId;
+
+	public String getCarTemplateId() {
+		return carTemplateId;
+	}
+
+	public void setCarTemplateId(String carTemplateId) {
+		this.carTemplateId = carTemplateId;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
 	public String getIndexStr() {
 		return indexStr;

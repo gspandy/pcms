@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
+import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
@@ -25,6 +27,7 @@ import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
+import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
@@ -98,6 +101,8 @@ public class TaskServiceImpl implements ITaskService
 	private CancelApplyInfoMapper cancelApplyInfoDao;
 	@Autowired
 	private AutoAssigneeConfigMapper autoAssigneeConfigDao;
+	@Autowired
+	private ISequenceService sequenceService;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -109,13 +114,17 @@ public class TaskServiceImpl implements ITaskService
 		
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("productCode", applyVo.getProduct().getProductCode());
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		vars.put("assigneeType", "1");
-		runWorkflowService.startProcess("PCCA", businessKey, vars);
+		ProcessInstance instance = runWorkflowService.startProcess("PCCA", businessKey, vars);
+		//保存流程实例ID至申请单
+		Apply apply = applyService.getApply(businessKey);
+		apply.setProcInstId(instance.getProcessInstanceId());
+		applyService.updateApply(apply);
 	}
 
 	@Override
@@ -123,7 +132,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
 	}
 	
@@ -359,7 +368,30 @@ public class TaskServiceImpl implements ITaskService
 		{
 			//如果没有签约信息则创建签约信息及合同编号
 			signContractPo.setId(Utils.get16UUID());
-			signContractPo.setContractNo("ContractNo"+appId);
+			
+			//生成合同号
+			int seq = sequenceService.getNextVal("contractNo");
+			String contractNo = Utils.getYear(new Date())+String.format("%06d", seq);
+			String checkCode;
+			int total=0;
+			int totalOdd = 0;
+			int totalEven = 0;
+			//合同验证码规则  4位年份+6位顺序号产生字符串，然后1,3,5,7.9乘以3 ，2,4，6,8，10 乘以7 然后两个结果相加除以10取模
+			for(int i = 1 ;i<=contractNo.length();i++)
+			{
+				//偶数
+				if(i%2==0)
+				{
+					totalEven += Integer.valueOf(contractNo.substring(i-1, i));
+				}else
+				{
+					totalOdd += Integer.valueOf(contractNo.substring(i-1, i));
+				}
+			}
+			checkCode = String.valueOf((totalOdd*3+totalEven*7)%10);
+			Apply apply = applyService.getApply(appId);
+			contractNo=apply.getProductCode()+contractNo+checkCode;
+			signContractPo.setContractNo(contractNo);
 			signContractPo.setCreateId(operId);
 			signContractPo.setCreateTime(new Date());
 			signContractService.addSignContract(signContractPo);
@@ -597,7 +629,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		String businessKey = applyService.saveApply(applyVo, operId);
 		//检查文件是否已上传完成
-		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.SIGN.getKey(), businessKey);
+		checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.APPLY.getKey(), businessKey);
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
 	}
 

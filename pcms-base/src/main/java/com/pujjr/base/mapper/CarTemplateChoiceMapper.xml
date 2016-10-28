@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.CarTemplateChoiceMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.CarTemplateChoice">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TPL_ID" jdbcType="VARCHAR" property="tplId" />
+    <result column="CAR_DATA_TYPE" jdbcType="VARCHAR" property="carDataType" />
+    <result column="CAR_DATA_ID" jdbcType="VARCHAR" property="carDataId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TPL_ID, CAR_DATA_TYPE, CAR_DATA_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_car_template_choice
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_car_template_choice
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.CarTemplateChoice">
+    insert into t_car_template_choice (ID, TPL_ID, CAR_DATA_TYPE, 
+      CAR_DATA_ID)
+    values (#{id,jdbcType=VARCHAR}, #{tplId,jdbcType=VARCHAR}, #{carDataType,jdbcType=VARCHAR}, 
+      #{carDataId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.CarTemplateChoice">
+    insert into t_car_template_choice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="tplId != null">
+        TPL_ID,
+      </if>
+      <if test="carDataType != null">
+        CAR_DATA_TYPE,
+      </if>
+      <if test="carDataId != null">
+        CAR_DATA_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="tplId != null">
+        #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="carDataType != null">
+        #{carDataType,jdbcType=VARCHAR},
+      </if>
+      <if test="carDataId != null">
+        #{carDataId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.CarTemplateChoice">
+    update t_car_template_choice
+    <set>
+      <if test="tplId != null">
+        TPL_ID = #{tplId,jdbcType=VARCHAR},
+      </if>
+      <if test="carDataType != null">
+        CAR_DATA_TYPE = #{carDataType,jdbcType=VARCHAR},
+      </if>
+      <if test="carDataId != null">
+        CAR_DATA_ID = #{carDataId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.CarTemplateChoice">
+    update t_car_template_choice
+    set TPL_ID = #{tplId,jdbcType=VARCHAR},
+      CAR_DATA_TYPE = #{carDataType,jdbcType=VARCHAR},
+      CAR_DATA_ID = #{carDataId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByTemplateId" resultMap="BaseResultMap">
+  	select * from t_car_template_choice where TPL_ID = #{templateId}
+  </select>
+  <delete id="deleteByTemplateId">
+  	delete from t_car_template_choice where TPL_ID = #{templateId}
+  </delete>
+</mapper>
