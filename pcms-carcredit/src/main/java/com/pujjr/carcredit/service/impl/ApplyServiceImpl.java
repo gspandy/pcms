@@ -234,7 +234,7 @@ public class ApplyServiceImpl implements IApplyService {
 			if(afv.isSelect()){
 				String id = afv.getId();
 				try {
-					afv.setCarStyleId(afv.getCarStyle().getCarSerialId());
+					afv.setCarStyleId(afv.getCarStyle().getId());
 				} catch (Exception e) {
 					afv.setCarStyleId("");
 				}
@@ -459,7 +459,7 @@ public class ApplyServiceImpl implements IApplyService {
 			String dataNow = Utils.getFormatDate(Calendar.getInstance().getTime(), "YYMMdd");
 			String sequence=String.format("%04d", sequenceService.getNextVal("appid"));
 			if("".equals(appId) || appId == null)
-				appId = branchId+""+dataNow+""+productCode+""+sequence;//订单编号
+				appId = branchId+""+dataNow+""+sequence+""+productCode;//订单编号
 			applyExist = applyMapper.selectByPrimaryKey(id);
 			if(applyExist == null){
 				applyToDao.setCreateBranchCode(branchId);

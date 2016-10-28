@@ -13,6 +13,10 @@ public class GpsSupplier {
 
 	private String tel;
 
+	private String wiredUrl;
+
+	private String wirelessUrl;
+
 	private String comment;
 
 	private Boolean enabled;
@@ -65,6 +69,22 @@ public class GpsSupplier {
 		this.tel = tel;
 	}
 
+	public String getWiredUrl() {
+		return wiredUrl;
+	}
+
+	public void setWiredUrl(String wiredUrl) {
+		this.wiredUrl = wiredUrl;
+	}
+
+	public String getWirelessUrl() {
+		return wirelessUrl;
+	}
+
+	public void setWirelessUrl(String wirelessUrl) {
+		this.wirelessUrl = wirelessUrl;
+	}
+
 	public String getComment() {
 		return comment;
 	}
@@ -112,4 +132,5 @@ public class GpsSupplier {
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}
+
 }

@@ -86,7 +86,7 @@
   <select id="selectCarBrandListByTemplateId" resultMap="BaseResultMap">
   	select c.* 
   	from T_CAR_TEMPLATE a 
-  	left join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and a.id=#{templateId} and b.CAR_DATA_TYPE ='brand') 
+  	inner join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and a.id=#{templateId} and b.CAR_DATA_TYPE ='brand') 
   	left join T_CAR_BRAND c  on b.CAR_DATA_ID = c.id
   </select>
 </mapper>

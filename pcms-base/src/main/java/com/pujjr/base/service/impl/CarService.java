@@ -105,6 +105,7 @@ public class CarService implements ICarService {
 			param.setCarSerialId("");
 			param.setIndexStr(buf.toString());
 		}
+
 		return carStyleDao.selectAll(param);
 	}
 

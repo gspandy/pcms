@@ -29,4 +29,17 @@
 			and apply.APP_ID like CONCAT('%',CONCAT(#{param.appId},'%'))
 		</if>
 	</select>
+	<select id="selectApplyConditionLoanCommentList" resultType="HashMap">
+		select 
+		c.PROCESS_RESULT_DESC as processResultDesc,
+		b.END_TIME as endTime 
+		
+		from t_apply a
+
+		left join t_workflow_runpath b on a.PROC_INST_ID =  b.PROC_INST_ID
+
+		left join t_task_process_result c on b.id = c.RUN_PATH_ID
+
+		where c.PROCESS_RESULT in ('tjlx102','tjlx202') and a.APP_ID = #{appId}
+	</select>
 </mapper>

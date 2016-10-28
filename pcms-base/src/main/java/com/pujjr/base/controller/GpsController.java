@@ -1,6 +1,7 @@
 package com.pujjr.base.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,10 @@ import com.pujjr.base.domain.GpsLvl;
 import com.pujjr.base.domain.GpsRule;
 import com.pujjr.base.domain.GpsSupplier;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.service.ICarCreditBusinessService;
 import com.pujjr.base.service.IGpsService;
+import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.utils.Utils;
 
 @RestController
@@ -28,6 +32,10 @@ public class GpsController extends BaseController
 {
 	@Autowired
 	private IGpsService gpsService;
+	@Autowired
+	private ICarCreditBusinessService carCreditBusinessService;
+	@Autowired
+	private ISysBranchService sysBranchService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public List<GpsLvl> getGpsLvlList()
@@ -71,11 +79,24 @@ public class GpsController extends BaseController
 	{
 		gpsService.deleteGpsRuleById(id);
 	}
-	@RequestMapping("/enablegpslvl/{amt}")
-	public List<GpsLvl> getEnableGpsLvl(@PathVariable double amt,HttpServletRequest request)
+	@RequestMapping("/enablegpslvl/{appId}/{amt}")
+	public List<GpsLvl> getEnableGpsLvl(@PathVariable String appId,@PathVariable double amt,HttpServletRequest request)
 	{
-		SysAccount account = (SysAccount)request.getAttribute("account");
-		return gpsService.getGpsLvlListByBranchIdAndAmt(account.getBranchId(), amt);
+		HashMap<String,Object> obj = carCreditBusinessService.getApplyInfo(appId);
+		String branchId="";
+		if(obj==null)
+		{
+			SysAccount account = (SysAccount)request.getAttribute("account");
+			branchId=account.getBranchId();
+		}
+		else
+		{
+			String branchCode = obj.get("CREATE_BRANCH_CODE").toString();
+			SysBranch sysBranch = sysBranchService.getSysBranch(null, branchCode);
+			branchId=sysBranch.getId();
+		}
+		
+		return gpsService.getGpsLvlListByBranchIdAndAmt(branchId, amt);
 	}
 	
 	@RequestMapping(value="/gpssupplier",method=RequestMethod.GET)

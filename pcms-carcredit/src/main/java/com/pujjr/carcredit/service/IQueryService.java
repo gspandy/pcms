@@ -14,4 +14,8 @@ public interface IQueryService
 	 * 综合查询申请信息
 	 * **/
 	List<HashMap<String,Object>> queryApplyList(QueryParamApplyVo param);
+	/**
+	 * 查询申请单放款条件
+	 * **/
+	public List<HashMap<String,Object>> queryApplyConditionLoanCommentList(String appId);
 }

@@ -121,7 +121,7 @@
   	<if test="param.indexStr!=null and param.indexStr!=''">
   		select c.*
   		from T_CAR_TEMPLATE a
-  		left join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and b.TPL_ID = #{param.carTemplateId} and b.CAR_DATA_TYPE ='serial')
+  		inner join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and b.TPL_ID = #{param.carTemplateId} and b.CAR_DATA_TYPE ='serial')
   		left join T_CAR_STYLE c on  b.CAR_DATA_ID = c.CAR_SERIAL_ID
   		where c.INDEX_STR like #{param.indexStr}
   	</if>

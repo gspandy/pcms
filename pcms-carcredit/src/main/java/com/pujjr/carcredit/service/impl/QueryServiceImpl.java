@@ -21,5 +21,10 @@ public class QueryServiceImpl implements IQueryService
 		// TODO Auto-generated method stub
 		return queryDao.selectApplyList(param);
 	}
+	
+	public List<HashMap<String,Object>> queryApplyConditionLoanCommentList(String appId)
+	{
+		return queryDao.selectApplyConditionLoanCommentList(appId);
+	}
 
 }

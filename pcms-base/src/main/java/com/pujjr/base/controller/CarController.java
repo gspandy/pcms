@@ -162,7 +162,16 @@ public class CarController extends BaseController {
 		}
 		
 		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(branchId);
-		String carTemplateId = dealer.getReserver2();
+		String carTemplateId ;
+		if(dealer==null)
+		{
+			carTemplateId = null;
+		}
+		else
+		{
+			carTemplateId = dealer.getReserver2();
+		}
+	
 		param.setCarTemplateId(carTemplateId);
 		
 		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);

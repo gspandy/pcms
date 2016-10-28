@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.SysWorkgroup;
+import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
@@ -100,6 +101,8 @@ public class TaskServiceImpl implements ITaskService
 	private CancelApplyInfoMapper cancelApplyInfoDao;
 	@Autowired
 	private AutoAssigneeConfigMapper autoAssigneeConfigDao;
+	@Autowired
+	private ISequenceService sequenceService;
 	
 	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
 		// TODO Auto-generated method stub
@@ -365,7 +368,30 @@ public class TaskServiceImpl implements ITaskService
 		{
 			//如果没有签约信息则创建签约信息及合同编号
 			signContractPo.setId(Utils.get16UUID());
-			signContractPo.setContractNo("ContractNo"+appId);
+			
+			//生成合同号
+			int seq = sequenceService.getNextVal("contractNo");
+			String contractNo = Utils.getYear(new Date())+String.format("%06d", seq);
+			String checkCode;
+			int total=0;
+			int totalOdd = 0;
+			int totalEven = 0;
+			//合同验证码规则  4位年份+6位顺序号产生字符串，然后1,3,5,7.9乘以3 ，2,4，6,8，10 乘以7 然后两个结果相加除以10取模
+			for(int i = 1 ;i<=contractNo.length();i++)
+			{
+				//偶数
+				if(i%2==0)
+				{
+					totalEven += Integer.valueOf(contractNo.substring(i-1, i));
+				}else
+				{
+					totalOdd += Integer.valueOf(contractNo.substring(i-1, i));
+				}
+			}
+			checkCode = String.valueOf((totalOdd*3+totalEven*7)%10);
+			Apply apply = applyService.getApply(appId);
+			contractNo=apply.getProductCode()+contractNo+checkCode;
+			signContractPo.setContractNo(contractNo);
 			signContractPo.setCreateId(operId);
 			signContractPo.setCreateTime(new Date());
 			signContractService.addSignContract(signContractPo);
