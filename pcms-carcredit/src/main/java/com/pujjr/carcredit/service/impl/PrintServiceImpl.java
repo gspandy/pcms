@@ -84,7 +84,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "1-融资租赁合同-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -140,7 +140,7 @@ public class PrintServiceImpl implements IPrintService {
 			else
 				contractName = "2-抵押合同（版本B）-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -187,7 +187,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "3-车辆交接单-套打-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -231,7 +231,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "4-抵押车辆清单-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -275,7 +275,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "5-收据-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -319,7 +319,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "6-还款提醒-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
@@ -363,7 +363,7 @@ public class PrintServiceImpl implements IPrintService {
 			}
 			contractName = "7-共同还租承诺书-"+businessId+"-"+".pdf";
 			ossKey = "resource/"+businessId+"/print/"+contractName;
-			file = new File(contextPath+"/print/"+contractName);
+			file = new File(contextPath+"/"+contractName);
 			if(file.exists())
 				file.createNewFile();
 			os = new FileOutputStream(file);
