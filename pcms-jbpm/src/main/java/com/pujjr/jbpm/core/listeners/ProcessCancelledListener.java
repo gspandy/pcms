@@ -28,7 +28,7 @@ public class ProcessCancelledListener implements EventHandler
 		//执行流程取消脚本
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
-		if(globalParam !=null &&(globalParam.getWorkflowCancelScript()!=null && globalParam.getWorkflowCancelScript()!=""))
+		if(globalParam !=null &&(globalParam.getWorkflowCancelScript()!=null && !globalParam.getWorkflowCancelScript().equals("")))
 		{
 			Map<String,Object> vars=runtimeService.getVariables(eventImpl.getExecutionId());  
 			GroovyEngine.execScript(globalParam.getWorkflowStartScript(), eventImpl.getExecutionId(),vars);

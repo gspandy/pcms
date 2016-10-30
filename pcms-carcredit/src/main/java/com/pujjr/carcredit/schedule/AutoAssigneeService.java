@@ -18,6 +18,7 @@ import com.pujjr.base.service.ISysParamService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.po.OnlineAcctPo;
+import com.pujjr.carcredit.po.QueryParamToDoTaskPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ITaskService;
@@ -64,7 +65,9 @@ public class AutoAssigneeService
 			throw new Exception("未配置系统参数autoAssgineeCheckTaskAccountId");
 		}
 		//获取此账户待执行任务列表
-		List<ToDoTaskPo> todoTaskList = taskService.getToDoTaskListByAccountId(sysParam.getParamValue(), null);
+		QueryParamToDoTaskPo param = new QueryParamToDoTaskPo();
+		param.setAssignee(sysParam.getParamValue());
+		List<ToDoTaskPo> todoTaskList = taskService.getToDoTaskList(param);
 		for(int i =0;i<todoTaskList.size();i++)
 		{
 			ToDoTaskPo task = todoTaskList.get(i);
@@ -118,7 +121,9 @@ public class AutoAssigneeService
 			throw new Exception("未配置系统参数autoAssgineeCheckTaskAccountId");
 		}
 		//获取此账户待执行任务列表
-		List<ToDoTaskPo> todoTaskList = taskService.getToDoTaskListByAccountId(sysParam.getParamValue(), null);
+		QueryParamToDoTaskPo param = new QueryParamToDoTaskPo();
+		param.setAssignee(sysParam.getParamValue());
+		List<ToDoTaskPo> todoTaskList = taskService.getToDoTaskList(param);
 		for(int i =0;i<todoTaskList.size();i++)
 		{
 			ToDoTaskPo task = todoTaskList.get(i);

@@ -38,12 +38,12 @@ public class TaskCompleteListener implements EventHandler {
 		//执行任务完成脚本
 		String workflowVersionId = runtimeService.getVariable(taskEntity.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
-		if(nodeParam!=null && nodeParam.getTaskCompleteHandle()!=null && nodeParam.getTaskCompleteHandle()!="")
+		if(nodeParam!=null && nodeParam.getTaskCompleteHandle()!=null && !nodeParam.getTaskCompleteHandle().equals(""))
 		{
 			ITaskCompleteHandle handle = (ITaskCompleteHandle)SpringBeanUtils.getBean(nodeParam.getTaskCompleteHandle());
 			handle.handle(taskEntity);
 		}
-		if (nodeParam!= null && nodeParam.getTaskCompleteScript() != null && nodeParam.getTaskCompleteScript() != "") 
+		if (nodeParam!= null && nodeParam.getTaskCompleteScript() != null && !nodeParam.getTaskCompleteScript().equals("")) 
 		{
 			Map<String, Object> vars = runtimeService.getVariables(taskEntity.getExecutionId());
 			GroovyEngine.execScript(nodeParam.getTaskCompleteScript(),taskEntity.getExecutionId(),vars);

@@ -45,7 +45,7 @@ public class ActivitiStartedListener implements EventHandler
 		//执行活动启动脚本
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId, eventImpl.getActivityId());
-		if(nodeParam!= null && nodeParam.getActStartScript()!=null && nodeParam.getActStartScript()!="")
+		if(nodeParam!= null && nodeParam.getActStartScript()!=null && !nodeParam.getActStartScript().equals(""))
 		{
 			Map<String,Object> vars=runtimeService.getVariables(eventImpl.getExecutionId());  
 			GroovyEngine.execScript(nodeParam.getActStartScript(),eventImpl.getExecutionId(),vars);

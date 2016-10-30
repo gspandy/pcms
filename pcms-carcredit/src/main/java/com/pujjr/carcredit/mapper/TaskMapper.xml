@@ -22,9 +22,11 @@
 		<result column="tenantIdNo" property="tenantIdNo" jdbcType="VARCHAR" />
 		<result column="createTime" property="createTime" jdbcType="TIMESTAMP" />
 		<result column="branchName" property="branchName" jdbcType="VARCHAR" />
+		<result column="totalFinanceAmount" property="totalFinanceAmount" jdbcType="DOUBLE" />
+		<result column="period" property="period" jdbcType="INTEGER" />
 	</resultMap>
 
-	<select id="selectToDoTaskListByAccountId" resultMap="ToDoTaskResultMap">
+	<select id="selectToDoTaskList" resultMap="ToDoTaskResultMap">
 	select * from 
 	(
 		select
@@ -48,7 +50,9 @@
 		applyTenant.NAME as  tenantName,
 		applyTenant.ID_NO as tenantIdNo,
 		apply.CREATE_TIME as createTime,
-		branch.BRANCH_NAME as branchName
+		branch.BRANCH_NAME as branchName,
+		apply.TOTAL_FINANCE_AMT as totalFinanceAmount,
+		apply.PERIOD as period
 		from act_ru_task task
 		left join act_ru_execution exec on task.EXECUTION_ID_ = exec.ID_
 		left join act_re_procdef def on task.PROC_DEF_ID_ = def.ID_
@@ -62,14 +66,31 @@
 		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
 		left join SYS_BRANCH branch on branch.BRANCH_CODE = apply.CREATE_BRANCH_CODE
 		where 
-		task.ASSIGNEE_ = #{accountId}
-		<if test='queryType =="0"'>
-			and task.TASK_DEF_KEY_ = 'sgfd'
+		task.ASSIGNEE_ = #{param.assignee}
+		<if test="param.appId!=null and param.appId!=''">
+			and apply.APP_ID like CONCAT("%",CONCAT(#{param.appId},'%'))
 		</if>
-		<if test='queryType =="1"'>
-			and task.TASK_DEF_KEY_ != 'sgfd'
+		<if test="param.name!=null and param.name!=''">
+			and applyTenant.NAME like CONCAT("%",CONCAT(#{param.name},'%'))
 		</if>
-		order by nodeLevel desc 
+		<if test="param.appStatus!=null and param.appStatus!=''">
+			and apply.status = #{param.appStatus}
+		</if>
+		<if test="param.inTaskDefKeyList.size()>0">
+			and task.TASK_DEF_KEY_ in 
+			<foreach item="item" index="index" collection="param.inTaskDefKeyList"
+			open="(" separator="," close=")">
+				#{item}
+			</foreach>	
+		</if>
+		<if test="param.outTaskDefKeyList.size()>0">
+			and task.TASK_DEF_KEY_ not in 
+			<foreach item="item" index="index" collection="param.outTaskDefKeyList"
+			open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		order by runpath.START_TIME desc 
 	) tmp group by taskId	
 	</select>
 	<select id="selectTaskCntAndOnlineAccountIdByWorkgroupId" resultType="HashMap">
@@ -141,5 +162,29 @@
 		left join sys_account account on runpath.ASSIGNEE = account.ACCOUNT_ID
 		where runpath.ACT_TYPE ='userTask'   and runpath.PROC_INST_ID = #{procInstId}
 		order by runpath.PROC_INST_ID,runpath.NODE_LEVEL desc	    
+	</select>
+	
+	<select id="selectUserTaskDefineGroupInfo" resultType="HashMap">
+		select  
+		NAME_ as taskName,
+		TASK_DEF_KEY_ as taskDefKey,
+		count(*) as count  
+		from act_ru_task where 
+		assignee_ = #{param.assignee}
+		<if test="param.inTaskDefKeyList.size()>0">
+			and TASK_DEF_KEY_ in 
+			<foreach item="item" index="index" collection="param.inTaskDefKeyList"
+			open="(" separator="," close=")">
+				#{item}
+			</foreach>	
+		</if>
+		<if test="param.outTaskDefKeyList.size()>0">
+			and TASK_DEF_KEY_ not in 
+			<foreach item="item" index="index" collection="param.outTaskDefKeyList"
+			open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		group by NAME_,TASK_DEF_KEY_
 	</select>
 </mapper>

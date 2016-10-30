@@ -27,4 +27,16 @@ public class QueryServiceImpl implements IQueryService
 		return queryDao.selectApplyConditionLoanCommentList(appId);
 	}
 
+	@Override
+	public HashMap<String,Object> queryApplyRunPathNodeList(String appId) {
+		// TODO Auto-generated method stub
+		List<String> list = queryDao.selectApplyRunPathNodeList(appId);
+		HashMap<String,Object> nodeMap = new HashMap<String,Object>();
+		for(String l : list)
+		{
+			nodeMap.put(l, true);
+		}
+		return nodeMap;
+	}
+
 }

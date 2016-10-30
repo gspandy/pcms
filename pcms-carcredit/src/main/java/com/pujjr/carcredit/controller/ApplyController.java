@@ -25,10 +25,10 @@ import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
+import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.po.ApplyInfoPo;
 import com.pujjr.carcredit.service.IApplyService;
-import com.pujjr.carcredit.vo.ApplyStatus;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.utils.Utils;
@@ -90,9 +90,10 @@ public class ApplyController extends BaseController {
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		String appId = "";
 		HashMap<String,Object> map = new HashMap<String,Object>();
-		if("debug".equals(sysMode))
-			appId = applyService.saveApply(applyVo,"333");
-		else
+		//这个地方调试请不要提交，每次更新后都发觉数据不对
+		//if("debug".equals(sysMode))
+			//appId = applyService.saveApply(applyVo,"333");
+		//else
 			appId = applyService.saveApply(applyVo,sysAccount.getAccountId());
 		map.put("appId", appId);
 		return map;

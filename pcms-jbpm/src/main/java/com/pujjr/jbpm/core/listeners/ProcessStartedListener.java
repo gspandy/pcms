@@ -24,7 +24,7 @@ public class ProcessStartedListener implements EventHandler {
 		//执行流程启动脚本
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
-		if(globalParam !=null &&(globalParam.getWorkflowStartScript()!=null && globalParam.getWorkflowStartScript()!=""))
+		if(globalParam !=null &&(globalParam.getWorkflowStartScript()!=null && !globalParam.getWorkflowStartScript().equals("")))
 		{
 			Map<String,Object> vars=runtimeService.getVariables(eventImpl.getExecutionId());  
 			GroovyEngine.execScript(globalParam.getWorkflowStartScript(),eventImpl.getExecutionId(), vars);

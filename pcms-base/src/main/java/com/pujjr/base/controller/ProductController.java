@@ -269,5 +269,10 @@ public class ProductController  extends BaseController
 		}
 		return map;
 	}
+	@RequestMapping(value="/getAllProductList",method=RequestMethod.GET)
+	public List<Product> getAllProductList()
+	{
+		return productService.getAllProductList();
+	}
 	
  }

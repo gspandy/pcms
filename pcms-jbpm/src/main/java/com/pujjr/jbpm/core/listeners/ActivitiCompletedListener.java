@@ -36,7 +36,7 @@ public class ActivitiCompletedListener implements EventHandler
 		//执行活动结束脚本
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,eventImpl.getActivityId());
-		if (nodeParam!= null && nodeParam.getActEndScript() != null && nodeParam.getActEndScript() != "")
+		if (nodeParam!= null && nodeParam.getActEndScript() != null && !nodeParam.getActEndScript().equals(""))
 		{
 			Map<String, Object> vars = runtimeService.getVariables(eventImpl.getExecutionId());
 			GroovyEngine.execScript(nodeParam.getActEndScript(),eventImpl.getExecutionId(), vars);

@@ -53,5 +53,7 @@ public interface IProductService
 	
 	public List<FormField> getProductFormRequiredFieldList(String productId);
 	
+	public List<Product> getAllProductList();
+	
 	
 }

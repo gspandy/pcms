@@ -17,6 +17,8 @@ import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
 import com.pujjr.jbpm.core.exception.NoAssigneeException;
 import com.pujjr.jbpm.core.handle.ITaskAssigneeHandle;
+import com.pujjr.jbpm.core.handle.ITaskCompleteHandle;
+import com.pujjr.jbpm.core.handle.ITaskCreatePreHandle;
 import com.pujjr.jbpm.core.ProcessHandleHelper;
 import com.pujjr.jbpm.domain.WorkflowNodeAssignee;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
@@ -44,7 +46,12 @@ public class TaskCreateListener implements EventHandler
 		//执行任务创建脚本
 		String workflowVersionId = runtimeService.getVariable(taskEntity.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
-		if (nodeParam!= null && nodeParam.getTaskCreateScript()!= null && nodeParam.getTaskCreateScript() != "")
+		if(nodeParam!=null && nodeParam.getTaskCreatePrehandle()!=null && !nodeParam.getTaskCreatePrehandle().equals(""))
+		{
+			ITaskCreatePreHandle handle = (ITaskCreatePreHandle)SpringBeanUtils.getBean(nodeParam.getTaskCreatePrehandle());
+			handle.handle(taskEntity);
+		}
+		if (nodeParam!= null && nodeParam.getTaskCreateScript()!= null && !nodeParam.getTaskCreateScript().equals(""))
 		{
 			Map<String, Object> vars = runtimeService.getVariables(taskEntity.getExecutionId());
 			GroovyEngine.execScript(nodeParam.getTaskCreateScript(),taskEntity.getExecutionId(), vars);

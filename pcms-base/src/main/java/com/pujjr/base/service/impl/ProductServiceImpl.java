@@ -151,4 +151,10 @@ public class ProductServiceImpl implements IProductService
 		return formFieldService.getTemplateRequiredFormField(formTplId);
 	}
 
+	@Override
+	public List<Product> getAllProductList() {
+		// TODO Auto-generated method stub
+		return productDao.selectAllProductList();
+	}
+
 }

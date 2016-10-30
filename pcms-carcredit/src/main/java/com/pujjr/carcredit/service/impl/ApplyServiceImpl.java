@@ -30,6 +30,7 @@ import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.carcredit.annotion.ApplyOperHisAnnotation;
+import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.dao.ApplyCloesseeMapper;
 import com.pujjr.carcredit.dao.ApplyFamilyDebtMapper;
 import com.pujjr.carcredit.dao.ApplyFinanceMapper;
@@ -56,7 +57,6 @@ import com.pujjr.carcredit.vo.ApplyFamilyDebtVo;
 import com.pujjr.carcredit.vo.ApplyFinanceVo;
 import com.pujjr.carcredit.vo.ApplyLinkmanVo;
 import com.pujjr.carcredit.vo.ApplySpouseVo;
-import com.pujjr.carcredit.vo.ApplyStatus;
 import com.pujjr.carcredit.vo.ApplyTenantVo;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
@@ -464,6 +464,8 @@ public class ApplyServiceImpl implements IApplyService {
 			if(applyExist == null){
 				applyToDao.setCreateBranchCode(branchId);
 				applyToDao.setCreateAccountId(sysAccount.getAccountId());
+				//只有不存在时申请单才是未提交状态
+				applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
 			}
 //			System.out.println("applyList.size():"+applyList.size());
 			//基本信息
@@ -473,7 +475,6 @@ public class ApplyServiceImpl implements IApplyService {
 			applyToDao.setProductCode(productCode);
 			applyToDao.setPeriod(applyVo.getPeriod());
 			applyToDao.setComment(applyVo.getComment());
-			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
 			
 			applyToDao.setCustType(applyVo.getCustType());
 			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
