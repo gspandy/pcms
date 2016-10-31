@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -18,6 +19,7 @@ import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
 import com.pujjr.carcredit.dao.CallBackResultMapper;
 import com.pujjr.carcredit.dao.CancelApplyInfoMapper;
@@ -39,6 +41,7 @@ import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
+import com.pujjr.carcredit.po.QueryParamToDoTaskPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
@@ -57,6 +60,7 @@ import com.pujjr.carcredit.vo.SignContractVo;
 import com.pujjr.carcredit.vo.SignFinanceDetailVo;
 import com.pujjr.carcredit.vo.TaskCommitType;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
+import com.pujjr.carcredit.vo.ToDoTaskVo;
 import com.pujjr.file.po.CategoryDirectoryPo;
 import com.pujjr.file.service.IFileService;
 import com.pujjr.jbpm.core.command.CommandType;
@@ -103,10 +107,13 @@ public class TaskServiceImpl implements ITaskService
 	private AutoAssigneeConfigMapper autoAssigneeConfigDao;
 	@Autowired
 	private ISequenceService sequenceService;
+	@Autowired
+	private RuntimeService runtimeService;
 	
-	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType) {
+	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param)
+	{
 		// TODO Auto-generated method stub
-		return taskDao.selectToDoTaskListByAccountId(accountId,queryType);
+		return taskDao.selectToDoTaskList(param);
 	}
 
 	public void commitApplyTask(ApplyVo applyVo, String operId) throws Exception {
@@ -209,8 +216,7 @@ public class TaskServiceImpl implements ITaskService
 
 	public void commitApproveTask(ApplyVo applyVo, ApplyApproveVo approveVo, String taskId, String operId) throws Exception {
 		// TODO Auto-generated method stub
-		// 1、保存申请单变更信息
-		applyService.saveApply(applyVo, operId);
+		//1、检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if (task == null) {
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
@@ -227,20 +233,32 @@ public class TaskServiceImpl implements ITaskService
 		taskProcessResult.setRunPathId(runpath.getId());
 		taskProcessResult.setProcessResult(approveVo.getResult());
 		// 建议通过
-		if (approveVo.getResult().equals(TaskCommitType.PASS)) {
+		if (approveVo.getResult().equals(TaskCommitType.PASS)) 
+		{
 			taskProcessResult.setProcessResultDesc("通过");
-		} else if (approveVo.getResult().equals(TaskCommitType.CONDITION_LOAN)) {
+		} 
+		else if (approveVo.getResult().equals(TaskCommitType.CONDITION_LOAN)) 
+		{
 			taskProcessResult.setProcessResultDesc(approveVo.getLoanExtConditon());
-		} else if (approveVo.getResult().equals(TaskCommitType.CANCEL)) {
+		} 
+		else if (approveVo.getResult().equals(TaskCommitType.CANCEL)) 
+		{
 			taskProcessResult.setProcessResultDesc(approveVo.getCancelReason());
-		} else {
+			//取消的时候需要记录申请单取消日期
+			applyVo.setCancelDate(new Date());
+		} 
+		else 
+		{
 			taskProcessResult.setProcessResultDesc(approveVo.getRejectReason());
 		}
 		taskProcessResult.setComment(approveVo.getComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
 		taskProcessResultDao.insert(taskProcessResult);
 
-		// 4、放入流程变量
+		// 3、保存申请单变更信息
+		applyService.saveApply(applyVo, operId);
+				
+		// 4、处理结果放入流程变量,完成任务
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", approveVo.getResult());
 
@@ -586,6 +604,11 @@ public class TaskServiceImpl implements ITaskService
 			taskProcessResult.setProcessResultDesc("通过");
 		} else {
 			taskProcessResult.setProcessResultDesc("拒绝");
+			//复议拒绝需要变更申请单状态为复议拒绝
+			String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+			Apply apply = applyService.getApply(businessKey);
+			apply.setStatus(ApplyStatus.RECONSIDER_REFUSE);
+			applyService.updateApply(apply);
 		}
 		taskProcessResult.setComment(reconsiderApproveVo.getApproveComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
@@ -788,7 +811,14 @@ public class TaskServiceImpl implements ITaskService
 		taskProcessResult.setProcessResult(vo.getApproveResult());
 		taskProcessResult.setComment(vo.getApproveComment());
 		taskProcessResultDao.insert(taskProcessResult);
-		
+		//取消申请同意需要变更申请单状态为已取消
+		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
+		{
+			String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+			Apply apply = applyService.getApply(businessKey);
+			apply.setStatus(ApplyStatus.CANCEL_COMPLETE);
+			applyService.updateApply(apply);
+		}
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("approveCancelProcResult",vo.getApproveResult());
 		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
@@ -804,6 +834,24 @@ public class TaskServiceImpl implements ITaskService
 	public void setAutoAssigneeConfigInfo(AutoAssigneeConfig params) {
 		// TODO Auto-generated method stub
 		autoAssigneeConfigDao.updateByPrimaryKey(params);
+	}
+
+	@Override
+	public List<HashMap<String, Object>> getUserTaskDefineGroupInfo(QueryParamToDoTaskPo param) {
+		// TODO Auto-generated method stub
+		return taskDao.selectUserTaskDefineGroupInfo(param);
+	}
+
+	@Override
+	public void batchDoLoanTask(List<ToDoTaskVo> list) {
+		// TODO Auto-generated method stub
+		for(ToDoTaskVo vo : list)
+		{
+			String appId = vo.getBusinessKey();
+			Apply apply = applyService.getApply(appId);
+			apply.setStatus(ApplyStatus.LOANING);
+			applyService.updateApply(apply);
+		}
 	}
 
 

@@ -6,6 +6,9 @@ var ActivitiRest = {
 		$.ajax({
 			url: url,
 			dataType: 'jsonp',
+			headers: {
+				'Authorization':window.localStorage.Authorization
+	        },
 			cache: false,
 			async: true,
 			success: function(data, textStatus) {
@@ -29,6 +32,9 @@ var ActivitiRest = {
 		$.ajax({
 			url: url,
 			dataType: 'jsonp',
+			headers: {
+				'Authorization':window.localStorage.Authorization
+	        },
 			cache: false,
 			async: true,
 			success: function(data, textStatus) {
@@ -54,6 +60,9 @@ var ActivitiRest = {
 			url: url,
 			dataType: 'jsonp',
 			cache: false,
+			headers: {
+				'Authorization':window.localStorage.Authorization
+	        },
 			async: true,
 			success: function(data, textStatus) {
 				console.log("ajax returned data");

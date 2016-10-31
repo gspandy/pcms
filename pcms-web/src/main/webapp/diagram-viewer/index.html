@@ -24,9 +24,13 @@
 </head>
 <body>
 <div class="wrapper">
+<!-- 
   <div id="pb1"></div>
+   -->
   <div id="overlayBox" >
+  <!--  -->
     <div id="diagramBreadCrumbs" class="diagramBreadCrumbs" onmousedown="return false" onselectstart="return false"></div>
+    -->
     <div id="diagramHolder" class="diagramHolder"></div>
     <div class="diagram-info" id="diagramInfo"></div>
   </div>
@@ -45,7 +49,8 @@ $(document).ready(function(){
   
   var processDefinitionId = query_string["processDefinitionId"];
   var processInstanceId = query_string["processInstanceId"];
-  
+  var token = query_string["token"];
+  window.localStorage.Authorization = token;
   console.log("Initialize progress bar");
   
   pb1 = new $.ProgressBar({

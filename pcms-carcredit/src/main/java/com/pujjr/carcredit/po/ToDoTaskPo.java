@@ -45,7 +45,23 @@ public class ToDoTaskPo
 	private String createTime;
 	//所属经销商
 	private String branchName;
+	//融资金额
+	private double totalFinanceAmount;
+	//融资期数
+	private int period;
 	
+	public int getPeriod() {
+		return period;
+	}
+	public void setPeriod(int period) {
+		this.period = period;
+	}
+	public double getTotalFinanceAmount() {
+		return totalFinanceAmount;
+	}
+	public void setTotalFinanceAmount(double totalFinanceAmount) {
+		this.totalFinanceAmount = totalFinanceAmount;
+	}
 	public String getProductName() {
 		return productName;
 	}

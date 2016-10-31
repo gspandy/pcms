@@ -23,6 +23,8 @@ public interface ProductMapper {
     
     List<Product> selectAllEnableProductList();
     
+    List<Product> selectAllProductList();
+    
     List<Product> selectBranchEnableProductList(String branchId);
     
     int deleteBranchProduct(String branchId);

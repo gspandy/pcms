@@ -12,4 +12,6 @@ public interface QueryMapper
 	List<HashMap<String,Object>> selectApplyList(@Param("param")QueryParamApplyVo param);
 	
 	List<HashMap<String,Object>> selectApplyConditionLoanCommentList(@Param("appId")String appId);
+	
+	List<String> selectApplyRunPathNodeList(@Param("appId")String appId);
 }

@@ -1,5 +1,6 @@
 package com.pujjr.carcredit.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.activiti.engine.task.Task;
@@ -18,6 +19,7 @@ import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
+import com.pujjr.carcredit.po.QueryParamToDoTaskPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
@@ -29,10 +31,11 @@ import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
 import com.pujjr.carcredit.vo.SignContractVo;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
+import com.pujjr.carcredit.vo.ToDoTaskVo;
 @Service
 public interface ITaskService 
 {
-	public List<ToDoTaskPo> getToDoTaskListByAccountId(String accountId,String queryType);
+	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param);
 	
 	public void commitApplyTask(ApplyVo applyVo,String operId) throws Exception;
 	
@@ -99,5 +102,9 @@ public interface ITaskService
 	public AutoAssigneeConfig getAutoAssigneeConfigInfo();
 	//设置自动分单信息
 	public void setAutoAssigneeConfigInfo(AutoAssigneeConfig params);
+	//查询任务分组信息
+	public List<HashMap<String,Object>> getUserTaskDefineGroupInfo(QueryParamToDoTaskPo param);
+	//将待放款任务加入放款中
+	public void batchDoLoanTask(List<ToDoTaskVo> list);
 	
 }

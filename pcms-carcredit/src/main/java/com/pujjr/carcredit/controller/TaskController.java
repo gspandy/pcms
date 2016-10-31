@@ -2,14 +2,17 @@ package com.pujjr.carcredit.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
+import org.codehaus.groovy.runtime.dgmimpl.arrays.ArrayGetAtMetaMethod;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.ContractInfo;
 import com.pujjr.base.domain.SysAccount;
@@ -36,6 +40,7 @@ import com.pujjr.base.service.ISysParamService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
+import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyFinance;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
@@ -48,6 +53,7 @@ import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
+import com.pujjr.carcredit.po.QueryParamToDoTaskPo;
 import com.pujjr.carcredit.po.ToDoTaskPo;
 import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
@@ -61,6 +67,7 @@ import com.pujjr.carcredit.vo.AutoAssigneeConfigVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
+import com.pujjr.carcredit.vo.QueryParamToDoTaskVo;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
 import com.pujjr.carcredit.vo.SignContractVo;
@@ -103,13 +110,31 @@ public class TaskController extends BaseController
 	private IBankService bankService;
 	@Autowired
 	private IContractService contractService;
+	@Autowired
+	private RuntimeService runtimeService;
 	
-	@RequestMapping(value="/todolist/{queryType}",method=RequestMethod.GET)
-	public PageVo getToDoTaskList(String curPage,String pageSize,@PathVariable String queryType,HttpServletRequest request)
+	@RequestMapping(value="/todolist",method=RequestMethod.GET)
+	public PageVo getToDoTaskList(QueryParamToDoTaskVo param,HttpServletRequest request)
 	{
-		PageHelper.startPage(Integer.parseInt(curPage), Integer.parseInt(pageSize),true);
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
-		List<ToDoTaskPo> poList = taskService.getToDoTaskListByAccountId(sysAccount.getAccountId(),queryType);
+		QueryParamToDoTaskPo queryParam = new QueryParamToDoTaskPo();
+		BeanUtils.copyProperties(param, queryParam);
+		queryParam.setAssignee(sysAccount.getAccountId());
+		
+		if(param.getInTaskDefKeys()!=null&& param.getInTaskDefKeys()!="")
+		{
+			String[] arrInTaskDefKey = param.getInTaskDefKeys().split(",");
+			queryParam.setInTaskDefKeyList(Arrays.asList(arrInTaskDefKey));
+		}
+		if(param.getOutTaskDefKeys()!=null && param.getOutTaskDefKeys() != "")
+		{
+			String[] arrOutTaskDefKey = param.getOutTaskDefKeys().split(",");
+			queryParam.setOutTaskDefKeyList(Arrays.asList(arrOutTaskDefKey));
+		}
+		
+		List<ToDoTaskPo> poList = taskService.getToDoTaskList(queryParam);
+		
 		List<ToDoTaskVo> voList = new ArrayList<ToDoTaskVo>();
 		for(ToDoTaskPo po : poList)
 		{
@@ -117,6 +142,7 @@ public class TaskController extends BaseController
 			BeanUtils.copyProperties(po,vo);
 			voList.add(vo);
 		}
+		
 		PageVo page=new PageVo();
 		page.setTotalItem(((Page)poList).getTotal());
 		page.setData(voList);
@@ -153,12 +179,39 @@ public class TaskController extends BaseController
 		Task task =  actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if(task == null)
 		{
-			throw new Exception("提交任务失败,任务ID"+taskId+"对应任务不存在 ");
+			throw new Exception("查询任务失败,任务ID"+taskId+"对应任务不存在 ");
 		}
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		//变更申请单任务状态为处理中
+		Apply apply = applyService.getApply(businessKey);
+		switch(apply.getStatus())
+		{
+			case ApplyStatus.WAIT_CHECK:
+				apply.setStatus(ApplyStatus.CHECKING);
+				break;
+			case ApplyStatus.WAIT_APPROVE:
+				apply.setStatus(ApplyStatus.APPROVING);
+				break;
+			case ApplyStatus.WAIT_LOAN_CHECK:
+				apply.setStatus(ApplyStatus.LOAN_CHECKING);
+				break;
+			case ApplyStatus.WAIT_RECONSIDER:
+				apply.setStatus(ApplyStatus.RECONSIDERING);
+				break;
+			case ApplyStatus.WAIT_CHANGE_APPROVE:
+				apply.setStatus(ApplyStatus.CHANGE_APPROVING);
+				break;
+			case ApplyStatus.WAIT_CANCEL_APPRVOE:
+				apply.setStatus(ApplyStatus.CANCEL_APPROVING);
+				break;
+		}
+		applyService.updateApply(apply);
+		
 		TaskVo vo = new TaskVo();
 		vo.setId(task.getId());
 		vo.setName(task.getName());
-		
+		vo.setProcDefId(task.getProcessDefinitionId());
+		vo.setProcInstId(task.getProcessInstanceId());
 		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(), task.getTaskDefinitionKey());
 		if(runPath.getProcessTime()==null)
 		{
@@ -522,5 +575,31 @@ public class TaskController extends BaseController
 		SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 		SysBranchDealer dealer = sysBranchService.getDealerByBranchId(sysBranch.getId());
 		return contractService.getContractInfoListByContractTemplateId(dealer.getReserver1(), true);
+	}
+	
+	@RequestMapping(value="/getUserTaskDefineGroupInfo",method=RequestMethod.GET)
+	public List<HashMap<String,Object>> getUserTaskDefineGroupInfo(QueryParamToDoTaskVo param,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		QueryParamToDoTaskPo queryParam = new QueryParamToDoTaskPo();
+		BeanUtils.copyProperties(param, queryParam);
+		queryParam.setAssignee(sysAccount.getAccountId());
+		
+		if(param.getInTaskDefKeys()!=null&& param.getInTaskDefKeys()!="")
+		{
+			String[] arrInTaskDefKey = param.getInTaskDefKeys().split(",");
+			queryParam.setInTaskDefKeyList(Arrays.asList(arrInTaskDefKey));
+		}
+		if(param.getOutTaskDefKeys()!=null && param.getOutTaskDefKeys() != "")
+		{
+			String[] arrOutTaskDefKey = param.getOutTaskDefKeys().split(",");
+			queryParam.setOutTaskDefKeyList(Arrays.asList(arrOutTaskDefKey));
+		}
+		return taskService.getUserTaskDefineGroupInfo(queryParam);
+	}
+	@RequestMapping(value="/batchDoLoanTask",method=RequestMethod.POST)
+	public void batchDoLoanTask(@RequestBody List<ToDoTaskVo> list)
+	{
+		taskService.batchDoLoanTask(list);
 	}
 }

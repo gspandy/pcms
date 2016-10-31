@@ -24,17 +24,17 @@ public class QueryParamApplyVo extends QueryParamPageVo
 	//经销商编码
 	private String sysBranchCode;
 	//申请开始日期
-	private Date applyStartDate;
+	private String applyStartDate;
 	//申请截止日期
-	private Date applyEndDate;
+	private String applyEndDate;
 	//审批通过开始日期
-	private Date approveStartDate;
+	private String approveStartDate;
 	//审核通过结束日期
-	private Date approveEndDate;
+	private String approveEndDate;
 	//放款完成开始日期
-	private Date loanStartDate;
+	private String loanStartDate;
 	//放款完成结束日期
-	private Date loanEndDate;
+	private String loanEndDate;
 	//案件状态
 	private String applyStatus;
 	public String getAppId() {
@@ -79,47 +79,48 @@ public class QueryParamApplyVo extends QueryParamPageVo
 	public void setSysBranchCode(String sysBranchCode) {
 		this.sysBranchCode = sysBranchCode;
 	}
-	public Date getApplyStartDate() {
-		return applyStartDate;
-	}
-	public void setApplyStartDate(Date applyStartDate) {
-		this.applyStartDate = applyStartDate;
-	}
-	public Date getApplyEndDate() {
-		return applyEndDate;
-	}
-	public void setApplyEndDate(Date applyEndDate) {
-		this.applyEndDate = applyEndDate;
-	}
-	public Date getApproveStartDate() {
-		return approveStartDate;
-	}
-	public void setApproveStartDate(Date approveStartDate) {
-		this.approveStartDate = approveStartDate;
-	}
-	public Date getApproveEndDate() {
-		return approveEndDate;
-	}
-	public void setApproveEndDate(Date approveEndDate) {
-		this.approveEndDate = approveEndDate;
-	}
-	public Date getLoanStartDate() {
-		return loanStartDate;
-	}
-	public void setLoanStartDate(Date loanStartDate) {
-		this.loanStartDate = loanStartDate;
-	}
-	public Date getLoanEndDate() {
-		return loanEndDate;
-	}
-	public void setLoanEndDate(Date loanEndDate) {
-		this.loanEndDate = loanEndDate;
-	}
+
 	public String getApplyStatus() {
 		return applyStatus;
 	}
 	public void setApplyStatus(String applyStatus) {
 		this.applyStatus = applyStatus;
+	}
+	public String getApplyStartDate() {
+		return applyStartDate;
+	}
+	public void setApplyStartDate(String applyStartDate) {
+		this.applyStartDate = applyStartDate;
+	}
+	public String getApplyEndDate() {
+		return applyEndDate;
+	}
+	public void setApplyEndDate(String applyEndDate) {
+		this.applyEndDate = applyEndDate;
+	}
+	public String getApproveStartDate() {
+		return approveStartDate;
+	}
+	public void setApproveStartDate(String approveStartDate) {
+		this.approveStartDate = approveStartDate;
+	}
+	public String getApproveEndDate() {
+		return approveEndDate;
+	}
+	public void setApproveEndDate(String approveEndDate) {
+		this.approveEndDate = approveEndDate;
+	}
+	public String getLoanStartDate() {
+		return loanStartDate;
+	}
+	public void setLoanStartDate(String loanStartDate) {
+		this.loanStartDate = loanStartDate;
+	}
+	public String getLoanEndDate() {
+		return loanEndDate;
+	}
+	public void setLoanEndDate(String loanEndDate) {
+		this.loanEndDate = loanEndDate;
 	}
 	
 	

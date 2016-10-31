@@ -18,4 +18,8 @@ public interface IQueryService
 	 * 查询申请单放款条件
 	 * **/
 	public List<HashMap<String,Object>> queryApplyConditionLoanCommentList(String appId);
+	/**
+	 * 查询申请单已执行任务节点信息
+	 * **/
+	public HashMap<String,Object> queryApplyRunPathNodeList(String appId);
 }

@@ -24,7 +24,7 @@ public class ProcessCompletedListener implements EventHandler {
 		//执行流程完成脚本
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
-		if(globalParam !=null &&(globalParam.getWorkflowCompleteScript()!=null && globalParam.getWorkflowCompleteScript()!=""))
+		if(globalParam !=null &&(globalParam.getWorkflowCompleteScript()!=null && !globalParam.getWorkflowCompleteScript().equals("")))
 		{
 			Map<String,Object> vars=runtimeService.getVariables(eventImpl.getExecutionId());  
 			GroovyEngine.execScript(globalParam.getWorkflowCompleteScript(),eventImpl.getExecutionId(), vars);

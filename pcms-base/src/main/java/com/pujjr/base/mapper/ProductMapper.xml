@@ -362,4 +362,9 @@
   <select id="selectProductTypeName" resultType="String">
   	select PRODUCT_TYPE_NAME from T_PRODUCT_TYPE where ID = #{PRODUCT_TYPE_ID}
   </select>
+  
+  <select id="selectAllProductList" resultMap="BaseResultMap">
+  	select * from t_product
+  	order by product_name,year_rate
+  </select>
 </mapper>

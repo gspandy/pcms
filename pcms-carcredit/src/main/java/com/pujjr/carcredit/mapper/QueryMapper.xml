@@ -9,7 +9,7 @@
 		tenant.NAME as name,
 		tenant.ID_NO as idNo,
 		apply.CREATE_TIME as createTime,
-		apply.STATUS as status,
+		dict.DICT_DATA_NAME  as status ,
 		branch.BRANCH_NAME as branchName,
 		task.NAME_ as taskName,
 		account.ACCOUNT_NAME  as assignee,
@@ -24,9 +24,51 @@
 		left join T_SIGN_CONTRACT sign on apply.APP_ID = sign.APP_ID
 		left join act_ru_task task on apply.PROC_INST_ID = task.PROC_INST_ID_
 		left join SYS_ACCOUNT account on task.ASSIGNEE_ = account.ACCOUNT_ID 
+		left join SYS_DICT_DATA dict on apply.status = dict.DICT_DATA_CODE
 		where 1=1 
 		<if test="param.appId!=null and param.appId!=''">
 			and apply.APP_ID like CONCAT('%',CONCAT(#{param.appId},'%'))
+		</if>
+		<if test="param.name!=null and param.name!=''">
+			and tenant.NAME like CONCAT('%',CONCAT(#{param.name},'%'))
+		</if>
+		<if test="param.productCode!=null and param.productCode!=''">
+			and apply.PRODUCT_CODE = #{param.productCode}
+		</if>
+		<if test="param.idNo!=null and param.idNo!=''">
+			and tenant.ID_NO like CONCAT('%',CONCAT(#{param.idNo},'%'))
+		</if>
+		<if test="param.mobile!=null and param.mobile!=''">
+			and tenant.MOBILE like CONCAT('%',CONCAT(#{param.mobile},'%'))
+		</if>
+		<if test="param.contractNo!=null and param.contractNo!=''">
+			and sign.CONTRACT_NO like CONCAT('%',CONCAT(#{param.contractNo},'%'))
+		</if>
+		<if test="param.sysBranchCode!=null and param.sysBranchCode!=''">
+			and apply.CREATE_BRANCH_CODE = #{param.sysBranchCode}
+		</if>
+		<if test="param.applyStartDate!=null">
+			<![CDATA[
+				and date_format(apply.CREATE_TIME,'%Y-%m-%d') <= #{param.applyStartDate}
+			]]>
+		</if>
+		<if test="param.applyEndDate!=null">
+			<![CDATA[
+				and date_format(apply.CREATE_TIME,'%Y-%m-%d') >= #{param.applyEndDate}
+			]]>
+		</if>
+		<if test="param.approveStartDate!=null">
+			<![CDATA[
+				and  date_format(apply.APPROVE_DATE,'%Y-%m-%d')  <= #{param.approveStartDate}
+			]]>
+		</if>
+		<if test="param.approveEndDate!=null">
+			<![CDATA[
+				and date_format(apply.APPROVE_DATE,'%Y-%m-%d') >= #{param.approveEndDate}
+			]]>
+		</if>
+		<if test="param.applyStatus!=null and param.applyStatus!=''">
+			and apply.STATUS = #{param.applyStatus}
 		</if>
 	</select>
 	<select id="selectApplyConditionLoanCommentList" resultType="HashMap">
@@ -41,5 +83,16 @@
 		left join t_task_process_result c on b.id = c.RUN_PATH_ID
 
 		where c.PROCESS_RESULT in ('tjlx102','tjlx202') and a.APP_ID = #{appId}
+	</select>
+	<select id="selectApplyRunPathNodeList" resultType="String">
+		select b.ACT_ID
+
+		from t_apply a
+
+		left join  t_workflow_runpath b on a. PROC_INST_ID = b.PROC_INST_ID
+
+		where a.APP_ID =#{appId} and b.ACT_TYPE ='userTask'
+
+		group by b.ACT_ID
 	</select>
 </mapper>
