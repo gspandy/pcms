@@ -3,11 +3,13 @@ package com.pujjr.carcredit.service.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
+import org.codehaus.groovy.transform.CategoryASTTransformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,87 +83,40 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 	private IPrintDataSrcServcie printDataSrcServiceImpl;
 	@Autowired
 	private IProductService productServiceImpl;
-	private int rowHeight1 = 30;
-	private int rowHeight2 = 15;
-	private int rowHeight3 = 10;
+	private final int rowHeight1 = 30;
+	private final int rowHeight2 = 15;
+	private final int rowHeight3 = 40;
+	private final int rowHeight4 = 60;
+	
 
 	/**
 	 * 签字日期 tom 2016年10月28日
 	 */
 	public void createSignDate(PdfPTable table, Font fieldNameFont, Font fieldFont) {
-		String[] imptTips = new String[] { "出租人签字/盖章", "潽金融资租赁有限公司", "年 月 日" };
-		// PdfPCell cell = new PdfPCell(new Paragraph("111", fieldNameFont));
-
+		String[] signTips = new String[] { "出租人签字/盖章", "潽金融资租赁有限公司", "年 月 日" };
 		PdfPTable table2 = new PdfPTable(10);
-		// table.setTotalWidth(new
-		// float[]{100,100,100,100,100,100,100,100,100,100});
 		table2.setWidthPercentage(new Float(10));
-
-		PdfPCell innerCell = new PdfPCell(new Paragraph("出租人签字/盖章", fieldNameFont));
-		innerCell.setColspan(10);
-		innerCell.setFixedHeight(25);
-		innerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		innerCell.setBorder(Rectangle.NO_BORDER);
-		table2.addCell(innerCell);
-
-		PdfPCell innerCell2 = new PdfPCell(new Paragraph("潽金融资租赁有限公司", fieldNameFont));
-		innerCell2.setColspan(10);
-		innerCell2.setFixedHeight(25);
-		innerCell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		innerCell2.setBorder(Rectangle.NO_BORDER);
-		table2.addCell(innerCell2);
-
-		PdfPCell innerCell3 = new PdfPCell(new Paragraph("年           月          日", fieldNameFont));
-		innerCell3.setColspan(10);
-		innerCell3.setFixedHeight(25);
-		innerCell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		innerCell3.setBorder(Rectangle.NO_BORDER);
-		table2.addCell(innerCell3);
-
+		for(String sign:signTips){
+			PdfPCell innerCell = new PdfPCell(new Paragraph(sign, fieldNameFont));
+			innerCell.setColspan(10);
+			innerCell.setFixedHeight(25);
+			innerCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+			innerCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			innerCell.setBorder(Rectangle.NO_BORDER);
+			table2.addCell(innerCell);
+		}
 		PdfPCell cell = new PdfPCell(table2);
-		// Paragraph pgh1 = new Paragraph("111", fieldNameFont);
-		// Paragraph pgh2 = new Paragraph("111", fieldNameFont);
-		// Paragraph pgh3 = new Paragraph("111", fieldNameFont);
-		// cell.addElement(new Phrase("fdsffdsfds"));
 		cell.setFixedHeight(75);
 		cell.setColspan(10);
 		cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 		table.addCell(cell);
-		/*
-		 * for (int i = 0; i < imptTips.length; i++) { if(cell == null) cell =
-		 * new PdfPCell(new Paragraph(imptTips[i], fieldNameFont)); // else //
-		 * cell.addElement(new Paragraph(imptTips[i], fieldNameFont)); //
-		 * Paragraph pgh = new Paragraph(imptTips[i], fieldNameFont); //
-		 * cell.addElement(pgh);
-		 * cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		 * cell.setFixedHeight(80); cell.setColspan(10); }
-		 */
-
-		/*
-		 * PdfPCell cell2 = new PdfPCell(new Paragraph("111", fieldNameFont));
-		 * // cell.addElement(new Phrase("fdsffdsfds"));
-		 * cell2.setFixedHeight(20); cell2.setColspan(10); //
-		 * cell2.setBorder(Rectangle.NO_BORDER);
-		 * cell2.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		 * table.addCell(cell2);
-		 * 
-		 * PdfPCell cell3 = new PdfPCell(new Paragraph("111", fieldNameFont));
-		 * // cell.addElement(new Phrase("fdsffdsfds"));
-		 * cell3.setFixedHeight(20); cell3.setColspan(10);
-		 * cell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		 * table.addCell(cell3);
-		 */
-
 	}
 
 	/**
 	 * 附加条件 tom 2016年10月28日
 	 */
 	public void createImportantTips(PdfPTable table, Font fieldNameFont, Font fieldFont) {
-		String[] imptTips = new String[] { "重要提示：",
-				"1、如发生承租人所购车辆的净车价、车辆所有人名称变更、承租人或保证人提供虚假信息、不接受调整后融资政策、撤销租赁申请等非潽金原因而导致影响审核结果之情形，则潽金有权视",
-				"具体情况终止操作该笔租赁业务。", "2、应客户要求，上述租赁申请结果可能发生变更，届时潽金将出具《融资租赁申请核准通知函》，请贵公司以潽金最新出具的版本为准。",
-				"3、本通知函不作为贵公司放车的依据，如果承租人不能履行全部租赁措施，则潽金将拒绝放款，请贵公司谨慎确认交付车辆的时间并承担相应的风险。" };
+		String[] imptTips = new String[] { "重要提示：","1、如发生承租人所购车辆的净车价、车辆所有人名称变更、承租人或保证人提供虚假信息、不接受调整后融资政策、撤销租赁申请等非潽金原因而导致影响审核结果之情形，则潽金有权视,具体情况终止操作该笔租赁业务。", "2、应客户要求，上述租赁申请结果可能发生变更，届时潽金将出具《融资租赁申请核准通知函》，请贵公司以潽金最新出具的版本为准。","3、本通知函不作为贵公司放车的依据，如果承租人不能履行全部租赁措施，则潽金将拒绝放款，请贵公司谨慎确认交付车辆的时间并承担相应的风险。" };
 		PdfPCell cell = new PdfPCell();
 		for (int i = 0; i < imptTips.length; i++) {
 			Paragraph pgh = new Paragraph(imptTips[i], fieldNameFont);
@@ -170,7 +125,7 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 			cell.addElement(pgh);
 		}
 		cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-		cell.setFixedHeight(80);
+		cell.setFixedHeight(this.rowHeight4);
 		cell.setColspan(10);
 		table.addCell(cell);
 
@@ -182,12 +137,14 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 	public void createAddCondition(PdfPTable table, Font fieldNameFont, Font fieldFont) {
 		PdfPCell applyInfo = new PdfPCell(new Paragraph("放款附加条件", fieldNameFont));
 		applyInfo.setColspan(10);
+		applyInfo.setFixedHeight(this.rowHeight2);
 		applyInfo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//		applyInfo.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		table.addCell(applyInfo);
 
 		PdfPCell carModel = new PdfPCell(new Paragraph("放款条件:见票放款 放款附加条件:增加哥哥为共租人，补充提供身份证复印件。", fieldNameFont));
 		carModel.setHorizontalAlignment(Element.ALIGN_LEFT);
-		carModel.setFixedHeight(100);
+		carModel.setFixedHeight(this.rowHeight4);
 		carModel.setColspan(10);
 		table.addCell(carModel);
 	}
@@ -209,22 +166,6 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		// cell.setBorder(Rectangle.NO_BORDER);
 		cell.setColspan(2);
 		table.addCell(cell);
-		/*
-		 * // second row cell = new PdfPCell(new Phrase("Some more text",
-		 * smallfont)); cell.setFixedHeight(30);
-		 * cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-		 * cell.setBorder(Rectangle.NO_BORDER); table.addCell(cell); Barcode128
-		 * code128 = new Barcode128(); code128.setCode("14785236987541");
-		 * code128.setCodeType(Barcode128.CODE128); Image code128Image =
-		 * code128.createImageWithBarcode(cb, null, null); cell = new
-		 * PdfPCell(code128Image, true); cell.setBorder(Rectangle.NO_BORDER);
-		 * cell.setFixedHeight(30); table.addCell(cell); // third row
-		 * table.addCell(cell); cell = new PdfPCell(new Phrase(
-		 * "and something else here", smallfont));
-		 * cell.setBorder(Rectangle.NO_BORDER);
-		 * cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-		 * table.addCell(cell);
-		 */
 		document.add(table);
 		document.close();
 	}
@@ -260,12 +201,13 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		PdfPCell financeInfo = new PdfPCell(new Paragraph("融资信息", fieldNameFont));
 		financeInfo.setHorizontalAlignment(Element.ALIGN_CENTER);
 		financeInfo.setColspan(10);
+		financeInfo.setFixedHeight(rowHeight2);
 		table.addCell(financeInfo);
 		// row1 begin
-		String[] row1 = new String[] { "融资项目", "裸车价", "GPS费用", "购置税", "服务费", "保险费", "延保费", "过户费", "加装费", "融资手续费" };
-		String[] values = new String[] { TotalSalePrice + "", TotalPurchaseTax + "", TotalGpsFee + "",
-				TotalFinanceFee + "", TotalServiceFee + "", TotalTranserFee + "", TotalInsuranceFee + "",
-				TotalAddonFee + "", TotalDelayInsuranceFee + "" };
+		String[] row1 = new String[] {"融资项目", "裸车价", "GPS费用", "购置税", "服务费", "保险费", "延保费", "过户费", "加装费", "融资手续费" };
+		Double[] values = new Double[] { TotalSalePrice, TotalPurchaseTax, TotalGpsFee,
+				TotalFinanceFee, TotalServiceFee, TotalTranserFee, TotalInsuranceFee,
+				TotalAddonFee, TotalDelayInsuranceFee };
 		for (int i = 0; i < row1.length; i++) {
 			PdfPCell tempFee = new PdfPCell(new Paragraph(row1[i], fieldNameFont));
 			tempFee.setFixedHeight(rowHeight2);
@@ -277,7 +219,7 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		priceField.setHorizontalAlignment(Element.ALIGN_CENTER);
 		table.addCell(priceField);
 		for (int i = 0; i < values.length; i++) {
-			PdfPCell salPriceField = new PdfPCell(new Paragraph(values[i], fieldFont));
+			PdfPCell salPriceField = new PdfPCell(new Paragraph(values[i]+"", fieldFont));
 			salPriceField.setFixedHeight(rowHeight2);
 			salPriceField.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(salPriceField);
@@ -291,8 +233,8 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		double financeAmount = 0;
 		double period = 0;// 融资期限
 		double monthRepay = 0;// 月供款待定？？？？2016-10-28
-		double repayMode = 0;// 还款方式待定？？？？2016-10-28
-		double repayDay = 0;// 约定还款日待定？？？？2016-10-28
+		String repayMode = "银联代扣";// 默认为银联代扣
+		String repayDay = "以实际放款日期为准";// 约定还款日
 		String productCode = applyVo.getProductCode();
 		Product product = productServiceImpl.getProductByProductCode(productCode);
 		yearRate = product.getYearRate();
@@ -317,8 +259,8 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		}
 		period = applyVo.getPeriod();
 		String[] row3 = new String[] { "首付比例/抵押比率", "利率", "保证金（元）", "首付款", "融资金额", "融资期限", "月供款（元）", "还款方式", "约定还款日" };
-		Double[] valueArray = new Double[] { initPayPercent, yearRate, collateral, initPayAmount, financeAmount, period,
-				monthRepay, repayMode, repayDay };
+		String[] valueArray = new String[] { initPayPercent+"", yearRate+"", collateral+"", initPayAmount+"", financeAmount+"", period+"",
+				monthRepay+"", repayMode, repayDay };
 		for (int i = 0; i < row3.length; i++) {
 			PdfPCell tempFee = new PdfPCell(new Paragraph(row3[i], fieldNameFont));
 			tempFee.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -328,7 +270,7 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 			table.addCell(tempFee);
 		}
 		for (int i = 0; i < valueArray.length; i++) {
-			PdfPCell tempCel = new PdfPCell(new Paragraph(valueArray[i] + "", fieldFont));
+			PdfPCell tempCel = new PdfPCell(new Paragraph(valueArray[i], fieldFont));
 			tempCel.setHorizontalAlignment(Element.ALIGN_CENTER);
 			if (i == valueArray.length - 1)
 				tempCel.setColspan(2);
@@ -338,38 +280,24 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 	}
 
 	public void createCarInfo(PdfPTable table, Font fieldNameFont, Font fieldFont, ApplyVo applyVo) {
-
-		PdfPCell applyInfo = new PdfPCell(new Paragraph("车辆信息", fieldNameFont));
-		applyInfo.setColspan(10);
-		applyInfo.setFixedHeight(rowHeight2);
-		applyInfo.setHorizontalAlignment(Element.ALIGN_CENTER);
-		table.addCell(applyInfo);
-
-		PdfPCell carModel = new PdfPCell(new Paragraph("车型", fieldNameFont));
-		carModel.setHorizontalAlignment(Element.ALIGN_CENTER);
-		carModel.setColspan(3);
-		table.addCell(carModel);
-
-		PdfPCell carColor = new PdfPCell(new Paragraph("颜色", fieldNameFont));
-		carColor.setHorizontalAlignment(Element.ALIGN_CENTER);
-		carColor.setColspan(1);
-		table.addCell(carColor);
-
-		PdfPCell carVin = new PdfPCell(new Paragraph("车架号", fieldNameFont));
-		carVin.setHorizontalAlignment(Element.ALIGN_CENTER);
-		carVin.setColspan(2);
-		table.addCell(carVin);
-
-		PdfPCell carEngineNo = new PdfPCell(new Paragraph("发动机号", fieldNameFont));
-		carEngineNo.setHorizontalAlignment(Element.ALIGN_CENTER);
-		carEngineNo.setColspan(2);
-		table.addCell(carEngineNo);
-
-		PdfPCell dealPrice = new PdfPCell(new Paragraph("出租与承租方协议价（元）", fieldNameFont));
-		dealPrice.setHorizontalAlignment(Element.ALIGN_CENTER);
-		dealPrice.setColspan(2);
-		table.addCell(dealPrice);
-
+		String [] carAttrs = new String[]{"车辆信息","车型","颜色","车架号","发动机号","出租与承租方协议价（元）"};
+		for(int i = 0;i < carAttrs.length;i++){
+			String carAttr = carAttrs[i];
+			PdfPCell currCell = new PdfPCell(new Paragraph(carAttr, fieldNameFont));
+			if(carAttr.equals("车辆信息")){
+				currCell.setColspan(10);
+			}else if(carAttr.equals("车型")){
+				currCell.setColspan(3);
+			}else if(carAttr.equals("颜色")){
+				currCell.setColspan(1);
+			}else{
+				currCell.setColspan(2);
+			}
+			currCell.setFixedHeight(rowHeight2);
+			currCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//			currCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			table.addCell(currCell);
+		}
 		List<LeaseCarVo> leaseCarList = printDataSrcServiceImpl.getLeaseCarList(applyVo);
 		for (int i = 0; i < leaseCarList.size(); i++) {
 			LeaseCarVo leaseCarVo = leaseCarList.get(i);
@@ -402,8 +330,9 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 		ApplyCloessee applyCloessee = applyVo.getCloessee();
 		PdfPCell applyInfo = new PdfPCell(new Paragraph("申请人信息", fieldNameFont));
 		applyInfo.setColspan(10);
-		applyInfo.setFixedHeight(rowHeight2);
+		applyInfo.setFixedHeight(this.rowHeight2);
 		applyInfo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//		applyInfo.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		table.addCell(applyInfo);
 
 		PdfPCell tenant = new PdfPCell(new Paragraph("承租人:", fieldNameFont));
@@ -470,41 +399,32 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 	}
 
 	@Override
-	public void createPdf(String appId, String contextPath, String ossKey) {
+	public File createPdf(String appId, String contextPath, String contractName) {
 		Document document = new Document();
 		PdfWriter pdfWriter = null;
 		File file = null;
 		try {
-			BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
-			file = new File(contextPath + "\\" + PrintCheckLetterImpl.DEST);
+//			BaseFont bf = BaseFont.createFont("STSongStd-Light", "UniGB-UCS2-H", false);
+			BaseFont bf = BaseFont.createFont(contextPath+"\\resources\\font\\MSYH.ttf",BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			file = new File(contextPath + "\\" + contractName);
 			if (!file.exists())
 				file.createNewFile();
 			pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));
 			document.open();
 			PdfPTable table = new PdfPTable(10);
-			// table.setTotalWidth(new
-			// float[]{100,100,100,100,100,100,100,100,100,100});
 			table.setWidthPercentage(new Float(110));
-			Font titleFont = new Font(bf, 16, Font.BOLD);
-			Font orgFont = new Font(bf, 12, Font.BOLD);// 经销商字体
-			Font welcFont = new Font(bf, 10, Font.NORMAL);// 首段字体
-			Font fieldNameFont = new Font(bf, 8, Font.BOLD);// 字段名字体
-			Font fieldFont = new Font(bf, 8, Font.NORMAL);// 字段值字体（正文字体）
-			Font underLineFont = new Font(bf, 10, Font.UNDERLINE);// 下划线字体
+			Font titleFont = new Font(bf, 12, Font.BOLD);
+			Font orgFont = new Font(bf, 8, Font.BOLD);// 经销商字体
+			Font welcFont = new Font(bf, 8, Font.NORMAL);// 首段字体
+			Font fieldNameFont = new Font(bf, 7, Font.BOLD);// 字段名字体
+			Font fieldFont = new Font(bf, 7, Font.NORMAL);// 字段值字体（正文字体）
+			Font underLineFont = new Font(bf, 8, Font.UNDERLINE);// 下划线字体
 
-			Image logoImage2 = Image.getInstance(contextPath + "/resource/print/logo.jpg");
-			logoImage2.scalePercent(4);
-			logoImage2.setAbsolutePosition(10, 810);
-			document.add(logoImage2);
-
-			/*
-			 * Image logoImage = Image.getInstance("print/logo.jpg");
-			 * logoImage.setWidthPercentage(15); PdfPCell logoCell = new
-			 * PdfPCell(); logoCell.addElement(logoImage);
-			 * logoCell.setColspan(10); logoCell.setBorder(Rectangle.NO_BORDER);
-			 * logoCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-			 * table.addCell(logoCell);
-			 */
+//			Image logoImage = Image.getInstance(contextPath + "/resource/print/logo.jpg");
+			Image logoImage = Image.getInstance(contextPath+"\\resources\\print\\logo.jpg");
+			logoImage.scalePercent(4);
+			logoImage.setAbsolutePosition(10, 810);
+			document.add(logoImage);
 
 			Paragraph title = new Paragraph("核准通知函", titleFont);
 			PdfPCell titleCell = new PdfPCell(title);
@@ -521,42 +441,47 @@ public class PrintCheckLetterImpl implements IPrintCheckLetter {
 			PdfPCell branchCell = new PdfPCell();
 			SysBranch sysBranch = sysBranchService.getSysBranch("", applyVo.getCreateBranchCode());
 			String branchName = sysBranch.getBranchName();
-			Paragraph branchPgh = new Paragraph("尊敬的:" + branchName + ":", orgFont);
+			Paragraph branchPgh = new Paragraph("尊敬的 " + branchName + "：", orgFont);
 			branchCell.setColspan(10);
 			branchCell.setBorder(Rectangle.NO_BORDER);
 			branchCell.addElement(branchPgh);
 			table.addCell(branchCell);
 
 			PdfPCell welcCell = new PdfPCell();
-			String wel1 = "感谢贵公司提交客户：";
-			String wel2 = applyTenant.getName() + "      ";// 承租人
-			String wel3 = "的租赁申请，该项租赁申请，经审已被核准，具体核准日期为：";
-			String wel4 = "2016/10/27 17:10:01";// 核准日期
-			String wel5 = "。敬请确认以下信息，如有错误请务必及时告知。本核准函有效期为60日（自核准日次日起算）。十分感谢您的支持！";
-			// Phrase firstPgh = new Phrase();
 			Paragraph firstPgh = new Paragraph();
-			firstPgh.add(new Phrase(wel1, welcFont));
-			firstPgh.add(new Phrase(wel2, underLineFont));
-			firstPgh.add(new Phrase(wel3, welcFont));
-			firstPgh.add(new Phrase(wel4, underLineFont));
-			firstPgh.add(new Phrase(wel5, welcFont));
+			String[] wels = new String[]{"感谢贵公司提交客户：",applyTenant.getName() + "      ","的租赁申请，该项租赁申请，经审已被核准，具体核准日期为：","2016/10/27 17:10:01","。敬请确认以下信息，如有错误请务必及时告知。本核准函有效期为60日（自核准日次日起算）。十分感谢您的支持！"};
+			for(int i = 0;i < wels.length;i ++){
+				if(i == 1 || i == 3)
+					firstPgh.add(new Phrase(wels[i], underLineFont));
+				else
+					firstPgh.add(new Phrase(wels[i], welcFont));
+			}
 			welcCell.setColspan(10);
-			welcCell.setFixedHeight(45);
+			welcCell.setFixedHeight(this.rowHeight3);
 			welcCell.setBorder(Rectangle.NO_BORDER);
 			welcCell.addElement(firstPgh);
 			table.addCell(welcCell);
-
 			this.createTenantInfo(table, fieldNameFont, fieldFont, applyVo);
 			this.createCarInfo(table, fieldNameFont, fieldFont, applyVo);
 			this.createFinanceInfo(table, fieldNameFont, fieldFont, applyVo);
 			this.createAddCondition(table, fieldNameFont, fieldFont);
 			this.createImportantTips(table, fieldNameFont, fieldFont);
 			this.createSignDate(table, fieldNameFont, fieldFont);
+			
+			ArrayList<PdfPRow> pdfPRows = table.getRows();
+			for (int j = 0; j < pdfPRows.size();j++) {
+				PdfPCell[] pdfPCell = pdfPRows.get(j).getCells();
+				for (int i = 0; i < pdfPCell.length; i++) {
+					if(pdfPCell[i] != null)
+						pdfPCell[i].setVerticalAlignment(Element.ALIGN_MIDDLE);
+				}
+			}
 			document.add(table);
 			document.close();
 			pdfWriter.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return file;
 	}
 }
