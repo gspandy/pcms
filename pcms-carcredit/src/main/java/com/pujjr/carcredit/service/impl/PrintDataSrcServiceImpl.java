@@ -153,7 +153,7 @@ public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 			String carStyleName = carStyle.getCarStyleName();//款式名称
 			String carBranName = carStyle.getCarBrand().getBrandName();//品牌名称
 			String carSerialName = carStyle.getCarSerial().getCarSerialName();//车系名称
-			leaseCarVo.setBrandSerial(carBranName+"-"+carBranName+"-"+carSerialName);
+			leaseCarVo.setBrandSerial(carBranName+" "+carBranName+" "+carSerialName);
 			String plateNo = signFinanceDetail.getPlateNo();//车牌号
 			leaseCarVo.setPlateNo(plateNo);
 			leaseCarList.add(leaseCarVo);

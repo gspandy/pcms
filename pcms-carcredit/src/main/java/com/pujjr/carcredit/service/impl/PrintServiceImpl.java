@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Map;
@@ -107,11 +109,12 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.close();
 			pdfReader.close();
 			os.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 //		删除临时文件
-//		file.delete();
+		file.delete();
 		return ossKey;
 	}
 	@Override
@@ -160,10 +163,12 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 
@@ -204,9 +209,11 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 	@Override
@@ -241,17 +248,19 @@ public class PrintServiceImpl implements IPrintService {
 			Map<String, Item> map = fields.getFields();
 			for(Map.Entry<String, Item> entry:map.entrySet()){
 				fields.setFieldProperty(entry.getKey(), "textfont", bf, null);
-				fields.setFieldProperty(entry.getKey(), "textsize", new Float(8), null); 
+				fields.setFieldProperty(entry.getKey(), "textsize", new Float(5), null); 
 			}
 			PMortgageListVo pmlv = printDataSrcServiceImpl.getMortgageList(businessId);
 			printDataSrcServiceImpl.setMorgageListFields(fields, pmlv);
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 	@Override
@@ -292,9 +301,11 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 	@Override
@@ -336,9 +347,11 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 	@Override
@@ -384,10 +397,12 @@ public class PrintServiceImpl implements IPrintService {
 			pdfStamper.setFormFlattening(true);
 			pdfStamper.close();
 			pdfReader.close();
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
 	}
 	
@@ -403,11 +418,33 @@ public class PrintServiceImpl implements IPrintService {
 		try {
 			contractName = "8-核准函-"+appId+"-"+".pdf";
 			ossKey = "resource/"+appId+"/print/"+contractName;
-			printCheckLetterImpl.createPdf(appId,contextPath,ossKey);
+			file = printCheckLetterImpl.createPdf(appId,contextPath,contractName);
+			ossServiceImpl.putObject(ossKey, new FileInputStream(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		file.delete();
 		return ossKey;
+	}
+	/**
+	 * 测试：读取所上传存储的文件保存至本地
+	 * tom 2016年10月31日
+	 */
+	public void ossReadTest(String ossKey){
+		 try {
+			InputStream fis = ossServiceImpl.getObject(ossKey);
+			File fileOut = new File("d:\\fileOut.pdf");
+			FileOutputStream fos = new FileOutputStream(fileOut);
+			byte[] buf = new byte[1024];
+			int length = 0;
+			while((length = fis.read(buf)) > 0){
+				fos.write(buf, 0, length);
+			}
+			fos.close();
+			fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -442,9 +479,7 @@ public class PrintServiceImpl implements IPrintService {
 			ossKey = this.prtCheckLetter(appId,contextPath,contractKey);
 			break;
 		}
+//		this.ossReadTest(ossKey);
 		return ossKey;
 	}
-
-
-	
 }
