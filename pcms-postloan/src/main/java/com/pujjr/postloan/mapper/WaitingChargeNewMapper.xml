@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.WaitingChargeNewMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.WaitingChargeNew" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_TYPE" property="applyType" jdbcType="VARCHAR" />
+    <result column="APPLY_REF_ID" property="applyRefId" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="DO_SETTLE" property="doSettle" jdbcType="BIT" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="REPAY_OVERDUE_AMOUNT" property="repayOverdueAmount" jdbcType="DOUBLE" />
+    <result column="VALUE_DATE" property="valueDate" jdbcType="DATE" />
+    <result column="CLOSING_DATE" property="closingDate" jdbcType="DATE" />
+    <result column="ADDUP_OVERDUE_DAY" property="addupOverdueDay" jdbcType="INTEGER" />
+    <result column="ADDUP_OVERDUE_AMOUNT" property="addupOverdueAmount" jdbcType="DOUBLE" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
+    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
+    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
+    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_TYPE, APPLY_REF_ID, APP_ID, FEE_TYPE, FEE_REF_ID, PERIOD, DO_SETTLE, REPAY_CAPITAL, 
+    REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, VALUE_DATE, CLOSING_DATE, ADDUP_OVERDUE_DAY, 
+    ADDUP_OVERDUE_AMOUNT, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_waiting_charge_new
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_waiting_charge_new
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.WaitingChargeNew" >
+    insert into t_waiting_charge_new (ID, APPLY_TYPE, APPLY_REF_ID, 
+      APP_ID, FEE_TYPE, FEE_REF_ID, 
+      PERIOD, DO_SETTLE, REPAY_CAPITAL, 
+      REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, VALUE_DATE, 
+      CLOSING_DATE, ADDUP_OVERDUE_DAY, ADDUP_OVERDUE_AMOUNT, 
+      RESERVER1, RESERVER2, RESERVER3, 
+      RESERVER4, RESERVER5, RESERVER6
+      )
+    values (#{id,jdbcType=VARCHAR}, #{applyType,jdbcType=VARCHAR}, #{applyRefId,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, #{feeRefId,jdbcType=VARCHAR}, 
+      #{period,jdbcType=INTEGER}, #{doSettle,jdbcType=BIT}, #{repayCapital,jdbcType=DOUBLE}, 
+      #{repayInterest,jdbcType=DOUBLE}, #{repayOverdueAmount,jdbcType=DOUBLE}, #{valueDate,jdbcType=DATE}, 
+      #{closingDate,jdbcType=DATE}, #{addupOverdueDay,jdbcType=INTEGER}, #{addupOverdueAmount,jdbcType=DOUBLE}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, 
+      #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.WaitingChargeNew" >
+    insert into t_waiting_charge_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyType != null" >
+        APPLY_TYPE,
+      </if>
+      <if test="applyRefId != null" >
+        APPLY_REF_ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE,
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID,
+      </if>
+      <if test="period != null" >
+        PERIOD,
+      </if>
+      <if test="doSettle != null" >
+        DO_SETTLE,
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL,
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST,
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT,
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE,
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE,
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY,
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyType != null" >
+        #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="applyRefId != null" >
+        #{applyRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="doSettle != null" >
+        #{doSettle,jdbcType=BIT},
+      </if>
+      <if test="repayCapital != null" >
+        #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        #{reserver6,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.WaitingChargeNew" >
+    update t_waiting_charge_new
+    <set >
+      <if test="applyType != null" >
+        APPLY_TYPE = #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="applyRefId != null" >
+        APPLY_REF_ID = #{applyRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        PERIOD = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="doSettle != null" >
+        DO_SETTLE = #{doSettle,jdbcType=BIT},
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE = #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6 = #{reserver6,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.WaitingChargeNew" >
+    update t_waiting_charge_new
+    set APPLY_TYPE = #{applyType,jdbcType=VARCHAR},
+      APPLY_REF_ID = #{applyRefId,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      PERIOD = #{period,jdbcType=INTEGER},
+      DO_SETTLE = #{doSettle,jdbcType=BIT},
+      REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      VALUE_DATE = #{valueDate,jdbcType=DATE},
+      CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=DATE},
+      RESERVER4 = #{reserver4,jdbcType=DATE},
+      RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      RESERVER6 = #{reserver6,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.ApplySettleMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplySettle" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="SETTLE_TYPE" property="settleType" jdbcType="VARCHAR" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="REPAY_OVERDUE_AMOUNT" property="repayOverdueAmount" jdbcType="DOUBLE" />
+    <result column="OTHER_FEE" property="otherFee" jdbcType="DOUBLE" />
+    <result column="OTHER_OVERDUE_AMOUNT" property="otherOverdueAmount" jdbcType="DOUBLE" />
+    <result column="LATE_FEE" property="lateFee" jdbcType="DOUBLE" />
+    <result column="SETTLE_CAPITAL" property="settleCapital" jdbcType="DOUBLE" />
+    <result column="SETTLE_TOTAL_AMOUNT" property="settleTotalAmount" jdbcType="DOUBLE" />
+    <result column="SETTLE_AFTER_CAPITAL" property="settleAfterCapital" jdbcType="DOUBLE" />
+    <result column="SETTLE_START_PERIOD" property="settleStartPeriod" jdbcType="INTEGER" />
+    <result column="SETTLE_END_PERIOD" property="settleEndPeriod" jdbcType="INTEGER" />
+    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
+    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+    <result column="APPLY_END_DATE" property="applyEndDate" jdbcType="DATE" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, SETTLE_TYPE, REPAY_CAPITAL, REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, OTHER_FEE, 
+    OTHER_OVERDUE_AMOUNT, LATE_FEE, SETTLE_CAPITAL, SETTLE_TOTAL_AMOUNT, SETTLE_AFTER_CAPITAL, 
+    SETTLE_START_PERIOD, SETTLE_END_PERIOD, APPLY_COMMENT, APPLY_STATUS, APPLY_END_DATE, 
+    CREATE_ID, CREATE_DATE, PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_settle
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_settle
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplySettle" >
+    insert into t_apply_settle (ID, APP_ID, SETTLE_TYPE, 
+      REPAY_CAPITAL, REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, 
+      OTHER_FEE, OTHER_OVERDUE_AMOUNT, LATE_FEE, 
+      SETTLE_CAPITAL, SETTLE_TOTAL_AMOUNT, SETTLE_AFTER_CAPITAL, 
+      SETTLE_START_PERIOD, SETTLE_END_PERIOD, APPLY_COMMENT, 
+      APPLY_STATUS, APPLY_END_DATE, CREATE_ID, 
+      CREATE_DATE, PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{settleType,jdbcType=VARCHAR}, 
+      #{repayCapital,jdbcType=DOUBLE}, #{repayInterest,jdbcType=DOUBLE}, #{repayOverdueAmount,jdbcType=DOUBLE}, 
+      #{otherFee,jdbcType=DOUBLE}, #{otherOverdueAmount,jdbcType=DOUBLE}, #{lateFee,jdbcType=DOUBLE}, 
+      #{settleCapital,jdbcType=DOUBLE}, #{settleTotalAmount,jdbcType=DOUBLE}, #{settleAfterCapital,jdbcType=DOUBLE}, 
+      #{settleStartPeriod,jdbcType=INTEGER}, #{settleEndPeriod,jdbcType=INTEGER}, #{applyComment,jdbcType=VARCHAR}, 
+      #{applyStatus,jdbcType=VARCHAR}, #{applyEndDate,jdbcType=DATE}, #{createId,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplySettle" >
+    insert into t_apply_settle
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="settleType != null" >
+        SETTLE_TYPE,
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL,
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST,
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT,
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE,
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT,
+      </if>
+      <if test="lateFee != null" >
+        LATE_FEE,
+      </if>
+      <if test="settleCapital != null" >
+        SETTLE_CAPITAL,
+      </if>
+      <if test="settleTotalAmount != null" >
+        SETTLE_TOTAL_AMOUNT,
+      </if>
+      <if test="settleAfterCapital != null" >
+        SETTLE_AFTER_CAPITAL,
+      </if>
+      <if test="settleStartPeriod != null" >
+        SETTLE_START_PERIOD,
+      </if>
+      <if test="settleEndPeriod != null" >
+        SETTLE_END_PERIOD,
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT,
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS,
+      </if>
+      <if test="applyEndDate != null" >
+        APPLY_END_DATE,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="settleType != null" >
+        #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="lateFee != null" >
+        #{lateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="settleCapital != null" >
+        #{settleCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="settleTotalAmount != null" >
+        #{settleTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="settleAfterCapital != null" >
+        #{settleAfterCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="settleStartPeriod != null" >
+        #{settleStartPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="settleEndPeriod != null" >
+        #{settleEndPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="applyComment != null" >
+        #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null" >
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyEndDate != null" >
+        #{applyEndDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplySettle" >
+    update t_apply_settle
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="settleType != null" >
+        SETTLE_TYPE = #{settleType,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="lateFee != null" >
+        LATE_FEE = #{lateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="settleCapital != null" >
+        SETTLE_CAPITAL = #{settleCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="settleTotalAmount != null" >
+        SETTLE_TOTAL_AMOUNT = #{settleTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="settleAfterCapital != null" >
+        SETTLE_AFTER_CAPITAL = #{settleAfterCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="settleStartPeriod != null" >
+        SETTLE_START_PERIOD = #{settleStartPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="settleEndPeriod != null" >
+        SETTLE_END_PERIOD = #{settleEndPeriod,jdbcType=INTEGER},
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyEndDate != null" >
+        APPLY_END_DATE = #{applyEndDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplySettle" >
+    update t_apply_settle
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SETTLE_TYPE = #{settleType,jdbcType=VARCHAR},
+      REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      LATE_FEE = #{lateFee,jdbcType=DOUBLE},
+      SETTLE_CAPITAL = #{settleCapital,jdbcType=DOUBLE},
+      SETTLE_TOTAL_AMOUNT = #{settleTotalAmount,jdbcType=DOUBLE},
+      SETTLE_AFTER_CAPITAL = #{settleAfterCapital,jdbcType=DOUBLE},
+      SETTLE_START_PERIOD = #{settleStartPeriod,jdbcType=INTEGER},
+      SETTLE_END_PERIOD = #{settleEndPeriod,jdbcType=INTEGER},
+      APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      APPLY_END_DATE = #{applyEndDate,jdbcType=DATE},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.OtherFeeMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OtherFee" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FEE_TOTAL_AMOUNT" property="feeTotalAmount" jdbcType="DOUBLE" />
+    <result column="VALUE_DATE" property="valueDate" jdbcType="DATE" />
+    <result column="CLOSING_DATE" property="closingDate" jdbcType="DATE" />
+    <result column="ADDUP_OVERDUE_DAY" property="addupOverdueDay" jdbcType="INTEGER" />
+    <result column="ADDUP_OVERDUE_AMOUNT" property="addupOverdueAmount" jdbcType="DOUBLE" />
+    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+    <result column="REPAY_STATUS" property="repayStatus" jdbcType="VARCHAR" />
+    <result column="SETTLE_DATE" property="settleDate" jdbcType="DATE" />
+    <result column="SETTLE_MODE" property="settleMode" jdbcType="VARCHAR" />
+    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, FEE_TOTAL_AMOUNT, VALUE_DATE, CLOSING_DATE, ADDUP_OVERDUE_DAY, ADDUP_OVERDUE_AMOUNT, 
+    APPLY_STATUS, REPAY_STATUS, SETTLE_DATE, SETTLE_MODE, APPLY_COMMENT, CREATE_ID, CREATE_DATE, 
+    PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_other_fee
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_other_fee
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OtherFee" >
+    insert into t_other_fee (ID, APP_ID, FEE_TOTAL_AMOUNT, 
+      VALUE_DATE, CLOSING_DATE, ADDUP_OVERDUE_DAY, 
+      ADDUP_OVERDUE_AMOUNT, APPLY_STATUS, REPAY_STATUS, 
+      SETTLE_DATE, SETTLE_MODE, APPLY_COMMENT, 
+      CREATE_ID, CREATE_DATE, PROC_INST_ID
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{feeTotalAmount,jdbcType=DOUBLE}, 
+      #{valueDate,jdbcType=DATE}, #{closingDate,jdbcType=DATE}, #{addupOverdueDay,jdbcType=INTEGER}, 
+      #{addupOverdueAmount,jdbcType=DOUBLE}, #{applyStatus,jdbcType=VARCHAR}, #{repayStatus,jdbcType=VARCHAR}, 
+      #{settleDate,jdbcType=DATE}, #{settleMode,jdbcType=VARCHAR}, #{applyComment,jdbcType=VARCHAR}, 
+      #{createId,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OtherFee" >
+    insert into t_other_fee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="feeTotalAmount != null" >
+        FEE_TOTAL_AMOUNT,
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE,
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE,
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY,
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT,
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS,
+      </if>
+      <if test="repayStatus != null" >
+        REPAY_STATUS,
+      </if>
+      <if test="settleDate != null" >
+        SETTLE_DATE,
+      </if>
+      <if test="settleMode != null" >
+        SETTLE_MODE,
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeTotalAmount != null" >
+        #{feeTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="applyStatus != null" >
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="repayStatus != null" >
+        #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="settleMode != null" >
+        #{settleMode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null" >
+        #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OtherFee" >
+    update t_other_fee
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeTotalAmount != null" >
+        FEE_TOTAL_AMOUNT = #{feeTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE = #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="repayStatus != null" >
+        REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        SETTLE_DATE = #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="settleMode != null" >
+        SETTLE_MODE = #{settleMode,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OtherFee" >
+    update t_other_fee
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      FEE_TOTAL_AMOUNT = #{feeTotalAmount,jdbcType=DOUBLE},
+      VALUE_DATE = #{valueDate,jdbcType=DATE},
+      CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      SETTLE_DATE = #{settleDate,jdbcType=DATE},
+      SETTLE_MODE = #{settleMode,jdbcType=VARCHAR},
+      APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

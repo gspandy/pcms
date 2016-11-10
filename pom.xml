@@ -424,6 +424,7 @@
     <module>pcms-carcredit</module>
     <module>pcms-push</module>
     <module>pcms-file</module>
+    <module>pcms-postloan</module>
   </modules>
   
  <build>

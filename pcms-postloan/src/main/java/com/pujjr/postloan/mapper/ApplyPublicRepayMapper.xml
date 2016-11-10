@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.ApplyPublicRepayMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyPublicRepay" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="CHARGE_AMOUNT" property="chargeAmount" jdbcType="DOUBLE" />
+    <result column="CHARGE_DATE" property="chargeDate" jdbcType="DOUBLE" />
+    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
+    <result column="CHARGE_RESULT" property="chargeResult" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CRATE_DATE" property="crateDate" jdbcType="DATE" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, CHARGE_AMOUNT, CHARGE_DATE, APPLY_STATUS, APPLY_COMMENT, CHARGE_RESULT, 
+    CREATE_ID, CRATE_DATE, PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_public_repay
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_public_repay
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyPublicRepay" >
+    insert into t_apply_public_repay (ID, APP_ID, CHARGE_AMOUNT, 
+      CHARGE_DATE, APPLY_STATUS, APPLY_COMMENT, 
+      CHARGE_RESULT, CREATE_ID, CRATE_DATE, 
+      PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{chargeAmount,jdbcType=DOUBLE}, 
+      #{chargeDate,jdbcType=DOUBLE}, #{applyStatus,jdbcType=VARCHAR}, #{applyComment,jdbcType=VARCHAR}, 
+      #{chargeResult,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{crateDate,jdbcType=DATE}, 
+      #{procInstId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyPublicRepay" >
+    insert into t_apply_public_repay
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="chargeAmount != null" >
+        CHARGE_AMOUNT,
+      </if>
+      <if test="chargeDate != null" >
+        CHARGE_DATE,
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS,
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT,
+      </if>
+      <if test="chargeResult != null" >
+        CHARGE_RESULT,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="crateDate != null" >
+        CRATE_DATE,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeAmount != null" >
+        #{chargeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeDate != null" >
+        #{chargeDate,jdbcType=DOUBLE},
+      </if>
+      <if test="applyStatus != null" >
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null" >
+        #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeResult != null" >
+        #{chargeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="crateDate != null" >
+        #{crateDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyPublicRepay" >
+    update t_apply_public_repay
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeAmount != null" >
+        CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeDate != null" >
+        CHARGE_DATE = #{chargeDate,jdbcType=DOUBLE},
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeResult != null" >
+        CHARGE_RESULT = #{chargeResult,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="crateDate != null" >
+        CRATE_DATE = #{crateDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyPublicRepay" >
+    update t_apply_public_repay
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
+      CHARGE_DATE = #{chargeDate,jdbcType=DOUBLE},
+      APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      CHARGE_RESULT = #{chargeResult,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CRATE_DATE = #{crateDate,jdbcType=DATE},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

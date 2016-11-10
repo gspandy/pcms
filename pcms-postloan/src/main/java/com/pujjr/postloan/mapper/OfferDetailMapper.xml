@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.OfferDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferDetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="OFFER_ID" property="offerId" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
+    <result column="CHARGE_CAPITAL" property="chargeCapital" jdbcType="DOUBLE" />
+    <result column="CHARGE_INTEREST" property="chargeInterest" jdbcType="DOUBLE" />
+    <result column="CHARGE_OVERDUE_AMOUNT" property="chargeOverdueAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, OFFER_ID, FEE_TYPE, FEE_REF_ID, CHARGE_CAPITAL, CHARGE_INTEREST, CHARGE_OVERDUE_AMOUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_offer_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_offer_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferDetail" >
+    insert into t_offer_detail (ID, OFFER_ID, FEE_TYPE, 
+      FEE_REF_ID, CHARGE_CAPITAL, CHARGE_INTEREST, 
+      CHARGE_OVERDUE_AMOUNT)
+    values (#{id,jdbcType=VARCHAR}, #{offerId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
+      #{feeRefId,jdbcType=VARCHAR}, #{chargeCapital,jdbcType=DOUBLE}, #{chargeInterest,jdbcType=DOUBLE}, 
+      #{chargeOverdueAmount,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferDetail" >
+    insert into t_offer_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="offerId != null" >
+        OFFER_ID,
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE,
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID,
+      </if>
+      <if test="chargeCapital != null" >
+        CHARGE_CAPITAL,
+      </if>
+      <if test="chargeInterest != null" >
+        CHARGE_INTEREST,
+      </if>
+      <if test="chargeOverdueAmount != null" >
+        CHARGE_OVERDUE_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeCapital != null" >
+        #{chargeCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeInterest != null" >
+        #{chargeInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeOverdueAmount != null" >
+        #{chargeOverdueAmount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferDetail" >
+    update t_offer_detail
+    <set >
+      <if test="offerId != null" >
+        OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeCapital != null" >
+        CHARGE_CAPITAL = #{chargeCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeInterest != null" >
+        CHARGE_INTEREST = #{chargeInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="chargeOverdueAmount != null" >
+        CHARGE_OVERDUE_AMOUNT = #{chargeOverdueAmount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferDetail" >
+    update t_offer_detail
+    set OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      CHARGE_CAPITAL = #{chargeCapital,jdbcType=DOUBLE},
+      CHARGE_INTEREST = #{chargeInterest,jdbcType=DOUBLE},
+      CHARGE_OVERDUE_AMOUNT = #{chargeOverdueAmount,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

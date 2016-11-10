@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.WaitingChargeMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.WaitingCharge" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="REPAY_OVERDUE_AMOUNT" property="repayOverdueAmount" jdbcType="DOUBLE" />
+    <result column="CLOSING_DATE" property="closingDate" jdbcType="DATE" />
+    <result column="REPAY_DATE" property="repayDate" jdbcType="DATE" />
+    <result column="OFFER_STATUS" property="offerStatus" jdbcType="VARCHAR" />
+    <result column="OFFER_ID" property="offerId" jdbcType="VARCHAR" />
+    <result column="GEN_TIME" property="genTime" jdbcType="TIMESTAMP" />
+    <result column="VERSION_ID" property="versionId" jdbcType="INTEGER" />
+    <result column="BATCH_TASK_ID" property="batchTaskId" jdbcType="VARCHAR" />
+    <result column="BATCH_PROCESS_STATUS" property="batchProcessStatus" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
+    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
+    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
+    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+    <result column="RESERVER7" property="reserver7" jdbcType="VARCHAR" />
+    <result column="RESERVER8" property="reserver8" jdbcType="VARCHAR" />
+    <result column="RESERVER9" property="reserver9" jdbcType="VARCHAR" />
+    <result column="RESERVER10" property="reserver10" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, FEE_TYPE, FEE_REF_ID, REPAY_CAPITAL, REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, 
+    CLOSING_DATE, REPAY_DATE, OFFER_STATUS, OFFER_ID, GEN_TIME, VERSION_ID, BATCH_TASK_ID, 
+    BATCH_PROCESS_STATUS, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6, 
+    RESERVER7, RESERVER8, RESERVER9, RESERVER10
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_waiting_charge
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_waiting_charge
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.WaitingCharge" >
+    insert into t_waiting_charge (ID, APP_ID, FEE_TYPE, 
+      FEE_REF_ID, REPAY_CAPITAL, REPAY_INTEREST, 
+      REPAY_OVERDUE_AMOUNT, CLOSING_DATE, REPAY_DATE, 
+      OFFER_STATUS, OFFER_ID, GEN_TIME, 
+      VERSION_ID, BATCH_TASK_ID, BATCH_PROCESS_STATUS, 
+      RESERVER1, RESERVER2, RESERVER3, 
+      RESERVER4, RESERVER5, RESERVER6, 
+      RESERVER7, RESERVER8, RESERVER9, 
+      RESERVER10)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
+      #{feeRefId,jdbcType=VARCHAR}, #{repayCapital,jdbcType=DOUBLE}, #{repayInterest,jdbcType=DOUBLE}, 
+      #{repayOverdueAmount,jdbcType=DOUBLE}, #{closingDate,jdbcType=DATE}, #{repayDate,jdbcType=DATE}, 
+      #{offerStatus,jdbcType=VARCHAR}, #{offerId,jdbcType=VARCHAR}, #{genTime,jdbcType=TIMESTAMP}, 
+      #{versionId,jdbcType=INTEGER}, #{batchTaskId,jdbcType=VARCHAR}, #{batchProcessStatus,jdbcType=VARCHAR}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, 
+      #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE}, 
+      #{reserver7,jdbcType=VARCHAR}, #{reserver8,jdbcType=VARCHAR}, #{reserver9,jdbcType=VARCHAR}, 
+      #{reserver10,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.WaitingCharge" >
+    insert into t_waiting_charge
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE,
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID,
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL,
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST,
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT,
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE,
+      </if>
+      <if test="repayDate != null" >
+        REPAY_DATE,
+      </if>
+      <if test="offerStatus != null" >
+        OFFER_STATUS,
+      </if>
+      <if test="offerId != null" >
+        OFFER_ID,
+      </if>
+      <if test="genTime != null" >
+        GEN_TIME,
+      </if>
+      <if test="versionId != null" >
+        VERSION_ID,
+      </if>
+      <if test="batchTaskId != null" >
+        BATCH_TASK_ID,
+      </if>
+      <if test="batchProcessStatus != null" >
+        BATCH_PROCESS_STATUS,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6,
+      </if>
+      <if test="reserver7 != null" >
+        RESERVER7,
+      </if>
+      <if test="reserver8 != null" >
+        RESERVER8,
+      </if>
+      <if test="reserver9 != null" >
+        RESERVER9,
+      </if>
+      <if test="reserver10 != null" >
+        RESERVER10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="closingDate != null" >
+        #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="repayDate != null" >
+        #{repayDate,jdbcType=DATE},
+      </if>
+      <if test="offerStatus != null" >
+        #{offerStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="genTime != null" >
+        #{genTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionId != null" >
+        #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="batchTaskId != null" >
+        #{batchTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="batchProcessStatus != null" >
+        #{batchProcessStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        #{reserver6,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver7 != null" >
+        #{reserver7,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver8 != null" >
+        #{reserver8,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver9 != null" >
+        #{reserver9,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver10 != null" >
+        #{reserver10,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.WaitingCharge" >
+    update t_waiting_charge
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="repayDate != null" >
+        REPAY_DATE = #{repayDate,jdbcType=DATE},
+      </if>
+      <if test="offerStatus != null" >
+        OFFER_STATUS = #{offerStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="offerId != null" >
+        OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="genTime != null" >
+        GEN_TIME = #{genTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="versionId != null" >
+        VERSION_ID = #{versionId,jdbcType=INTEGER},
+      </if>
+      <if test="batchTaskId != null" >
+        BATCH_TASK_ID = #{batchTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="batchProcessStatus != null" >
+        BATCH_PROCESS_STATUS = #{batchProcessStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6 = #{reserver6,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver7 != null" >
+        RESERVER7 = #{reserver7,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver8 != null" >
+        RESERVER8 = #{reserver8,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver9 != null" >
+        RESERVER9 = #{reserver9,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver10 != null" >
+        RESERVER10 = #{reserver10,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.WaitingCharge" >
+    update t_waiting_charge
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      REPAY_DATE = #{repayDate,jdbcType=DATE},
+      OFFER_STATUS = #{offerStatus,jdbcType=VARCHAR},
+      OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      GEN_TIME = #{genTime,jdbcType=TIMESTAMP},
+      VERSION_ID = #{versionId,jdbcType=INTEGER},
+      BATCH_TASK_ID = #{batchTaskId,jdbcType=VARCHAR},
+      BATCH_PROCESS_STATUS = #{batchProcessStatus,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=DATE},
+      RESERVER4 = #{reserver4,jdbcType=DATE},
+      RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      RESERVER6 = #{reserver6,jdbcType=DOUBLE},
+      RESERVER7 = #{reserver7,jdbcType=VARCHAR},
+      RESERVER8 = #{reserver8,jdbcType=VARCHAR},
+      RESERVER9 = #{reserver9,jdbcType=VARCHAR},
+      RESERVER10 = #{reserver10,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
