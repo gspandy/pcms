@@ -165,4 +165,34 @@
   <select id="selectCommon" parameterType="java.util.HashMap" resultType="java.util.HashMap" statementType="STATEMENT">
      select * from ${tableName} where id = ${id}
   </select>
+  
+  
+   <resultMap id="BaseResultMap2" type="com.pujjr.carcredit.po.HisOperPo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="RECORD_ID" jdbcType="VARCHAR" property="recordId" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
+    <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
+    <result column="CLASS_NAME" jdbcType="VARCHAR" property="className" />
+    <result column="UPD_MODE" jdbcType="VARCHAR" property="updMode" />
+    <result column="PRE_VALUE" jdbcType="VARCHAR" property="preValue" />
+    <result column="AFTER_VALUE" jdbcType="VARCHAR" property="afterValue" />
+    <result column="OPER_TIME" jdbcType="TIMESTAMP" property="operTime" />
+    <result column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
+    <result column="ACCOUNT_ID" jdbcType="VARCHAR" property="accountId" />
+    <result column="TABLE_CNAME" jdbcType="VARCHAR" property="tableCname" />
+    <result column="FIELD_CNAME" jdbcType="VARCHAR" property="fieldCname" />
+  </resultMap>
+  <select id="selectHisOperList" parameterType="java.lang.String" resultMap="BaseResultMap2">
+  	select a.*,b.TABLE_CNAME,b.FIELD_CNAME from t_his_oper a 
+	left join t_his_fieldcomment b
+	on a.table_name = b.table_name and a.FIELD_NAME = b.FIELD_NAME
+	WHERE 1=1
+    <if test="appId != null">
+     and a.APP_ID = #{appId,jdbcType=VARCHAR} 
+    </if>
+   	<if test="accountId != null">
+     and a.ACCOUNT_ID = #{accountId,jdbcType=VARCHAR} 
+    </if>
+  </select>
 </mapper>

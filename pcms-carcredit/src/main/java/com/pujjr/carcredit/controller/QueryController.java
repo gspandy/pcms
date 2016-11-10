@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
@@ -21,6 +22,7 @@ import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.IQueryService;
 import com.pujjr.carcredit.service.ITaskService;
+import com.pujjr.carcredit.vo.HisOperVo;
 import com.pujjr.carcredit.vo.QueryParamApplyVo;
 import com.pujjr.utils.Utils;
 
@@ -34,6 +36,16 @@ public class QueryController extends BaseController
 	private IApplyService applyService;
 	@Autowired
 	private ITaskService taskService;
+	
+	@ResponseBody
+	@RequestMapping(value="/hisOper/{appId}/{accountId}",method=RequestMethod.GET)
+   	public List<HisOperVo> queryHisOper(@PathVariable String appId,@PathVariable String accountId)
+   	{
+		System.out.println("**************appId:"+appId);
+		System.out.println("**************accountId:"+accountId);
+   		return queryService.querytHisOper(appId, accountId);
+   	}
+	
 	@RequestMapping(value="/applyList",method=RequestMethod.GET)
 	public PageVo queryApplyList(QueryParamApplyVo param) throws ParseException
 	{

@@ -24,6 +24,32 @@ import org.springframework.beans.BeanUtils;
 public class Utils {
 	
 	public static int seq=0;
+	
+
+	/**
+	 * @param fieldName 属性名
+	 * @return 属性对应get方法
+	 */
+	public static String field2GetMethod(String fieldName){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("get");
+		buffer.append(fieldName.substring(0, 1).toUpperCase());
+		buffer.append(fieldName.substring(1, fieldName.length()));
+		return buffer.toString();
+	}
+	
+	/**
+	 * @param fieldName 属性名
+	 * @return 属性对应set方法
+	 */
+	public static String field2SetMethod(String fieldName){
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("set");
+		buffer.append(fieldName.substring(0, 1).toUpperCase());
+		buffer.append(fieldName.substring(1, fieldName.length()));
+		return buffer.toString();
+	}
+	
 	/**
 	 * 获取指定日期所在当月天
 	 * tom 2016年10月28日
@@ -233,6 +259,26 @@ public class Utils {
 	 */
 	public static String nullFilter(Object obj){
 		return obj == null?"":obj.toString();
+	}
+	
+	/**
+	 * 对应数据表列名转对象属性
+	 * @param colName  输入格式："my_col_name"
+	 * @return 返回格式：：myColName
+	 */
+	public static String col2Field(String colName){
+		StringBuffer fieldNameBuf = new StringBuffer();
+		String[] colNames = colName.split("_");
+		for (int i = 0; i < colNames.length; i++) {
+			String temp = colNames[i];
+			if(i==0)
+				fieldNameBuf.append(temp);
+			else{
+				fieldNameBuf.append(temp.substring(0, 1).toUpperCase());
+				fieldNameBuf.append(temp.substring(1,temp.length()));
+			}
+		}
+		return fieldNameBuf.toString();
 	}
 	
 	/**
