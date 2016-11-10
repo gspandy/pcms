@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.StayAccountLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.StayAccountLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="STAY_ID" property="stayId" jdbcType="VARCHAR" />
+    <result column="STAY_AMOUNT" property="stayAmount" jdbcType="DOUBLE" />
+    <result column="STAY_TIME" property="stayTime" jdbcType="TIMESTAMP" />
+    <result column="STAY_SOURCE" property="staySource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, STAY_ID, STAY_AMOUNT, STAY_TIME, STAY_SOURCE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_stay_account_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_stay_account_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.StayAccountLog" >
+    insert into t_stay_account_log (ID, STAY_ID, STAY_AMOUNT, 
+      STAY_TIME, STAY_SOURCE)
+    values (#{id,jdbcType=VARCHAR}, #{stayId,jdbcType=VARCHAR}, #{stayAmount,jdbcType=DOUBLE}, 
+      #{stayTime,jdbcType=TIMESTAMP}, #{staySource,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.StayAccountLog" >
+    insert into t_stay_account_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="stayId != null" >
+        STAY_ID,
+      </if>
+      <if test="stayAmount != null" >
+        STAY_AMOUNT,
+      </if>
+      <if test="stayTime != null" >
+        STAY_TIME,
+      </if>
+      <if test="staySource != null" >
+        STAY_SOURCE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="stayId != null" >
+        #{stayId,jdbcType=VARCHAR},
+      </if>
+      <if test="stayAmount != null" >
+        #{stayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="stayTime != null" >
+        #{stayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staySource != null" >
+        #{staySource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.StayAccountLog" >
+    update t_stay_account_log
+    <set >
+      <if test="stayId != null" >
+        STAY_ID = #{stayId,jdbcType=VARCHAR},
+      </if>
+      <if test="stayAmount != null" >
+        STAY_AMOUNT = #{stayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="stayTime != null" >
+        STAY_TIME = #{stayTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="staySource != null" >
+        STAY_SOURCE = #{staySource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.StayAccountLog" >
+    update t_stay_account_log
+    set STAY_ID = #{stayId,jdbcType=VARCHAR},
+      STAY_AMOUNT = #{stayAmount,jdbcType=DOUBLE},
+      STAY_TIME = #{stayTime,jdbcType=TIMESTAMP},
+      STAY_SOURCE = #{staySource,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

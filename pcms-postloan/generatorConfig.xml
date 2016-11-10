@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry
+		location="F:\workspace\j2ee\carcredit\target\carcredit\WEB-INF\lib\mysql-connector-java-5.1.35.jar" />
+		
+	
+	<context id="mysqlMybatis"  defaultModelType="conditional" >
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt5?characterEncoding=UTF-8" userId="asd"
+			password="asd" />
+		
+		<javaModelGenerator targetPackage="com.pujjr.postloan.domain"
+			targetProject="pcms-postloan/src/main/java" />
+		<sqlMapGenerator targetPackage="com.pujjr.postloan.mapper"
+			targetProject="pcms-postloan/src/main/java" />
+		<javaClientGenerator targetPackage="com.pujjr.postloan.dao"
+			targetProject="pcms-postloan/src/main/java" type="XMLMAPPER" />
+			
+		<table tableName="T_GENERAL_LEDGER" domainObjectName="GeneralLedger" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="T_REPAY_PLAN" domainObjectName="RepayPlan" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WAITING_CHARGE" domainObjectName="WaitingCharge" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_OTHER_FEE" domainObjectName="OtherFee" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_OTHER_FEE_DETAIL" domainObjectName="OtherFeeDetail" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_OFFER_SUMMARY" domainObjectName="OfferSummary" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_OFFER_DETAIL" domainObjectName="OfferDetail" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_MANUAL_OFFER" domainObjectName="ManualOffer" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_EXTEND_PERIOD" domainObjectName="ApplyExtendPeriod" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_SETTLE" domainObjectName="ApplySettle" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_WAITING_CHARGE_NEW" domainObjectName="WaitingChargeNew" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_STAY_ACCOUNT" domainObjectName="StayAccount" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_STAY_ACCOUNT_LOG" domainObjectName="StayAccountLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_REPAY_LOG" domainObjectName="RepayLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_REMISSION_ITEM" domainObjectName="RemissionItem" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_CHARGE_LOG" domainObjectName="ChargeLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_ALTER_REPAYDATE" domainObjectName="ApplyAlterRepayDate" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_REMISSION" domainObjectName="ApplyRemission" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_APPLY_REFUND" domainObjectName="ApplyRefund" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+	</context>
+</generatorConfiguration>

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.RemissionItemMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.RemissionItem" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_TYPE" property="applyType" jdbcType="VARCHAR" />
+    <result column="APPLY_REF_ID" property="applyRefId" jdbcType="VARCHAR" />
+    <result column="CAPITAL" property="capital" jdbcType="DOUBLE" />
+    <result column="INTEREST" property="interest" jdbcType="DOUBLE" />
+    <result column="OVERDUE_AMOUNT" property="overdueAmount" jdbcType="DOUBLE" />
+    <result column="OTHER_FEE" property="otherFee" jdbcType="DOUBLE" />
+    <result column="OTHER_OVERDUE_AMOUNT" property="otherOverdueAmount" jdbcType="DOUBLE" />
+    <result column="LATE_FEE" property="lateFee" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_TYPE, APPLY_REF_ID, CAPITAL, INTEREST, OVERDUE_AMOUNT, OTHER_FEE, OTHER_OVERDUE_AMOUNT, 
+    LATE_FEE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_remission_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_remission_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.RemissionItem" >
+    insert into t_remission_item (ID, APPLY_TYPE, APPLY_REF_ID, 
+      CAPITAL, INTEREST, OVERDUE_AMOUNT, 
+      OTHER_FEE, OTHER_OVERDUE_AMOUNT, LATE_FEE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{applyType,jdbcType=VARCHAR}, #{applyRefId,jdbcType=VARCHAR}, 
+      #{capital,jdbcType=DOUBLE}, #{interest,jdbcType=DOUBLE}, #{overdueAmount,jdbcType=DOUBLE}, 
+      #{otherFee,jdbcType=DOUBLE}, #{otherOverdueAmount,jdbcType=DOUBLE}, #{lateFee,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RemissionItem" >
+    insert into t_remission_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyType != null" >
+        APPLY_TYPE,
+      </if>
+      <if test="applyRefId != null" >
+        APPLY_REF_ID,
+      </if>
+      <if test="capital != null" >
+        CAPITAL,
+      </if>
+      <if test="interest != null" >
+        INTEREST,
+      </if>
+      <if test="overdueAmount != null" >
+        OVERDUE_AMOUNT,
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE,
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT,
+      </if>
+      <if test="lateFee != null" >
+        LATE_FEE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyType != null" >
+        #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="applyRefId != null" >
+        #{applyRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="capital != null" >
+        #{capital,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="overdueAmount != null" >
+        #{overdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="lateFee != null" >
+        #{lateFee,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.RemissionItem" >
+    update t_remission_item
+    <set >
+      <if test="applyType != null" >
+        APPLY_TYPE = #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="applyRefId != null" >
+        APPLY_REF_ID = #{applyRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="capital != null" >
+        CAPITAL = #{capital,jdbcType=DOUBLE},
+      </if>
+      <if test="interest != null" >
+        INTEREST = #{interest,jdbcType=DOUBLE},
+      </if>
+      <if test="overdueAmount != null" >
+        OVERDUE_AMOUNT = #{overdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="lateFee != null" >
+        LATE_FEE = #{lateFee,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.RemissionItem" >
+    update t_remission_item
+    set APPLY_TYPE = #{applyType,jdbcType=VARCHAR},
+      APPLY_REF_ID = #{applyRefId,jdbcType=VARCHAR},
+      CAPITAL = #{capital,jdbcType=DOUBLE},
+      INTEREST = #{interest,jdbcType=DOUBLE},
+      OVERDUE_AMOUNT = #{overdueAmount,jdbcType=DOUBLE},
+      OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      LATE_FEE = #{lateFee,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.ApplyExtendPeriodMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyExtendPeriod" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="REPAY_OVERDUE_AMOUNT" property="repayOverdueAmount" jdbcType="DOUBLE" />
+    <result column="OTHER_FEE" property="otherFee" jdbcType="DOUBLE" />
+    <result column="OTHER_OVERDUE_AMOUNT" property="otherOverdueAmount" jdbcType="DOUBLE" />
+    <result column="EXTEND_FEE" property="extendFee" jdbcType="DOUBLE" />
+    <result column="NEW_OLD_INTEREST" property="newOldInterest" jdbcType="DOUBLE" />
+    <result column="OLD_REPAY_MODE" property="oldRepayMode" jdbcType="VARCHAR" />
+    <result column="NEW_REPAY_MODE" property="newRepayMode" jdbcType="VARCHAR" />
+    <result column="REMAIN_CAPITAL" property="remainCapital" jdbcType="DOUBLE" />
+    <result column="NEW_CAPITAL" property="newCapital" jdbcType="DOUBLE" />
+    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
+    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
+    <result column="APPLY_END_DATE" property="applyEndDate" jdbcType="DATE" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, REPAY_CAPITAL, REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, OTHER_FEE, OTHER_OVERDUE_AMOUNT, 
+    EXTEND_FEE, NEW_OLD_INTEREST, OLD_REPAY_MODE, NEW_REPAY_MODE, REMAIN_CAPITAL, NEW_CAPITAL, 
+    APPLY_COMMENT, APPLY_STATUS, APPLY_END_DATE, CREATE_ID, CREATE_DATE, PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_extend_period
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_apply_extend_period
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyExtendPeriod" >
+    insert into t_apply_extend_period (ID, APP_ID, REPAY_CAPITAL, 
+      REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, OTHER_FEE, 
+      OTHER_OVERDUE_AMOUNT, EXTEND_FEE, NEW_OLD_INTEREST, 
+      OLD_REPAY_MODE, NEW_REPAY_MODE, REMAIN_CAPITAL, 
+      NEW_CAPITAL, APPLY_COMMENT, APPLY_STATUS, 
+      APPLY_END_DATE, CREATE_ID, CREATE_DATE, 
+      PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{repayCapital,jdbcType=DOUBLE}, 
+      #{repayInterest,jdbcType=DOUBLE}, #{repayOverdueAmount,jdbcType=DOUBLE}, #{otherFee,jdbcType=DOUBLE}, 
+      #{otherOverdueAmount,jdbcType=DOUBLE}, #{extendFee,jdbcType=DOUBLE}, #{newOldInterest,jdbcType=DOUBLE}, 
+      #{oldRepayMode,jdbcType=VARCHAR}, #{newRepayMode,jdbcType=VARCHAR}, #{remainCapital,jdbcType=DOUBLE}, 
+      #{newCapital,jdbcType=DOUBLE}, #{applyComment,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, 
+      #{applyEndDate,jdbcType=DATE}, #{createId,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, 
+      #{procInstId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyExtendPeriod" >
+    insert into t_apply_extend_period
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL,
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST,
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT,
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE,
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT,
+      </if>
+      <if test="extendFee != null" >
+        EXTEND_FEE,
+      </if>
+      <if test="newOldInterest != null" >
+        NEW_OLD_INTEREST,
+      </if>
+      <if test="oldRepayMode != null" >
+        OLD_REPAY_MODE,
+      </if>
+      <if test="newRepayMode != null" >
+        NEW_REPAY_MODE,
+      </if>
+      <if test="remainCapital != null" >
+        REMAIN_CAPITAL,
+      </if>
+      <if test="newCapital != null" >
+        NEW_CAPITAL,
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT,
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS,
+      </if>
+      <if test="applyEndDate != null" >
+        APPLY_END_DATE,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="extendFee != null" >
+        #{extendFee,jdbcType=DOUBLE},
+      </if>
+      <if test="newOldInterest != null" >
+        #{newOldInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="oldRepayMode != null" >
+        #{oldRepayMode,jdbcType=VARCHAR},
+      </if>
+      <if test="newRepayMode != null" >
+        #{newRepayMode,jdbcType=VARCHAR},
+      </if>
+      <if test="remainCapital != null" >
+        #{remainCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="newCapital != null" >
+        #{newCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="applyComment != null" >
+        #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null" >
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyEndDate != null" >
+        #{applyEndDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyExtendPeriod" >
+    update t_apply_extend_period
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="repayOverdueAmount != null" >
+        REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="otherFee != null" >
+        OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="otherOverdueAmount != null" >
+        OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="extendFee != null" >
+        EXTEND_FEE = #{extendFee,jdbcType=DOUBLE},
+      </if>
+      <if test="newOldInterest != null" >
+        NEW_OLD_INTEREST = #{newOldInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="oldRepayMode != null" >
+        OLD_REPAY_MODE = #{oldRepayMode,jdbcType=VARCHAR},
+      </if>
+      <if test="newRepayMode != null" >
+        NEW_REPAY_MODE = #{newRepayMode,jdbcType=VARCHAR},
+      </if>
+      <if test="remainCapital != null" >
+        REMAIN_CAPITAL = #{remainCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="newCapital != null" >
+        NEW_CAPITAL = #{newCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="applyComment != null" >
+        APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="applyStatus != null" >
+        APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyEndDate != null" >
+        APPLY_END_DATE = #{applyEndDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null" >
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyExtendPeriod" >
+    update t_apply_extend_period
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      REPAY_OVERDUE_AMOUNT = #{repayOverdueAmount,jdbcType=DOUBLE},
+      OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
+      OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
+      EXTEND_FEE = #{extendFee,jdbcType=DOUBLE},
+      NEW_OLD_INTEREST = #{newOldInterest,jdbcType=DOUBLE},
+      OLD_REPAY_MODE = #{oldRepayMode,jdbcType=VARCHAR},
+      NEW_REPAY_MODE = #{newRepayMode,jdbcType=VARCHAR},
+      REMAIN_CAPITAL = #{remainCapital,jdbcType=DOUBLE},
+      NEW_CAPITAL = #{newCapital,jdbcType=DOUBLE},
+      APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      APPLY_END_DATE = #{applyEndDate,jdbcType=DATE},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.RepayPlanMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.RepayPlan" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="PERIOD" property="period" jdbcType="INTEGER" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="VALUE_DATE" property="valueDate" jdbcType="DATE" />
+    <result column="CLOSING_DATE" property="closingDate" jdbcType="DATE" />
+    <result column="REMAIN_CAPITAL" property="remainCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_TOTAL_AMOUNT" property="repayTotalAmount" jdbcType="DOUBLE" />
+    <result column="ADDUP_OVERDUE_DAY" property="addupOverdueDay" jdbcType="INTEGER" />
+    <result column="ADDUP_OVERDUE_AMOUNT" property="addupOverdueAmount" jdbcType="DOUBLE" />
+    <result column="REPAY_STATUS" property="repayStatus" jdbcType="VARCHAR" />
+    <result column="SETTLE_MODE" property="settleMode" jdbcType="VARCHAR" />
+    <result column="SETTLE_DATE" property="settleDate" jdbcType="DATE" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
+    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
+    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
+    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, PERIOD, REPAY_CAPITAL, REPAY_INTEREST, VALUE_DATE, CLOSING_DATE, REMAIN_CAPITAL, 
+    REPAY_TOTAL_AMOUNT, ADDUP_OVERDUE_DAY, ADDUP_OVERDUE_AMOUNT, REPAY_STATUS, SETTLE_MODE, 
+    SETTLE_DATE, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_repay_plan
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_repay_plan
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.RepayPlan" >
+    insert into t_repay_plan (ID, APP_ID, PERIOD, 
+      REPAY_CAPITAL, REPAY_INTEREST, VALUE_DATE, 
+      CLOSING_DATE, REMAIN_CAPITAL, REPAY_TOTAL_AMOUNT, 
+      ADDUP_OVERDUE_DAY, ADDUP_OVERDUE_AMOUNT, REPAY_STATUS, 
+      SETTLE_MODE, SETTLE_DATE, RESERVER1, 
+      RESERVER2, RESERVER3, RESERVER4, 
+      RESERVER5, RESERVER6)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, 
+      #{repayCapital,jdbcType=DOUBLE}, #{repayInterest,jdbcType=DOUBLE}, #{valueDate,jdbcType=DATE}, 
+      #{closingDate,jdbcType=DATE}, #{remainCapital,jdbcType=DOUBLE}, #{repayTotalAmount,jdbcType=DOUBLE}, 
+      #{addupOverdueDay,jdbcType=INTEGER}, #{addupOverdueAmount,jdbcType=DOUBLE}, #{repayStatus,jdbcType=VARCHAR}, 
+      #{settleMode,jdbcType=VARCHAR}, #{settleDate,jdbcType=DATE}, #{reserver1,jdbcType=VARCHAR}, 
+      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, #{reserver4,jdbcType=DATE}, 
+      #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RepayPlan" >
+    insert into t_repay_plan
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="period != null" >
+        PERIOD,
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL,
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST,
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE,
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE,
+      </if>
+      <if test="remainCapital != null" >
+        REMAIN_CAPITAL,
+      </if>
+      <if test="repayTotalAmount != null" >
+        REPAY_TOTAL_AMOUNT,
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY,
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT,
+      </if>
+      <if test="repayStatus != null" >
+        REPAY_STATUS,
+      </if>
+      <if test="settleMode != null" >
+        SETTLE_MODE,
+      </if>
+      <if test="settleDate != null" >
+        SETTLE_DATE,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        #{period,jdbcType=INTEGER},
+      </if>
+      <if test="repayCapital != null" >
+        #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="remainCapital != null" >
+        #{remainCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayTotalAmount != null" >
+        #{repayTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="repayStatus != null" >
+        #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleMode != null" >
+        #{settleMode,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        #{reserver6,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.RepayPlan" >
+    update t_repay_plan
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="period != null" >
+        PERIOD = #{period,jdbcType=INTEGER},
+      </if>
+      <if test="repayCapital != null" >
+        REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayInterest != null" >
+        REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="valueDate != null" >
+        VALUE_DATE = #{valueDate,jdbcType=DATE},
+      </if>
+      <if test="closingDate != null" >
+        CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      </if>
+      <if test="remainCapital != null" >
+        REMAIN_CAPITAL = #{remainCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="repayTotalAmount != null" >
+        REPAY_TOTAL_AMOUNT = #{repayTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueAmount != null" >
+        ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="repayStatus != null" >
+        REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleMode != null" >
+        SETTLE_MODE = #{settleMode,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null" >
+        SETTLE_DATE = #{settleDate,jdbcType=DATE},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=DATE},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=DATE},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6 = #{reserver6,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.RepayPlan" >
+    update t_repay_plan
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      PERIOD = #{period,jdbcType=INTEGER},
+      REPAY_CAPITAL = #{repayCapital,jdbcType=DOUBLE},
+      REPAY_INTEREST = #{repayInterest,jdbcType=DOUBLE},
+      VALUE_DATE = #{valueDate,jdbcType=DATE},
+      CLOSING_DATE = #{closingDate,jdbcType=DATE},
+      REMAIN_CAPITAL = #{remainCapital,jdbcType=DOUBLE},
+      REPAY_TOTAL_AMOUNT = #{repayTotalAmount,jdbcType=DOUBLE},
+      ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      ADDUP_OVERDUE_AMOUNT = #{addupOverdueAmount,jdbcType=DOUBLE},
+      REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      SETTLE_MODE = #{settleMode,jdbcType=VARCHAR},
+      SETTLE_DATE = #{settleDate,jdbcType=DATE},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=DATE},
+      RESERVER4 = #{reserver4,jdbcType=DATE},
+      RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      RESERVER6 = #{reserver6,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
