@@ -2,8 +2,6 @@ package com.pujjr.carcredit.vo;
 
 import java.util.Date;
 
-import com.pujjr.carcredit.domain.HisFieldComment;
-
 public class HisOperVo {
     private String id;
 

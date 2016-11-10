@@ -1,14 +1,24 @@
 package com.pujjr.carcredit.service.impl;
 
+import java.lang.reflect.Method;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.ResultSetMetaData;
 import com.pujjr.carcredit.dao.HisBeanMapMapper;
+import com.pujjr.carcredit.dao.HisFieldCommentMapper;
 import com.pujjr.carcredit.domain.HisBeanMap;
+import com.pujjr.carcredit.domain.HisFieldComment;
 import com.pujjr.carcredit.service.ITableInitService;
 import com.pujjr.utils.Utils;
 
@@ -17,6 +27,16 @@ import com.pujjr.utils.Utils;
 public class TableInitServiceImpl implements ITableInitService {
 	@Autowired
 	private HisBeanMapMapper hisBeanMapMapper;
+	@Autowired
+	private HisFieldCommentMapper hisFieldCommentMapper;
+	@Value("${jdbc_driverClassName}")
+	private String jdbcDriverClass;
+	@Value("${jdbc_url}")
+	private String jdbcUrl;
+	@Value("${jdbc_username}")
+	private String userName;
+	@Value("${jdbc_password}")
+	private String passWord;
 	@Override
 	public void hisBeanMapInit() {
 		// TODO Auto-generated method stub
@@ -66,7 +86,48 @@ public class TableInitServiceImpl implements ITableInitService {
 
 	@Override
 	public void hisFieldCommentInit() {
-		// TODO Auto-generated method stub
+		List<HisFieldComment> list = null;
+		try {
+			String sql = "	select a.table_name,b.table_comment as table_cname,a.column_name as field_name,a.column_comment as field_cname from (select table_name,column_name,COLUMN_COMMENT from information_schema.columns where COLUMN_COMMENT <> '' )a "
+					+ " left join (select table_name,table_comment from information_schema.TABLES where table_comment <> '')b "
+					+ " on a.table_name = b.table_name ";
+			Class.forName(jdbcDriverClass);
+			Connection cnt = DriverManager.getConnection(jdbcUrl, userName, passWord);
+			PreparedStatement ps = (PreparedStatement) cnt.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+			list = new ArrayList<HisFieldComment>();
+			while(rs.next()){
+				ResultSetMetaData meta = (ResultSetMetaData) rs.getMetaData();
+				Class cls = HisFieldComment.class;
+				HisFieldComment obj = (HisFieldComment) cls.newInstance();
+				for (int i = 0; i < meta.getColumnCount(); i++) {
+					String columnType = meta.getColumnTypeName(i+1);//数据库对应type
+					String columnLabel = meta.getColumnLabel(i+1);//sql语句对应列名
+					String className = meta.getColumnClassName(i+1);
+					String fieldName = Utils.col2Field(columnLabel);
+					String setMethod = Utils.field2SetMethod(fieldName);
+					Object value = rs.getObject(columnLabel);
+					System.out.println(fieldName+"|"+columnType+"|"+className+"|"+columnLabel);
+					Method settter = cls.getMethod(setMethod, className.getClass());
+					settter.invoke(obj, value);
+				}
+				list.add(obj);
+				System.out.println(obj.getTableName()+"|"+obj.getTableCname()+"|"+obj.getFieldName()+"|"+obj.getFieldCname());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		List<HisFieldComment> listExist = hisFieldCommentMapper.selectList();
+		
+		for (HisFieldComment hisFieldComment : listExist) {
+			hisFieldCommentMapper.deleteByPrimaryKey(hisFieldComment.getId());
+		}
+		
+		for (HisFieldComment hisFieldComment : list) {
+			hisFieldComment.setId(Utils.get16UUID());
+			hisFieldCommentMapper.insert(hisFieldComment);
+		}
 	}
 
 }
