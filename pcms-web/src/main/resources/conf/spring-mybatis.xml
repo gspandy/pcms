@@ -104,7 +104,6 @@
 		<property name="mapperLocations" value="classpath*:com/pujjr/**/mapper/*.xml"></property>
 		<property name="configLocation" value="classpath:conf/mybatis.xml"></property>
 	</bean>
-	<!-- 通过Spring进行事务的管理 -->
 	<tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
 	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" p:dataSource-ref="dataSource"/>
