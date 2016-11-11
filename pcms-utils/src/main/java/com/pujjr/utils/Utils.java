@@ -2,6 +2,9 @@ package com.pujjr.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -19,11 +22,215 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 
-
+import com.pujjr.enumeration.EIntervalMode;
 
 public class Utils {
 	
 	public static int seq=0;
+	
+	/**
+	 * 属性拷贝
+	 * tom 2016年11月7日
+	 * @param source 源对象
+	 * @param dest 目标对象
+	 */
+	public static void copyProperties(Object source,Object dest){
+		Class srcCls = source.getClass();
+		Class destCls = dest.getClass();
+		List<Field> srcFieldList = Utils.getFieldList(srcCls);
+		List<Field> destFieldList = Utils.getFieldList(destCls);
+		Method[] srcMethods = srcCls.getMethods();
+		Method[] destMethods = destCls.getMethods();
+		List destList = new ArrayList();
+		for (int i = 0; i < srcFieldList.size(); i++) {
+			Field srcField = srcFieldList.get(i);
+			String srcFieldName = srcField.getName();
+			Class srcFieldType = srcField.getType();
+			String srcFieldTypeName = srcFieldType.getName();
+			Object srcFieldValue = null;
+			try {//处理source中list成员变量
+				srcFieldValue = srcField.get(source);
+//				System.out.println(srcFieldType.getName().equals(double.class.getName())+"*********|"+srcFieldValue);
+				for (Field destField : destFieldList) {
+					String destFieldName = destField.getName();
+					Class destFieldType = destField.getType();
+					if(srcFieldName.equals(destFieldName)){
+						if(srcFieldTypeName.equals(List.class.getName())){//判断list变量
+//							System.out.println(srcFieldType+"|"+srcFieldName+"|"+srcField.getGenericType());
+							List tempSrcFieldValue = (List) srcField.get(source);
+							Type gType  = destField.getGenericType();
+							ParameterizedType pType = (ParameterizedType) gType;
+							Type[] types = pType.getActualTypeArguments();
+//							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
+//							System.out.println("ttt:"+srcField.get(source));
+							for (Object object : tempSrcFieldValue) {
+								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+								Utils.copyProperties(object, rsdv);
+								destList.add(rsdv);
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			//处理resource中普通成员变量
+			for (Field destField : destFieldList) {
+				String destFieldName = destField.getName();
+				Class destFieldType = destField.getType();
+//				System.out.println(destFieldType+"|"+destFieldName);
+				if(destFieldName.equals(srcFieldName)){
+					for (int j = 0; j < destMethods.length; j++) {
+						Method destMethod = destMethods[j];
+						String methodName = destMethod.getName();
+						if(("set"+destFieldName).toLowerCase().equals(methodName.toLowerCase())){
+							try {
+								if(srcFieldTypeName.equals(List.class.getName())){
+									destMethod.invoke(dest, destList);
+								}else if(srcFieldValue != null){
+									if(srcFieldTypeName.equals(Date.class.getName())){
+										SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+										destMethod.invoke(dest, formater.format(srcFieldValue));
+									}else if(srcFieldTypeName.equals(Double.class.getName()) || srcFieldTypeName.equals(double.class.getName())){
+										destMethod.invoke(dest, Utils.formateDouble2String((double)srcFieldValue, 2));
+//										destMethod.invoke(dest, srcFieldValue);
+									}else if(srcFieldTypeName.equals(Integer.class.getName()) || srcFieldTypeName.equals(int.class.getName())){
+										destMethod.invoke(dest, srcFieldValue+"");
+//										destMethod.invoke(dest, srcFieldValue);
+									}else if(!srcFieldType.isPrimitive()){
+										destMethod.invoke(dest, srcFieldValue);
+									}
+//									System.out.println("***********************srcFieldType.isMemberClass():"+srcFieldType.getName()+"|destFieldType:"+destFieldType.getName()+"|"+srcFieldType.getSuperclass());
+								}
+								
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * 双精度浮点数转制定格式字符串
+	 * tom 2016年11月2日
+	 * @param number 数据源
+	 * @param scale 小数位数
+	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出："123.100"）
+	 */
+	public static String formateDouble2String(double number,int scale){
+		String formateDouble = "";
+		BigDecimal formater = new BigDecimal(number);
+//		new Double("");
+		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).toString();
+		return formateDouble;
+	}
+	
+	/**
+	 * 双精度浮点数转指定格式双进度浮点数
+	 * tom 2016年11月2日
+	 * @param number 数据源
+	 * @param scale 小数位数
+	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出：123.1）
+	 */
+	public static Double formateDouble2Double(BigDecimal bigDecimal,int scale){
+		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+	}
+	
+	/**
+	 * 获取时间间隔
+	 * tom 2016年11月8日
+	 * @param beginDate 开始日期
+	 * @param endDate 截止日期
+	 * @param intervalMode 间隔模式
+	 * @return 时间间隔
+	 */
+	public static long getTimeInterval(Date beginDate,Date endDate,EIntervalMode intervalMode){
+		long interval = 0;
+		Calendar beginCl = Calendar.getInstance();
+		Calendar endCl = Calendar.getInstance();
+		beginCl.setTime(beginDate);
+		endCl.setTime(endDate);
+		switch(intervalMode.name()){
+		case "YEARS":
+			interval = endCl.get(Calendar.YEAR) - beginCl.get(Calendar.YEAR);
+			break;
+		case "MONTHS":
+			interval = (endCl.get(Calendar.YEAR) - beginCl.get(Calendar.YEAR)) * 12 + endCl.get(Calendar.MONTH) - beginCl.get(Calendar.MONTH);
+			break;
+		case "DAYS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(24 * 60 * 60 * 1000);
+			break;
+		case "HOURS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(60 * 60 * 1000);
+			break;
+		case "MINUTES":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(60 * 1000);
+			break;
+		case "SECONDS":
+			interval = (endCl.getTimeInMillis() - beginCl.getTimeInMillis())/(1000);
+		case "MIllISECCONDS":
+			interval = endCl.getTimeInMillis() - beginCl.getTimeInMillis();
+			break;
+		}
+		return interval;
+	}
+	
+	/**
+	 * 日期格式化
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static Date formateDate(Date date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		Date dateRet = null;
+		try {
+			dateRet = formate.parse(formate.format(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
+	
+	/**
+	 * 字符串转日期
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static Date formateString2Date(String date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		Date dateRet = null;
+		try {
+			dateRet = formate.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
+	
+	/**
+	 * 日期转字符串
+	 * tom 2016年11月7日
+	 * @param date
+	 * @param formateStr
+	 * @return
+	 */
+	public static String formateDate2String(Date date,String formateStr){
+		SimpleDateFormat formate = new SimpleDateFormat(formateStr);
+		String dateRet = "";
+		try {
+			dateRet = formate.format(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dateRet;
+	}
 	
 
 	/**
@@ -236,12 +443,12 @@ public class Utils {
 	 * @param target 目标对象
 	 * @author pujjr 2016-10-09
 	 */
-	public static void copyProperties(Object source, Object target){
+/*	public static void copyProperties(Object source, Object target){
 		if(source != null)
 			BeanUtils.copyProperties(source, target);
 		else
 			target = null;
-	}
+	}*/
 	
 	public static String convertStr2Utf8(String value) throws UnsupportedEncodingException
 	{
