@@ -21,7 +21,7 @@
 			targetProject="pcms-postloan/src/main/java" />
 		<javaClientGenerator targetPackage="com.pujjr.postloan.dao"
 			targetProject="pcms-postloan/src/main/java" type="XMLMAPPER" />
-			
+		<!--  
 		<table tableName="T_GENERAL_LEDGER" domainObjectName="GeneralLedger" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -55,10 +55,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_APPLY_EXTEND_PERIOD" domainObjectName="ApplyExtendPeriod" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		<table tableName="T_APPLY_SETTLE" domainObjectName="ApplySettle" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -79,10 +76,6 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		<table tableName="T_REMISSION_ITEM" domainObjectName="RemissionItem" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -94,7 +87,16 @@
 		<table tableName="T_APPLY_ALTER_REPAYDATE" domainObjectName="ApplyAlterRepayDate" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>		
+		<table tableName="T_APPLY_EXTEND_PERIOD" domainObjectName="ApplyExtendPeriod" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>		
+		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		-->	
 		<table tableName="T_APPLY_REMISSION" domainObjectName="ApplyRemission" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">

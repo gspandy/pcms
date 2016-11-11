@@ -2,7 +2,7 @@ package com.pujjr.postloan.vo;
 /**
  * 提前结清相关费项
  * **/
-public class SettleFeeItemVo extends RepayFeeItemVo 
+public class SettleFeeItemVo extends RepayFeeItemVo
 {
 	//结清本金
 	private double  settleCapital;

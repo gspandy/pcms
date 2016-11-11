@@ -1,128 +1,164 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.ApplyRefundMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyRefund" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="REFUND_AMOUNT" property="refundAmount" jdbcType="DOUBLE" />
-    <result column="REFUND_DATE" property="refundDate" jdbcType="DATE" />
-    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
-    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.ApplyRefundMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyRefund">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="STAY_AMOUNT" jdbcType="DOUBLE" property="stayAmount" />
+    <result column="STAY_DAY" jdbcType="INTEGER" property="stayDay" />
+    <result column="REFUND_AMOUNT" jdbcType="DOUBLE" property="refundAmount" />
+    <result column="REFUND_DATE" jdbcType="DATE" property="refundDate" />
+    <result column="APPLY_COMMENT" jdbcType="VARCHAR" property="applyComment" />
+    <result column="APPLY_STATUS" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, REFUND_AMOUNT, REFUND_DATE, APPLY_COMMENT, APPLY_STATUS, CREATE_ID, CREATE_DATE
+  <sql id="Base_Column_List">
+    ID, APP_ID, STAY_AMOUNT, STAY_DAY, REFUND_AMOUNT, REFUND_DATE, APPLY_COMMENT, APPLY_STATUS, 
+    CREATE_ID, CREATE_DATE, PROC_INST_ID
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_apply_refund
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_apply_refund
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyRefund" >
-    insert into t_apply_refund (ID, APP_ID, REFUND_AMOUNT, 
-      REFUND_DATE, APPLY_COMMENT, APPLY_STATUS, 
-      CREATE_ID, CREATE_DATE)
-    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{refundAmount,jdbcType=DOUBLE}, 
-      #{refundDate,jdbcType=DATE}, #{applyComment,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, 
-      #{createId,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyRefund">
+    insert into t_apply_refund (ID, APP_ID, STAY_AMOUNT, 
+      STAY_DAY, REFUND_AMOUNT, REFUND_DATE, 
+      APPLY_COMMENT, APPLY_STATUS, CREATE_ID, 
+      CREATE_DATE, PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{stayAmount,jdbcType=DOUBLE}, 
+      #{stayDay,jdbcType=INTEGER}, #{refundAmount,jdbcType=DOUBLE}, #{refundDate,jdbcType=DATE}, 
+      #{applyComment,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{createDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyRefund" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyRefund">
     insert into t_apply_refund
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="refundAmount != null" >
+      <if test="stayAmount != null">
+        STAY_AMOUNT,
+      </if>
+      <if test="stayDay != null">
+        STAY_DAY,
+      </if>
+      <if test="refundAmount != null">
         REFUND_AMOUNT,
       </if>
-      <if test="refundDate != null" >
+      <if test="refundDate != null">
         REFUND_DATE,
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         APPLY_COMMENT,
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         APPLY_STATUS,
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         CREATE_DATE,
       </if>
+      <if test="procInstId != null">
+        PROC_INST_ID,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="refundAmount != null" >
+      <if test="stayAmount != null">
+        #{stayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="stayDay != null">
+        #{stayDay,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount != null">
         #{refundAmount,jdbcType=DOUBLE},
       </if>
-      <if test="refundDate != null" >
+      <if test="refundDate != null">
         #{refundDate,jdbcType=DATE},
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         #{applyComment,jdbcType=VARCHAR},
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         #{applyStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null">
+        #{procInstId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyRefund" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyRefund">
     update t_apply_refund
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="refundAmount != null" >
+      <if test="stayAmount != null">
+        STAY_AMOUNT = #{stayAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="stayDay != null">
+        STAY_DAY = #{stayDay,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount != null">
         REFUND_AMOUNT = #{refundAmount,jdbcType=DOUBLE},
       </if>
-      <if test="refundDate != null" >
+      <if test="refundDate != null">
         REFUND_DATE = #{refundDate,jdbcType=DATE},
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         CREATE_DATE = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyRefund" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyRefund">
     update t_apply_refund
     set APP_ID = #{appId,jdbcType=VARCHAR},
+      STAY_AMOUNT = #{stayAmount,jdbcType=DOUBLE},
+      STAY_DAY = #{stayDay,jdbcType=INTEGER},
       REFUND_AMOUNT = #{refundAmount,jdbcType=DOUBLE},
       REFUND_DATE = #{refundDate,jdbcType=DATE},
       APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
       APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
       CREATE_ID = #{createId,jdbcType=VARCHAR},
-      CREATE_DATE = #{createDate,jdbcType=DATE}
+      CREATE_DATE = #{createDate,jdbcType=DATE},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

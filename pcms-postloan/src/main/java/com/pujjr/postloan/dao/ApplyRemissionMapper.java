@@ -5,13 +5,13 @@ import com.pujjr.postloan.domain.ApplyRemission;
 public interface ApplyRemissionMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(ApplyRemission record);
+	int insert(ApplyRemission record);
 
-    int insertSelective(ApplyRemission record);
+	int insertSelective(ApplyRemission record);
 
-    ApplyRemission selectByPrimaryKey(String id);
+	ApplyRemission selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(ApplyRemission record);
+	int updateByPrimaryKeySelective(ApplyRemission record);
 
-    int updateByPrimaryKey(ApplyRemission record);
+	int updateByPrimaryKey(ApplyRemission record);
 }

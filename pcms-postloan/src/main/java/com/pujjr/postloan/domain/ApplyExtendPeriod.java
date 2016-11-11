@@ -5,191 +5,201 @@ import java.util.Date;
 public class ApplyExtendPeriod {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private Double repayCapital;
+	private Double repayCapital;
 
-    private Double repayInterest;
+	private Double repayInterest;
 
-    private Double repayOverdueAmount;
+	private Double repayOverdueAmount;
 
-    private Double otherFee;
+	private Double otherFee;
 
-    private Double otherOverdueAmount;
+	private Double otherOverdueAmount;
 
-    private Double extendFee;
+	private Integer extendPeriod;
 
-    private Double newOldInterest;
+	private Double extendFee;
 
-    private String oldRepayMode;
+	private Double newOldInterest;
 
-    private String newRepayMode;
+	private String oldRepayMode;
 
-    private Double remainCapital;
+	private String newRepayMode;
 
-    private Double newCapital;
+	private Double remainCapital;
 
-    private String applyComment;
+	private Double newCapital;
 
-    private String applyStatus;
+	private String applyComment;
 
-    private Date applyEndDate;
+	private String applyStatus;
 
-    private String createId;
+	private Date applyEndDate;
 
-    private Date createDate;
+	private String createId;
 
-    private String procInstId;
+	private Date createDate;
 
-    public String getId() {
-        return id;
-    }
+	private String procInstId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public Double getRepayCapital() {
-        return repayCapital;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setRepayCapital(Double repayCapital) {
-        this.repayCapital = repayCapital;
-    }
+	public Double getRepayCapital() {
+		return repayCapital;
+	}
 
-    public Double getRepayInterest() {
-        return repayInterest;
-    }
+	public void setRepayCapital(Double repayCapital) {
+		this.repayCapital = repayCapital;
+	}
 
-    public void setRepayInterest(Double repayInterest) {
-        this.repayInterest = repayInterest;
-    }
+	public Double getRepayInterest() {
+		return repayInterest;
+	}
 
-    public Double getRepayOverdueAmount() {
-        return repayOverdueAmount;
-    }
+	public void setRepayInterest(Double repayInterest) {
+		this.repayInterest = repayInterest;
+	}
 
-    public void setRepayOverdueAmount(Double repayOverdueAmount) {
-        this.repayOverdueAmount = repayOverdueAmount;
-    }
+	public Double getRepayOverdueAmount() {
+		return repayOverdueAmount;
+	}
 
-    public Double getOtherFee() {
-        return otherFee;
-    }
+	public void setRepayOverdueAmount(Double repayOverdueAmount) {
+		this.repayOverdueAmount = repayOverdueAmount;
+	}
 
-    public void setOtherFee(Double otherFee) {
-        this.otherFee = otherFee;
-    }
+	public Double getOtherFee() {
+		return otherFee;
+	}
 
-    public Double getOtherOverdueAmount() {
-        return otherOverdueAmount;
-    }
+	public void setOtherFee(Double otherFee) {
+		this.otherFee = otherFee;
+	}
 
-    public void setOtherOverdueAmount(Double otherOverdueAmount) {
-        this.otherOverdueAmount = otherOverdueAmount;
-    }
+	public Double getOtherOverdueAmount() {
+		return otherOverdueAmount;
+	}
 
-    public Double getExtendFee() {
-        return extendFee;
-    }
+	public void setOtherOverdueAmount(Double otherOverdueAmount) {
+		this.otherOverdueAmount = otherOverdueAmount;
+	}
 
-    public void setExtendFee(Double extendFee) {
-        this.extendFee = extendFee;
-    }
+	public Integer getExtendPeriod() {
+		return extendPeriod;
+	}
 
-    public Double getNewOldInterest() {
-        return newOldInterest;
-    }
+	public void setExtendPeriod(Integer extendPeriod) {
+		this.extendPeriod = extendPeriod;
+	}
 
-    public void setNewOldInterest(Double newOldInterest) {
-        this.newOldInterest = newOldInterest;
-    }
+	public Double getExtendFee() {
+		return extendFee;
+	}
 
-    public String getOldRepayMode() {
-        return oldRepayMode;
-    }
+	public void setExtendFee(Double extendFee) {
+		this.extendFee = extendFee;
+	}
 
-    public void setOldRepayMode(String oldRepayMode) {
-        this.oldRepayMode = oldRepayMode;
-    }
+	public Double getNewOldInterest() {
+		return newOldInterest;
+	}
 
-    public String getNewRepayMode() {
-        return newRepayMode;
-    }
+	public void setNewOldInterest(Double newOldInterest) {
+		this.newOldInterest = newOldInterest;
+	}
 
-    public void setNewRepayMode(String newRepayMode) {
-        this.newRepayMode = newRepayMode;
-    }
+	public String getOldRepayMode() {
+		return oldRepayMode;
+	}
 
-    public Double getRemainCapital() {
-        return remainCapital;
-    }
+	public void setOldRepayMode(String oldRepayMode) {
+		this.oldRepayMode = oldRepayMode;
+	}
 
-    public void setRemainCapital(Double remainCapital) {
-        this.remainCapital = remainCapital;
-    }
+	public String getNewRepayMode() {
+		return newRepayMode;
+	}
 
-    public Double getNewCapital() {
-        return newCapital;
-    }
+	public void setNewRepayMode(String newRepayMode) {
+		this.newRepayMode = newRepayMode;
+	}
 
-    public void setNewCapital(Double newCapital) {
-        this.newCapital = newCapital;
-    }
+	public Double getRemainCapital() {
+		return remainCapital;
+	}
 
-    public String getApplyComment() {
-        return applyComment;
-    }
+	public void setRemainCapital(Double remainCapital) {
+		this.remainCapital = remainCapital;
+	}
 
-    public void setApplyComment(String applyComment) {
-        this.applyComment = applyComment;
-    }
+	public Double getNewCapital() {
+		return newCapital;
+	}
 
-    public String getApplyStatus() {
-        return applyStatus;
-    }
+	public void setNewCapital(Double newCapital) {
+		this.newCapital = newCapital;
+	}
 
-    public void setApplyStatus(String applyStatus) {
-        this.applyStatus = applyStatus;
-    }
+	public String getApplyComment() {
+		return applyComment;
+	}
 
-    public Date getApplyEndDate() {
-        return applyEndDate;
-    }
+	public void setApplyComment(String applyComment) {
+		this.applyComment = applyComment;
+	}
 
-    public void setApplyEndDate(Date applyEndDate) {
-        this.applyEndDate = applyEndDate;
-    }
+	public String getApplyStatus() {
+		return applyStatus;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setApplyStatus(String applyStatus) {
+		this.applyStatus = applyStatus;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getApplyEndDate() {
+		return applyEndDate;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public void setApplyEndDate(Date applyEndDate) {
+		this.applyEndDate = applyEndDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getProcInstId() {
-        return procInstId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setProcInstId(String procInstId) {
-        this.procInstId = procInstId;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
 }

@@ -5,101 +5,152 @@ import java.util.Date;
 public class ApplyPublicRepay {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private Double chargeAmount;
+	private Double repayCapital;
 
-    private Double chargeDate;
+	private Double repayInterest;
 
-    private String applyStatus;
+	private Double repayOverdueAmount;
 
-    private String applyComment;
+	private Double otherFee;
 
-    private String chargeResult;
+	private Double otherOverdueAmount;
 
-    private String createId;
+	private Double chargeAmount;
 
-    private Date crateDate;
+	private Double chargeDate;
 
-    private String procInstId;
+	private String applyStatus;
 
-    public String getId() {
-        return id;
-    }
+	private String applyComment;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private String chargeResult;
 
-    public String getAppId() {
-        return appId;
-    }
+	private String createId;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	private Date createDate;
 
-    public Double getChargeAmount() {
-        return chargeAmount;
-    }
+	private String procInstId;
 
-    public void setChargeAmount(Double chargeAmount) {
-        this.chargeAmount = chargeAmount;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public Double getChargeDate() {
-        return chargeDate;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setChargeDate(Double chargeDate) {
-        this.chargeDate = chargeDate;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getApplyStatus() {
-        return applyStatus;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setApplyStatus(String applyStatus) {
-        this.applyStatus = applyStatus;
-    }
+	public Double getRepayCapital() {
+		return repayCapital;
+	}
 
-    public String getApplyComment() {
-        return applyComment;
-    }
+	public void setRepayCapital(Double repayCapital) {
+		this.repayCapital = repayCapital;
+	}
 
-    public void setApplyComment(String applyComment) {
-        this.applyComment = applyComment;
-    }
+	public Double getRepayInterest() {
+		return repayInterest;
+	}
 
-    public String getChargeResult() {
-        return chargeResult;
-    }
+	public void setRepayInterest(Double repayInterest) {
+		this.repayInterest = repayInterest;
+	}
 
-    public void setChargeResult(String chargeResult) {
-        this.chargeResult = chargeResult;
-    }
+	public Double getRepayOverdueAmount() {
+		return repayOverdueAmount;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setRepayOverdueAmount(Double repayOverdueAmount) {
+		this.repayOverdueAmount = repayOverdueAmount;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Double getOtherFee() {
+		return otherFee;
+	}
 
-    public Date getCrateDate() {
-        return crateDate;
-    }
+	public void setOtherFee(Double otherFee) {
+		this.otherFee = otherFee;
+	}
 
-    public void setCrateDate(Date crateDate) {
-        this.crateDate = crateDate;
-    }
+	public Double getOtherOverdueAmount() {
+		return otherOverdueAmount;
+	}
 
-    public String getProcInstId() {
-        return procInstId;
-    }
+	public void setOtherOverdueAmount(Double otherOverdueAmount) {
+		this.otherOverdueAmount = otherOverdueAmount;
+	}
 
-    public void setProcInstId(String procInstId) {
-        this.procInstId = procInstId;
-    }
+	public Double getChargeAmount() {
+		return chargeAmount;
+	}
+
+	public void setChargeAmount(Double chargeAmount) {
+		this.chargeAmount = chargeAmount;
+	}
+
+	public Double getChargeDate() {
+		return chargeDate;
+	}
+
+	public void setChargeDate(Double chargeDate) {
+		this.chargeDate = chargeDate;
+	}
+
+	public String getApplyStatus() {
+		return applyStatus;
+	}
+
+	public void setApplyStatus(String applyStatus) {
+		this.applyStatus = applyStatus;
+	}
+
+	public String getApplyComment() {
+		return applyComment;
+	}
+
+	public void setApplyComment(String applyComment) {
+		this.applyComment = applyComment;
+	}
+
+	public String getChargeResult() {
+		return chargeResult;
+	}
+
+	public void setChargeResult(String chargeResult) {
+		this.chargeResult = chargeResult;
+	}
+
+	public String getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
+
 }

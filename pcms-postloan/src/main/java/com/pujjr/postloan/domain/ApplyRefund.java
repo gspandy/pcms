@@ -5,81 +5,111 @@ import java.util.Date;
 public class ApplyRefund {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private Double refundAmount;
+	private Double stayAmount;
 
-    private Date refundDate;
+	private Integer stayDay;
 
-    private String applyComment;
+	private Double refundAmount;
 
-    private String applyStatus;
+	private Date refundDate;
 
-    private String createId;
+	private String applyComment;
 
-    private Date createDate;
+	private String applyStatus;
 
-    public String getId() {
-        return id;
-    }
+	private String createId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Date createDate;
 
-    public String getAppId() {
-        return appId;
-    }
+	private String procInstId;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public Double getRefundAmount() {
-        return refundAmount;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setRefundAmount(Double refundAmount) {
-        this.refundAmount = refundAmount;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public Date getRefundDate() {
-        return refundDate;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setRefundDate(Date refundDate) {
-        this.refundDate = refundDate;
-    }
+	public Double getStayAmount() {
+		return stayAmount;
+	}
 
-    public String getApplyComment() {
-        return applyComment;
-    }
+	public void setStayAmount(Double stayAmount) {
+		this.stayAmount = stayAmount;
+	}
 
-    public void setApplyComment(String applyComment) {
-        this.applyComment = applyComment;
-    }
+	public Integer getStayDay() {
+		return stayDay;
+	}
 
-    public String getApplyStatus() {
-        return applyStatus;
-    }
+	public void setStayDay(Integer stayDay) {
+		this.stayDay = stayDay;
+	}
 
-    public void setApplyStatus(String applyStatus) {
-        this.applyStatus = applyStatus;
-    }
+	public Double getRefundAmount() {
+		return refundAmount;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setRefundAmount(Double refundAmount) {
+		this.refundAmount = refundAmount;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getRefundDate() {
+		return refundDate;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public void setRefundDate(Date refundDate) {
+		this.refundDate = refundDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public String getApplyComment() {
+		return applyComment;
+	}
+
+	public void setApplyComment(String applyComment) {
+		this.applyComment = applyComment;
+	}
+
+	public String getApplyStatus() {
+		return applyStatus;
+	}
+
+	public void setApplyStatus(String applyStatus) {
+		this.applyStatus = applyStatus;
+	}
+
+	public String getCreateId() {
+		return createId;
+	}
+
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
 }
