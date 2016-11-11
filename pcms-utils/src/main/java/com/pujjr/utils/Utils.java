@@ -34,7 +34,7 @@ public class Utils {
 	 * @param source 源对象
 	 * @param dest 目标对象
 	 */
-	public static void copyProperties(Object source,Object dest){
+	/*public static void copyProperties(Object source,Object dest){
 		Class srcCls = source.getClass();
 		Class destCls = dest.getClass();
 		List<Field> srcFieldList = Utils.getFieldList(srcCls);
@@ -111,7 +111,7 @@ public class Utils {
 				}
 			}
 		}
-	}
+	}*/
 	
 	/**
 	 * 双精度浮点数转制定格式字符串
@@ -443,12 +443,12 @@ public class Utils {
 	 * @param target 目标对象
 	 * @author pujjr 2016-10-09
 	 */
-/*	public static void copyProperties(Object source, Object target){
+	public static void copyProperties(Object source, Object target){
 		if(source != null)
 			BeanUtils.copyProperties(source, target);
 		else
 			target = null;
-	}*/
+	}
 	
 	public static String convertStr2Utf8(String value) throws UnsupportedEncodingException
 	{
