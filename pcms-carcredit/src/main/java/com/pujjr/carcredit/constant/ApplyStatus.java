@@ -44,5 +44,7 @@ public class ApplyStatus
 	public final  static String CANCEL_APPROVING = "sqdzt20";
 	//已取消
 	public final  static String CANCEL_COMPLETE ="sqdzt21";
+	//准备放款
+	public final  static String PREPARE_LOAN="sqdzt22";
 	
 }
