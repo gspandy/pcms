@@ -1,305 +1,315 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.GeneralLedgerMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.GeneralLedger" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="PRODUCT_NAME" property="productName" jdbcType="VARCHAR" />
-    <result column="PRODUCT_CODE" property="productCode" jdbcType="VARCHAR" />
-    <result column="PERIOD" property="period" jdbcType="INTEGER" />
-    <result column="FINANCE_AMT" property="financeAmt" jdbcType="DOUBLE" />
-    <result column="YEAR_RATE" property="yearRate" jdbcType="DOUBLE" />
-    <result column="DAY_LATE_RATE" property="dayLateRate" jdbcType="DOUBLE" />
-    <result column="DAY_EXTEND_RATE" property="dayExtendRate" jdbcType="DOUBLE" />
-    <result column="REPAY_MODE" property="repayMode" jdbcType="VARCHAR" />
-    <result column="LOAN_DATE" property="loanDate" jdbcType="DATE" />
-    <result column="REMAIN_CAPITAL" property="remainCapital" jdbcType="DOUBLE" />
-    <result column="REPAY_STATUS" property="repayStatus" jdbcType="VARCHAR" />
-    <result column="SETTLE_DATE" property="settleDate" jdbcType="DATE" />
-    <result column="PROCESS_STATUS" property="processStatus" jdbcType="VARCHAR" />
-    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
-    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
-    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
-    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
-    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
-    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
-    <result column="RESERVER7" property="reserver7" jdbcType="VARCHAR" />
-    <result column="RESERVER8" property="reserver8" jdbcType="VARCHAR" />
-    <result column="RESERVER9" property="reserver9" jdbcType="VARCHAR" />
-    <result column="RESERVER10" property="reserver10" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.GeneralLedgerMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.GeneralLedger">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
+    <result column="PRODUCT_CODE" jdbcType="VARCHAR" property="productCode" />
+    <result column="PERIOD" jdbcType="INTEGER" property="period" />
+    <result column="FINANCE_AMT" jdbcType="DOUBLE" property="financeAmt" />
+    <result column="YEAR_RATE" jdbcType="DOUBLE" property="yearRate" />
+    <result column="DAY_LATE_RATE" jdbcType="DOUBLE" property="dayLateRate" />
+    <result column="DAY_EXTEND_RATE" jdbcType="DOUBLE" property="dayExtendRate" />
+    <result column="REPAY_MODE" jdbcType="VARCHAR" property="repayMode" />
+    <result column="LOAN_DATE" jdbcType="DATE" property="loanDate" />
+    <result column="REMAIN_CAPITAL" jdbcType="DOUBLE" property="remainCapital" />
+    <result column="REPAY_STATUS" jdbcType="VARCHAR" property="repayStatus" />
+    <result column="SETTLE_DATE" jdbcType="DATE" property="settleDate" />
+    <result column="PROCESS_STATUS" jdbcType="VARCHAR" property="processStatus" />
+    <result column="IS_OFFERING" jdbcType="BIT" property="isOffering" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="DATE" property="reserver3" />
+    <result column="RESERVER4" jdbcType="DATE" property="reserver4" />
+    <result column="RESERVER5" jdbcType="DOUBLE" property="reserver5" />
+    <result column="RESERVER6" jdbcType="DOUBLE" property="reserver6" />
+    <result column="RESERVER7" jdbcType="VARCHAR" property="reserver7" />
+    <result column="RESERVER8" jdbcType="VARCHAR" property="reserver8" />
+    <result column="RESERVER9" jdbcType="VARCHAR" property="reserver9" />
+    <result column="RESERVER10" jdbcType="VARCHAR" property="reserver10" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     ID, APP_ID, PRODUCT_NAME, PRODUCT_CODE, PERIOD, FINANCE_AMT, YEAR_RATE, DAY_LATE_RATE, 
     DAY_EXTEND_RATE, REPAY_MODE, LOAN_DATE, REMAIN_CAPITAL, REPAY_STATUS, SETTLE_DATE, 
-    PROCESS_STATUS, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6, 
-    RESERVER7, RESERVER8, RESERVER9, RESERVER10
+    PROCESS_STATUS, IS_OFFERING, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, 
+    RESERVER6, RESERVER7, RESERVER8, RESERVER9, RESERVER10
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_general_ledger
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_general_ledger
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.GeneralLedger" >
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.GeneralLedger">
     insert into t_general_ledger (ID, APP_ID, PRODUCT_NAME, 
       PRODUCT_CODE, PERIOD, FINANCE_AMT, 
       YEAR_RATE, DAY_LATE_RATE, DAY_EXTEND_RATE, 
       REPAY_MODE, LOAN_DATE, REMAIN_CAPITAL, 
       REPAY_STATUS, SETTLE_DATE, PROCESS_STATUS, 
-      RESERVER1, RESERVER2, RESERVER3, 
-      RESERVER4, RESERVER5, RESERVER6, 
-      RESERVER7, RESERVER8, RESERVER9, 
-      RESERVER10)
+      IS_OFFERING, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4, RESERVER5, 
+      RESERVER6, RESERVER7, RESERVER8, 
+      RESERVER9, RESERVER10)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
       #{productCode,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, #{financeAmt,jdbcType=DOUBLE}, 
       #{yearRate,jdbcType=DOUBLE}, #{dayLateRate,jdbcType=DOUBLE}, #{dayExtendRate,jdbcType=DOUBLE}, 
       #{repayMode,jdbcType=VARCHAR}, #{loanDate,jdbcType=DATE}, #{remainCapital,jdbcType=DOUBLE}, 
       #{repayStatus,jdbcType=VARCHAR}, #{settleDate,jdbcType=DATE}, #{processStatus,jdbcType=VARCHAR}, 
-      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, 
-      #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE}, 
-      #{reserver7,jdbcType=VARCHAR}, #{reserver8,jdbcType=VARCHAR}, #{reserver9,jdbcType=VARCHAR}, 
-      #{reserver10,jdbcType=VARCHAR})
+      #{isOffering,jdbcType=BIT}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=DATE}, #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, 
+      #{reserver6,jdbcType=DOUBLE}, #{reserver7,jdbcType=VARCHAR}, #{reserver8,jdbcType=VARCHAR}, 
+      #{reserver9,jdbcType=VARCHAR}, #{reserver10,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.GeneralLedger" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.GeneralLedger">
     insert into t_general_ledger
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         PRODUCT_NAME,
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         PRODUCT_CODE,
       </if>
-      <if test="period != null" >
+      <if test="period != null">
         PERIOD,
       </if>
-      <if test="financeAmt != null" >
+      <if test="financeAmt != null">
         FINANCE_AMT,
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         YEAR_RATE,
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         DAY_LATE_RATE,
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         DAY_EXTEND_RATE,
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         REPAY_MODE,
       </if>
-      <if test="loanDate != null" >
+      <if test="loanDate != null">
         LOAN_DATE,
       </if>
-      <if test="remainCapital != null" >
+      <if test="remainCapital != null">
         REMAIN_CAPITAL,
       </if>
-      <if test="repayStatus != null" >
+      <if test="repayStatus != null">
         REPAY_STATUS,
       </if>
-      <if test="settleDate != null" >
+      <if test="settleDate != null">
         SETTLE_DATE,
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         PROCESS_STATUS,
       </if>
-      <if test="reserver1 != null" >
+      <if test="isOffering != null">
+        IS_OFFERING,
+      </if>
+      <if test="reserver1 != null">
         RESERVER1,
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2,
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3,
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4,
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5,
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         RESERVER6,
       </if>
-      <if test="reserver7 != null" >
+      <if test="reserver7 != null">
         RESERVER7,
       </if>
-      <if test="reserver8 != null" >
+      <if test="reserver8 != null">
         RESERVER8,
       </if>
-      <if test="reserver9 != null" >
+      <if test="reserver9 != null">
         RESERVER9,
       </if>
-      <if test="reserver10 != null" >
+      <if test="reserver10 != null">
         RESERVER10,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         #{productCode,jdbcType=VARCHAR},
       </if>
-      <if test="period != null" >
+      <if test="period != null">
         #{period,jdbcType=INTEGER},
       </if>
-      <if test="financeAmt != null" >
+      <if test="financeAmt != null">
         #{financeAmt,jdbcType=DOUBLE},
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         #{yearRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         #{dayLateRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         #{dayExtendRate,jdbcType=DOUBLE},
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         #{repayMode,jdbcType=VARCHAR},
       </if>
-      <if test="loanDate != null" >
+      <if test="loanDate != null">
         #{loanDate,jdbcType=DATE},
       </if>
-      <if test="remainCapital != null" >
+      <if test="remainCapital != null">
         #{remainCapital,jdbcType=DOUBLE},
       </if>
-      <if test="repayStatus != null" >
+      <if test="repayStatus != null">
         #{repayStatus,jdbcType=VARCHAR},
       </if>
-      <if test="settleDate != null" >
+      <if test="settleDate != null">
         #{settleDate,jdbcType=DATE},
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         #{processStatus,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="isOffering != null">
+        #{isOffering,jdbcType=BIT},
+      </if>
+      <if test="reserver1 != null">
         #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         #{reserver3,jdbcType=DATE},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         #{reserver4,jdbcType=DATE},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         #{reserver5,jdbcType=DOUBLE},
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         #{reserver6,jdbcType=DOUBLE},
       </if>
-      <if test="reserver7 != null" >
+      <if test="reserver7 != null">
         #{reserver7,jdbcType=VARCHAR},
       </if>
-      <if test="reserver8 != null" >
+      <if test="reserver8 != null">
         #{reserver8,jdbcType=VARCHAR},
       </if>
-      <if test="reserver9 != null" >
+      <if test="reserver9 != null">
         #{reserver9,jdbcType=VARCHAR},
       </if>
-      <if test="reserver10 != null" >
+      <if test="reserver10 != null">
         #{reserver10,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.GeneralLedger" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.GeneralLedger">
     update t_general_ledger
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="productName != null" >
+      <if test="productName != null">
         PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
       </if>
-      <if test="productCode != null" >
+      <if test="productCode != null">
         PRODUCT_CODE = #{productCode,jdbcType=VARCHAR},
       </if>
-      <if test="period != null" >
+      <if test="period != null">
         PERIOD = #{period,jdbcType=INTEGER},
       </if>
-      <if test="financeAmt != null" >
+      <if test="financeAmt != null">
         FINANCE_AMT = #{financeAmt,jdbcType=DOUBLE},
       </if>
-      <if test="yearRate != null" >
+      <if test="yearRate != null">
         YEAR_RATE = #{yearRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayLateRate != null" >
+      <if test="dayLateRate != null">
         DAY_LATE_RATE = #{dayLateRate,jdbcType=DOUBLE},
       </if>
-      <if test="dayExtendRate != null" >
+      <if test="dayExtendRate != null">
         DAY_EXTEND_RATE = #{dayExtendRate,jdbcType=DOUBLE},
       </if>
-      <if test="repayMode != null" >
+      <if test="repayMode != null">
         REPAY_MODE = #{repayMode,jdbcType=VARCHAR},
       </if>
-      <if test="loanDate != null" >
+      <if test="loanDate != null">
         LOAN_DATE = #{loanDate,jdbcType=DATE},
       </if>
-      <if test="remainCapital != null" >
+      <if test="remainCapital != null">
         REMAIN_CAPITAL = #{remainCapital,jdbcType=DOUBLE},
       </if>
-      <if test="repayStatus != null" >
+      <if test="repayStatus != null">
         REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
       </if>
-      <if test="settleDate != null" >
+      <if test="settleDate != null">
         SETTLE_DATE = #{settleDate,jdbcType=DATE},
       </if>
-      <if test="processStatus != null" >
+      <if test="processStatus != null">
         PROCESS_STATUS = #{processStatus,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="isOffering != null">
+        IS_OFFERING = #{isOffering,jdbcType=BIT},
+      </if>
+      <if test="reserver1 != null">
         RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3 = #{reserver3,jdbcType=DATE},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4 = #{reserver4,jdbcType=DATE},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5 = #{reserver5,jdbcType=DOUBLE},
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         RESERVER6 = #{reserver6,jdbcType=DOUBLE},
       </if>
-      <if test="reserver7 != null" >
+      <if test="reserver7 != null">
         RESERVER7 = #{reserver7,jdbcType=VARCHAR},
       </if>
-      <if test="reserver8 != null" >
+      <if test="reserver8 != null">
         RESERVER8 = #{reserver8,jdbcType=VARCHAR},
       </if>
-      <if test="reserver9 != null" >
+      <if test="reserver9 != null">
         RESERVER9 = #{reserver9,jdbcType=VARCHAR},
       </if>
-      <if test="reserver10 != null" >
+      <if test="reserver10 != null">
         RESERVER10 = #{reserver10,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.GeneralLedger" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.GeneralLedger">
     update t_general_ledger
     set APP_ID = #{appId,jdbcType=VARCHAR},
       PRODUCT_NAME = #{productName,jdbcType=VARCHAR},
@@ -315,6 +325,7 @@
       REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
       SETTLE_DATE = #{settleDate,jdbcType=DATE},
       PROCESS_STATUS = #{processStatus,jdbcType=VARCHAR},
+      IS_OFFERING = #{isOffering,jdbcType=BIT},
       RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       RESERVER3 = #{reserver3,jdbcType=DATE},

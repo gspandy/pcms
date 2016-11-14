@@ -5,141 +5,171 @@ import java.util.Date;
 public class OfferSummary {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private String offerSource;
+	private String feeType;
 
-    private String chargeMode;
+	private String feeRefId;
 
-    private String merchantNo;
+	private String offerSource;
 
-    private Double offerAmount;
+	private String chargeMode;
 
-    private Date offerTime;
+	private String merchantNo;
 
-    private String chargeStatus;
+	private Double offerAmount;
 
-    private String reserver1;
+	private Date offerTime;
 
-    private String reserver2;
+	private String chargeStatus;
 
-    private Date reserver3;
+	private String offerBatchNo;
 
-    private Date reserver4;
+	private String reserver1;
 
-    private Double reserver5;
+	private String reserver2;
 
-    private Double reserver6;
+	private Date reserver3;
 
-    public String getId() {
-        return id;
-    }
+	private Date reserver4;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Double reserver5;
 
-    public String getAppId() {
-        return appId;
-    }
+	private Double reserver6;
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getOfferSource() {
-        return offerSource;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setOfferSource(String offerSource) {
-        this.offerSource = offerSource;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getChargeMode() {
-        return chargeMode;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setChargeMode(String chargeMode) {
-        this.chargeMode = chargeMode;
-    }
+	public String getFeeType() {
+		return feeType;
+	}
 
-    public String getMerchantNo() {
-        return merchantNo;
-    }
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
+	}
 
-    public void setMerchantNo(String merchantNo) {
-        this.merchantNo = merchantNo;
-    }
+	public String getFeeRefId() {
+		return feeRefId;
+	}
 
-    public Double getOfferAmount() {
-        return offerAmount;
-    }
+	public void setFeeRefId(String feeRefId) {
+		this.feeRefId = feeRefId;
+	}
 
-    public void setOfferAmount(Double offerAmount) {
-        this.offerAmount = offerAmount;
-    }
+	public String getOfferSource() {
+		return offerSource;
+	}
 
-    public Date getOfferTime() {
-        return offerTime;
-    }
+	public void setOfferSource(String offerSource) {
+		this.offerSource = offerSource;
+	}
 
-    public void setOfferTime(Date offerTime) {
-        this.offerTime = offerTime;
-    }
+	public String getChargeMode() {
+		return chargeMode;
+	}
 
-    public String getChargeStatus() {
-        return chargeStatus;
-    }
+	public void setChargeMode(String chargeMode) {
+		this.chargeMode = chargeMode;
+	}
 
-    public void setChargeStatus(String chargeStatus) {
-        this.chargeStatus = chargeStatus;
-    }
+	public String getMerchantNo() {
+		return merchantNo;
+	}
 
-    public String getReserver1() {
-        return reserver1;
-    }
+	public void setMerchantNo(String merchantNo) {
+		this.merchantNo = merchantNo;
+	}
 
-    public void setReserver1(String reserver1) {
-        this.reserver1 = reserver1;
-    }
+	public Double getOfferAmount() {
+		return offerAmount;
+	}
 
-    public String getReserver2() {
-        return reserver2;
-    }
+	public void setOfferAmount(Double offerAmount) {
+		this.offerAmount = offerAmount;
+	}
 
-    public void setReserver2(String reserver2) {
-        this.reserver2 = reserver2;
-    }
+	public Date getOfferTime() {
+		return offerTime;
+	}
 
-    public Date getReserver3() {
-        return reserver3;
-    }
+	public void setOfferTime(Date offerTime) {
+		this.offerTime = offerTime;
+	}
 
-    public void setReserver3(Date reserver3) {
-        this.reserver3 = reserver3;
-    }
+	public String getChargeStatus() {
+		return chargeStatus;
+	}
 
-    public Date getReserver4() {
-        return reserver4;
-    }
+	public void setChargeStatus(String chargeStatus) {
+		this.chargeStatus = chargeStatus;
+	}
 
-    public void setReserver4(Date reserver4) {
-        this.reserver4 = reserver4;
-    }
+	public String getOfferBatchNo() {
+		return offerBatchNo;
+	}
 
-    public Double getReserver5() {
-        return reserver5;
-    }
+	public void setOfferBatchNo(String offerBatchNo) {
+		this.offerBatchNo = offerBatchNo;
+	}
 
-    public void setReserver5(Double reserver5) {
-        this.reserver5 = reserver5;
-    }
+	public String getReserver1() {
+		return reserver1;
+	}
 
-    public Double getReserver6() {
-        return reserver6;
-    }
+	public void setReserver1(String reserver1) {
+		this.reserver1 = reserver1;
+	}
 
-    public void setReserver6(Double reserver6) {
-        this.reserver6 = reserver6;
-    }
+	public String getReserver2() {
+		return reserver2;
+	}
+
+	public void setReserver2(String reserver2) {
+		this.reserver2 = reserver2;
+	}
+
+	public Date getReserver3() {
+		return reserver3;
+	}
+
+	public void setReserver3(Date reserver3) {
+		this.reserver3 = reserver3;
+	}
+
+	public Date getReserver4() {
+		return reserver4;
+	}
+
+	public void setReserver4(Date reserver4) {
+		this.reserver4 = reserver4;
+	}
+
+	public Double getReserver5() {
+		return reserver5;
+	}
+
+	public void setReserver5(Double reserver5) {
+		this.reserver5 = reserver5;
+	}
+
+	public Double getReserver6() {
+		return reserver6;
+	}
+
+	public void setReserver6(Double reserver6) {
+		this.reserver6 = reserver6;
+	}
 }

@@ -1,193 +1,229 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.OfferSummaryMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferSummary" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="OFFER_SOURCE" property="offerSource" jdbcType="VARCHAR" />
-    <result column="CHARGE_MODE" property="chargeMode" jdbcType="VARCHAR" />
-    <result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
-    <result column="OFFER_AMOUNT" property="offerAmount" jdbcType="DOUBLE" />
-    <result column="OFFER_TIME" property="offerTime" jdbcType="TIMESTAMP" />
-    <result column="CHARGE_STATUS" property="chargeStatus" jdbcType="VARCHAR" />
-    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
-    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
-    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
-    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
-    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
-    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.OfferSummaryMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferSummary">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="FEE_TYPE" jdbcType="VARCHAR" property="feeType" />
+    <result column="FEE_REF_ID" jdbcType="VARCHAR" property="feeRefId" />
+    <result column="OFFER_SOURCE" jdbcType="VARCHAR" property="offerSource" />
+    <result column="CHARGE_MODE" jdbcType="VARCHAR" property="chargeMode" />
+    <result column="MERCHANT_NO" jdbcType="VARCHAR" property="merchantNo" />
+    <result column="OFFER_AMOUNT" jdbcType="DOUBLE" property="offerAmount" />
+    <result column="OFFER_TIME" jdbcType="TIMESTAMP" property="offerTime" />
+    <result column="CHARGE_STATUS" jdbcType="VARCHAR" property="chargeStatus" />
+    <result column="OFFER_BATCH_NO" jdbcType="VARCHAR" property="offerBatchNo" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="DATE" property="reserver3" />
+    <result column="RESERVER4" jdbcType="DATE" property="reserver4" />
+    <result column="RESERVER5" jdbcType="DOUBLE" property="reserver5" />
+    <result column="RESERVER6" jdbcType="DOUBLE" property="reserver6" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, OFFER_SOURCE, CHARGE_MODE, MERCHANT_NO, OFFER_AMOUNT, OFFER_TIME, CHARGE_STATUS, 
-    RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6
+  <sql id="Base_Column_List">
+    ID, APP_ID, FEE_TYPE, FEE_REF_ID, OFFER_SOURCE, CHARGE_MODE, MERCHANT_NO, OFFER_AMOUNT, 
+    OFFER_TIME, CHARGE_STATUS, OFFER_BATCH_NO, RESERVER1, RESERVER2, RESERVER3, RESERVER4, 
+    RESERVER5, RESERVER6
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_offer_summary
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_offer_summary
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferSummary" >
-    insert into t_offer_summary (ID, APP_ID, OFFER_SOURCE, 
-      CHARGE_MODE, MERCHANT_NO, OFFER_AMOUNT, 
-      OFFER_TIME, CHARGE_STATUS, RESERVER1, 
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferSummary">
+    insert into t_offer_summary (ID, APP_ID, FEE_TYPE, 
+      FEE_REF_ID, OFFER_SOURCE, CHARGE_MODE, 
+      MERCHANT_NO, OFFER_AMOUNT, OFFER_TIME, 
+      CHARGE_STATUS, OFFER_BATCH_NO, RESERVER1, 
       RESERVER2, RESERVER3, RESERVER4, 
       RESERVER5, RESERVER6)
-    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{offerSource,jdbcType=VARCHAR}, 
-      #{chargeMode,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR}, #{offerAmount,jdbcType=DOUBLE}, 
-      #{offerTime,jdbcType=TIMESTAMP}, #{chargeStatus,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
+      #{feeRefId,jdbcType=VARCHAR}, #{offerSource,jdbcType=VARCHAR}, #{chargeMode,jdbcType=VARCHAR}, 
+      #{merchantNo,jdbcType=VARCHAR}, #{offerAmount,jdbcType=DOUBLE}, #{offerTime,jdbcType=TIMESTAMP}, 
+      #{chargeStatus,jdbcType=VARCHAR}, #{offerBatchNo,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
       #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, #{reserver4,jdbcType=DATE}, 
       #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferSummary" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferSummary">
     insert into t_offer_summary
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="offerSource != null" >
+      <if test="feeType != null">
+        FEE_TYPE,
+      </if>
+      <if test="feeRefId != null">
+        FEE_REF_ID,
+      </if>
+      <if test="offerSource != null">
         OFFER_SOURCE,
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE,
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         MERCHANT_NO,
       </if>
-      <if test="offerAmount != null" >
+      <if test="offerAmount != null">
         OFFER_AMOUNT,
       </if>
-      <if test="offerTime != null" >
+      <if test="offerTime != null">
         OFFER_TIME,
       </if>
-      <if test="chargeStatus != null" >
+      <if test="chargeStatus != null">
         CHARGE_STATUS,
       </if>
-      <if test="reserver1 != null" >
+      <if test="offerBatchNo != null">
+        OFFER_BATCH_NO,
+      </if>
+      <if test="reserver1 != null">
         RESERVER1,
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2,
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3,
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4,
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5,
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         RESERVER6,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="offerSource != null" >
+      <if test="feeType != null">
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null">
+        #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerSource != null">
         #{offerSource,jdbcType=VARCHAR},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         #{chargeMode,jdbcType=VARCHAR},
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         #{merchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="offerAmount != null" >
+      <if test="offerAmount != null">
         #{offerAmount,jdbcType=DOUBLE},
       </if>
-      <if test="offerTime != null" >
+      <if test="offerTime != null">
         #{offerTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chargeStatus != null" >
+      <if test="chargeStatus != null">
         #{chargeStatus,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="offerBatchNo != null">
+        #{offerBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
         #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         #{reserver3,jdbcType=DATE},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         #{reserver4,jdbcType=DATE},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         #{reserver5,jdbcType=DOUBLE},
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         #{reserver6,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferSummary" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferSummary">
     update t_offer_summary
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="offerSource != null" >
+      <if test="feeType != null">
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null">
+        FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="offerSource != null">
         OFFER_SOURCE = #{offerSource,jdbcType=VARCHAR},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="offerAmount != null" >
+      <if test="offerAmount != null">
         OFFER_AMOUNT = #{offerAmount,jdbcType=DOUBLE},
       </if>
-      <if test="offerTime != null" >
+      <if test="offerTime != null">
         OFFER_TIME = #{offerTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chargeStatus != null" >
+      <if test="chargeStatus != null">
         CHARGE_STATUS = #{chargeStatus,jdbcType=VARCHAR},
       </if>
-      <if test="reserver1 != null" >
+      <if test="offerBatchNo != null">
+        OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
         RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       </if>
-      <if test="reserver2 != null" >
+      <if test="reserver2 != null">
         RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       </if>
-      <if test="reserver3 != null" >
+      <if test="reserver3 != null">
         RESERVER3 = #{reserver3,jdbcType=DATE},
       </if>
-      <if test="reserver4 != null" >
+      <if test="reserver4 != null">
         RESERVER4 = #{reserver4,jdbcType=DATE},
       </if>
-      <if test="reserver5 != null" >
+      <if test="reserver5 != null">
         RESERVER5 = #{reserver5,jdbcType=DOUBLE},
       </if>
-      <if test="reserver6 != null" >
+      <if test="reserver6 != null">
         RESERVER6 = #{reserver6,jdbcType=DOUBLE},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferSummary" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferSummary">
     update t_offer_summary
     set APP_ID = #{appId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
       OFFER_SOURCE = #{offerSource,jdbcType=VARCHAR},
       CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
       MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR},
       OFFER_AMOUNT = #{offerAmount,jdbcType=DOUBLE},
       OFFER_TIME = #{offerTime,jdbcType=TIMESTAMP},
       CHARGE_STATUS = #{chargeStatus,jdbcType=VARCHAR},
+      OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
       RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       RESERVER3 = #{reserver3,jdbcType=DATE},
