@@ -29,12 +29,12 @@ public class Utils {
 	public static int seq=0;
 	
 	/**
-	 * 属性拷贝
+	 * 属性拷贝(拷贝list成员变量)
 	 * tom 2016年11月7日
 	 * @param source 源对象
 	 * @param dest 目标对象
 	 */
-	/*public static void copyProperties(Object source,Object dest){
+	/*public static void copyPropertiesDeep(Object source,Object dest){
 		Class srcCls = source.getClass();
 		Class destCls = dest.getClass();
 		List<Field> srcFieldList = Utils.getFieldList(srcCls);
@@ -64,7 +64,8 @@ public class Utils {
 //							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
 //							System.out.println("ttt:"+srcField.get(source));
 							for (Object object : tempSrcFieldValue) {
-								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+//								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//目前仅仅拷贝list泛型中含有一个参数的情况，如：List<String>
+								Object rsdv = Class.forName(types[0].toString().split(" ")[1]).newInstance();
 								Utils.copyProperties(object, rsdv);
 								destList.add(rsdv);
 							}

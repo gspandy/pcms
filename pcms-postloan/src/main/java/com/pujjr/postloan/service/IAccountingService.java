@@ -44,14 +44,13 @@ public interface IAccountingService
 	 * @return
 	 * 	提前结清违约金率
 	 * **/
-	public double getSettleReate(String appId);
+	public double getSettleRate(String appId);
 	/**
 	 * 功能：查询客户当前正在还款的分类汇总费用信息
-	 * @param 
-	 * 	appId-申请单号
-	 * 	isCalOverdueAmount-是否计算逾期金额
-	 * 	overdueEndDate-计算逾期截止日期
-	 * 	isReduceStayAmount-是否扣除挂账金额
+	 * @param appId 申请单号
+	 * @param isCalOverdueAmount 是否计算逾期金额
+	 * @param overdueEndDate 计算逾期截止日期
+	 * @param isReduceStayAmount 是否扣除挂账金额
 	 * @return
 	 * 	正在还款的分类汇总费用信息
 	 * **/
@@ -74,9 +73,8 @@ public interface IAccountingService
 	public List<WaitingCharge> getWaitingChargeTypeOther(String appId);
 	/**
 	 * 功能：查询当前期数后续指定期数，为queryPeriod=0是查询后续所有期数
-	 * @param
-	 * 	appId-申请单号
-	 * 	queryPeriod-查询期数
+	 * @param appId 申请单号
+	 * @param queryPeriod 查询期数
 	 * @return
 	 * 	返回还款计划信息
 	 * **/

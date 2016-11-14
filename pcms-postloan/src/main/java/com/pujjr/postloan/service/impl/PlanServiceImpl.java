@@ -52,9 +52,6 @@ public class PlanServiceImpl implements IPlanService {
 //			rsp = new InterestAlgorithmImpl().monthlyIntetrest(fianceAmt, monthRate, period, valueDate);
 			break;
 		}
-		RepayScheduleVo rsv = new RepayScheduleVo();
-		Utils.copyProperties(rsp, rsv);
-		System.out.println(JSONObject.toJSONString(rsv));
 		List<RepayPlan> repayPlanList = rsp.getRepayPlanList();
 		for (RepayPlan repayPlan : repayPlanList) {
 			repayPlan.setId(Utils.get16UUID());
@@ -67,15 +64,12 @@ public class PlanServiceImpl implements IPlanService {
 	public List<RepayPlanVo> selectRepayPlanList(String appId,int period) {
 		List<RepayPlanVo> voList = new ArrayList<RepayPlanVo>();
 		List<RepayPlan> poList = new ArrayList<RepayPlan>();
-		System.out.println("selectRepayPlanList  appId:"+appId+"|period:"+period);
 		poList = repayPlanMapper.selectRepayPlanList(appId,period);
-		System.out.println("JSONObject.toJSONString(poList):"+JSONObject.toJSONString(poList));
 		for (RepayPlan repayPlan : poList) {
 			RepayPlanVo repayPlanVo = new RepayPlanVo();
 			Utils.copyProperties(repayPlan, repayPlanVo);
 			voList.add(repayPlanVo);
 		}
-		System.out.println("JSONObject.toJSONString(voList):"+JSONObject.toJSONString(voList));
 		return voList;
 	}
 
@@ -85,7 +79,6 @@ public class PlanServiceImpl implements IPlanService {
 		RepayPlan repayPlan = new RepayPlan();
 		repayPlan = repayPlanMapper.selectRepayPlan(appId, period);
 		Utils.copyProperties(repayPlan, repayPlanVo);
-		System.out.println("JSONObject.toJSONString(repayPlanVo):"+JSONObject.toJSONString(repayPlanVo));
 		return repayPlanVo;
 	}
 

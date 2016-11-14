@@ -15,13 +15,12 @@ import com.pujjr.postloan.vo.SettleTaskVo;
  * **/
 public interface ISettleService 
 {
-	/**
-	 * 功能：查询指定客户提前结清应还项
-	 * 参数：
-	 * 	appId-申请单号
-	 * 	settleEffectDate-有效截止日期
-	 * 返回：提前结清各项费用金额
-	 * **/
+	/**功能：查询指定客户提前结清应还项
+	 * tom 2016年11月14日
+	 * @param appId 申请单号
+	 * @param settleEeffectDate 有效截止日期
+	 * @return 提前结清各项费用金额
+	 */
 	public SettleFeeItemVo getAllSettleFeeItem(String appId,Date settleEeffectDate);
 	/**
 	 * 功能：查询指定客户部分提前结清应还项

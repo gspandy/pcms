@@ -12,7 +12,6 @@ public class SettleFeeItemVo extends RepayFeeItemVo
 	private double  settleAfterAmount;
 	//违约金
 	private double lateFee;
-	
 	public double getLateFee() {
 		return lateFee;
 	}
@@ -37,6 +36,4 @@ public class SettleFeeItemVo extends RepayFeeItemVo
 	public void setSettleTotalAmount(double settleTotalAmount) {
 		this.settleTotalAmount = settleTotalAmount;
 	}
-	
-	
 }
