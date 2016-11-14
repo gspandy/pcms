@@ -94,7 +94,7 @@ public class PlanServiceImpl implements IPlanService {
 	@Override
 	public List<RepayPlan> getRepayPlanList(String appId, int beginPeriod, int endPeriod) {
 		// TODO Auto-generated method stub
-		return repayPlanMapper.selectRepayPlanList(appId, beginPeriod, endPeriod);
+		return repayPlanMapper.selectSpecialRepayPlanList(appId, beginPeriod, endPeriod);
 	}
 
 }

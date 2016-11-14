@@ -1,127 +1,127 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.RepayLogMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.RepayLog" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
-    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
-    <result column="CHARGE_ITEM" property="chargeItem" jdbcType="VARCHAR" />
-    <result column="CHARGE_AMOUNT" property="chargeAmount" jdbcType="DOUBLE" />
-    <result column="CHARGE_TIME" property="chargeTime" jdbcType="TIMESTAMP" />
-    <result column="CHARGE_MODE" property="chargeMode" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.RepayLogMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.RepayLog">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="FEE_TYPE" jdbcType="VARCHAR" property="feeType" />
+    <result column="FEE_REF_ID" jdbcType="VARCHAR" property="feeRefId" />
+    <result column="CHARGE_ITEM" jdbcType="VARCHAR" property="chargeItem" />
+    <result column="CHARGE_AMOUNT" jdbcType="DOUBLE" property="chargeAmount" />
+    <result column="CHARGE_DATE" jdbcType="DATE" property="chargeDate" />
+    <result column="CHARGE_MODE" jdbcType="VARCHAR" property="chargeMode" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, FEE_TYPE, FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, CHARGE_TIME, CHARGE_MODE
+  <sql id="Base_Column_List">
+    ID, APP_ID, FEE_TYPE, FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, CHARGE_DATE, CHARGE_MODE
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_repay_log
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_repay_log
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.RepayLog" >
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.RepayLog">
     insert into t_repay_log (ID, APP_ID, FEE_TYPE, 
       FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, 
-      CHARGE_TIME, CHARGE_MODE)
+      CHARGE_DATE, CHARGE_MODE)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
       #{feeRefId,jdbcType=VARCHAR}, #{chargeItem,jdbcType=VARCHAR}, #{chargeAmount,jdbcType=DOUBLE}, 
-      #{chargeTime,jdbcType=TIMESTAMP}, #{chargeMode,jdbcType=VARCHAR})
+      #{chargeDate,jdbcType=DATE}, #{chargeMode,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RepayLog" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RepayLog">
     insert into t_repay_log
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="feeType != null" >
+      <if test="feeType != null">
         FEE_TYPE,
       </if>
-      <if test="feeRefId != null" >
+      <if test="feeRefId != null">
         FEE_REF_ID,
       </if>
-      <if test="chargeItem != null" >
+      <if test="chargeItem != null">
         CHARGE_ITEM,
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         CHARGE_AMOUNT,
       </if>
-      <if test="chargeTime != null" >
-        CHARGE_TIME,
+      <if test="chargeDate != null">
+        CHARGE_DATE,
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="feeType != null" >
+      <if test="feeType != null">
         #{feeType,jdbcType=VARCHAR},
       </if>
-      <if test="feeRefId != null" >
+      <if test="feeRefId != null">
         #{feeRefId,jdbcType=VARCHAR},
       </if>
-      <if test="chargeItem != null" >
+      <if test="chargeItem != null">
         #{chargeItem,jdbcType=VARCHAR},
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeTime != null" >
-        #{chargeTime,jdbcType=TIMESTAMP},
+      <if test="chargeDate != null">
+        #{chargeDate,jdbcType=DATE},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         #{chargeMode,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.RepayLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.RepayLog">
     update t_repay_log
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="feeType != null" >
+      <if test="feeType != null">
         FEE_TYPE = #{feeType,jdbcType=VARCHAR},
       </if>
-      <if test="feeRefId != null" >
+      <if test="feeRefId != null">
         FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
       </if>
-      <if test="chargeItem != null" >
+      <if test="chargeItem != null">
         CHARGE_ITEM = #{chargeItem,jdbcType=VARCHAR},
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeTime != null" >
-        CHARGE_TIME = #{chargeTime,jdbcType=TIMESTAMP},
+      <if test="chargeDate != null">
+        CHARGE_DATE = #{chargeDate,jdbcType=DATE},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.RepayLog" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.RepayLog">
     update t_repay_log
     set APP_ID = #{appId,jdbcType=VARCHAR},
       FEE_TYPE = #{feeType,jdbcType=VARCHAR},
       FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
       CHARGE_ITEM = #{chargeItem,jdbcType=VARCHAR},
       CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
-      CHARGE_TIME = #{chargeTime,jdbcType=TIMESTAMP},
+      CHARGE_DATE = #{chargeDate,jdbcType=DATE},
       CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>

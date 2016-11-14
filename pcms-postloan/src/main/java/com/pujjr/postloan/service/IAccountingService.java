@@ -3,6 +3,8 @@ package com.pujjr.postloan.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
@@ -10,6 +12,7 @@ import com.pujjr.postloan.vo.RepayingFeeItemVo;
 /**
  * 账务核心服务
  * **/
+@Service
 public interface IAccountingService 
 {
 	/**
@@ -43,7 +46,7 @@ public interface IAccountingService
 	 * @return
 	 * 	提前结清违约金率
 	 * **/
-	public double getSettleReate(String appId);
+	public double getSettleRate(String appId);
 	/**
 	 * 功能：查询客户当前正在还款的分类汇总费用信息
 	 * @param appId 申请单号

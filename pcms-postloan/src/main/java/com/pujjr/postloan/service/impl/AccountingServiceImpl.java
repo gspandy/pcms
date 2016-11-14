@@ -6,22 +6,32 @@ import java.util.List;
 
 import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.pujjr.base.service.IProductService;
 import com.pujjr.enumeration.EIntervalMode;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.dao.OtherFeeMapper;
+import com.pujjr.postloan.dao.RepayLogMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
+import com.pujjr.postloan.dao.StayAccountLogMapper;
 import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.GeneralLedger;
+import com.pujjr.postloan.domain.OtherFee;
+import com.pujjr.postloan.domain.RepayLog;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
+import com.pujjr.postloan.domain.StayAccountLog;
 import com.pujjr.postloan.domain.WaitingCharge;
+import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.RepayStatus;
+import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
 import com.pujjr.utils.Utils;
-
+@Service
 public class AccountingServiceImpl implements IAccountingService {
 
 	@Autowired
@@ -34,6 +44,12 @@ public class AccountingServiceImpl implements IAccountingService {
 	private IProductService productService;
 	@Autowired
 	private StayAccountMapper stayAccountDao;
+	@Autowired
+	private OtherFeeMapper otherFeeDao;
+	@Autowired
+	private RepayLogMapper repayLogDao;
+	@Autowired
+	private StayAccountLogMapper stayAccountLogDao;
 	
 	@Override
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
@@ -56,7 +72,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	}
 
 	@Override
-	public double getSettleReate(String appId) 
+	public double getSettleRate(String appId) 
 	{
 		// TODO Auto-generated method stub
 		//查询代扣明细表是否有逾期还款计划，有则以最早一期逾期期数获取对应的结清违约金率，否则以当前期数查询提前结清违约金率
@@ -269,7 +285,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	@Override
 	public List<RepayPlan> getAfterCurrentPeriodRepayPlan(String appId, int queryPeriod) {
 		// TODO Auto-generated method stub
-		return repayPlanDao.selectRepayPlanList(appId, queryPeriod+1,0);
+		return repayPlanDao.selectSpecialRepayPlanList(appId, queryPeriod+1,0);
 
 	}
 
@@ -287,9 +303,213 @@ public class AccountingServiceImpl implements IAccountingService {
 		return tmpList;
 	}
 
+	private void saveRepayLog(String appId,FeeType feeType,String feeRefId,ChargeItem chargeItem,double chargeAmount,Date chargeDate,String chargeMode)
+	{
+		//记录还款记录
+		RepayLog repayLog = new RepayLog();
+		repayLog.setId(Utils.get16UUID());
+		repayLog.setAppId(appId);
+		repayLog.setFeeType(feeType.getName());
+		repayLog.setFeeRefId(feeRefId);
+		repayLog.setChargeItem(chargeItem.getName());
+		repayLog.setChargeAmount(chargeAmount);
+		repayLog.setChargeDate(chargeDate);
+		repayLog.setChargeMode(chargeMode);
+		repayLogDao.insert(repayLog);
+	}
 	@Override
-	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode) {
-
+	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode) 
+	{
+		/**
+		 * 冲其他费用
+		 */
+		List<WaitingCharge> otherFeeList = waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Other.getName());
+		for(WaitingCharge otherFeeItem : otherFeeList)
+		{
+			if(repayAmount<=0)
+				break;
+			double otherFeeCapital = otherFeeItem.getRepayCapital();
+			double otherFeeOverdueAmt = otherFeeItem.getRepayOverdueAmount();
+			//先冲罚息
+			if(repayAmount>0)
+			{
+				if(otherFeeOverdueAmt>0)
+				{
+					if(Double.compare(otherFeeOverdueAmt, repayAmount)>=0)
+					{
+						otherFeeOverdueAmt-=repayAmount;
+						repayAmount=0.00;
+						saveRepayLog(appId,FeeType.Other,otherFeeItem.getId(),ChargeItem.OTHEROVERDUEAMT,repayAmount,repayDate,repayMode);
+					}
+					else
+					{
+						repayAmount-=otherFeeOverdueAmt;
+						otherFeeOverdueAmt=0.00;
+						saveRepayLog(appId,FeeType.Other,otherFeeItem.getId(),ChargeItem.OTHEROVERDUEAMT,otherFeeOverdueAmt,repayDate,repayMode);
+					}
+					
+				}
+			}
+			//再冲本金
+			if(repayAmount>0)
+			{
+				if(otherFeeCapital>0)
+				{
+					if(Double.compare(otherFeeCapital, repayAmount)>=0)
+					{
+						otherFeeCapital-=repayAmount;
+						repayAmount=0.00;
+						saveRepayLog(appId,FeeType.Other,otherFeeItem.getId(),ChargeItem.OTHERFEE,repayAmount,repayDate,repayMode);
+					}
+					else
+					{
+						repayAmount-=otherFeeCapital;
+						otherFeeCapital=0.00;
+						saveRepayLog(appId,FeeType.Other,otherFeeItem.getId(),ChargeItem.OTHERFEE,otherFeeCapital,repayDate,repayMode);
+					}
+				}
+			}
+			//如果冲账后本金和利息都为0，则为结清状态，否则只更新代扣款明细相关数据
+			if(otherFeeCapital==0 && otherFeeOverdueAmt==0)
+			{
+				OtherFee otherFeePo = otherFeeDao.selectByPrimaryKey(otherFeeItem.getFeeRefId());
+				otherFeePo.setRepayStatus(RepayStatus.Settled.getName());
+				otherFeePo.setSettleDate(new Date());
+				otherFeePo.setSettleMode(SettleMode.NORMAL.getName());
+				otherFeeDao.updateByPrimaryKey(otherFeePo);
+				//删除对应代扣款明细
+				waitingChargeDao.deleteByPrimaryKey(otherFeeItem.getId());
+			}
+			else
+			{
+				otherFeeItem.setRepayCapital(otherFeeCapital);
+				otherFeeItem.setRepayOverdueAmount(otherFeeOverdueAmt);
+				waitingChargeDao.updateByPrimaryKey(otherFeeItem);
+			}
+		}
+		/**
+		 * 冲计划还款费用
+		 */
+		List<WaitingCharge> planRepayList = waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Plan.getName());
+		for(WaitingCharge planItem : planRepayList)
+		{
+			if(repayAmount<=0)
+				break;
+			double capital = planItem.getRepayCapital();
+			double interest = planItem.getRepayInterest();
+			double overdueAmt = planItem.getRepayOverdueAmount();
+			//先冲罚息
+			if(repayAmount>0)
+			{
+				if(overdueAmt>0)
+				{
+					if(Double.compare(overdueAmt, repayAmount)>=0)
+					{
+						overdueAmt-=repayAmount;
+						repayAmount=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.OVERDUEAMT,repayAmount,repayDate,repayMode);
+					}
+					else
+					{
+						repayAmount-=overdueAmt;
+						overdueAmt=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.OVERDUEAMT,overdueAmt,repayDate,repayMode);
+					}
+					
+				}
+			}
+			//再冲利息
+			if(repayAmount>0)
+			{
+				if(interest>0)
+				{
+					if(Double.compare(interest, repayAmount)>=0)
+					{
+						interest-=repayAmount;
+						repayAmount=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.INTEREST,repayAmount,repayDate,repayMode);
+					}
+					else
+					{
+						repayAmount-=interest;
+						interest=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.INTEREST,interest,repayDate,repayMode);
+					}
+				}
+			}
+			//再冲本金
+			if(repayAmount>0)
+			{
+				if(capital>0)
+				{
+					if(Double.compare(capital, repayAmount)>=0)
+					{
+						capital-=repayAmount;
+						repayAmount=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.CAPITAL,repayAmount,repayDate,repayMode);
+					}
+					else
+					{
+						repayAmount-=capital;
+						capital=0.00;
+						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.CAPITAL,capital,repayDate,repayMode);
+					}
+				}
+			}
+			//如果冲账后本金、利息、F爱惜都为0，则为结清状态，否则只更新代扣款明细相关数据
+			if(capital==0 && interest==0 && overdueAmt ==0)
+			{
+				RepayPlan repayPlanPo = repayPlanDao.selectByPrimaryKey(planItem.getFeeRefId());
+				repayPlanPo.setRepayStatus(RepayStatus.Settled.getName());
+				repayPlanPo.setSettleDate(new Date());
+				repayPlanPo.setSettleMode(SettleMode.NORMAL.getName());
+				repayPlanDao.updateByPrimaryKey(repayPlanPo);
+				//删除对应代扣款明细
+				waitingChargeDao.deleteByPrimaryKey(planItem.getId());
+			}
+			else
+			{
+				planItem.setRepayCapital(capital);
+				planItem.setRepayInterest(interest);
+				planItem.setRepayOverdueAmount(overdueAmt);
+				waitingChargeDao.updateByPrimaryKey(planItem);
+			}
+		}
+		/**
+		 * 刷新总账状态还款状态
+		 */
+		/**
+		 * 如果还款金额大于0，挂账处理
+		 * **/
+		if(repayAmount>0)
+		{
+			StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
+			if(stayAccount!=null)
+			{
+				stayAccount.setStayAmount(stayAccount.getStayAmount()+repayAmount);
+				stayAccountDao.updateByPrimaryKey(stayAccount);
+			}
+			else
+			{
+				stayAccount = new StayAccount();
+				stayAccount.setId(Utils.get16UUID());
+				stayAccount.setAppId(appId);
+				stayAccount.setStayAmount(repayAmount);
+				stayAccountDao.insert(stayAccount);
+			}
+			//如果不是挂账还款需要做挂账记录
+			if(!repayMode.equals("挂账还款"))
+			{
+				StayAccountLog stayLog = new StayAccountLog();
+				stayLog.setId(Utils.get16UUID());
+				stayLog.setStayId(stayAccount.getId());
+				stayLog.setStayAmount(repayAmount);
+				stayLog.setStaySource(repayMode);
+				stayLog.setStayTime(new Date());
+				stayAccountLogDao.insert(stayLog);
+			}
+		}
+		
 	}
 
 	

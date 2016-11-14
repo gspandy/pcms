@@ -3,6 +3,8 @@ package com.pujjr.postloan.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -13,6 +15,7 @@ import com.pujjr.postloan.vo.SettleTaskVo;
 /**
  * 结清处理服务
  * **/
+@Service
 public interface ISettleService 
 {
 	/**功能：查询指定客户提前结清应还项

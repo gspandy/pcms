@@ -141,4 +141,10 @@
   <select id="selectByAppId" resultMap="BaseResultMap">
   		select * from t_stay_account where APP_ID = #{appId}
   </select>
+  <select id="selectNeedReserveList" resultMap="BaseResultMap">
+  	select distinct a.* from t_stay_account a 
+  	inner join t_waiting_charge b on a.APP_ID = b.APP_ID
+  	left join T_GENERAL_LEDGER c on a.APP_ID = c.APP_ID
+  	where (c.PROCESS_STATUS ='' or c.PROCESS_STATUS='zzclzt05' or (c.PROCESS_STATUS is null)) and a.STAY_AMOUNT>0
+  </select>
 </mapper>

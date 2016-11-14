@@ -10,14 +10,18 @@ import com.pujjr.base.service.IHolidayService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
+import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OtherFee;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayStatus;
+import com.pujjr.postloan.enumeration.SettleMode;
+import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IScheduleService;
 import com.pujjr.utils.Utils;
 
@@ -34,6 +38,10 @@ public class ScheduleServiceImpl implements IScheduleService
 	private GeneralLedgerMapper ledgerDao;
 	@Autowired
 	private OtherFeeMapper otherFeeDao;
+	@Autowired
+	private StayAccountMapper stayAccountDao;
+	@Autowired
+	private IAccountingService accountingService;
 	
 	@Override
 	public void CutOff() 
@@ -42,7 +50,9 @@ public class ScheduleServiceImpl implements IScheduleService
 		//获取当前日期及下一个工作日
 		Date curDate = new Date();
 		Date workDate =  holidayService.getWorkDate(curDate);
-		
+		/**
+		 * 应还处理阶段
+		 */
 		//获取当前还款计划已到结账日的还款计划并插入待扣款明细表
 		List<RepayPlan> needChargePlanList =repayPlanDao.selectNeedChargeRepayPlanList(curDate);
 		for(RepayPlan item : needChargePlanList)
@@ -69,7 +79,9 @@ public class ScheduleServiceImpl implements IScheduleService
 			item.setRepayStatus(RepayStatus.Repaying.getName());
 			repayPlanDao.updateByPrimaryKey(item);
 		}
-		
+		/**
+		 * 罚息计算阶段
+		 */
 		//获取待扣款明细表需要计算罚息的待扣款明细
 		List<WaitingCharge> calOverdueAmountList = waitingChargeDao.selectNeedCalOverdueAmountList(curDate);
 		for(WaitingCharge item : calOverdueAmountList)
@@ -89,12 +101,13 @@ public class ScheduleServiceImpl implements IScheduleService
 			//更新待扣款明细表为新的逾期数据
 			waitingChargeDao.updateByPrimaryKey(item);
 			
-			//更新对应关联的费用数据的汇总逾期天数及逾期金额
+			//更新对应关联的费用数据的汇总逾期天数、逾期金额并设置还款状态为已逾期
 			if(item.getFeeType().equals(FeeType.Plan.getName()))
 			{
 				RepayPlan planPo = repayPlanDao.selectByPrimaryKey(item.getFeeRefId());
 				planPo.setAddupOverdueDay(planPo.getAddupOverdueDay()+1);
 				planPo.setAddupOverdueAmount(planPo.getAddupOverdueAmount()+genOverdueAmount);
+				planPo.setRepayStatus(RepayStatus.Overdue.getName());
 				repayPlanDao.updateByPrimaryKey(planPo);
 			}
 			if(item.getFeeType().equals(FeeType.Other.getName()))
@@ -102,13 +115,26 @@ public class ScheduleServiceImpl implements IScheduleService
 				OtherFee otherFeePo = otherFeeDao.selectByPrimaryKey(item.getFeeRefId());
 				otherFeePo.setAddupOverdueDay(otherFeePo.getAddupOverdueDay()+1);
 				otherFeePo.setAddupOverdueAmount(otherFeePo.getAddupOverdueAmount()+genOverdueAmount);
+				otherFeePo.setRepayStatus(RepayStatus.Overdue.getName());
 				otherFeeDao.updateByPrimaryKey(otherFeePo);
 			}
-			
-			//挂账冲账处理
-			
+			//更新总账为已逾期状态
+			ledgerPo.setRepayStatus(RepayStatus.Overdue.getName());
+			ledgerDao.updateByPrimaryKey(ledgerPo);
 		}
 		
+		/**
+		 * 挂账冲账处理阶段
+		 */
+		//找出挂账表金额大于0并且存在对应代扣明细记录的挂账记录
+		List<StayAccount> stayAccountList = stayAccountDao.selectNeedReserveList();
+		//按照申请单次序循环冲账
+		for(StayAccount item : stayAccountList)
+		{
+			String appId = item.getAppId();
+			double stayAmount = item.getStayAmount();
+			accountingService.repayReverseAccounting(appId, stayAmount, curDate, "挂账还款");
+		}
 	}
 
 }

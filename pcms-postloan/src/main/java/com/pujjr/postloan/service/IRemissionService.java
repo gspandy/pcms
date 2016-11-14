@@ -2,6 +2,8 @@ package com.pujjr.postloan.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.ApplyRemission;
 import com.pujjr.postloan.vo.ApplyRemissionVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -12,6 +14,7 @@ import com.pujjr.postloan.vo.RepayFeeItemVo;
 /**
  * 减免处理服务
  * **/
+@Service
 public interface IRemissionService 
 {/**
 	 * 功能：查询指定客户应还项

@@ -315,7 +315,7 @@
    		VALUE_DATE <= #{curDate} and CLOSING_DATE> #{curDate}
    	]]>
   </select>
-  <select id="selectRepayPlanList" resultMap="BaseResultMap">
+  <select id="selectSpecialRepayPlanList" resultMap="BaseResultMap">
   	select * from t_repay_plan
   	where APP_ID = #{appId}
   	<if test="beginPeriod > 0">

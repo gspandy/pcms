@@ -2,6 +2,8 @@ package com.pujjr.postloan.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.ApplyRefund;
 import com.pujjr.postloan.vo.ApplyRefundVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -11,6 +13,7 @@ import com.pujjr.postloan.vo.RefundTaskVo;
 /**
  * 退款处理服务
  * **/
+@Service
 public interface IRefundService 
 {
 	/**

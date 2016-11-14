@@ -3,6 +3,8 @@ package com.pujjr.postloan.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.ApplyAlterRepayDate;
 import com.pujjr.postloan.vo.AlterRepayDateFeeItemVo;
 import com.pujjr.postloan.vo.AlterRepayDateTaskVo;
@@ -13,6 +15,7 @@ import com.pujjr.postloan.vo.ApproveResultVo;
 /**
  * 变更还款日处理服务
  * **/
+@Service
 public interface IAlterRepayDateService 
 {
 	/**
