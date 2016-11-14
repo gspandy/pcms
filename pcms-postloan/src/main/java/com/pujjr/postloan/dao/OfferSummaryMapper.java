@@ -5,13 +5,13 @@ import com.pujjr.postloan.domain.OfferSummary;
 public interface OfferSummaryMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(OfferSummary record);
+	int insert(OfferSummary record);
 
-    int insertSelective(OfferSummary record);
+	int insertSelective(OfferSummary record);
 
-    OfferSummary selectByPrimaryKey(String id);
+	OfferSummary selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(OfferSummary record);
+	int updateByPrimaryKeySelective(OfferSummary record);
 
-    int updateByPrimaryKey(OfferSummary record);
+	int updateByPrimaryKey(OfferSummary record);
 }
