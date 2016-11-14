@@ -29,6 +29,16 @@ public class Utils {
 	public static int seq=0;
 	
 	/**
+	 * 获取当前日期
+	 * tom 2016年11月14日
+	 * @return 当前日期
+	 */
+	public static Date getDate(){
+		Calendar calendar = Calendar.getInstance();
+		return calendar.getTime();
+	}
+	
+	/**
 	 * 属性拷贝(拷贝list成员变量)
 	 * tom 2016年11月7日
 	 * @param source 源对象

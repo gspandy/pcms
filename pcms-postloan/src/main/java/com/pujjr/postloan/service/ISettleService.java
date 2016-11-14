@@ -21,14 +21,17 @@ public interface ISettleService
 	 * @param settleEeffectDate 有效截止日期
 	 * @return 提前结清各项费用金额
 	 */
-	public SettleFeeItemVo getAllSettleFeeItem(String appId,Date settleEeffectDate);
+	public SettleFeeItemVo getAllSettleFeeItem(String appId,Date settleEffectDate);
+
 	/**
-	 * 功能：查询指定客户部分提前结清应还项
-	 * 参数：
-	 * 	appId-申请单号
-	 * 	settleEffectDate-有效截止日期
-	 * 返回：部分提前结清各项费用金额
-	 * **/
+	 *功能：查询指定客户部分提前结清应还项
+	 * @param appId 申请单号
+	 * @param beginPeriod 开始期数
+	 * @param endPeriod 截止期数
+	 * @param settleEeffectDate 有效截止日期
+	 * @param settleCapital 结清本金
+	 * @return
+	 */
 	public SettleFeeItemVo getPartSettleFeeItem(String appId,int beginPeriod,int endPeriod,Date settleEeffectDate);
 	/**
 	 * 功能：提交提前结清申请
@@ -37,7 +40,7 @@ public interface ISettleService
 	 * 	vo-提前结清申请要素
 	 * 返回：无
 	 * **/
-	public void commitApplySettleTask(String appId,ApplySettleVo vo);
+	public void commitApplySettleTask(String operId,String appId,ApplySettleVo vo);
 	/**
 	 * 功能：提交审批
 	 * 参数：

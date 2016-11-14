@@ -1,13 +1,19 @@
 package com.pujjr.postloan.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pujjr.jbpm.service.IRunWorkflowService;
+import com.pujjr.jbpm.vo.ProcessGlobalVariable;
+import com.pujjr.postloan.dao.ApplySettleMapper;
+import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.service.IAccountingService;
@@ -30,13 +36,15 @@ public class SettleServiceImpl implements ISettleService{
 	private IAccountingService accountingServiceImpl;
 	@Autowired
 	private IRunWorkflowService runWorkflowServiceImpl;
+	@Autowired
+	private ApplySettleMapper applySettleMapper;
 	@Override
-	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEeffectDate) {
+	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
 		boolean isCalOverdueAmount = true;
 		boolean isReduceStayAmount = true;
 		double hangAmount= 0.00;//挂账金额
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEeffectDate, isReduceStayAmount);
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
@@ -65,12 +73,11 @@ public class SettleServiceImpl implements ISettleService{
 	}
 
 	@Override
-	public SettleFeeItemVo getPartSettleFeeItem(String appId, int beginPeriod, int endPeriod, Date settleEeffectDate) {
+	public SettleFeeItemVo getPartSettleFeeItem(String appId, int beginPeriod, int endPeriod, Date settleEffectDate) {
 		boolean isCalOverdueAmount = true;
 		boolean isReduceStayAmount = true;
-		double hangAmount= 0.00;//挂账金额
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEeffectDate, isReduceStayAmount);
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
@@ -92,34 +99,68 @@ public class SettleServiceImpl implements ISettleService{
 		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
 				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
 				+ settleCapital
-				+ lateFee
-				- hangAmount;
+				+ lateFee;
 		//结清后剩余本金
 		double settleAfterAmount = remainCapital - repayCapital - settleCapital;
 		settleFeeItemVo.setLateFee(lateFee);
 		settleFeeItemVo.setSettleCapital(settleCapital);
 		settleFeeItemVo.setSettleAfterAmount(0.00);
 		settleFeeItemVo.setSettleTotalAmount(settleTotalAmt);
+		settleFeeItemVo.setSettleAfterAmount(settleAfterAmount);
 		return settleFeeItemVo;
 	}
 
 	@Override
-	public void commitApplySettleTask(String appId, ApplySettleVo vo) {
+	public void commitApplySettleTask(String operId,String appId, ApplySettleVo vo) {
 		RepayPlan lastRepayPlan = accountingServiceImpl.getLatestPeriodRepayPlan(appId);
+		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
 		int endPeriod = vo.getEndPeriod();
+		int beginPeriod = vo.getBeginPeriod();
+		Date settleEffectDate = vo.getApplyEffectDate();
+		
 		ApplySettle as = new ApplySettle();
-		as.setId(Utils.get16UUID());
+		String businessKey = Utils.get16UUID();
+		as.setId(businessKey);
 		as.setAppId(appId);
 		if(vo.getEndPeriod() < lastRepayPlan.getPeriod()){
-			as.setSettleType("");
+			as.setSettleType("部分提前结清");
+			settleFeeItemVo = this.getPartSettleFeeItem(appId, beginPeriod, endPeriod, settleEffectDate);
 		}else{
-			
+			as.setSettleType("全额提前结清");
+			settleFeeItemVo = this.getAllSettleFeeItem(appId, settleEffectDate);
 		}
+		as.setRepayCapital(settleFeeItemVo.getRepayCapital());
+		as.setRepayInterest(settleFeeItemVo.getRepayInterest());
+		as.setRepayOverdueAmount(settleFeeItemVo.getRepayOverdueAmount());
+		as.setOtherFee(settleFeeItemVo.getOtherAmount());
+		as.setOtherOverdueAmount(settleFeeItemVo.getOtherOverdueAmount());
+		as.setLateFee(settleFeeItemVo.getLateFee());
+		as.setSettleCapital(vo.getFeeItem().getSettleCapital());
 		
+		//结清金额
+		double settleTotalAmt = as.getRepayCapital() + as.getRepayInterest() + as.getOtherOverdueAmount()
+				+ as.getOtherFee()+ as.getOtherOverdueAmount()
+				+ as.getSettleCapital()
+				+ as.getLateFee();
+		as.setSettleTotalAmount(settleTotalAmt);
+		//结清后剩余本金
+		double settleAfterCapital = settleFeeItemVo.getRemainCapital() - settleFeeItemVo.getRepayCapital() - settleTotalAmt;
+		as.setSettleAfterCapital(settleAfterCapital);
+		as.setSettleStartPeriod(vo.getBeginPeriod());
+		as.setSettleEndPeriod(vo.getEndPeriod());
+		as.setApplyComment(vo.getApplyComment());
+		as.setApplyStatus("申请状态");
+		as.setApplyEndDate(vo.getApplyEffectDate());
+		as.setCreateId(operId);
+		as.setCreateDate(Utils.getDate());
+		applySettleMapper.insert(as);
 		
-		SettleFeeItemVo settleFeeItemVo = this.getPartSettleFeeItem(appId, vo.getBeginPeriod(), vo.getEndPeriod(), vo.getApplyEffectDate());
-		double settleTotalAmt = vo.getFeeItem().getSettleCapital();
-		
+		Map<String,Object> vars = new HashMap<String,Object>();
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
+		//启动流程
+		ProcessInstance processInstance = runWorkflowServiceImpl.startProcess("TQJQ", businessKey, vars);
+		as.setProcInstId(processInstance.getProcessInstanceId());
+		applySettleMapper.updateByPrimaryKey(as);
 	}
 
 	@Override
