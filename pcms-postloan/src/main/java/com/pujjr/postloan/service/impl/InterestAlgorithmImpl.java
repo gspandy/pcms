@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.po.RepaySchedulePo;
 import com.pujjr.postloan.service.IInterestAlgorithm;
 import com.pujjr.utils.Utils;
@@ -87,7 +88,6 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 			repayPlan.setRepayInterest(Utils.formateDouble2Double(currInterest, 2));
 			repayPlan.setRepayCapital(Utils.formateDouble2Double(currCapital, 2));
 			repayPlan.setRemainCapital(Utils.formateDouble2Double(remainCapital, 2));
-			
 			repayPlanList.add(repayPlan);
 			rsp.setRepayPlanList(repayPlanList);
 			

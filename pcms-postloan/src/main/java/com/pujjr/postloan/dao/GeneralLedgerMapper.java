@@ -1,5 +1,7 @@
 package com.pujjr.postloan.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.GeneralLedger;
 
 public interface GeneralLedgerMapper {
@@ -14,4 +16,6 @@ public interface GeneralLedgerMapper {
 	int updateByPrimaryKeySelective(GeneralLedger record);
 
 	int updateByPrimaryKey(GeneralLedger record);
+	
+	GeneralLedger selectByAppId(@Param("appId")String appId);
 }

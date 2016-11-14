@@ -5,13 +5,14 @@ package com.pujjr.postloan.enumeration;
  *
  */
 public enum EInterestMode {
-	CPM("CPM","等额本息"),
-	CONST("CONST","等额利息"),
-	ONETIME("ONETIME","一次付息按月还款"),
-	MONTLY("MONTLY","按月付息到期还本");
+	CPM("CPM","等额本息","hkfs01"),
+	CONST("CONST","等额利息","hkfs04"),
+	ONETIME("ONETIME","一次付息按月还款","hkfs03"),
+	MONTLY("MONTLY","按月付息到期还本","hkfs04");
 	
 	private String name;
 	private String text;
+	private String dictCode;
 	
 	public String getName() {
 		return name;
@@ -21,8 +22,14 @@ public enum EInterestMode {
 		return text;
 	}
 
-	private EInterestMode(String name,String text){
+	public String getDictCode() {
+		return dictCode;
+	}
+
+
+	private EInterestMode(String name,String text,String dictCode){
 		this.name = name;
 		this.text = text;
+		this.dictCode = dictCode;
 	}
 }

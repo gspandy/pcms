@@ -14,6 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.mchange.v2.beans.BeansUtils;
 import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.po.RepaySchedulePo;
 import com.pujjr.postloan.service.IInterestAlgorithm;
 import com.pujjr.postloan.service.IPlanService;
@@ -59,6 +60,7 @@ public class PlanServiceImpl implements IPlanService {
 		for (RepayPlan repayPlan : repayPlanList) {
 			repayPlan.setId(Utils.get16UUID());
 			repayPlan.setAppId(appId);
+			repayPlan.setRepayStatus(RepayStatus.Repaying.getName());
 			repayPlanMapper.insert(repayPlan);
 		}
 	}
@@ -94,6 +96,12 @@ public class PlanServiceImpl implements IPlanService {
 	public RepayScheduleVo selectRepaySchedule(String appId, int period) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<RepayPlan> getRepayPlanList(String appId, int beginPeriod, int endPeriod) {
+		// TODO Auto-generated method stub
+		return repayPlanMapper.selectRepayPlanList(appId, beginPeriod, endPeriod);
 	}
 
 }

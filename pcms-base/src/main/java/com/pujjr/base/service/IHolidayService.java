@@ -22,4 +22,6 @@ public interface IHolidayService
 	public void modifyHoliday(Holiday record);
 	//删除节假日
 	public void deleteHolidayById(String id);
+	//获取指定日期工作日
+	public Date getWorkDate(Date date);
 }

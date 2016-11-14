@@ -138,4 +138,7 @@
       RESSERVER6 = #{resserver6,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByAppId" resultMap="BaseResultMap">
+  		select * from t_stay_account where APP_ID = #{appId}
+  </select>
 </mapper>

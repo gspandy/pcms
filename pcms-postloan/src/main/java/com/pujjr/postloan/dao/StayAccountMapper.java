@@ -1,5 +1,7 @@
 package com.pujjr.postloan.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.StayAccount;
 
 public interface StayAccountMapper {
@@ -14,4 +16,6 @@ public interface StayAccountMapper {
     int updateByPrimaryKeySelective(StayAccount record);
 
     int updateByPrimaryKey(StayAccount record);
+    
+    StayAccount selectByAppId(@Param("appId")String appId);
 }

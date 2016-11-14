@@ -338,4 +338,7 @@
       RESERVER10 = #{reserver10,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByAppId" resultMap="BaseResultMap">
+  	select * from t_general_ledger where APP_ID = #{appId}
+  </select>
 </mapper>

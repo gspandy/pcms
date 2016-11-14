@@ -83,4 +83,7 @@
   	delete from t_product_settle
   	where PRODUCT_ID = #{productId,jdbcType=VARCHAR}
   </delete>
+  <select id="selectProductSettleByPeriod" resultMap="BaseResultMap">
+  	select * from t_product_settle where PRODUCT_ID = #{productId} and PERIOD = #{period}
+  </select>
 </mapper>

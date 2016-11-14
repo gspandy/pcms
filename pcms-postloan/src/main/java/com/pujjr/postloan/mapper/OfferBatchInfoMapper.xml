@@ -1,129 +1,249 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.OfferBatchInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferBatchInfo" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="OFFER_BATCH_NO" property="offerBatchNo" jdbcType="VARCHAR" />
-    <result column="OFFER_FILE_PATH" property="offerFilePath" jdbcType="VARCHAR" />
-    <result column="RETOFFER_BATCH_NO" property="retofferBatchNo" jdbcType="VARCHAR" />
-    <result column="RETOFFER_FILE_PATH" property="retofferFilePath" jdbcType="VARCHAR" />
-    <result column="RETOFFER_STATUS" property="retofferStatus" jdbcType="VARCHAR" />
-    <result column="RETOFFER_TIME" property="retofferTime" jdbcType="TIMESTAMP" />
-    <result column="RETOFFER_ID" property="retofferId" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.OfferBatchInfoMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferBatchInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="OFFER_FILE_NAME" jdbcType="VARCHAR" property="offerFileName" />
+    <result column="OFFER_FILE_PATH" jdbcType="VARCHAR" property="offerFilePath" />
+    <result column="OFFER_MERCHANT_NO" jdbcType="VARCHAR" property="offerMerchantNo" />
+    <result column="OFFER_TOTAL_CNT" jdbcType="INTEGER" property="offerTotalCnt" />
+    <result column="OFFER_TOTAL_AMOUNT" jdbcType="DOUBLE" property="offerTotalAmount" />
+    <result column="OFFER_BATCH_NO" jdbcType="VARCHAR" property="offerBatchNo" />
+    <result column="OFFER_TIME" jdbcType="TIMESTAMP" property="offerTime" />
+    <result column="OFFER_ID" jdbcType="VARCHAR" property="offerId" />
+    <result column="RETOFFER_FILE_NAME" jdbcType="VARCHAR" property="retofferFileName" />
+    <result column="RETOFFER_FILE_PATH" jdbcType="VARCHAR" property="retofferFilePath" />
+    <result column="RETOFFER_TOTAL_CNT" jdbcType="INTEGER" property="retofferTotalCnt" />
+    <result column="RETOFFER_TOTAL_AMOUNT" jdbcType="DOUBLE" property="retofferTotalAmount" />
+    <result column="RETOFFER_SUCC_CNT" jdbcType="INTEGER" property="retofferSuccCnt" />
+    <result column="RETOFFER_SUCC_AMOUNT" jdbcType="DOUBLE" property="retofferSuccAmount" />
+    <result column="RETOFFER_TIME" jdbcType="TIMESTAMP" property="retofferTime" />
+    <result column="RETOFFER_ID" jdbcType="VARCHAR" property="retofferId" />
+    <result column="RETOFFER_STATUS" jdbcType="VARCHAR" property="retofferStatus" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, OFFER_BATCH_NO, OFFER_FILE_PATH, RETOFFER_BATCH_NO, RETOFFER_FILE_PATH, RETOFFER_STATUS, 
-    RETOFFER_TIME, RETOFFER_ID
+  <sql id="Base_Column_List">
+    ID, OFFER_FILE_NAME, OFFER_FILE_PATH, OFFER_MERCHANT_NO, OFFER_TOTAL_CNT, OFFER_TOTAL_AMOUNT, 
+    OFFER_BATCH_NO, OFFER_TIME, OFFER_ID, RETOFFER_FILE_NAME, RETOFFER_FILE_PATH, RETOFFER_TOTAL_CNT, 
+    RETOFFER_TOTAL_AMOUNT, RETOFFER_SUCC_CNT, RETOFFER_SUCC_AMOUNT, RETOFFER_TIME, RETOFFER_ID, 
+    RETOFFER_STATUS
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_offer_batch_info
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_offer_batch_info
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferBatchInfo" >
-    insert into t_offer_batch_info (ID, OFFER_BATCH_NO, OFFER_FILE_PATH, 
-      RETOFFER_BATCH_NO, RETOFFER_FILE_PATH, RETOFFER_STATUS, 
-      RETOFFER_TIME, RETOFFER_ID)
-    values (#{id,jdbcType=VARCHAR}, #{offerBatchNo,jdbcType=VARCHAR}, #{offerFilePath,jdbcType=VARCHAR}, 
-      #{retofferBatchNo,jdbcType=VARCHAR}, #{retofferFilePath,jdbcType=VARCHAR}, #{retofferStatus,jdbcType=VARCHAR}, 
-      #{retofferTime,jdbcType=TIMESTAMP}, #{retofferId,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferBatchInfo">
+    insert into t_offer_batch_info (ID, OFFER_FILE_NAME, OFFER_FILE_PATH, 
+      OFFER_MERCHANT_NO, OFFER_TOTAL_CNT, OFFER_TOTAL_AMOUNT, 
+      OFFER_BATCH_NO, OFFER_TIME, OFFER_ID, 
+      RETOFFER_FILE_NAME, RETOFFER_FILE_PATH, RETOFFER_TOTAL_CNT, 
+      RETOFFER_TOTAL_AMOUNT, RETOFFER_SUCC_CNT, RETOFFER_SUCC_AMOUNT, 
+      RETOFFER_TIME, RETOFFER_ID, RETOFFER_STATUS
+      )
+    values (#{id,jdbcType=VARCHAR}, #{offerFileName,jdbcType=VARCHAR}, #{offerFilePath,jdbcType=VARCHAR}, 
+      #{offerMerchantNo,jdbcType=VARCHAR}, #{offerTotalCnt,jdbcType=INTEGER}, #{offerTotalAmount,jdbcType=DOUBLE}, 
+      #{offerBatchNo,jdbcType=VARCHAR}, #{offerTime,jdbcType=TIMESTAMP}, #{offerId,jdbcType=VARCHAR}, 
+      #{retofferFileName,jdbcType=VARCHAR}, #{retofferFilePath,jdbcType=VARCHAR}, #{retofferTotalCnt,jdbcType=INTEGER}, 
+      #{retofferTotalAmount,jdbcType=DOUBLE}, #{retofferSuccCnt,jdbcType=INTEGER}, #{retofferSuccAmount,jdbcType=DOUBLE}, 
+      #{retofferTime,jdbcType=TIMESTAMP}, #{retofferId,jdbcType=VARCHAR}, #{retofferStatus,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferBatchInfo" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferBatchInfo">
     insert into t_offer_batch_info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="offerBatchNo != null" >
-        OFFER_BATCH_NO,
+      <if test="offerFileName != null">
+        OFFER_FILE_NAME,
       </if>
-      <if test="offerFilePath != null" >
+      <if test="offerFilePath != null">
         OFFER_FILE_PATH,
       </if>
-      <if test="retofferBatchNo != null" >
-        RETOFFER_BATCH_NO,
+      <if test="offerMerchantNo != null">
+        OFFER_MERCHANT_NO,
       </if>
-      <if test="retofferFilePath != null" >
+      <if test="offerTotalCnt != null">
+        OFFER_TOTAL_CNT,
+      </if>
+      <if test="offerTotalAmount != null">
+        OFFER_TOTAL_AMOUNT,
+      </if>
+      <if test="offerBatchNo != null">
+        OFFER_BATCH_NO,
+      </if>
+      <if test="offerTime != null">
+        OFFER_TIME,
+      </if>
+      <if test="offerId != null">
+        OFFER_ID,
+      </if>
+      <if test="retofferFileName != null">
+        RETOFFER_FILE_NAME,
+      </if>
+      <if test="retofferFilePath != null">
         RETOFFER_FILE_PATH,
       </if>
-      <if test="retofferStatus != null" >
-        RETOFFER_STATUS,
+      <if test="retofferTotalCnt != null">
+        RETOFFER_TOTAL_CNT,
       </if>
-      <if test="retofferTime != null" >
+      <if test="retofferTotalAmount != null">
+        RETOFFER_TOTAL_AMOUNT,
+      </if>
+      <if test="retofferSuccCnt != null">
+        RETOFFER_SUCC_CNT,
+      </if>
+      <if test="retofferSuccAmount != null">
+        RETOFFER_SUCC_AMOUNT,
+      </if>
+      <if test="retofferTime != null">
         RETOFFER_TIME,
       </if>
-      <if test="retofferId != null" >
+      <if test="retofferId != null">
         RETOFFER_ID,
       </if>
+      <if test="retofferStatus != null">
+        RETOFFER_STATUS,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="offerBatchNo != null" >
-        #{offerBatchNo,jdbcType=VARCHAR},
+      <if test="offerFileName != null">
+        #{offerFileName,jdbcType=VARCHAR},
       </if>
-      <if test="offerFilePath != null" >
+      <if test="offerFilePath != null">
         #{offerFilePath,jdbcType=VARCHAR},
       </if>
-      <if test="retofferBatchNo != null" >
-        #{retofferBatchNo,jdbcType=VARCHAR},
+      <if test="offerMerchantNo != null">
+        #{offerMerchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="retofferFilePath != null" >
+      <if test="offerTotalCnt != null">
+        #{offerTotalCnt,jdbcType=INTEGER},
+      </if>
+      <if test="offerTotalAmount != null">
+        #{offerTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="offerBatchNo != null">
+        #{offerBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="offerTime != null">
+        #{offerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offerId != null">
+        #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferFileName != null">
+        #{retofferFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferFilePath != null">
         #{retofferFilePath,jdbcType=VARCHAR},
       </if>
-      <if test="retofferStatus != null" >
-        #{retofferStatus,jdbcType=VARCHAR},
+      <if test="retofferTotalCnt != null">
+        #{retofferTotalCnt,jdbcType=INTEGER},
       </if>
-      <if test="retofferTime != null" >
+      <if test="retofferTotalAmount != null">
+        #{retofferTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="retofferSuccCnt != null">
+        #{retofferSuccCnt,jdbcType=INTEGER},
+      </if>
+      <if test="retofferSuccAmount != null">
+        #{retofferSuccAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="retofferTime != null">
         #{retofferTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="retofferId != null" >
+      <if test="retofferId != null">
         #{retofferId,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferStatus != null">
+        #{retofferStatus,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferBatchInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferBatchInfo">
     update t_offer_batch_info
-    <set >
-      <if test="offerBatchNo != null" >
-        OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
+    <set>
+      <if test="offerFileName != null">
+        OFFER_FILE_NAME = #{offerFileName,jdbcType=VARCHAR},
       </if>
-      <if test="offerFilePath != null" >
+      <if test="offerFilePath != null">
         OFFER_FILE_PATH = #{offerFilePath,jdbcType=VARCHAR},
       </if>
-      <if test="retofferBatchNo != null" >
-        RETOFFER_BATCH_NO = #{retofferBatchNo,jdbcType=VARCHAR},
+      <if test="offerMerchantNo != null">
+        OFFER_MERCHANT_NO = #{offerMerchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="retofferFilePath != null" >
+      <if test="offerTotalCnt != null">
+        OFFER_TOTAL_CNT = #{offerTotalCnt,jdbcType=INTEGER},
+      </if>
+      <if test="offerTotalAmount != null">
+        OFFER_TOTAL_AMOUNT = #{offerTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="offerBatchNo != null">
+        OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
+      </if>
+      <if test="offerTime != null">
+        OFFER_TIME = #{offerTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offerId != null">
+        OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferFileName != null">
+        RETOFFER_FILE_NAME = #{retofferFileName,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferFilePath != null">
         RETOFFER_FILE_PATH = #{retofferFilePath,jdbcType=VARCHAR},
       </if>
-      <if test="retofferStatus != null" >
-        RETOFFER_STATUS = #{retofferStatus,jdbcType=VARCHAR},
+      <if test="retofferTotalCnt != null">
+        RETOFFER_TOTAL_CNT = #{retofferTotalCnt,jdbcType=INTEGER},
       </if>
-      <if test="retofferTime != null" >
+      <if test="retofferTotalAmount != null">
+        RETOFFER_TOTAL_AMOUNT = #{retofferTotalAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="retofferSuccCnt != null">
+        RETOFFER_SUCC_CNT = #{retofferSuccCnt,jdbcType=INTEGER},
+      </if>
+      <if test="retofferSuccAmount != null">
+        RETOFFER_SUCC_AMOUNT = #{retofferSuccAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="retofferTime != null">
         RETOFFER_TIME = #{retofferTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="retofferId != null" >
+      <if test="retofferId != null">
         RETOFFER_ID = #{retofferId,jdbcType=VARCHAR},
+      </if>
+      <if test="retofferStatus != null">
+        RETOFFER_STATUS = #{retofferStatus,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferBatchInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferBatchInfo">
     update t_offer_batch_info
-    set OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
+    set OFFER_FILE_NAME = #{offerFileName,jdbcType=VARCHAR},
       OFFER_FILE_PATH = #{offerFilePath,jdbcType=VARCHAR},
-      RETOFFER_BATCH_NO = #{retofferBatchNo,jdbcType=VARCHAR},
+      OFFER_MERCHANT_NO = #{offerMerchantNo,jdbcType=VARCHAR},
+      OFFER_TOTAL_CNT = #{offerTotalCnt,jdbcType=INTEGER},
+      OFFER_TOTAL_AMOUNT = #{offerTotalAmount,jdbcType=DOUBLE},
+      OFFER_BATCH_NO = #{offerBatchNo,jdbcType=VARCHAR},
+      OFFER_TIME = #{offerTime,jdbcType=TIMESTAMP},
+      OFFER_ID = #{offerId,jdbcType=VARCHAR},
+      RETOFFER_FILE_NAME = #{retofferFileName,jdbcType=VARCHAR},
       RETOFFER_FILE_PATH = #{retofferFilePath,jdbcType=VARCHAR},
-      RETOFFER_STATUS = #{retofferStatus,jdbcType=VARCHAR},
+      RETOFFER_TOTAL_CNT = #{retofferTotalCnt,jdbcType=INTEGER},
+      RETOFFER_TOTAL_AMOUNT = #{retofferTotalAmount,jdbcType=DOUBLE},
+      RETOFFER_SUCC_CNT = #{retofferSuccCnt,jdbcType=INTEGER},
+      RETOFFER_SUCC_AMOUNT = #{retofferSuccAmount,jdbcType=DOUBLE},
       RETOFFER_TIME = #{retofferTime,jdbcType=TIMESTAMP},
-      RETOFFER_ID = #{retofferId,jdbcType=VARCHAR}
+      RETOFFER_ID = #{retofferId,jdbcType=VARCHAR},
+      RETOFFER_STATUS = #{retofferStatus,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
 </mapper>

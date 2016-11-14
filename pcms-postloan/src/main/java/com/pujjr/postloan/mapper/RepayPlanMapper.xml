@@ -306,4 +306,32 @@
     </if>
   </select>
   
+  <select id="selectCurrentPeriodRepayPlan" resultMap="BaseResultMap">
+  	 select 
+    <include refid="Base_Column_List" />
+    from t_repay_plan
+    where APP_ID = #{appId} and 
+   	<![CDATA[
+   		VALUE_DATE <= #{curDate} and CLOSING_DATE> #{curDate}
+   	]]>
+  </select>
+  <select id="selectRepayPlanList" resultMap="BaseResultMap">
+  	select * from t_repay_plan
+  	where APP_ID = #{appId}
+  	<if test="beginPeriod > 0">
+  		<![CDATA[
+  		and period >= #{beginPeriod} 
+  		]]>
+  	</if>
+  	<if test="endPeriod > 0">
+  		<![CDATA[
+  		and period <= #{endPeriod}
+  		]]>
+  	</if>
+  	order by period asc
+  </select>
+  <select id="selectNeedChargeRepayPlanList" resultMap="BaseResultMap">
+  	select * from t_repay_plan
+  	where CLOSING_DATE = #{curDate}
+  </select>
 </mapper>

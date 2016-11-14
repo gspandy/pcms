@@ -47,11 +47,10 @@ public interface IAccountingService
 	public double getSettleReate(String appId);
 	/**
 	 * 功能：查询客户当前正在还款的分类汇总费用信息
-	 * @param 
-	 * 	appId-申请单号
-	 * 	isCalOverdueAmount-是否计算逾期金额
-	 * 	overdueEndDate-计算逾期截止日期
-	 * 	isReduceStayAmount-是否扣除挂账金额
+	 * @param  appId-申请单号
+	 * @param  isCalOverdueAmount-是否计算逾期金额
+	 * @param  overdueEndDate-计算逾期截止日期
+	 * @param  isReduceStayAmount-是否扣除挂账金额
 	 * @return
 	 * 	正在还款的分类汇总费用信息
 	 * **/
@@ -91,20 +90,20 @@ public interface IAccountingService
 	public List<Integer> getAfterCurrentPeriodRemainPeroidList(String appId);
 	/**
 	 * 功能：还款冲账处理
-	 * @param
-	 * 	appId-申请单号
-	 * 	repayAmount-还款金额
-	 * 	repayMode-还款方式
+	 * @param appId-申请单号
+	 * @param repayAmount-还款金额
+	 * @param repayDate-还款日期 
+	 * @param repayMode-还款方式
 	 * @return
 	 * **/
-	public void repayReverseAccounting(String appId,double repayAmount,String repayMode);
+	public void repayReverseAccounting(String appId,double repayAmount,Date repayDate,String repayMode);
 	/**
 	 * 功能：用新的代扣明细表冲账处理
-	 * @param
-	 * 	appId-申请单号
-	 * 	repayAmount-还款金额
-	 * 	repayMode-还款方式
+	 * @param appId-申请单号
+	 * @param repayAmount-还款金额
+	 * @param repayDate-还款日期 
+	 * @param repayMode-还款方式
 	 * @return
 	 * **/
-	public void repayReverseAccountingUserNewWaitingChargeTable(String appId,double repayAmount,String repayMode);
+	public void repayReverseAccountingUserNewWaitingChargeTable(String appId,double repayAmount,Date repayDate,String repayMode);
 }

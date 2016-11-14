@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.pujjr.base.dao.HolidayMapper;
 import com.pujjr.base.domain.Holiday;
 import com.pujjr.base.service.IHolidayService;
+import com.pujjr.utils.Utils;
 @Service
 public class HolidayServiceImpl implements IHolidayService {
 
@@ -47,6 +48,30 @@ public class HolidayServiceImpl implements IHolidayService {
 	public void deleteHolidayById(String id) {
 		// TODO Auto-generated method stub
 		holidayDao.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public Date getWorkDate(Date date) {
+		// TODO Auto-generated method stub
+		Holiday holiday = holidayDao.seleteByHolidayDate(date);
+		//如果当前日期不是节假日则工作日为当前日
+		if(holiday==null)
+		{
+			return date;
+		}
+		else
+		{
+			//如果不是则循环判定后续日期是否节假日
+			while(true)
+			{
+				date  = Utils.getDateAfterDay(date, 1);
+				if(holidayDao.seleteByHolidayDate(date)==null)
+				{
+					break;
+				}
+			}
+			return date;
+		}
 	}
 
 }

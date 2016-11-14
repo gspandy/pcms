@@ -157,4 +157,19 @@ public class ProductServiceImpl implements IProductService
 		return productDao.selectAllProductList();
 	}
 
+	@Override
+	public double getProductSettleByPeriod(String productCode, int period) {
+		// TODO Auto-generated method stub
+		Product product = productDao.selectProductByProductCode(productCode);
+		ProductSettle settle = productSettleDao.selectProductSettleByPeriod(product.getId(), period);
+		if(settle == null)
+		{
+			return 0.00 ;
+		}
+		else
+		{
+			return settle.getReate();
+		}
+	}
+
 }

@@ -18,4 +18,6 @@ public interface ProductSettleMapper {
     int updateByPrimaryKey(ProductSettle record);
     
     int deleteByProductId(@Param("productId")String productId);
+    
+    ProductSettle selectProductSettleByPeriod(@Param("productId")String productId,@Param("period")int period);
 }

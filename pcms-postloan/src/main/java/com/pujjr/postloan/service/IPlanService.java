@@ -3,6 +3,8 @@ package com.pujjr.postloan.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.vo.RepayPlanVo;
 import com.pujjr.postloan.vo.RepayScheduleVo;
@@ -10,6 +12,7 @@ import com.pujjr.postloan.vo.RepayScheduleVo;
 /**
  * 还款计划处理服务
  * **/
+@Service
 public interface IPlanService {
 	/**
 	 * 生成还款计划
@@ -46,4 +49,12 @@ public interface IPlanService {
 	 * @return
 	 */
 	RepayScheduleVo selectRepaySchedule(String appId,int period);
+	/**
+	 * 获取制定申请单指定期数的还款计划
+	 * @param appId-申请单号
+	 * @param beginPeriod-开始期数
+	 * @param endPeriod-截止期数
+	 * @return 还款计划列表
+	 * **/
+	List<RepayPlan> getRepayPlanList(String appId,int beginPeriod, int endPeriod);
 }

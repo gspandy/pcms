@@ -55,5 +55,7 @@ public interface IProductService
 	
 	public List<Product> getAllProductList();
 	
+	public double getProductSettleByPeriod(String productCode,int period);
+	
 	
 }
