@@ -36,10 +36,11 @@ public class AccountingServiceImpl implements IAccountingService {
 	private StayAccountMapper stayAccountDao;
 	
 	@Override
-	public RepayPlan getCurrentPeriodRepayPlan(String appId) {
+	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
+	{
 		// TODO Auto-generated method stub
 		return repayPlanDao.selectCurrentPeriodRepayPlan(appId, new Date());
-	}
+	}	
 
 	@Override
 	public RepayPlan getLatestPeriodRepayPlan(String appId) {
@@ -55,7 +56,8 @@ public class AccountingServiceImpl implements IAccountingService {
 	}
 
 	@Override
-	public double getSettleReate(String appId) {
+	public double getSettleReate(String appId) 
+	{
 		// TODO Auto-generated method stub
 		//查询代扣明细表是否有逾期还款计划，有则以最早一期逾期期数获取对应的结清违约金率，否则以当前期数查询提前结清违约金率
 		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
@@ -268,11 +270,13 @@ public class AccountingServiceImpl implements IAccountingService {
 	public List<RepayPlan> getAfterCurrentPeriodRepayPlan(String appId, int queryPeriod) {
 		// TODO Auto-generated method stub
 		return repayPlanDao.selectRepayPlanList(appId, queryPeriod+1,0);
+
 	}
 
 	@Override
 	public List<Integer> getAfterCurrentPeriodRemainPeroidList(String appId) {
 		// TODO Auto-generated method stub
+
 		RepayPlan currentRepayPlan = this.getCurrentPeriodRepayPlan(appId);
 		List<RepayPlan> list = this.getAfterCurrentPeriodRepayPlan(appId, currentRepayPlan.getPeriod());
 		List<Integer> tmpList = new ArrayList<Integer>();
@@ -285,13 +289,14 @@ public class AccountingServiceImpl implements IAccountingService {
 
 	@Override
 	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode) {
-		// TODO Auto-generated method stub
 
 	}
 
+	
+
 	@Override
+
 	public void repayReverseAccountingUserNewWaitingChargeTable(String appId, double repayAmount, Date repayDate,String repayMode) {
-		// TODO Auto-generated method stub
 
 	}
 
