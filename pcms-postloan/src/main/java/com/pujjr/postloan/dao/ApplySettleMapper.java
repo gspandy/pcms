@@ -14,4 +14,6 @@ public interface ApplySettleMapper {
     int updateByPrimaryKeySelective(ApplySettle record);
 
     int updateByPrimaryKey(ApplySettle record);
+    
+    ApplySettle selectByProcInstId(String procInstId);
 }

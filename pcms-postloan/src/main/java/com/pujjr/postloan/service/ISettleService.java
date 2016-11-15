@@ -49,37 +49,42 @@ public interface ISettleService
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveSettleTask(String taskId,ApproveResultVo vo);
+	public void commitApproveSettleTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：提交减免审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveRemissionTask(String taskId,ApproveResultVo vo);
+	public void commitApproveRemissionTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：提交确认结清申请
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-减免费项
+	 * @throws Exception 
 	 * **/
-	public void commitApplyConfirmSettleTask(String taskId,RemissionFeeItemVo vo);
+	public void commitApplyConfirmSettleTask(String taskId,RemissionFeeItemVo vo) throws Exception;
 	/**
 	 * 功能：提交确认入账
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitConfirmSettleTask(String taskId,ApproveResultVo vo);
+	public void commitConfirmSettleTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：取消结清任务
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	operId-取消操作者
 	 *  cancelComment-取消备注
+	 * @throws Exception 
 	 * **/
-	public void cancelSettleTask(String taskId,String operId,String cancelComment);
+	public void cancelSettleTask(String taskId,String operId,String cancelComment) throws Exception;
 	/**
 	 * 功能：查询提前结清任务列表
 	 * 参数：

@@ -268,4 +268,11 @@
       PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectByProcInstId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_settle
+    where PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+  </select>
 </mapper>
