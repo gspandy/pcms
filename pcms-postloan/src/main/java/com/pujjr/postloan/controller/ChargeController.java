@@ -1,13 +1,23 @@
 package com.pujjr.postloan.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,10 +67,13 @@ public class ChargeController
 		}
 	}
 	@RequestMapping(value="/confirmManualOffer/{merchantNo}",method=RequestMethod.GET)
-	public void confirmManualOffer(@PathVariable String merchantNo,HttpServletRequest request) throws Exception
+	public HashMap<String,Object> confirmManualOffer(@PathVariable String merchantNo,HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		String ossKey = chargeService.confirmManualOffer(merchantNo, account.getAccountId());
+		HashMap<String,Object> var = new HashMap<String,Object>();
+		var.put("ossKey", ossKey);
+		return var;
 	}
 	
 	@RequestMapping(value="/getWatingOfferChargeList/{chargeMode}",method=RequestMethod.GET)

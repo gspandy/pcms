@@ -14,8 +14,10 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoader;
 
+import com.aliyun.oss.model.ObjectMetadata;
 import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.Merchant;
 import com.pujjr.base.service.IBankService;
@@ -44,6 +46,7 @@ import com.pujjr.postloan.service.IChargeService;
 import com.pujjr.utils.Utils;
 
 @Service
+@Transactional
 public class ChargeServiceImpl implements IChargeService {
 
 	@Autowired
@@ -224,15 +227,17 @@ public class ChargeServiceImpl implements IChargeService {
 		 * 生成报盘文件
 		 */
 		chargeFileStrList.add(0, merchantNo+"|"+batchNo+"|"+totalChargeCnt+"|"+Utils.convertY2F(totalChargeAmount));
-		String realPath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/");
-		File file = new File(realPath+File.separator+"tmp"+File.separator+offerFileName);
+		String filePath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/")+File.separator+"tmp"+File.separator+offerFileName;
+		File file = new File(filePath);
 		FileUtils.writeLines(file, chargeFileStrList);
 		/**
 		 * 上传报盘文件至OSS存储
 		 * **/
 		String ossKey = "offerfile/"+chargeDate+"/"+offerFileName;
 		InputStream in = new FileInputStream(file);
-		ossService.putObject(ossKey, in);
+		ObjectMetadata meta = new ObjectMetadata();
+		meta.setContentType("application/octet-stream");
+		ossService.putObject(ossKey, in,meta);
 		
 		/**
 		 * 保存报盘批次信息
