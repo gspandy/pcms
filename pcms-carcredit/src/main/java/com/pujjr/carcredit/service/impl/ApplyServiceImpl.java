@@ -524,4 +524,10 @@ public class ApplyServiceImpl implements IApplyService {
 		// TODO Auto-generated method stub
 		return applyMapper.updateByPrimaryKey(apply);
 	}
+
+	@Override
+	public ApplyTenant getApplyTenant(String appId) {
+		// TODO Auto-generated method stub
+		return applyTenantMapper.selectByAppId(appId);
+	}
 }

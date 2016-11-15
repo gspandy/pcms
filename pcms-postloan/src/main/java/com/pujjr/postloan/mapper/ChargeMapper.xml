@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.ChargeMapper">
+  	<select id="selectEnableChargeList" resultType="HashMap">
+  		select 
+  		a.ID as id,
+  		a.APP_ID as appId,
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		d.DICT_DATA_NAME as feeType,
+  		(a.REPAY_CAPITAL+a.REPAY_INTEREST+a.REPAY_OVERDUE_AMOUNT) as chargeAmount 
+  		from T_WAITING_CHARGE a
+  		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  		left join T_GENERAL_LEDGER c on a.APP_ID = c.APP_ID
+  		left join SYS_DICT_DATA d on a.FEE_TYPE = d.DICT_DATA_CODE
+  		where (c.PROCESS_STATUS ='' or c.PROCESS_STATUS='zzclzt05' or (c.PROCESS_STATUS is null)) and (a.OFFER_STATUS!='bpzt02')
+  		order by a.APP_ID,a.GEN_TIME
+  	</select>
+  	
+  	<resultMap id="OfferResultMap" type="com.pujjr.postloan.po.OfferInfoPo">
+	    <id column="ID" jdbcType="VARCHAR" property="id" />
+	    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+	    <result column="FEE_TYPE" jdbcType="VARCHAR" property="feeType" />
+	    <result column="FEE_REF_ID" jdbcType="VARCHAR" property="feeRefId" />
+	    <result column="OFFER_SOURCE" jdbcType="VARCHAR" property="offerSource" />
+	    <result column="CHARGE_MODE" jdbcType="VARCHAR" property="chargeMode" />
+	    <result column="MERCHANT_NO" jdbcType="VARCHAR" property="merchantNo" />
+	    <result column="OFFER_AMOUNT" jdbcType="DOUBLE" property="offerAmount" />
+	    <result column="OFFER_TIME" jdbcType="TIMESTAMP" property="offerTime" />
+	    <result column="CHARGE_STATUS" jdbcType="VARCHAR" property="chargeStatus" />
+	    <result column="OFFER_BATCH_NO" jdbcType="VARCHAR" property="offerBatchNo" />
+	    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+	    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+	    <result column="RESERVER3" jdbcType="DATE" property="reserver3" />
+	    <result column="RESERVER4" jdbcType="DATE" property="reserver4" />
+	    <result column="RESERVER5" jdbcType="DOUBLE" property="reserver5" />
+	    <result column="RESERVER6" jdbcType="DOUBLE" property="reserver6" />
+  </resultMap>
+  
+  	<select id="selectWatingOfferChargeList" resultMap="OfferResultMap">
+  		select 
+  		a.*,
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		d1.DICT_DATA_NAME as offerSourceDesc,
+  		d2.DICT_DATA_NAME as feeTypeDesc
+  		from T_OFFER_SUMMARY a 
+  		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  		left join SYS_DICT_DATA d1 on a.OFFER_SOURCE = d1.DICT_DATA_CODE
+  		left join SYS_DICT_DATA d2 on a.FEE_TYPE = d2.DICT_DATA_CODE
+  		where a.CHARGE_MODE = #{chargeMode} and a.CHARGE_STATUS ='kkzt01'
+  	</select>
+</mapper>

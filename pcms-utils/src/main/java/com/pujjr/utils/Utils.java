@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -687,6 +689,16 @@ public class Utils {
 		List<Object> dest =new ArrayList<Object>(Arrays.asList(new Object[src.size()]));
 		Collections.copy(dest, src);
 		return dest;
+	}
+	/**
+	 * 金额元转分
+	 * @param amount
+	 * @return
+	 */
+	public static String convertY2F(double amount)
+	{
+		NumberFormat nf = new DecimalFormat("#");
+		return nf.format(amount*100);
 	}
 	
 	

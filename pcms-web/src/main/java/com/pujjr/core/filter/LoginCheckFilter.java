@@ -53,7 +53,7 @@ public class LoginCheckFilter implements Filter {
 	    {
 	        try 
 	        {
-	        	/*final String authHeader = req.getHeader("Authorization");
+	        	final String authHeader = req.getHeader("Authorization");
 	        	final Claims claims = Jwts.parser().setSigningKey("secretkey")
     	                .parseClaimsJws(authHeader).getBody();
 	            String userid=claims.getSubject();
@@ -61,7 +61,7 @@ public class LoginCheckFilter implements Filter {
 	            XmlWebApplicationContext cxt = (XmlWebApplicationContext)WebApplicationContextUtils.getWebApplicationContext(sc);
 	            ISysAccountService sysAccountService = (ISysAccountService)cxt.getBean(ISysAccountService.class);
 	            SysAccount sysAccount = sysAccountService.getSysAccountByAccountId(userid);
-	            request.setAttribute("account", sysAccount);*/
+	            request.setAttribute("account", sysAccount);
 	        	filterChain.doFilter(request,response); 
 	        }
 	        catch (SignatureException  e) 

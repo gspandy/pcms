@@ -338,7 +338,7 @@
   	select * from t_waiting_charge
   	where 1=1 
   	<![CDATA[
-  		REPAY_DATE < #{queryDate}  and OFFER_STATUS !='bpzt02'
+  		and REPAY_DATE < #{queryDate}  and OFFER_STATUS !='bpzt02'
   	]]>
   </select>
 </mapper>

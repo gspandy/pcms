@@ -1,10 +1,11 @@
-package com.pujjr.postloan.service.impl;
+package com.pujjr.postloan.schedule;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
@@ -20,12 +21,10 @@ import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayStatus;
-import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.service.IAccountingService;
-import com.pujjr.postloan.service.IScheduleService;
 import com.pujjr.utils.Utils;
 
-public class ScheduleServiceImpl implements IScheduleService 
+public class ScheduleService
 {
 	
 	@Autowired
@@ -43,12 +42,16 @@ public class ScheduleServiceImpl implements IScheduleService
 	@Autowired
 	private IAccountingService accountingService;
 	
-	@Override
-	public void CutOff() 
+	/**
+	 * 日切账务处理
+	 * @throws ParseException 
+	 */
+	private void cutOff() throws ParseException 
 	{
 		// TODO Auto-generated method stub
 		//获取当前日期及下一个工作日
-		Date curDate = new Date();
+		System.out.println("开始日切处理");
+		Date curDate = Utils.str82date(Utils.getFormatDate(new Date(), "yyyyMMdd"));
 		Date workDate =  holidayService.getWorkDate(curDate);
 		/**
 		 * 应还处理阶段
@@ -135,6 +138,13 @@ public class ScheduleServiceImpl implements IScheduleService
 			double stayAmount = item.getStayAmount();
 			accountingService.repayReverseAccounting(appId, stayAmount, curDate, "挂账还款");
 		}
+		System.out.println("结束日切处理");
+	}
+
+	public void dayJob() throws ParseException {
+		// TODO Auto-generated method stub
+		//日切账务处理
+		cutOff();
 	}
 
 }

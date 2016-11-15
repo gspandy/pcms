@@ -2,18 +2,14 @@ package com.pujjr.base.domain;
 
 import java.util.Date;
 
-public class BankInfo {
+public class Merchant {
     private String id;
 
-	private String bankName;
+	private String merchantName;
 
-	private Boolean supportUnionpay;
+	private String merchantNo;
 
-	private String unionpayCode;
-
-	private Boolean enabled;
-
-	private Double maxChargeAmount;
+	private String bankId;
 
 	private String reserver1;
 
@@ -21,9 +17,9 @@ public class BankInfo {
 
 	private String reserver3;
 
-	private Double reserver4;
+	private String reserver4;
 
-	private Double reserver5;
+	private Boolean enabled;
 
 	private String createId;
 
@@ -41,44 +37,28 @@ public class BankInfo {
 		this.id = id;
 	}
 
-	public String getBankName() {
-		return bankName;
+	public String getMerchantName() {
+		return merchantName;
 	}
 
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
 	}
 
-	public Boolean getSupportUnionpay() {
-		return supportUnionpay;
+	public String getMerchantNo() {
+		return merchantNo;
 	}
 
-	public void setSupportUnionpay(Boolean supportUnionpay) {
-		this.supportUnionpay = supportUnionpay;
+	public void setMerchantNo(String merchantNo) {
+		this.merchantNo = merchantNo;
 	}
 
-	public String getUnionpayCode() {
-		return unionpayCode;
+	public String getBankId() {
+		return bankId;
 	}
 
-	public void setUnionpayCode(String unionpayCode) {
-		this.unionpayCode = unionpayCode;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Double getMaxChargeAmount() {
-		return maxChargeAmount;
-	}
-
-	public void setMaxChargeAmount(Double maxChargeAmount) {
-		this.maxChargeAmount = maxChargeAmount;
+	public void setBankId(String bankId) {
+		this.bankId = bankId;
 	}
 
 	public String getReserver1() {
@@ -105,20 +85,20 @@ public class BankInfo {
 		this.reserver3 = reserver3;
 	}
 
-	public Double getReserver4() {
+	public String getReserver4() {
 		return reserver4;
 	}
 
-	public void setReserver4(Double reserver4) {
+	public void setReserver4(String reserver4) {
 		this.reserver4 = reserver4;
 	}
 
-	public Double getReserver5() {
-		return reserver5;
+	public Boolean getEnabled() {
+		return enabled;
 	}
 
-	public void setReserver5(Double reserver5) {
-		this.reserver5 = reserver5;
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public String getCreateId() {

@@ -9,15 +9,15 @@ import com.pujjr.base.domain.BankInfo;
 public interface BankInfoMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(BankInfo record);
+	int insert(BankInfo record);
 
-    int insertSelective(BankInfo record);
+	int insertSelective(BankInfo record);
 
-    BankInfo selectByPrimaryKey(String id);
+	BankInfo selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(BankInfo record);
+	int updateByPrimaryKeySelective(BankInfo record);
 
-    int updateByPrimaryKey(BankInfo record);
+	int updateByPrimaryKey(BankInfo record);
     
     List<BankInfo> selectAll(@Param("enabled")boolean eanbled);
     

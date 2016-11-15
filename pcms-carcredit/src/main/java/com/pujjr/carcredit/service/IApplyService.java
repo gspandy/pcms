@@ -11,6 +11,7 @@ import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyCloessee;
 import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.ApplyTenant;
 import com.pujjr.carcredit.domain.ApplyTenantCar;
 import com.pujjr.carcredit.domain.ApplyTenantHouse;
 import com.pujjr.carcredit.po.ApplyInfoPo;
@@ -77,4 +78,10 @@ public interface IApplyService {
 	 * @return
 	 */
 	public int updateApply(Apply apply);
+	/**
+	 * 根据申请单号查询承租人信息
+	 * @param appId
+	 * @return
+	 */
+	public ApplyTenant getApplyTenant(String appId);
 }
