@@ -127,5 +127,17 @@ public class ChargeController extends BaseController
 		chargeService.retOfferProcess(offerBatchId,listStr,account.getAccountId());
 	}
 	
+	@RequestMapping(value="/getManualOfferBatchDetail/{offerBatchId}",method=RequestMethod.GET)
+	public PageVo getManualOfferBatchDetail(@PathVariable String offerBatchId,QueryParamPageVo param,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
+		List<HashMap<String,Object>> list = chargeService.getManualOfferBatchDetail(offerBatchId);
+		PageVo page=new PageVo();
+		page.setTotalItem(((Page)list).getTotal());
+		page.setData(list);
+		return page;
+	}
+	
 	
 }

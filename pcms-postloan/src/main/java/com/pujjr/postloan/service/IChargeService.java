@@ -53,5 +53,11 @@ public interface IChargeService
 	 * @throws Exception 
 	 */
 	public void retOfferProcess(String offerBatchId,List<String> resultList,String operId) throws Exception;
+	/**
+	 * 获取手工报盘批次明细信息
+	 * @param offerBatchId 报盘批次ID
+	 * @return 批次对应报盘明细信息
+	 */
+	List<HashMap<String,Object>>  getManualOfferBatchDetail(String offerBatchId);
 	
 }

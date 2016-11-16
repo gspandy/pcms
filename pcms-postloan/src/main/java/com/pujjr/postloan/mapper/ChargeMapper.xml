@@ -73,4 +73,20 @@
   		</if>
   		order by a.OFFER_TIME DESC
   	</select>
+  	
+  	<select id="selectManualOfferBatchDetail" resultType="HashMap">
+  		select 
+  		a.APP_ID as appId,
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		d.CARD_NO as cardNo,
+  		c.DICT_DATA_NAME as chargeStatusDesc,
+  		d.CHARGE_AMOUNT as chargeAmount,
+  		d.THIRD_PARTY_RESULT as thirdPartResult
+  		from T_OFFER_SUMMARY_HIS a 
+  		left join T_CHARGE_LOG d on a.ID = d.OFFER_ID
+  		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  		left join SYS_DICT_DATA c on a.CHARGE_STATUS = c.DICT_DATA_CODE
+  		where a.OFFER_BATCH_NO = #{offerBatchId}
+  	</select>
 </mapper>

@@ -416,4 +416,10 @@ public class ChargeServiceImpl implements IChargeService {
 		offerBatchInfoDao.updateByPrimaryKey(offerBatchInfo);
 	}
 
+	@Override
+	public List<HashMap<String, Object>> getManualOfferBatchDetail(String offerBatchId) {
+		// TODO Auto-generated method stub
+		return chargeDao.selectManualOfferBatchDetail(offerBatchId);
+	}
+
 }
