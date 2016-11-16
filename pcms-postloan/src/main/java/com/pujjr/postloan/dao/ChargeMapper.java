@@ -25,4 +25,10 @@ public interface ChargeMapper
 	 * @return
 	 */
 	public List<OfferInfoPo> selectWatingOfferChargeList(@Param("chargeMode")String chargeMode);
+	/**
+	 * 查询文件报盘历史记录
+	 * @param operId
+	 * @return
+	 */
+	public List<HashMap<String,Object>> selectManualOfferHisList(@Param("operId")String operId);
 }

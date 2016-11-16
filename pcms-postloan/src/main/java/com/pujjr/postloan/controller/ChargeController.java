@@ -2,11 +2,13 @@ package com.pujjr.postloan.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +25,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.QueryParamPageVo;
@@ -36,7 +42,7 @@ import com.pujjr.postloan.service.IChargeService;
 
 @RestController
 @RequestMapping(value="/charge")
-public class ChargeController 
+public class ChargeController extends BaseController
 {
 	@Autowired
 	private IChargeService chargeService;
@@ -94,4 +100,32 @@ public class ChargeController
 		page.setData(list);
 		return page;
 	}
+	
+	@RequestMapping(value="/getManualOfferHisList",method=RequestMethod.GET)
+	public PageVo getManualOfferHisList(QueryParamPageVo param,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
+		List<HashMap<String,Object>> list = chargeService.getManualOfferHisList(account.getAccountId());
+		PageVo page=new PageVo();
+		page.setTotalItem(((Page)list).getTotal());
+		page.setData(list);
+		return page;
+	}
+	@RequestMapping(value="/doFileRetOffer",method=RequestMethod.POST)
+	public void doFileRetOffer(MultipartFile file,HttpServletRequest request) throws Exception
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		String fileName = file.getOriginalFilename();
+		String filePath = ContextLoader.getCurrentWebApplicationContext().getServletContext().getRealPath("/")+"tmp"+File.separator+fileName;
+		System.out.println(filePath);
+		FileUtils.copyInputStreamToFile(file.getInputStream(), new File(filePath));
+		List<String> listStr =  FileUtils.readLines(new File(filePath));
+		String offerBatchId = fileName.substring(0, fileName.length()-6);
+		//最后一笔为汇总信息，删除不用
+		listStr.remove(listStr.size()-1);
+		chargeService.retOfferProcess(offerBatchId,listStr,account.getAccountId());
+	}
+	
+	
 }

@@ -27,13 +27,35 @@ public interface RepayPlanMapper {
     
     RepayPlan selectRepayPlan(@Param("appId")String appId,@Param("period")int period);
     
-    //查询当期还款计划
+    /**
+     * 查询当期还款计划
+     * @param appId
+     * @param curDate
+     * @return
+     */
     RepayPlan selectCurrentPeriodRepayPlan(@Param("appId")String appId,@Param("curDate")Date curDate);
     
-    //查询申请单指定期数还款计划
+    /**
+     * 查询申请单指定期数还款计划
+     * @param appId
+     * @param beginPeriod
+     * @param endPeriod
+     * @return
+     */
     List<RepayPlan> selectSpecialRepayPlanList(@Param("appId")String appId,@Param("beginPeriod")int beginPeriod,@Param("endPeriod")int endPeriod);
     
-    //查询满足条件需要扣款的还款计划
+    /**
+     * 查询满足条件需要扣款的还款计划
+     * @param curDate
+     * @return
+     */
     List<RepayPlan> selectNeedChargeRepayPlanList(@Param("curDate")Date curDate);
+    
+    /**
+     *  查询所有未结清的还款计划
+     * @param appId
+     * @return
+     */
+    List<RepayPlan> selectNotSettleRepayPlanList(@Param("appId")String appId);
 
 }

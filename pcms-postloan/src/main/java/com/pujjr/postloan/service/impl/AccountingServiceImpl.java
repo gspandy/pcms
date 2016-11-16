@@ -26,6 +26,7 @@ import com.pujjr.postloan.domain.StayAccountLog;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.service.IAccountingService;
@@ -313,7 +314,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		repayLog.setFeeRefId(feeRefId);
 		repayLog.setChargeItem(chargeItem.getName());
 		repayLog.setChargeAmount(chargeAmount);
-		repayLog.setChargeDate(chargeDate);
+		repayLog.setChargeTime(new Date());
 		repayLog.setChargeMode(chargeMode);
 		repayLogDao.insert(repayLog);
 	}
@@ -390,6 +391,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 冲计划还款费用
 		 */
+		//保存还款本金
+		double repayLedgercapital=0.00;
 		List<WaitingCharge> planRepayList = waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Plan.getName());
 		for(WaitingCharge planItem : planRepayList)
 		{
@@ -406,14 +409,14 @@ public class AccountingServiceImpl implements IAccountingService {
 					if(Double.compare(overdueAmt, repayAmount)>=0)
 					{
 						overdueAmt-=repayAmount;
-						repayAmount=0.00;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.OVERDUEAMT,repayAmount,repayDate,repayMode);
+						repayAmount=0.00;
 					}
 					else
 					{
 						repayAmount-=overdueAmt;
-						overdueAmt=0.00;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.OVERDUEAMT,overdueAmt,repayDate,repayMode);
+						overdueAmt=0.00;
 					}
 					
 				}
@@ -426,33 +429,37 @@ public class AccountingServiceImpl implements IAccountingService {
 					if(Double.compare(interest, repayAmount)>=0)
 					{
 						interest-=repayAmount;
-						repayAmount=0.00;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.INTEREST,repayAmount,repayDate,repayMode);
+						repayAmount=0.00;
 					}
 					else
 					{
 						repayAmount-=interest;
-						interest=0.00;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.INTEREST,interest,repayDate,repayMode);
+						interest=0.00;
 					}
 				}
 			}
 			//再冲本金
+			
 			if(repayAmount>0)
 			{
+				
 				if(capital>0)
 				{
 					if(Double.compare(capital, repayAmount)>=0)
 					{
 						capital-=repayAmount;
-						repayAmount=0.00;
+						repayLedgercapital += repayAmount;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.CAPITAL,repayAmount,repayDate,repayMode);
+						repayAmount=0.00;
 					}
 					else
 					{
 						repayAmount-=capital;
-						capital=0.00;
+						repayLedgercapital += capital;
 						saveRepayLog(appId,FeeType.Plan,planItem.getId(),ChargeItem.CAPITAL,capital,repayDate,repayMode);
+						capital=0.00;
 					}
 				}
 			}
@@ -474,12 +481,24 @@ public class AccountingServiceImpl implements IAccountingService {
 				planItem.setRepayOverdueAmount(overdueAmt);
 				waitingChargeDao.updateByPrimaryKey(planItem);
 			}
+			
+			
 		}
+		
 		/**
-		 * 刷新总账状态还款状态
+		 * 更新总账相关信息,刷新总账还款状态,如果还款计划都结清并且待扣款明细不存在应还明细，则更新为已结清
 		 */
+		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+		ledgerPo.setRemainCapital(ledgerPo.getRemainCapital()-repayLedgercapital);
+		List<WaitingCharge> waitingChargeList = waitingChargeDao.selectListOrderByGentimeAsc(appId, null);
+		List<RepayPlan> repayPlanList = repayPlanDao.selectNotSettleRepayPlanList(appId);
+		if(waitingChargeList.size()==0 && repayPlanList.size()==0)
+		{
+			ledgerPo.setRepayStatus(RepayStatus.Settled.getName());
+		}
+		ledgerDao.updateByPrimaryKey(ledgerPo);
 		/**
-		 * 如果还款金额大于0，挂账处理
+		 * 如果还款金额还大于0，挂账处理
 		 * **/
 		if(repayAmount>0)
 		{
@@ -498,7 +517,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				stayAccountDao.insert(stayAccount);
 			}
 			//如果不是挂账还款需要做挂账记录
-			if(!repayMode.equals("挂账还款"))
+			if(!repayMode.equals(RepayMode.StayAccounting.getName()))
 			{
 				StayAccountLog stayLog = new StayAccountLog();
 				stayLog.setId(Utils.get16UUID());

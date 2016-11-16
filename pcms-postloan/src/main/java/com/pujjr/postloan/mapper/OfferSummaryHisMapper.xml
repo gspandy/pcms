@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pujjr.postloan.dao.OfferSummaryMapper">
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferSummary">
+<mapper namespace="com.pujjr.postloan.dao.OfferSummaryHisMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OfferSummaryHis">
     <id column="ID" jdbcType="VARCHAR" property="id" />
     <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
     <result column="FEE_TYPE" jdbcType="VARCHAR" property="feeType" />
@@ -30,15 +30,15 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_offer_summary
+    from t_offer_summary_his
     where ID = #{id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from t_offer_summary
+    delete from t_offer_summary_his
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferSummary">
-    insert into t_offer_summary (ID, APP_ID, FEE_TYPE, 
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OfferSummaryHis">
+    insert into t_offer_summary_his (ID, APP_ID, FEE_TYPE, 
       FEE_REF_ID, OFFER_SOURCE, CHARGE_MODE, 
       MERCHANT_NO, OFFER_AMOUNT, OFFER_TIME, 
       CHARGE_STATUS, OFFER_BATCH_NO, SPLIT_CNT, 
@@ -53,8 +53,8 @@
       #{reserver3,jdbcType=DATE}, #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, 
       #{reserver6,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferSummary">
-    insert into t_offer_summary
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OfferSummaryHis">
+    insert into t_offer_summary_his
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         ID,
@@ -174,8 +174,8 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferSummary">
-    update t_offer_summary
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OfferSummaryHis">
+    update t_offer_summary_his
     <set>
       <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
@@ -234,8 +234,8 @@
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferSummary">
-    update t_offer_summary
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OfferSummaryHis">
+    update t_offer_summary_his
     set APP_ID = #{appId,jdbcType=VARCHAR},
       FEE_TYPE = #{feeType,jdbcType=VARCHAR},
       FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},

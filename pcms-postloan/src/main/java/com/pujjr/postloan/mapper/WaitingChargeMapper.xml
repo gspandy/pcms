@@ -330,7 +330,9 @@
   <select id="selectListOrderByGentimeAsc" resultMap="BaseResultMap">
   	select * from t_waiting_charge
   	where APP_ID = #{appId}
-  	and FEE_TYPE = #{feeType}
+  	<if test="feeType !=null and feeType !=''">
+  		and FEE_TYPE = #{feeType}
+  	</if>
   	order by GEN_TIME ASC
   </select>
 
@@ -340,5 +342,9 @@
   	<![CDATA[
   		and REPAY_DATE < #{queryDate}  and OFFER_STATUS !='bpzt02'
   	]]>
+  </select>
+  <select id="selectByOfferId" resultMap="BaseResultMap">
+  	select * from t_waiting_charge
+  	where OFFER_ID = #{offerId}
   </select>
 </mapper>

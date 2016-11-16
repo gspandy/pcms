@@ -20,6 +20,7 @@ import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.OfferStatus;
+import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.utils.Utils;
@@ -136,7 +137,7 @@ public class ScheduleService
 		{
 			String appId = item.getAppId();
 			double stayAmount = item.getStayAmount();
-			accountingService.repayReverseAccounting(appId, stayAmount, curDate, "挂账还款");
+			accountingService.repayReverseAccounting(appId, stayAmount, curDate, RepayMode.StayAccounting.getName());
 		}
 		System.out.println("结束日切处理");
 	}

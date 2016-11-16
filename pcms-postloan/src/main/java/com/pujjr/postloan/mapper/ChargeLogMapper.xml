@@ -1,223 +1,236 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.ChargeLogMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ChargeLog" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="OFFER_ID" property="offerId" jdbcType="VARCHAR" />
-    <result column="CHARGE_MODE" property="chargeMode" jdbcType="VARCHAR" />
-    <result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
-    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
-    <result column="OPEN_BANK_NO" property="openBankNo" jdbcType="VARCHAR" />
-    <result column="CUST_NAME" property="custName" jdbcType="VARCHAR" />
-    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
-    <result column="ID_TYPE" property="idType" jdbcType="VARCHAR" />
-    <result column="ID_NO" property="idNo" jdbcType="VARCHAR" />
-    <result column="CHARGE_AMOUNT" property="chargeAmount" jdbcType="DOUBLE" />
-    <result column="CHARGE_TIME" property="chargeTime" jdbcType="TIMESTAMP" />
-    <result column="CHARGE_RESULT" property="chargeResult" jdbcType="VARCHAR" />
-    <result column="THIRD_PARTY_RESULT" property="thirdPartyResult" jdbcType="VARCHAR" />
-    <result column="THIRD_PARTY_TIME" property="thirdPartyTime" jdbcType="TIMESTAMP" />
-    <result column="THIRD_PARTY_RESULT_DESC" property="thirdPartyResultDesc" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.ChargeLogMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ChargeLog">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="OFFER_ID" jdbcType="VARCHAR" property="offerId" />
+    <result column="CHARGE_MODE" jdbcType="VARCHAR" property="chargeMode" />
+    <result column="MERCHANT_NO" jdbcType="VARCHAR" property="merchantNo" />
+    <result column="TRAN_DATE" jdbcType="DATE" property="tranDate" />
+    <result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+    <result column="OPEN_BANK_NO" jdbcType="VARCHAR" property="openBankNo" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="CARD_NO" jdbcType="VARCHAR" property="cardNo" />
+    <result column="ID_TYPE" jdbcType="VARCHAR" property="idType" />
+    <result column="ID_NO" jdbcType="VARCHAR" property="idNo" />
+    <result column="CHARGE_AMOUNT" jdbcType="DOUBLE" property="chargeAmount" />
+    <result column="CHARGE_TIME" jdbcType="TIMESTAMP" property="chargeTime" />
+    <result column="CHARGE_RESULT" jdbcType="VARCHAR" property="chargeResult" />
+    <result column="THIRD_PARTY_RESULT" jdbcType="VARCHAR" property="thirdPartyResult" />
+    <result column="THIRD_PARTY_TIME" jdbcType="TIMESTAMP" property="thirdPartyTime" />
+    <result column="THIRD_PARTY_RESULT_DESC" jdbcType="VARCHAR" property="thirdPartyResultDesc" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, APP_ID, OFFER_ID, CHARGE_MODE, MERCHANT_NO, ORDER_NO, OPEN_BANK_NO, CUST_NAME, 
-    CARD_NO, ID_TYPE, ID_NO, CHARGE_AMOUNT, CHARGE_TIME, CHARGE_RESULT, THIRD_PARTY_RESULT, 
+  <sql id="Base_Column_List">
+    ID, APP_ID, OFFER_ID, CHARGE_MODE, MERCHANT_NO, TRAN_DATE, ORDER_NO, OPEN_BANK_NO, 
+    CUST_NAME, CARD_NO, ID_TYPE, ID_NO, CHARGE_AMOUNT, CHARGE_TIME, CHARGE_RESULT, THIRD_PARTY_RESULT, 
     THIRD_PARTY_TIME, THIRD_PARTY_RESULT_DESC
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_charge_log
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_charge_log
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.ChargeLog" >
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ChargeLog">
     insert into t_charge_log (ID, APP_ID, OFFER_ID, 
-      CHARGE_MODE, MERCHANT_NO, ORDER_NO, 
-      OPEN_BANK_NO, CUST_NAME, CARD_NO, 
-      ID_TYPE, ID_NO, CHARGE_AMOUNT, 
-      CHARGE_TIME, CHARGE_RESULT, THIRD_PARTY_RESULT, 
-      THIRD_PARTY_TIME, THIRD_PARTY_RESULT_DESC)
+      CHARGE_MODE, MERCHANT_NO, TRAN_DATE, 
+      ORDER_NO, OPEN_BANK_NO, CUST_NAME, 
+      CARD_NO, ID_TYPE, ID_NO, 
+      CHARGE_AMOUNT, CHARGE_TIME, CHARGE_RESULT, 
+      THIRD_PARTY_RESULT, THIRD_PARTY_TIME, THIRD_PARTY_RESULT_DESC
+      )
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{offerId,jdbcType=VARCHAR}, 
-      #{chargeMode,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
-      #{openBankNo,jdbcType=VARCHAR}, #{custName,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
-      #{idType,jdbcType=VARCHAR}, #{idNo,jdbcType=VARCHAR}, #{chargeAmount,jdbcType=DOUBLE}, 
-      #{chargeTime,jdbcType=TIMESTAMP}, #{chargeResult,jdbcType=VARCHAR}, #{thirdPartyResult,jdbcType=VARCHAR}, 
-      #{thirdPartyTime,jdbcType=TIMESTAMP}, #{thirdPartyResultDesc,jdbcType=VARCHAR})
+      #{chargeMode,jdbcType=VARCHAR}, #{merchantNo,jdbcType=VARCHAR}, #{tranDate,jdbcType=DATE}, 
+      #{orderNo,jdbcType=VARCHAR}, #{openBankNo,jdbcType=VARCHAR}, #{custName,jdbcType=VARCHAR}, 
+      #{cardNo,jdbcType=VARCHAR}, #{idType,jdbcType=VARCHAR}, #{idNo,jdbcType=VARCHAR}, 
+      #{chargeAmount,jdbcType=DOUBLE}, #{chargeTime,jdbcType=TIMESTAMP}, #{chargeResult,jdbcType=VARCHAR}, 
+      #{thirdPartyResult,jdbcType=VARCHAR}, #{thirdPartyTime,jdbcType=TIMESTAMP}, #{thirdPartyResultDesc,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ChargeLog" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ChargeLog">
     insert into t_charge_log
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="offerId != null" >
+      <if test="offerId != null">
         OFFER_ID,
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE,
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         MERCHANT_NO,
       </if>
-      <if test="orderNo != null" >
+      <if test="tranDate != null">
+        TRAN_DATE,
+      </if>
+      <if test="orderNo != null">
         ORDER_NO,
       </if>
-      <if test="openBankNo != null" >
+      <if test="openBankNo != null">
         OPEN_BANK_NO,
       </if>
-      <if test="custName != null" >
+      <if test="custName != null">
         CUST_NAME,
       </if>
-      <if test="cardNo != null" >
+      <if test="cardNo != null">
         CARD_NO,
       </if>
-      <if test="idType != null" >
+      <if test="idType != null">
         ID_TYPE,
       </if>
-      <if test="idNo != null" >
+      <if test="idNo != null">
         ID_NO,
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         CHARGE_AMOUNT,
       </if>
-      <if test="chargeTime != null" >
+      <if test="chargeTime != null">
         CHARGE_TIME,
       </if>
-      <if test="chargeResult != null" >
+      <if test="chargeResult != null">
         CHARGE_RESULT,
       </if>
-      <if test="thirdPartyResult != null" >
+      <if test="thirdPartyResult != null">
         THIRD_PARTY_RESULT,
       </if>
-      <if test="thirdPartyTime != null" >
+      <if test="thirdPartyTime != null">
         THIRD_PARTY_TIME,
       </if>
-      <if test="thirdPartyResultDesc != null" >
+      <if test="thirdPartyResultDesc != null">
         THIRD_PARTY_RESULT_DESC,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="offerId != null" >
+      <if test="offerId != null">
         #{offerId,jdbcType=VARCHAR},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         #{chargeMode,jdbcType=VARCHAR},
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         #{merchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderNo != null" >
+      <if test="tranDate != null">
+        #{tranDate,jdbcType=DATE},
+      </if>
+      <if test="orderNo != null">
         #{orderNo,jdbcType=VARCHAR},
       </if>
-      <if test="openBankNo != null" >
+      <if test="openBankNo != null">
         #{openBankNo,jdbcType=VARCHAR},
       </if>
-      <if test="custName != null" >
+      <if test="custName != null">
         #{custName,jdbcType=VARCHAR},
       </if>
-      <if test="cardNo != null" >
+      <if test="cardNo != null">
         #{cardNo,jdbcType=VARCHAR},
       </if>
-      <if test="idType != null" >
+      <if test="idType != null">
         #{idType,jdbcType=VARCHAR},
       </if>
-      <if test="idNo != null" >
+      <if test="idNo != null">
         #{idNo,jdbcType=VARCHAR},
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeTime != null" >
+      <if test="chargeTime != null">
         #{chargeTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chargeResult != null" >
+      <if test="chargeResult != null">
         #{chargeResult,jdbcType=VARCHAR},
       </if>
-      <if test="thirdPartyResult != null" >
+      <if test="thirdPartyResult != null">
         #{thirdPartyResult,jdbcType=VARCHAR},
       </if>
-      <if test="thirdPartyTime != null" >
+      <if test="thirdPartyTime != null">
         #{thirdPartyTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="thirdPartyResultDesc != null" >
+      <if test="thirdPartyResultDesc != null">
         #{thirdPartyResultDesc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ChargeLog" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ChargeLog">
     update t_charge_log
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="offerId != null" >
+      <if test="offerId != null">
         OFFER_ID = #{offerId,jdbcType=VARCHAR},
       </if>
-      <if test="chargeMode != null" >
+      <if test="chargeMode != null">
         CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
       </if>
-      <if test="merchantNo != null" >
+      <if test="merchantNo != null">
         MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR},
       </if>
-      <if test="orderNo != null" >
+      <if test="tranDate != null">
+        TRAN_DATE = #{tranDate,jdbcType=DATE},
+      </if>
+      <if test="orderNo != null">
         ORDER_NO = #{orderNo,jdbcType=VARCHAR},
       </if>
-      <if test="openBankNo != null" >
+      <if test="openBankNo != null">
         OPEN_BANK_NO = #{openBankNo,jdbcType=VARCHAR},
       </if>
-      <if test="custName != null" >
+      <if test="custName != null">
         CUST_NAME = #{custName,jdbcType=VARCHAR},
       </if>
-      <if test="cardNo != null" >
+      <if test="cardNo != null">
         CARD_NO = #{cardNo,jdbcType=VARCHAR},
       </if>
-      <if test="idType != null" >
+      <if test="idType != null">
         ID_TYPE = #{idType,jdbcType=VARCHAR},
       </if>
-      <if test="idNo != null" >
+      <if test="idNo != null">
         ID_NO = #{idNo,jdbcType=VARCHAR},
       </if>
-      <if test="chargeAmount != null" >
+      <if test="chargeAmount != null">
         CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeTime != null" >
+      <if test="chargeTime != null">
         CHARGE_TIME = #{chargeTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="chargeResult != null" >
+      <if test="chargeResult != null">
         CHARGE_RESULT = #{chargeResult,jdbcType=VARCHAR},
       </if>
-      <if test="thirdPartyResult != null" >
+      <if test="thirdPartyResult != null">
         THIRD_PARTY_RESULT = #{thirdPartyResult,jdbcType=VARCHAR},
       </if>
-      <if test="thirdPartyTime != null" >
+      <if test="thirdPartyTime != null">
         THIRD_PARTY_TIME = #{thirdPartyTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="thirdPartyResultDesc != null" >
+      <if test="thirdPartyResultDesc != null">
         THIRD_PARTY_RESULT_DESC = #{thirdPartyResultDesc,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ChargeLog" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ChargeLog">
     update t_charge_log
     set APP_ID = #{appId,jdbcType=VARCHAR},
       OFFER_ID = #{offerId,jdbcType=VARCHAR},
       CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
       MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR},
+      TRAN_DATE = #{tranDate,jdbcType=DATE},
       ORDER_NO = #{orderNo,jdbcType=VARCHAR},
       OPEN_BANK_NO = #{openBankNo,jdbcType=VARCHAR},
       CUST_NAME = #{custName,jdbcType=VARCHAR},
@@ -232,4 +245,8 @@
       THIRD_PARTY_RESULT_DESC = #{thirdPartyResultDesc,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selecOriginChargeLog" resultMap="BaseResultMap">
+  	select * from t_charge_log
+  	where TRAN_DATE = #{tranDate} and ORDER_NO = #{orderNo}
+  </select>
 </mapper>
