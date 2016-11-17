@@ -15,7 +15,7 @@ public class RepayLog {
 
 	private Double chargeAmount;
 
-	private Date chargeDate;
+	private Date chargeTime;
 
 	private String chargeMode;
 
@@ -67,12 +67,12 @@ public class RepayLog {
 		this.chargeAmount = chargeAmount;
 	}
 
-	public Date getChargeDate() {
-		return chargeDate;
+	public Date getChargeTime() {
+		return chargeTime;
 	}
 
-	public void setChargeDate(Date chargeDate) {
-		this.chargeDate = chargeDate;
+	public void setChargeTime(Date chargeTime) {
+		this.chargeTime = chargeTime;
 	}
 
 	public String getChargeMode() {

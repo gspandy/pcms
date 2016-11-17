@@ -5,171 +5,181 @@ import java.util.Date;
 public class ChargeLog {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private String offerId;
+	private String offerId;
 
-    private String chargeMode;
+	private String chargeMode;
 
-    private String merchantNo;
+	private String merchantNo;
 
-    private String orderNo;
+	private Date tranDate;
 
-    private String openBankNo;
+	private String orderNo;
 
-    private String custName;
+	private String openBankNo;
 
-    private String cardNo;
+	private String custName;
 
-    private String idType;
+	private String cardNo;
 
-    private String idNo;
+	private String idType;
 
-    private Double chargeAmount;
+	private String idNo;
 
-    private Date chargeTime;
+	private Double chargeAmount;
 
-    private String chargeResult;
+	private Date chargeTime;
 
-    private String thirdPartyResult;
+	private String chargeResult;
 
-    private Date thirdPartyTime;
+	private String thirdPartyResult;
 
-    private String thirdPartyResultDesc;
+	private Date thirdPartyTime;
 
-    public String getId() {
-        return id;
-    }
+	private String thirdPartyResultDesc;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getOfferId() {
-        return offerId;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setOfferId(String offerId) {
-        this.offerId = offerId;
-    }
+	public String getOfferId() {
+		return offerId;
+	}
 
-    public String getChargeMode() {
-        return chargeMode;
-    }
+	public void setOfferId(String offerId) {
+		this.offerId = offerId;
+	}
 
-    public void setChargeMode(String chargeMode) {
-        this.chargeMode = chargeMode;
-    }
+	public String getChargeMode() {
+		return chargeMode;
+	}
 
-    public String getMerchantNo() {
-        return merchantNo;
-    }
+	public void setChargeMode(String chargeMode) {
+		this.chargeMode = chargeMode;
+	}
 
-    public void setMerchantNo(String merchantNo) {
-        this.merchantNo = merchantNo;
-    }
+	public String getMerchantNo() {
+		return merchantNo;
+	}
 
-    public String getOrderNo() {
-        return orderNo;
-    }
+	public void setMerchantNo(String merchantNo) {
+		this.merchantNo = merchantNo;
+	}
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
+	public Date getTranDate() {
+		return tranDate;
+	}
 
-    public String getOpenBankNo() {
-        return openBankNo;
-    }
+	public void setTranDate(Date tranDate) {
+		this.tranDate = tranDate;
+	}
 
-    public void setOpenBankNo(String openBankNo) {
-        this.openBankNo = openBankNo;
-    }
+	public String getOrderNo() {
+		return orderNo;
+	}
 
-    public String getCustName() {
-        return custName;
-    }
+	public void setOrderNo(String orderNo) {
+		this.orderNo = orderNo;
+	}
 
-    public void setCustName(String custName) {
-        this.custName = custName;
-    }
+	public String getOpenBankNo() {
+		return openBankNo;
+	}
 
-    public String getCardNo() {
-        return cardNo;
-    }
+	public void setOpenBankNo(String openBankNo) {
+		this.openBankNo = openBankNo;
+	}
 
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
-    }
+	public String getCustName() {
+		return custName;
+	}
 
-    public String getIdType() {
-        return idType;
-    }
+	public void setCustName(String custName) {
+		this.custName = custName;
+	}
 
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
+	public String getCardNo() {
+		return cardNo;
+	}
 
-    public String getIdNo() {
-        return idNo;
-    }
+	public void setCardNo(String cardNo) {
+		this.cardNo = cardNo;
+	}
 
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
-    }
+	public String getIdType() {
+		return idType;
+	}
 
-    public Double getChargeAmount() {
-        return chargeAmount;
-    }
+	public void setIdType(String idType) {
+		this.idType = idType;
+	}
 
-    public void setChargeAmount(Double chargeAmount) {
-        this.chargeAmount = chargeAmount;
-    }
+	public String getIdNo() {
+		return idNo;
+	}
 
-    public Date getChargeTime() {
-        return chargeTime;
-    }
+	public void setIdNo(String idNo) {
+		this.idNo = idNo;
+	}
 
-    public void setChargeTime(Date chargeTime) {
-        this.chargeTime = chargeTime;
-    }
+	public Double getChargeAmount() {
+		return chargeAmount;
+	}
 
-    public String getChargeResult() {
-        return chargeResult;
-    }
+	public void setChargeAmount(Double chargeAmount) {
+		this.chargeAmount = chargeAmount;
+	}
 
-    public void setChargeResult(String chargeResult) {
-        this.chargeResult = chargeResult;
-    }
+	public Date getChargeTime() {
+		return chargeTime;
+	}
 
-    public String getThirdPartyResult() {
-        return thirdPartyResult;
-    }
+	public void setChargeTime(Date chargeTime) {
+		this.chargeTime = chargeTime;
+	}
 
-    public void setThirdPartyResult(String thirdPartyResult) {
-        this.thirdPartyResult = thirdPartyResult;
-    }
+	public String getChargeResult() {
+		return chargeResult;
+	}
 
-    public Date getThirdPartyTime() {
-        return thirdPartyTime;
-    }
+	public void setChargeResult(String chargeResult) {
+		this.chargeResult = chargeResult;
+	}
 
-    public void setThirdPartyTime(Date thirdPartyTime) {
-        this.thirdPartyTime = thirdPartyTime;
-    }
+	public String getThirdPartyResult() {
+		return thirdPartyResult;
+	}
 
-    public String getThirdPartyResultDesc() {
-        return thirdPartyResultDesc;
-    }
+	public void setThirdPartyResult(String thirdPartyResult) {
+		this.thirdPartyResult = thirdPartyResult;
+	}
 
-    public void setThirdPartyResultDesc(String thirdPartyResultDesc) {
-        this.thirdPartyResultDesc = thirdPartyResultDesc;
-    }
+	public Date getThirdPartyTime() {
+		return thirdPartyTime;
+	}
+
+	public void setThirdPartyTime(Date thirdPartyTime) {
+		this.thirdPartyTime = thirdPartyTime;
+	}
+
+	public String getThirdPartyResultDesc() {
+		return thirdPartyResultDesc;
+	}
+
+	public void setThirdPartyResultDesc(String thirdPartyResultDesc) {
+		this.thirdPartyResultDesc = thirdPartyResultDesc;
+	}
 }

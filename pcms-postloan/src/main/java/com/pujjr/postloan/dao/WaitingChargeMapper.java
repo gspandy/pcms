@@ -33,4 +33,10 @@ public interface WaitingChargeMapper {
      * @return
      */
     List<WaitingCharge> selectNeedCalOverdueAmountList(@Param("queryDate")Date queryDate);
+    /**
+     * 根据报盘ID查询待扣款明细记录
+     * @param offerId报盘ID
+     * @return
+     */
+    WaitingCharge selectByOfferId(@Param("offerId")String offerId);
 }

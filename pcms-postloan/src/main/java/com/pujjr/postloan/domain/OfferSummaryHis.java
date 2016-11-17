@@ -2,7 +2,7 @@ package com.pujjr.postloan.domain;
 
 import java.util.Date;
 
-public class OfferSummary {
+public class OfferSummaryHis {
     private String id;
 
 	private String appId;

@@ -8,11 +8,11 @@
     <result column="FEE_REF_ID" jdbcType="VARCHAR" property="feeRefId" />
     <result column="CHARGE_ITEM" jdbcType="VARCHAR" property="chargeItem" />
     <result column="CHARGE_AMOUNT" jdbcType="DOUBLE" property="chargeAmount" />
-    <result column="CHARGE_DATE" jdbcType="DATE" property="chargeDate" />
+    <result column="CHARGE_TIME" jdbcType="TIMESTAMP" property="chargeTime" />
     <result column="CHARGE_MODE" jdbcType="VARCHAR" property="chargeMode" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, APP_ID, FEE_TYPE, FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, CHARGE_DATE, CHARGE_MODE
+    ID, APP_ID, FEE_TYPE, FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, CHARGE_TIME, CHARGE_MODE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -27,10 +27,10 @@
   <insert id="insert" parameterType="com.pujjr.postloan.domain.RepayLog">
     insert into t_repay_log (ID, APP_ID, FEE_TYPE, 
       FEE_REF_ID, CHARGE_ITEM, CHARGE_AMOUNT, 
-      CHARGE_DATE, CHARGE_MODE)
+      CHARGE_TIME, CHARGE_MODE)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
       #{feeRefId,jdbcType=VARCHAR}, #{chargeItem,jdbcType=VARCHAR}, #{chargeAmount,jdbcType=DOUBLE}, 
-      #{chargeDate,jdbcType=DATE}, #{chargeMode,jdbcType=VARCHAR})
+      #{chargeTime,jdbcType=TIMESTAMP}, #{chargeMode,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RepayLog">
     insert into t_repay_log
@@ -53,8 +53,8 @@
       <if test="chargeAmount != null">
         CHARGE_AMOUNT,
       </if>
-      <if test="chargeDate != null">
-        CHARGE_DATE,
+      <if test="chargeTime != null">
+        CHARGE_TIME,
       </if>
       <if test="chargeMode != null">
         CHARGE_MODE,
@@ -79,8 +79,8 @@
       <if test="chargeAmount != null">
         #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeDate != null">
-        #{chargeDate,jdbcType=DATE},
+      <if test="chargeTime != null">
+        #{chargeTime,jdbcType=TIMESTAMP},
       </if>
       <if test="chargeMode != null">
         #{chargeMode,jdbcType=VARCHAR},
@@ -105,8 +105,8 @@
       <if test="chargeAmount != null">
         CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
       </if>
-      <if test="chargeDate != null">
-        CHARGE_DATE = #{chargeDate,jdbcType=DATE},
+      <if test="chargeTime != null">
+        CHARGE_TIME = #{chargeTime,jdbcType=TIMESTAMP},
       </if>
       <if test="chargeMode != null">
         CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR},
@@ -121,7 +121,7 @@
       FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
       CHARGE_ITEM = #{chargeItem,jdbcType=VARCHAR},
       CHARGE_AMOUNT = #{chargeAmount,jdbcType=DOUBLE},
-      CHARGE_DATE = #{chargeDate,jdbcType=DATE},
+      CHARGE_TIME = #{chargeTime,jdbcType=TIMESTAMP},
       CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>

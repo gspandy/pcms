@@ -50,4 +50,43 @@
   		left join SYS_DICT_DATA d2 on a.FEE_TYPE = d2.DICT_DATA_CODE
   		where a.CHARGE_MODE = #{chargeMode} and a.CHARGE_STATUS ='kkzt01'
   	</select>
+  	
+  	<select id="selectManualOfferHisList" resultType="HashMap">
+  		select 
+  		a.ID as id,
+  		a.OFFER_FILE_NAME as offerFileName,
+  		a.OFFER_FILE_PATH as offerFilePath,
+  		a.OFFER_MERCHANT_NO as offerMerchantNo,
+  		a.OFFER_TOTAL_CNT  as offerTotalCnt,
+  		a.OFFER_TOTAL_AMOUNT as offerTotalAmount,
+  		a.OFFER_TIME as offerTime,
+  		b.dict_data_name as offerStatus,
+  		a.RETOFFER_TOTAL_CNT as retofferTotalCnt,
+  		a.RETOFFER_TOTAL_AMOUNT as retofferTotalAmount,
+  		a.RETOFFER_SUCC_CNT as retofferSuccCnt,
+  		a.RETOFFER_SUCC_AMOUNT as retofferSuccAmount
+  		from T_OFFER_BATCH_INFO a 
+  		left join SYS_DICT_DATA b on a.RETOFFER_STATUS = b.dict_data_code
+  		where 1=1 
+  		<if test="operId !=null and operId!=''">
+  			and a.OFFER_ID = #{operId}
+  		</if>
+  		order by a.OFFER_TIME DESC
+  	</select>
+  	
+  	<select id="selectManualOfferBatchDetail" resultType="HashMap">
+  		select 
+  		a.APP_ID as appId,
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		d.CARD_NO as cardNo,
+  		c.DICT_DATA_NAME as chargeStatusDesc,
+  		d.CHARGE_AMOUNT as chargeAmount,
+  		d.THIRD_PARTY_RESULT as thirdPartResult
+  		from T_OFFER_SUMMARY_HIS a 
+  		left join T_CHARGE_LOG d on a.ID = d.OFFER_ID
+  		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  		left join SYS_DICT_DATA c on a.CHARGE_STATUS = c.DICT_DATA_CODE
+  		where a.OFFER_BATCH_NO = #{offerBatchId}
+  	</select>
 </mapper>

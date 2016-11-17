@@ -40,5 +40,24 @@ public interface IChargeService
 	 * @throws Exception 
 	 */
 	public String confirmManualOffer(String merchantNo,String operId) throws Exception;
+	/**
+	 * 查询文件报盘记录
+	 * @param operId
+	 * @return
+	 */
+	public List<HashMap<String,Object>> getManualOfferHisList(String operId);
+	/**
+	 * 批量文件报盘回盘处理
+	 * @param offerBatchId 报盘批次信息
+	 * @param resultList 回盘数据
+	 * @throws Exception 
+	 */
+	public void retOfferProcess(String offerBatchId,List<String> resultList,String operId) throws Exception;
+	/**
+	 * 获取手工报盘批次明细信息
+	 * @param offerBatchId 报盘批次ID
+	 * @return 批次对应报盘明细信息
+	 */
+	List<HashMap<String,Object>>  getManualOfferBatchDetail(String offerBatchId);
 	
 }

@@ -334,4 +334,8 @@
   	select * from t_repay_plan
   	where CLOSING_DATE = #{curDate}
   </select>
+  <select id="selectNotSettleRepayPlanList" resultMap="BaseResultMap">
+  	select * from t_repay_plan
+  	where REPAY_STATUS != 'hkzt02'
+  </select>
 </mapper>

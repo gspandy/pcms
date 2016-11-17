@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.LoanQueryMapper">
+
+  	<select id="selectLoanCustList" resultType="HashMap">
+  		select 
+  		a.APP_ID as appId,
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		b.MOBILE as mobile,
+  		a.TOTAL_FINANCE_AMT as totalFinanceAmt,
+  		a.PERIOD as period,
+  		c.REMAIN_CAPITAL as remainCapital,
+  		c.REPAY_STATUS as repayStatus,
+  		d1.DICT_DATA_NAME as repayStatusDesc,
+  		c.PROCESS_STATUS as processStatus,
+  		d2.DICT_DATA_NAME as processStatusDesc
+  		from T_APPLY a 
+  		left join T_APPLY_TENANT b on a.APP_ID  = b.APP_ID
+  		left join T_GENERAL_LEDGER c on a.APP_ID = c.APP_ID
+  		left join SYS_DICT_DATA d1 on c.REPAY_STATUS = d1.DICT_DATA_CODE
+  		left join SYS_DICT_DATA d2 on c.PROCESS_STATUS = d2.DICT_DATA_CODE
+  		where 1=1 and a.STATUS = 'sqdzt13'
+  	</select>
+</mapper>
