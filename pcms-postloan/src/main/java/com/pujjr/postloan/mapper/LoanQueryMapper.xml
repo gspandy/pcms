@@ -76,6 +76,7 @@
 	a.PROC_INST_ID_ as procInstId,
 	a.TASK_DEF_KEY_ as taskDefKey,
 	b.BUSINESS_KEY_ as businessKey,
+	c.KEY_ as workflowKey,
 	dp.NAME_ as workflowName,
 	form.form_name as taskRouter,
 	d.TEXT_ as appId,

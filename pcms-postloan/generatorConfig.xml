@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<classPathEntry
-		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		location="C:\Users\dengpan\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
 		
 	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
@@ -62,10 +62,6 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_STAY_ACCOUNT_LOG" domainObjectName="StayAccountLog" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
 		
 		<table tableName="T_REMISSION_ITEM" domainObjectName="RemissionItem" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -121,8 +117,15 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
+		
 		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		-->
+		
+		<table tableName="T_STAY_ACCOUNT_LOG" domainObjectName="StayAccountLog" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

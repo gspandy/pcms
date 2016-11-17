@@ -38,8 +38,9 @@ public interface IPublicRepayService
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApprovePublicRepayTask(String taskId,ApproveResultVo vo);
+	public void commitApprovePublicRepayTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：取消对公还款任务
 	 * 参数：

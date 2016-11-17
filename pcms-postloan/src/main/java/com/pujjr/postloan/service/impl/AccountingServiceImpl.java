@@ -534,7 +534,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				stayLog.setStayId(stayAccount.getId());
 				stayLog.setStayAmount(repayAmount);
 				stayLog.setStaySource(repayMode);
-				stayLog.setStayTime(new Date());
+				stayLog.setStayDate(new Date());
 				stayAccountLogDao.insert(stayLog);
 			}
 		}
