@@ -67,7 +67,7 @@ public interface ISettleService
 	 * 	vo-减免费项
 	 * @throws Exception 
 	 * **/
-	public void commitApplyConfirmSettleTask(String taskId,RemissionFeeItemVo vo) throws Exception;
+	public void commitApplyConfirmSettleTask(String operId,String taskId,RemissionFeeItemVo vo) throws Exception;
 	/**
 	 * 功能：提交确认入账
 	 * 参数：

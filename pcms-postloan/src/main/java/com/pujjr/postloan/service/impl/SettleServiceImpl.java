@@ -32,6 +32,7 @@ import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingChargeNew;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IRemissionService;
 import com.pujjr.postloan.service.ISettleService;
@@ -70,7 +71,6 @@ public class SettleServiceImpl implements ISettleService{
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
 		boolean isCalOverdueAmount = true;
 		boolean isReduceStayAmount = true;
-		double hangAmount= 0.00;//挂账金额
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
 		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
@@ -89,8 +89,7 @@ public class SettleServiceImpl implements ISettleService{
 		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
 				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
 				+ settleCapital
-				+ lateFee
-				- hangAmount;
+				+ lateFee;
 		//结清后剩余本金
 		double settleAfterAmount = 0.00;
 		settleFeeItemVo.setLateFee(lateFee);
@@ -166,18 +165,18 @@ public class SettleServiceImpl implements ISettleService{
 		as.setSettleCapital(vo.getFeeItem().getSettleCapital());
 		
 		//结清金额
-		double settleTotalAmt = as.getRepayCapital() + as.getRepayInterest() + as.getOtherOverdueAmount()
-				+ as.getOtherFee()+ as.getOtherOverdueAmount()
-				+ as.getSettleCapital()
-				+ as.getLateFee();
-		as.setSettleTotalAmount(settleTotalAmt);
+//		double settleTotalAmt = as.getRepayCapital() + as.getRepayInterest() + as.getOtherOverdueAmount()
+//				+ as.getOtherFee()+ as.getOtherOverdueAmount()
+//				+ as.getSettleCapital()
+//				+ as.getLateFee();
+		as.setSettleTotalAmount(settleFeeItemVo.getSettleTotalAmount());
 		//结清后剩余本金
-		double settleAfterCapital = settleFeeItemVo.getRemainCapital() - settleFeeItemVo.getRepayCapital() - settleTotalAmt;
-		as.setSettleAfterCapital(settleAfterCapital);
+//		double settleAfterCapital = settleFeeItemVo.getRemainCapital() - settleFeeItemVo.getRepayCapital() - settleFeeItemVo.getSettleTotalAmount();
+		as.setSettleAfterCapital(settleFeeItemVo.getSettleAfterAmount());
 		as.setSettleStartPeriod(vo.getBeginPeriod());
 		as.setSettleEndPeriod(vo.getEndPeriod());
 		as.setApplyComment(vo.getApplyComment());
-		as.setApplyStatus("申请状态");
+		as.setApplyStatus("申请已提交");
 		as.setApplyEndDate(vo.getApplyEffectDate());
 		as.setCreateId(operId);
 		as.setCreateDate(Utils.getDate());
@@ -235,10 +234,14 @@ public class SettleServiceImpl implements ISettleService{
 		taskProcessResult.setComment(vo.getApproveComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
 		taskProcessResultDao.insert(taskProcessResult);	
-		// 3、处理结果放入流程变量,完成任务
+		//3、处理结果放入流程变量,完成任务
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", vo.getApproveResult());
 		runWorkflowServiceImpl.completeTask(taskId, "", vars, CommandType.COMMIT);
+		//4、修改提前结清申请表状态
+		ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
+		applySettle.setApplyStatus(vo.getApproveResult());
+		applySettleMapper.updateByPrimaryKeySelective(applySettle);
 	}
 
 	@Override
@@ -270,14 +273,14 @@ public class SettleServiceImpl implements ISettleService{
 		taskProcessResult.setComment(vo.getApproveComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
 		taskProcessResultDao.insert(taskProcessResult);	
-		// 3、处理结果放入流程变量,完成任务
+		//3、处理结果放入流程变量,完成任务
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", vo.getApproveResult());
 		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
 	}
 
 	@Override
-	public void commitApplyConfirmSettleTask(String taskId, RemissionFeeItemVo vo) throws Exception {
+	public void commitApplyConfirmSettleTask(String operId,String taskId, RemissionFeeItemVo vo) throws Exception {
 		//1、检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if (task == null) {
@@ -288,8 +291,9 @@ public class SettleServiceImpl implements ISettleService{
 		if (runpath == null) {
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
-		//2、获取"提前结清减免"对应"提前结清申请"信息
+		
 		ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
+		//2、获取"提前结清减免"对应"提前结清申请"信息
 		RemissionItem remissiontItem = new RemissionItem();
 		remissiontItem.setId(Utils.get16UUID());
 		remissiontItem.setApplyType(ERemissionType.SETTLE.getName());
