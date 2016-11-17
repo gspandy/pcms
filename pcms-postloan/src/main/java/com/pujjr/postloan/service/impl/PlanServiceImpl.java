@@ -97,4 +97,52 @@ public class PlanServiceImpl implements IPlanService {
 		return repayPlanMapper.selectSpecialRepayPlanList(appId, beginPeriod, endPeriod);
 	}
 
+	@Override
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId, double fianceAmt, double monthRate, int period,
+			Date valueDate, Enum eInterestMode, int currPeriod) {
+		RepaySchedulePo rsp = new RepaySchedulePo();
+		switch(eInterestMode.name()){
+		case "CPM":
+			rsp = interestAlgorithmImpl.cpmInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "CONST":
+			rsp = interestAlgorithmImpl.constInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "ONETIME":
+			rsp = interestAlgorithmImpl.onetimeInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "MONTLY":
+			rsp = interestAlgorithmImpl.monthlyIntetrest(fianceAmt, monthRate, period, valueDate);
+			break;
+		}
+//		1、获取第1期至当前还款周期还款计划
+		List<RepayPlan> repayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, currPeriod);
+//		System.out.println("合并前repayPlanList："+JSONObject.toJSONString(repayPlanList));
+//		2、生成当期后还款计划，合并
+		List<RepayPlan> repayPlanListAfter = rsp.getRepayPlanList();
+		for (RepayPlan repayPlan : repayPlanListAfter) {
+			repayPlan.setId(Utils.get16UUID());
+			repayPlan.setAppId(appId);
+			repayPlan.setPeriod(repayPlan.getPeriod() + currPeriod);
+			repayPlanList.add(repayPlan);
+		}
+//		System.out.println("合并后repayPlanList："+JSONObject.toJSONString(repayPlanList));
+		return repayPlanList;
+	}
+
+	@Override
+	public void refreshRepayPlan(String appId, double fianceAmt, double monthRate, int period, Date valueDate,
+			Enum eInterestMode, int currPeriod) {
+		List<RepayPlan> newRepayPlanList = this.selectRefreshRepayPlanList(appId, fianceAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+//		System.out.println("newRepayPlanList:"+newRepayPlanList);
+		List<RepayPlan> oldRepayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, 0);
+//		删除旧还款计划
+		for (RepayPlan repayPlan : oldRepayPlanList) {
+			repayPlanMapper.deleteByPrimaryKey(repayPlan.getId());
+		}
+//		插入新还款计划
+		for (RepayPlan repayPlan : newRepayPlanList) {
+			repayPlanMapper.insert(repayPlan);
+		}
+	}
 }

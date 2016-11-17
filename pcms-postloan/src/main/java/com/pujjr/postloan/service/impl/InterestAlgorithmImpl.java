@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.xmlbeans.impl.jam.annotation.LineDelimitedTagParser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 	@Override
 	public RepaySchedulePo cpmInterest(double fianceAmt, double monthRate, int period, Date valueDate) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
-		List<RepayPlan> repayPlanList = new ArrayList<RepayPlan>();
+		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
 		Date firstClosingDate = this.getFirstRepayDate(valueDate);
 		Calendar firstClosingCl = Calendar.getInstance();
 		firstClosingCl.setTime(firstClosingDate);
@@ -114,7 +116,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 	@Override
 	public RepaySchedulePo monthlyIntetrest(double fianceAmt, double monthRate, int period, Date valueDate) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
-		List<RepayPlan> rspList = new ArrayList<RepayPlan>();
+		List<RepayPlan> rspList = new LinkedList<RepayPlan>();
 		Date firstClosingDate = this.getFirstRepayDate(valueDate);
 //		Calendar dueCalendar = Calendar.getInstance();
 //		dueCalendar.setTime(firstClosingDate);
@@ -195,7 +197,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 	@Override
 	public RepaySchedulePo onetimeInterest(double fianceAmt, double monthRate, int period, Date valueDate) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
-		List<RepayPlan> repayPlanList = new ArrayList<RepayPlan>();
+		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
 		Date firstClosingDate = this.getFirstRepayDate(valueDate);
 		BigDecimal mortgageAmt = new BigDecimal(fianceAmt);
 		BigDecimal repayAmt = mortgageAmt;
@@ -255,7 +257,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 	@Override
 	public RepaySchedulePo constInterest(double fianceAmt, double monthRate, int period, Date valueDate) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
-		List<RepayPlan> repayPlanList = new ArrayList<RepayPlan>();
+		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
 		Date firstClosingDate = this.getFirstRepayDate(valueDate);
 		Calendar firstDueCl = Calendar.getInstance();
 		firstDueCl.setTime(firstClosingDate);

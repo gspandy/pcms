@@ -6,7 +6,7 @@ package com.pujjr.postloan.enumeration;
  */
 public enum EInterestMode {
 	CPM("CPM","等额本息","hkfs01"),
-	CONST("CONST","等额利息","hkfs04"),
+	CONST("CONST","等额利息","hkfs02"),
 	ONETIME("ONETIME","一次付息按月还款","hkfs03"),
 	MONTLY("MONTLY","按月付息到期还本","hkfs04");
 	
