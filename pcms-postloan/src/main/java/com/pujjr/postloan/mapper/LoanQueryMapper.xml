@@ -22,4 +22,89 @@
   		left join SYS_DICT_DATA d2 on c.PROCESS_STATUS = d2.DICT_DATA_CODE
   		where 1=1 and a.STATUS = 'sqdzt13'
   	</select>
+  	
+  	<select id="selectLoanCustApplyInfo" resultType="HashMap">
+  		select 
+  		b.NAME as name,
+  		b.ID_NO as idNo,
+  		a.FINANCE_AMT as financeAmt,
+  		a.PERIOD as period,
+  		a.LOAN_DATE as loanDate,
+  		a.REPAY_STATUS as repayStatus,
+  		c.DICT_DATA_NAME as repayStatusDesc,
+  		c1.DICT_DATA_NAME as repayModeDesc
+  		from 
+  		T_GENERAL_LEDGER a 
+  		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  		left join SYS_DICT_DATA c on a.REPAY_STATUS =  c.DICT_DATA_CODE
+  		left join SYS_DICT_DATA c1 on a.REPAY_MODE = c1.DICT_DATA_CODE
+		where a.APP_ID = #{appId}
+  	</select>
+  	
+  	<select id="selectLoanCustRepayLog" resultType="HashMap">
+  		select 
+  		b1.DICT_DATA_NAME as feeType,
+  		b2.DICT_DATA_NAME as chargeItem,
+  		a.CHARGE_AMOUNT as chargeAmount,
+  		a.CHARGE_TIME as chargeTime,
+  		b3.DICT_DATA_NAME as chargeMode
+  		from T_REPAY_LOG a 
+  		left join SYS_DICT_DATA b1 on a.FEE_TYPE = b1.DICT_DATA_CODE
+  		left join SYS_DICT_DATA b2 on a.CHARGE_ITEM = b2.DICT_DATA_CODE
+  		left join SYS_DICT_DATA b3 on a.CHARGE_MODE = b3.DICT_DATA_CODE
+  	</select>
+  	
+  	<select id="selectLoanCustChargeLog" resultType="HashMap">
+  		select 
+  		a.TRAN_DATE as tranDate,
+  		a.CHARGE_AMOUNT as chargeAmount,
+  		a.CARD_NO as cardNo,
+  		b.BANK_NAME as bankName,
+  		a.CHARGE_MODE as chargeMode,
+  		d1.DICT_DATA_NAME as chargeModeDesc,
+  		a.THIRD_PARTY_RESULT as thirdPartResult
+  		from T_CHARGE_LOG a
+  		left join T_BANK_INFO b on a.OPEN_BANK_NO = b.UNIONPAY_CODE  
+  		left join SYS_DICT_DATA d1 on d1.DICT_DATA_CODE = a.CHARGE_MODE
+  		where a.APP_ID = #{appId}
+  	</select>
+  	
+  	<select id="selectLoanToDoTaskList" resultType="HashMap">
+  	select 
+	a.ID_ as taskId,
+	a.name_ as taskName,
+	a.PROC_INST_ID_ as procInstId,
+	a.TASK_DEF_KEY_ as taskDefKey,
+	b.BUSINESS_KEY_ as businessKey,
+	dp.NAME_ as workflowName,
+	form.form_name as taskRouter,
+	d.TEXT_ as appId,
+	e.NAME as custName,
+	f.TOTAL_FINANCE_AMT as totalFinanceAmount,
+	f.PERIOD as period,
+	g.REPAY_STATUS as repayStatus,
+	h.DICT_DATA_NAME as repayStatusDesc,
+	g.REMAIN_CAPITAL as remainCapital,
+	runpath.START_TIME as startTime,
+	runpath.IN_JUMP_TYPE as inJumpType,
+	prunpath.ACT_NAME as parentTaskName,
+	prunpath.ASSIGNEE as parentAssignee,
+	account.ACCOUNT_NAME as parentAssigneeName
+	from act_ru_task a 
+	left join act_ru_execution b on a.PROC_INST_ID_  = b. PROC_INST_ID_
+	left join act_re_procdef c on b.PROC_DEF_ID_ = c.ID_
+	left join act_re_deployment dp on dp.ID_ = c.DEPLOYMENT_ID_
+	left join t_workflow_runpath runpath on runpath.PROC_INST_ID =a.PROC_INST_ID_ and runpath.ACT_ID = a.TASK_DEF_KEY_
+	left join t_workflow_runpath prunpath on runpath.PARENT_USERTASK_PATH_ID =prunpath.ID
+	left join t_workflow_version flowversion on flowversion.activiti_procdef_id = a.PROC_DEF_ID_
+	left join t_workflow_node_form form on form.workflow_version_id = flowversion.id and a.TASK_DEF_KEY_ = form.node_id
+	inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
+	left join t_apply_tenant e on d.TEXT_ = e.APP_ID 
+	left join t_apply f on e.APP_ID = f.APP_ID
+	left join T_GENERAL_LEDGER g on f.APP_ID = g.APP_ID
+	left join SYS_DICT_DATA h on g.REPAY_STATUS = h.DICT_DATA_CODE
+	left join SYS_ACCOUNT account on account.ACCOUNT_ID = prunpath.ASSIGNEE
+	where a.ASSIGNEE_ = #{assignee} 
+	and (c.KEY_ = 'DGHK'  or c.KEY_='TQJQ' or c.KEY_ ='ZHANQI' or c.KEY_ = 'BGHKR' or c.KEY_ ='TUIKUAN' or c.KEY_ ='JIANMIAN')
+  	</select>
 </mapper>

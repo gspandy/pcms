@@ -79,10 +79,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>		
-		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		
 		<table tableName="T_APPLY_REMISSION" domainObjectName="ApplyRemission" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -111,8 +108,6 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		
-		
-		
 		<table tableName="T_OFFER_SUMMARY_HIS" domainObjectName="OfferSummaryHis" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -121,9 +116,13 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		
 		<table tableName="T_REPAY_LOG" domainObjectName="RepayLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

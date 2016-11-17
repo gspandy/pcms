@@ -19,4 +19,28 @@ public interface LoanQueryMapper
 	 * @return
 	 */
 	public List<HashMap<String,Object>> selectLoanCustList();
+	/**
+	 * 查询贷款客户申请基本信息
+	 * @param appId
+	 * @return
+	 */
+	public HashMap<String,Object> selectLoanCustApplyInfo(@Param("appId")String appId);
+	/**
+	 * 查询还款记录
+	 * @param appId申请单号
+	 * @return
+	 */
+	public List<HashMap<String,Object>> selectLoanCustRepayLog(@Param("appId")String appId);
+	/**
+	 * 查询扣款记录
+	 * @param appId
+	 * @return
+	 */
+	public List<HashMap<String,Object>> selectLoanCustChargeLog(@Param("appId")String appId);
+	/**
+	 * 查询贷后代办任务列表
+	 * @param assignee 任务执行人
+	 * @return
+	 */
+	public List<HashMap<String,Object>> selectLoanToDoTaskList(@Param("assignee")String assignee);
 }

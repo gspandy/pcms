@@ -106,6 +106,10 @@ public class AccountingServiceImpl implements IAccountingService {
 		double otherTotalOverdueAmt = 0.00;
 		
 		//获取截止日期与当前日期间隔天数
+		if(overdueEndDate ==null)
+		{
+			overdueEndDate = new Date();
+		}
 		long spaceDay = Utils.getTimeInterval(new Date(), overdueEndDate, EIntervalMode.DAYS);
 		//获取日罚息率
 		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
@@ -147,116 +151,121 @@ public class AccountingServiceImpl implements IAccountingService {
 		
 		double remainCapital = this.getRemainCaptial(appId);
 		
+		StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
+		double stayAmount; 
+		if(stayAccount != null)
+		{
+			stayAmount = stayAccount.getStayAmount();
+		}
+		else
+		{
+			stayAmount = 0;
+		}
+			
 		//挂账金额的处理
 		if(isReduceStayAmount)
 		{
-			StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
-			if(stayAccount != null)
+			//有挂账，减其他费用罚息
+			if(stayAmount>0)
 			{
-				double stayAmount = stayAccount.getStayAmount();
-				//有挂账，减其他费用罚息
-				if(stayAmount>0)
+				if(otherTotalOverdueAmt>0)
 				{
-					if(otherTotalOverdueAmt>0)
+					if(Double.compare(otherTotalOverdueAmt, stayAmount)>=0)
 					{
-						if(Double.compare(otherTotalOverdueAmt, stayAmount)>=0)
-						{
-							otherTotalOverdueAmt=otherTotalOverdueAmt-stayAmount;
-							stayAmount=0.00;
-						}
-						else
-						{
-							stayAmount = stayAmount - otherTotalOverdueAmt;
-							otherTotalOverdueAmt = 0.00;
-						}
+						otherTotalOverdueAmt=otherTotalOverdueAmt-stayAmount;
+						stayAmount=0.00;
+					}
+					else
+					{
+						stayAmount = stayAmount - otherTotalOverdueAmt;
+						otherTotalOverdueAmt = 0.00;
 					}
 				}
-				//有挂账减其他费用
-				if(stayAmount>0)
+			}
+			//有挂账减其他费用
+			if(stayAmount>0)
+			{
+				if(otherTotalFee>0)
 				{
-					if(otherTotalFee>0)
+					if(Double.compare(otherTotalFee, stayAmount)>=0)
 					{
-						if(Double.compare(otherTotalFee, stayAmount)>=0)
-						{
-							otherTotalFee -=stayAmount;
-							stayAmount = 0.00;
-						}
-						else
-						{
-							stayAmount-=otherTotalFee;
-							otherTotalFee=0.00;
-						}
+						otherTotalFee -=stayAmount;
+						stayAmount = 0.00;
+					}
+					else
+					{
+						stayAmount-=otherTotalFee;
+						otherTotalFee=0.00;
 					}
 				}
-				//有挂账减应还罚息
-				if(stayAmount>0)
+			}
+			//有挂账减应还罚息
+			if(stayAmount>0)
+			{
+				if(repayTotalOverdueAmt>0)
 				{
-					if(repayTotalOverdueAmt>0)
+					if(Double.compare(repayTotalOverdueAmt, stayAmount)>=0)
 					{
-						if(Double.compare(repayTotalOverdueAmt, stayAmount)>=0)
-						{
-							repayTotalOverdueAmt-=stayAmount;
-							stayAmount = 0.00;
-						}
-						else
-						{
-							stayAmount-=repayTotalOverdueAmt;
-							otherTotalFee=0.00;
-						}
+						repayTotalOverdueAmt-=stayAmount;
+						stayAmount = 0.00;
+					}
+					else
+					{
+						stayAmount-=repayTotalOverdueAmt;
+						otherTotalFee=0.00;
 					}
 				}
-				//有挂账减应还利息
-				if(stayAmount>0)
+			}
+			//有挂账减应还利息
+			if(stayAmount>0)
+			{
+				if(repayTotalInterest>0)
 				{
-					if(repayTotalInterest>0)
+					if(Double.compare(repayTotalInterest, stayAmount)>=0)
 					{
-						if(Double.compare(repayTotalInterest, stayAmount)>=0)
-						{
-							repayTotalInterest-=stayAmount;
-							stayAmount = 0.00;
-						}
-						else
-						{
-							stayAmount-=repayTotalInterest;
-							otherTotalFee=0.00;
-						}
+						repayTotalInterest-=stayAmount;
+						stayAmount = 0.00;
+					}
+					else
+					{
+						stayAmount-=repayTotalInterest;
+						otherTotalFee=0.00;
 					}
 				}
-				//有挂账减应还本金
-				if(stayAmount>0)
+			}
+			//有挂账减应还本金
+			if(stayAmount>0)
+			{
+				if(repayTotalCapital>0)
 				{
-					if(repayTotalCapital>0)
+					if(Double.compare(repayTotalCapital, stayAmount)>=0)
 					{
-						if(Double.compare(repayTotalCapital, stayAmount)>=0)
-						{
-							repayTotalCapital-=stayAmount;
-							stayAmount = 0.00;
-						}
-						else
-						{
-							stayAmount-=repayTotalCapital;
-							otherTotalFee=0.00;
-						}
+						repayTotalCapital-=stayAmount;
+						stayAmount = 0.00;
+					}
+					else
+					{
+						stayAmount-=repayTotalCapital;
+						otherTotalFee=0.00;
 					}
 				}
-				//有挂账减本金
-				if(stayAmount>0)
+			}
+			//有挂账减本金
+			if(stayAmount>0)
+			{
+				if(remainCapital>0)
 				{
-					if(remainCapital>0)
+					if(Double.compare(remainCapital, stayAmount)>=0)
 					{
-						if(Double.compare(remainCapital, stayAmount)>=0)
-						{
-							remainCapital-=stayAmount;
-							stayAmount = 0.00;
-						}
-						else
-						{
-							stayAmount-=remainCapital;
-							otherTotalFee=0.00;
-						}
+						remainCapital-=stayAmount;
+						stayAmount = 0.00;
+					}
+					else
+					{
+						stayAmount-=remainCapital;
+						otherTotalFee=0.00;
 					}
 				}
-				
 			}
 		}
 		
@@ -267,6 +276,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		vo.setOtherAmount(otherTotalFee);
 		vo.setOtherOverdueAmount(otherTotalOverdueAmt);
 		vo.setRemainCapital(remainCapital);
+		vo.setStayAmount(stayAmount);
 		
 		return vo;
 	}
@@ -537,6 +547,27 @@ public class AccountingServiceImpl implements IAccountingService {
 
 	public void repayReverseAccountingUserNewWaitingChargeTable(String appId, double repayAmount, Date repayDate,String repayMode) {
 
+	}
+
+	@Override
+	public double getStayAmount(String appId) {
+		// TODO Auto-generated method stub
+		StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
+		if(stayAccount == null)
+		{
+			return 0.00;
+		}
+		else
+		{
+			return stayAccount.getStayAmount();
+		}
+		
+	}
+
+	@Override
+	public boolean checkCandoPublicRepay(String appId) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

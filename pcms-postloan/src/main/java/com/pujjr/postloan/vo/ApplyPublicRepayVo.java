@@ -17,7 +17,15 @@ public class ApplyPublicRepayVo
 	private double chargeAmount;
 	//还款日期
 	private Date chargeDate;
+	//创建人
+	private String createId;
 	
+	public String getCreateId() {
+		return createId;
+	}
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 	public RepayFeeItemVo getFeeItem() {
 		return feeItem;
 	}
