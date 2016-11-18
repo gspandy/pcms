@@ -27,6 +27,9 @@ public interface WaitingChargeMapper {
      * @return
      */
     List<WaitingCharge> selectListOrderByGentimeAsc(@Param("appId")String appId,@Param("feeType")String feeType);
+    
+    List<WaitingCharge> selectListTypePlanOrderByGentimeAsc(@Param("appId")String appId,@Param("isContainCurPeriod")boolean isContainCurPeriod,@Param("curDate")Date curDate);
+    
     /**
      * 查找待扣款明细表需要计算罚息的待扣款记录,当还款日小于当前日期并且明细状态不为报盘中
      * @param queryDate-查询日期

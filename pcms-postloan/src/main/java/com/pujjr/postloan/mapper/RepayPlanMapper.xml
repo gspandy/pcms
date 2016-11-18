@@ -314,7 +314,7 @@
     from t_repay_plan
     where APP_ID = #{appId} and 
    	<![CDATA[
-   		VALUE_DATE <= #{curDate} and CLOSING_DATE> #{curDate}
+   		VALUE_DATE < #{curDate} and CLOSING_DATE>= #{curDate}
    	]]>
   </select>
   <select id="selectSpecialRepayPlanList" resultMap="BaseResultMap">

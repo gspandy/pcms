@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.service.IPlanService;
+import com.pujjr.postloan.service.ISettleService;
+import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 
 /**
@@ -25,7 +27,8 @@ import com.pujjr.utils.Utils;
 public class SettleController {
 	@Autowired
 	private IPlanService planServiceImpl;
-	
+	@Autowired
+	private ISettleService settleService;
 	
 	/**刷新还款计划表
 	 * tom 2016年11月17日
@@ -102,5 +105,11 @@ public class SettleController {
 		}
 		repayPlanList = planServiceImpl.selectRefreshRepayPlanList(appId, fianceAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
 		return repayPlanList;
+	}
+	
+	@RequestMapping(value="/getAllSettleFeeItem/{appId}/{settleEffectDate}",method=RequestMethod.GET)
+	public RepayFeeItemVo getAllSettleFeeItem(@PathVariable String appId,@PathVariable Date settleEffectDate)
+	{
+		return settleService.getAllSettleFeeItem(appId, settleEffectDate);
 	}
 }

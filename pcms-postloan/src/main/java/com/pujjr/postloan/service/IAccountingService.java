@@ -53,10 +53,11 @@ public interface IAccountingService
 	 * @param isCalOverdueAmount 是否计算逾期金额
 	 * @param overdueEndDate 计算逾期截止日期
 	 * @param isReduceStayAmount 是否扣除挂账金额
+	 * @param isContainCurPeriod 是否包含当期还款信息
 	 * @return
 	 * 	正在还款的分类汇总费用信息
 	 * **/
-	public RepayingFeeItemVo getRepayingFeeItems(String appId,boolean isCalOverdueAmount,Date overdueEndDate,boolean isReduceStayAmount);
+	public RepayingFeeItemVo getRepayingFeeItems(String appId,boolean isCalOverdueAmount,Date overdueEndDate,boolean isReduceStayAmount,boolean isContainCurPeriod);
 	/**
 	 * 功能：查询当前正在扣款中的计划还款信息
 	 * @param
@@ -64,8 +65,8 @@ public interface IAccountingService
 	 * @return
 	 * 	计划还款待扣款明细
 	 * **/
-	public List<WaitingCharge> getWaitingChargeTypePlan(String appId);
-	/**
+	public List<WaitingCharge> getWaitingChargeTypePlan(String appId,boolean isContainCurPeriod);
+ 	/**
 	 * 功能：查询当前正在扣款中的其他费用还款信息
 	 * @param
 	 * 	appId-申请单号

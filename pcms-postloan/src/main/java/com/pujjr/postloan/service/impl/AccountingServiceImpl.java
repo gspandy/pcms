@@ -78,7 +78,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		// TODO Auto-generated method stub
 		//查询代扣明细表是否有逾期还款计划，有则以最早一期逾期期数获取对应的结清违约金率，否则以当前期数查询提前结清违约金率
 		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
-		List<WaitingCharge> waitingChargeList = this.getWaitingChargeTypePlan(appId);
+		List<WaitingCharge> waitingChargeList = this.getWaitingChargeTypePlan(appId,true);
 		int period = 0;
 		String productCode = ledgerRecord.getProductCode();
 		if(waitingChargeList.size()>0)
@@ -96,7 +96,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	}
 
 	@Override
-	public RepayingFeeItemVo getRepayingFeeItems(String appId, boolean isCalOverdueAmount, Date overdueEndDate,boolean isReduceStayAmount) 
+	public RepayingFeeItemVo getRepayingFeeItems(String appId, boolean isCalOverdueAmount, Date overdueEndDate,boolean isReduceStayAmount,boolean isContainCurPeriod) 
 	{
 		// TODO Auto-generated method stub
 		double repayTotalCapital = 0.00;
@@ -116,7 +116,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		double dayLateRate = ledgerRecord.getDayLateRate();
 		
 		//获取代扣明细表计划还款明细
-		List<WaitingCharge> waitingChargePlanList = this.getWaitingChargeTypePlan(appId);
+		List<WaitingCharge> waitingChargePlanList = this.getWaitingChargeTypePlan(appId, isContainCurPeriod);
 		for(WaitingCharge item : waitingChargePlanList)
 		{
 			repayTotalCapital += item.getRepayCapital();
@@ -282,9 +282,9 @@ public class AccountingServiceImpl implements IAccountingService {
 	}
 
 	@Override
-	public List<WaitingCharge> getWaitingChargeTypePlan(String appId) {
+	public List<WaitingCharge> getWaitingChargeTypePlan(String appId,boolean isContainCurPeriod) {
 		// TODO Auto-generated method stub
-		return waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Plan.getName());
+		return waitingChargeDao.selectListTypePlanOrderByGentimeAsc(appId, isContainCurPeriod, new Date());
 	}
 
 	@Override

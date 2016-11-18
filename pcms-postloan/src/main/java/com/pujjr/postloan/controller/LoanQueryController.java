@@ -69,7 +69,7 @@ public class LoanQueryController
 	@RequestMapping(value="/getLoanCustNeedRepayInfo/{appId}",method=RequestMethod.GET)
 	public RepayFeeItemVo getLoanCustNeedRepayInfo(@PathVariable String appId)
 	{	
-		RepayFeeItemVo feeItemVo = accountingService.getRepayingFeeItems(appId, false, null, false);
+		RepayFeeItemVo feeItemVo = accountingService.getRepayingFeeItems(appId, false, null, false,true);
 		return feeItemVo;
 	}
 	
