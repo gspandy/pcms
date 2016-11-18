@@ -339,7 +339,7 @@
   <select id="selectListTypePlanOrderByGentimeAsc" resultMap="BaseResultMap">
   	select * from t_waiting_charge
   	where APP_ID = #{appId}
-  	an FEE_TYPE = 'fylx01' 
+  	and FEE_TYPE = 'fylx01' 
   	<if test="isContainCurPeriod ==false">
   		and CLOSING_DATE != #{curDate}
   	</if>

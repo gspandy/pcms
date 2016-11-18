@@ -1,20 +1,30 @@
 package com.pujjr.postloan.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.postloan.service.ISettleService;
+import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 
@@ -22,9 +32,9 @@ import com.pujjr.utils.Utils;
  * @author tom
  *
  */
-@Controller
+@RestController
 @RequestMapping("/settle")
-public class SettleController {
+public class SettleController extends BaseController {
 	@Autowired
 	private IPlanService planServiceImpl;
 	@Autowired
@@ -41,7 +51,6 @@ public class SettleController {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value="/refreshRepayPlan/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.POST)
 	public void refreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
 			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
@@ -79,7 +88,6 @@ public class SettleController {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value="/refreshRepayPlan/select/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.GET)
 	public List<RepayPlan> getRefreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
 			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
@@ -107,9 +115,21 @@ public class SettleController {
 		return repayPlanList;
 	}
 	
-	@RequestMapping(value="/getAllSettleFeeItem/{appId}/{settleEffectDate}",method=RequestMethod.GET)
-	public RepayFeeItemVo getAllSettleFeeItem(@PathVariable String appId,@PathVariable Date settleEffectDate)
+	@RequestMapping(value="/getAllSettleFeeItem/{appId}",method=RequestMethod.GET)
+	public RepayFeeItemVo getAllSettleFeeItem(@PathVariable String appId,String settleEffectDate) throws Exception
 	{
-		return settleService.getAllSettleFeeItem(appId, settleEffectDate);
+		if(settleEffectDate !="")
+		{
+			return settleService.getAllSettleFeeItem(appId,Utils.htmlTime2Date(settleEffectDate, "yyyyMMdd"));
+		}
+		else
+		{
+			throw new Exception("有效截止日期不能为空");
+		}
+	}
+	
+	public void commitApplySettleTask(String appId,ApplySettleVo vo,HttpServletRequest request)
+	{
+		
 	}
 }
