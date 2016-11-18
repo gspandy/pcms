@@ -29,7 +29,7 @@ public interface IPlanService {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	List<RepayPlan> selectRefreshRepayPlanList(String appId,double fianceAmt,double monthRate,int period,Date valueDate,int currPeriod);
+	List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,double monthRate,int period,Date valueDate,int currPeriod);
 	
 	
 	/**

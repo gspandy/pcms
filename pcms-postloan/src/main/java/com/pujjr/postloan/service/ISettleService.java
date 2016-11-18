@@ -42,8 +42,9 @@ public interface ISettleService
 	 * 	appId-提前结清申请单编号
 	 * 	vo-提前结清申请要素
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplySettleTask(String operId,String appId,ApplySettleVo vo);
+	public void commitApplySettleTask(String operId,String appId,ApplySettleVo vo) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：

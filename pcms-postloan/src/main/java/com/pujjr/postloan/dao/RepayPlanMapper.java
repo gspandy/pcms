@@ -25,6 +25,13 @@ public interface RepayPlanMapper {
     
     List<RepayPlan> selectRepayPlanList(@Param("appId")String appId,@Param("period")int period);
     
+    
+    /**
+     * tom 2016年11月18日
+     * @param appId 
+     * @param period 开始还款周日（包含此周期）
+     * @return
+     */
     RepayPlan selectRepayPlan(@Param("appId")String appId,@Param("period")int period);
     
     /**

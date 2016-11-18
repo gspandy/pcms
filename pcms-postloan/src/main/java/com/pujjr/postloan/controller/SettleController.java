@@ -116,9 +116,10 @@ public class SettleController {
 	 * 	appId-提前结清申请单编号
 	 * 	vo-提前结清申请要素
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
 	@RequestMapping(value="/commitApplySettleTask/{appId}/{operId}",method=RequestMethod.POST)
-	public void commitApplySettleTask(@PathVariable String operId,@PathVariable String appId,@RequestBody ApplySettleVo vo){
+	public void commitApplySettleTask(@PathVariable String operId,@PathVariable String appId,@RequestBody ApplySettleVo vo) throws Exception{
 		settleService.commitApplySettleTask(operId, appId, vo);
 	}
 	
