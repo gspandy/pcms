@@ -3,6 +3,7 @@ package com.pujjr.postloan.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.postloan.domain.GeneralLedger;
+import com.pujjr.postloan.enumeration.EInterestMode;
 
 public interface GeneralLedgerMapper {
     int deleteByPrimaryKey(String id);
@@ -18,4 +19,5 @@ public interface GeneralLedgerMapper {
 	int updateByPrimaryKey(GeneralLedger record);
 	
 	GeneralLedger selectByAppId(@Param("appId")String appId);
+	
 }

@@ -36,9 +36,9 @@ public interface RepayPlanMapper {
     RepayPlan selectCurrentPeriodRepayPlan(@Param("appId")String appId,@Param("curDate")Date curDate);
     
     /**
-     * 查询申请单指定期数还款计划
+     * 查询申请单指定期数还款计划(包含首、尾周期)
      * @param appId
-     * @param beginPeriod
+     * @param beginPeriod 
      * @param endPeriod
      * @return
      */

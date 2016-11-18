@@ -75,7 +75,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-				valueCl.add(Calendar.DAY_OF_MONTH, 1);
+//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
 //				System.out.println(Utils.formateDate2String(valueCl.getTime(), "yyyy-MM-dd")+"|"+Utils.formateDate2String(closingCl.getTime(), "yyyy-MM-dd"));
@@ -145,7 +145,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-				valueCl.add(Calendar.DAY_OF_MONTH, 1);
+//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 				repayPlan.setPeriod(i+1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
@@ -159,7 +159,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-				valueCl.add(Calendar.DAY_OF_MONTH, 1);
+//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setRepayCapital(0.0);
@@ -229,7 +229,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-				valueCl.add(Calendar.DAY_OF_MONTH, 1);
+//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM--dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setRepayInterest(0.00);
@@ -289,7 +289,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-				valueCl.add(Calendar.DAY_OF_MONTH, 1);
+//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 //				System.out.println(Utils.formateDate2String(firstDueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));

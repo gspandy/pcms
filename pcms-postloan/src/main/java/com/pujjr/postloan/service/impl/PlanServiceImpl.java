@@ -12,8 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mchange.v2.beans.BeansUtils;
+import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
+import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.po.RepaySchedulePo;
 import com.pujjr.postloan.service.IInterestAlgorithm;
@@ -32,6 +35,8 @@ public class PlanServiceImpl implements IPlanService {
 	private IInterestAlgorithm interestAlgorithmImpl;
 	@Autowired
 	private RepayPlanMapper repayPlanMapper;
+	@Autowired 
+	private GeneralLedgerMapper generalLedgeMapper;
 	@Override
 	public void generateRepayPlan(String appId,double fianceAmt, double monthRate, int period, Date valueDate, Enum eInterestMode) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
@@ -99,6 +104,17 @@ public class PlanServiceImpl implements IPlanService {
 
 	@Override
 	public List<RepayPlan> selectRefreshRepayPlanList(String appId, double fianceAmt, double monthRate, int period,
+			Date valueDate, int currPeriod) {
+		RepaySchedulePo rsp = new RepaySchedulePo();
+		GeneralLedger generalLedge = generalLedgeMapper.selectByAppId(appId);
+		String repayMode = generalLedge.getRepayMode();
+		EInterestMode eInterestMode = this.getInterestMode(appId);
+		List<RepayPlan> repayPlanList = this.selectRefreshRepayPlanList(appId, fianceAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+		return repayPlanList;
+	}
+	
+	@Override
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId, double fianceAmt, double monthRate, int period,
 			Date valueDate, Enum eInterestMode, int currPeriod) {
 		RepaySchedulePo rsp = new RepaySchedulePo();
 		switch(eInterestMode.name()){
@@ -131,9 +147,9 @@ public class PlanServiceImpl implements IPlanService {
 	}
 
 	@Override
-	public void refreshRepayPlan(String appId, double fianceAmt, double monthRate, int period, Date valueDate,
+	public void refreshRepayPlan(String appId, double financeAmt, double monthRate, int period, Date valueDate,
 			Enum eInterestMode, int currPeriod) {
-		List<RepayPlan> newRepayPlanList = this.selectRefreshRepayPlanList(appId, fianceAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+		List<RepayPlan> newRepayPlanList = this.selectRefreshRepayPlanList(appId, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
 //		System.out.println("newRepayPlanList:"+newRepayPlanList);
 		List<RepayPlan> oldRepayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, 0);
 //		删除旧还款计划
@@ -144,5 +160,36 @@ public class PlanServiceImpl implements IPlanService {
 		for (RepayPlan repayPlan : newRepayPlanList) {
 			repayPlanMapper.insert(repayPlan);
 		}
+	}
+
+	@Override
+	public void refreshRepayPlan(String appId, double financeAmt, double monthRate, int period, Date valueDate,
+			int currPeriod) {
+		GeneralLedger generalLedger = generalLedgeMapper.selectByAppId(appId);
+		String repayMode = generalLedger.getRepayMode();
+		EInterestMode eInterestMode = this.getInterestMode(appId);
+		this.refreshRepayPlan(appId, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+	}
+
+	@Override
+	public EInterestMode getInterestMode(String appId) {
+		GeneralLedger generalLedger = generalLedgeMapper.selectByAppId(appId);
+		String repayMode = generalLedger.getRepayMode();
+		EInterestMode eInterestMode = null;
+		switch(repayMode){
+		case "hkfs01":
+			eInterestMode = EInterestMode.CPM;
+			break;
+		case "hkfs02":
+			eInterestMode = EInterestMode.CONST;
+			break;
+		case "hkfs03":
+			eInterestMode = EInterestMode.ONETIME;
+			break;
+		case "hkfs04":
+			eInterestMode = EInterestMode.MONTLY;
+			break;
+		}
+		return eInterestMode;
 	}
 }
