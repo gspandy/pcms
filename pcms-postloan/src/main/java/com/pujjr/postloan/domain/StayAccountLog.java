@@ -5,51 +5,51 @@ import java.util.Date;
 public class StayAccountLog {
     private String id;
 
-    private String stayId;
+	private String stayId;
 
-    private Double stayAmount;
+	private Double stayAmount;
 
-    private Date stayTime;
+	private Date stayDate;
 
-    private String staySource;
+	private String staySource;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public String getStayId() {
-        return stayId;
-    }
+	public String getStayId() {
+		return stayId;
+	}
 
-    public void setStayId(String stayId) {
-        this.stayId = stayId;
-    }
+	public void setStayId(String stayId) {
+		this.stayId = stayId;
+	}
 
-    public Double getStayAmount() {
-        return stayAmount;
-    }
+	public Double getStayAmount() {
+		return stayAmount;
+	}
 
-    public void setStayAmount(Double stayAmount) {
-        this.stayAmount = stayAmount;
-    }
+	public void setStayAmount(Double stayAmount) {
+		this.stayAmount = stayAmount;
+	}
 
-    public Date getStayTime() {
-        return stayTime;
-    }
+	public Date getStayDate() {
+		return stayDate;
+	}
 
-    public void setStayTime(Date stayTime) {
-        this.stayTime = stayTime;
-    }
+	public void setStayDate(Date stayDate) {
+		this.stayDate = stayDate;
+	}
 
-    public String getStaySource() {
-        return staySource;
-    }
+	public String getStaySource() {
+		return staySource;
+	}
 
-    public void setStaySource(String staySource) {
-        this.staySource = staySource;
-    }
+	public void setStaySource(String staySource) {
+		this.staySource = staySource;
+	}
 }

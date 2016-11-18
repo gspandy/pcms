@@ -202,4 +202,16 @@ public class RepayPlan {
     public void setReserver6(Double reserver6) {
         this.reserver6 = reserver6;
     }
+    /**
+     * 还款计划待扣款信息
+     * **/
+    private WaitingCharge watingCharge;
+
+	public WaitingCharge getWatingCharge() {
+		return watingCharge;
+	}
+
+	public void setWatingCharge(WaitingCharge watingCharge) {
+		this.watingCharge = watingCharge;
+	}
 }

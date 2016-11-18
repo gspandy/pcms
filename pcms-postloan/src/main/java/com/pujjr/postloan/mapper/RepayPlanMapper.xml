@@ -22,6 +22,7 @@
     <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
     <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
     <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+    <association column="ID" property="watingCharge" select="selectWaitingChargeInfo" />
   </resultMap>
   <sql id="Base_Column_List" >
     ID, APP_ID, PERIOD, REPAY_CAPITAL, REPAY_INTEREST, VALUE_DATE, CLOSING_DATE, REMAIN_CAPITAL, 
@@ -291,6 +292,7 @@
     <if test = "period != null">
     	and period >= #{period,jdbcType=INTEGER}
     </if>
+    order by period
   </select>
   
    <select id="selectRepayPlan" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -337,5 +339,37 @@
   <select id="selectNotSettleRepayPlanList" resultMap="BaseResultMap">
   	select * from t_repay_plan
   	where REPAY_STATUS != 'hkzt02'
+  </select>
+  
+  <resultMap id="WaitingChargeResultMap" type="com.pujjr.postloan.domain.WaitingCharge" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
+    <result column="REPAY_CAPITAL" property="repayCapital" jdbcType="DOUBLE" />
+    <result column="REPAY_INTEREST" property="repayInterest" jdbcType="DOUBLE" />
+    <result column="REPAY_OVERDUE_AMOUNT" property="repayOverdueAmount" jdbcType="DOUBLE" />
+    <result column="CLOSING_DATE" property="closingDate" jdbcType="DATE" />
+    <result column="REPAY_DATE" property="repayDate" jdbcType="DATE" />
+    <result column="OFFER_STATUS" property="offerStatus" jdbcType="VARCHAR" />
+    <result column="OFFER_ID" property="offerId" jdbcType="VARCHAR" />
+    <result column="GEN_TIME" property="genTime" jdbcType="TIMESTAMP" />
+    <result column="VERSION_ID" property="versionId" jdbcType="INTEGER" />
+    <result column="BATCH_TASK_ID" property="batchTaskId" jdbcType="VARCHAR" />
+    <result column="BATCH_PROCESS_STATUS" property="batchProcessStatus" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
+    <result column="RESERVER4" property="reserver4" jdbcType="DATE" />
+    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
+    <result column="RESERVER6" property="reserver6" jdbcType="DOUBLE" />
+    <result column="RESERVER7" property="reserver7" jdbcType="VARCHAR" />
+    <result column="RESERVER8" property="reserver8" jdbcType="VARCHAR" />
+    <result column="RESERVER9" property="reserver9" jdbcType="VARCHAR" />
+    <result column="RESERVER10" property="reserver10" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectWaitingChargeInfo" parameterType="String" resultMap="WaitingChargeResultMap">
+  	select * from t_waiting_charge where FEE_REF_ID =#{ID}
   </select>
 </mapper>

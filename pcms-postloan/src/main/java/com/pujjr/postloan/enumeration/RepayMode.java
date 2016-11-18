@@ -4,10 +4,11 @@ package com.pujjr.postloan.enumeration;
  * **/
 public enum RepayMode 
 {
-	Remission("hkfs01","减免还款"),
-	UnionFile("hkfs02","批量文件代扣"),
-	UnionRealTime("hkfs03","银联单笔代扣"),
-	StayAccounting("hkfs04","挂账还款");
+	Remission("dhhkfs01","减免还款"),
+	UnionFile("dhhkfs02","批量文件代扣"),
+	UnionRealTime("dhhkfs03","银联单笔代扣"),
+	StayAccounting("dhhkfs04","挂账还款"),
+	PublicRepay("dhhkfs05","对公还款");
 	
 	private String name;
 	private String text;

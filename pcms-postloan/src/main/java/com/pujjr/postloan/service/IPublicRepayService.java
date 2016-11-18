@@ -23,22 +23,24 @@ public interface IPublicRepayService
 	 * 	appId-申请单号
 	 * 返回：对公还款各项费用金额
 	 * **/
-	public RepayFeeItemVo getAlterRepayDateFeeItem(String appId);
+	public RepayFeeItemVo getPublicRepayFeeItem(String appId);
 	/**
 	 * 功能：提交对公还款申请
 	 * 参数：
 	 * 	appId-对公还款申请单编号
 	 * 	vo-对公还款申请要素
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplyPublicRepayTask(String appId,ApplyPublicRepayVo vo);
+	public void commitApplyPublicRepayTask(String appId,ApplyPublicRepayVo vo) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApprovePublicRepayTask(String taskId,ApproveResultVo vo);
+	public void commitApprovePublicRepayTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：取消对公还款任务
 	 * 参数：

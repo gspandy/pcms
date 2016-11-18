@@ -19,7 +19,7 @@ public class ApplyPublicRepay {
 
 	private Double chargeAmount;
 
-	private Double chargeDate;
+	private Date chargeDate;
 
 	private String applyStatus;
 
@@ -97,11 +97,11 @@ public class ApplyPublicRepay {
 		this.chargeAmount = chargeAmount;
 	}
 
-	public Double getChargeDate() {
+	public Date getChargeDate() {
 		return chargeDate;
 	}
 
-	public void setChargeDate(Double chargeDate) {
+	public void setChargeDate(Date chargeDate) {
 		this.chargeDate = chargeDate;
 	}
 

@@ -16,6 +16,8 @@ public class RepayFeeItemVo
 	private double otherOverdueAmount;
 	//剩余本金
 	private double remainCapital;
+	//挂账金额
+	private double stayAmount;
 	
 	public double getRepayCapital() {
 		return repayCapital;
@@ -52,6 +54,12 @@ public class RepayFeeItemVo
 	}
 	public void setRemainCapital(double remainCapital) {
 		this.remainCapital = remainCapital;
+	}
+	public double getStayAmount() {
+		return stayAmount;
+	}
+	public void setStayAmount(double stayAmount) {
+		this.stayAmount = stayAmount;
 	}
 	
 	

@@ -107,4 +107,16 @@ public interface IAccountingService
 	 * @return
 	 * **/
 	public void repayReverseAccountingUserNewWaitingChargeTable(String appId,double repayAmount,Date repayDate,String repayMode);
+	/**
+	 * 获取当前挂账金额
+	 * @param appId申请单号
+	 * @return
+	 */
+	public double getStayAmount(String appId);
+	/**
+	 * 检查是否可执行对公还款
+	 * @param appId
+	 * @return
+	 */
+	public boolean checkCandoPublicRepay(String appId);
 }
