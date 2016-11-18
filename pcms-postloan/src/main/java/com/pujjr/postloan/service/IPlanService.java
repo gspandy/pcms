@@ -36,7 +36,7 @@ public interface IPlanService {
 	 * @param monthRate 月利率
 	 * @param period 计息期数
 	 * @param valueDate 起息日
-	 * @param eInterestMode 计息方式
+	 * @param eInterestMode 计息方 式
 	 * @param startPeriod 当期还款周期
 	 */
 	void refreshRepayPlan(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
