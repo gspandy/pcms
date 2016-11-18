@@ -23,17 +23,21 @@ import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.dao.ApplySettleMapper;
+import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.RemissionItemMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.WaitingChargeNewMapper;
 import com.pujjr.postloan.domain.ApplySettle;
+import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.service.IAccountingService;
+import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.postloan.service.IRemissionService;
 import com.pujjr.postloan.service.ISettleService;
 import com.pujjr.postloan.vo.ApplySettleVo;
@@ -66,6 +70,12 @@ public class SettleServiceImpl implements ISettleService{
 	private RemissionItemMapper remissionItemMapper;
 	@Autowired
 	private WaitingChargeNewMapper waitingChargeNewMapper;
+	@Autowired
+	private IPlanService planServiceImpl;
+	@Autowired
+	private GeneralLedgerMapper generalLedgerMapper;
+	@Autowired
+	private RepayPlanMapper repayPlanMapper;
 	
 	@Override
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
@@ -76,18 +86,32 @@ public class SettleServiceImpl implements ISettleService{
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
-		//应还本金
-		double repayCapital = settleFeeItemVo.getRepayCapital();
+//		//应还本金
+//		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//当期本金
+		double currCaptital = 0.00;//来源：1、当前日期为当期结账日，则当期本金来自于“代扣明细表”中当期本金，2、当前日期小于结账日，当期本机来源于“还款计划”当期本金
+		//当期利息
+		double currInterest = 0.00;
+		//逾期本金
+		double overdueCaptital = 0.00;
+		//逾期利息
+		double overdueInterest = 0.00;
+		//逾期罚息
+		double overdueFine = 0.00;
 		//结清本金
-		double settleCapital = remainCapital - repayCapital;
+		double settleCapital = remainCapital - currCaptital-overdueCaptital;
 		//当期已起息未结账本金
-		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
+//		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
 		double lateRate  = accountingServiceImpl.getSettleRate(appId);
 		//违约金
-		double lateFee = lateRate * (settleCapital + currRepayCapital);
+		double lateFee = lateRate * (settleCapital + currCaptital);
 		//结清金额
-		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
-				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
+//		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
+//				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
+//				+ settleCapital
+//				+ lateFee;
+		double settleTotalAmt = overdueCaptital + overdueInterest + overdueFine
+				+ currCaptital + currInterest
 				+ settleCapital
 				+ lateFee;
 		//结清后剩余本金
@@ -108,8 +132,20 @@ public class SettleServiceImpl implements ISettleService{
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
-		//应还本金
-		double repayCapital = settleFeeItemVo.getRepayCapital();
+//		//应还本金
+//		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//当期本金
+		double currCaptital = 0.00;//来源：1、当前日期为当期结账日，则当期本金来自于“代扣明细表”中当期本金，2、当前日期小于结账日，当期本机来源于“还款计划”当期本金
+		//当期利息
+		double currInterest = 0.00;
+		//逾期本金
+		double overdueCaptital = 0.00;
+		//逾期利息
+		double overdueInterest = 0.00;
+		//逾期罚息
+		double overdueFine = 0.00;
+		//结清本金
+//		double settleCapital = remainCapital - currCaptital-overdueCaptital;
 		//结清本金
 		double settleCapital = 0.00;
 		int queryPeriod = endPeriod - beginPeriod;
@@ -118,20 +154,24 @@ public class SettleServiceImpl implements ISettleService{
 			settleCapital += repayPlan.getRepayCapital();
 		}
 		//当期已起息未结账本金
-		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
+//		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
+		//违约金率
 		double lateRate  = accountingServiceImpl.getSettleRate(appId);
 		//违约金
-		double lateFee = lateRate * (settleCapital + currRepayCapital);
+		double lateFee = lateRate * (settleCapital + currCaptital);
 		//结清金额
-		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
-				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
+//		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
+//				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
+//				+ settleCapital
+//				+ lateFee;
+		double settleTotalAmt = overdueCaptital + overdueInterest + overdueFine
+				+ currCaptital + currInterest
 				+ settleCapital
 				+ lateFee;
 		//结清后剩余本金
-		double settleAfterAmount = remainCapital - repayCapital - settleCapital;
+		double settleAfterAmount = remainCapital - overdueCaptital - currCaptital - settleCapital;
 		settleFeeItemVo.setLateFee(lateFee);
 		settleFeeItemVo.setSettleCapital(settleCapital);
-		settleFeeItemVo.setSettleAfterAmount(0.00);
 		settleFeeItemVo.setSettleTotalAmount(settleTotalAmt);
 		settleFeeItemVo.setSettleAfterAmount(settleAfterAmount);
 		return settleFeeItemVo;
@@ -331,6 +371,25 @@ public class SettleServiceImpl implements ISettleService{
 		if (vo.getApproveResult().equals(TaskCommitType.PASS)) 
 		{
 			taskProcessResult.setProcessResultDesc("通过");
+			//刷新还款计划
+			ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
+			String id = applySettle.getId();
+			String appId = applySettle.getAppId();
+			GeneralLedger generalLedger = generalLedgerMapper.selectByAppId(appId);
+			//部分提前结清后剩余本金
+			double financeAmt = applySettle.getSettleAfterCapital();
+			double monthRate = generalLedger.getYearRate()/12;
+			RepayPlan lastRepayPlan = accountingServiceImpl.getLatestPeriodRepayPlan(appId);
+			RepayPlan currRepayPlan = accountingServiceImpl.getCurrentPeriodRepayPlan(appId);
+			int currPeriod = currRepayPlan.getPeriod();
+			//剩余还款期数
+			int period = lastRepayPlan.getPeriod() - currPeriod;
+			//当前还款周期下一期
+			List<RepayPlan> nextPlanList = planServiceImpl.getRepayPlanList(appId, currPeriod+1, currPeriod+1);
+			RepayPlan nextPlan = nextPlanList.get(0);
+			Date valueDate = nextPlan.getValueDate();
+			EInterestMode eInterestMode = planServiceImpl.getInterestMode(appId);
+			planServiceImpl.refreshRepayPlan(id, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
 		} 
 		else
 		{
@@ -347,9 +406,6 @@ public class SettleServiceImpl implements ISettleService{
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", vo.getApproveResult());
 		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
-		
-		//冲账
-
 	}
 
 	@Override
