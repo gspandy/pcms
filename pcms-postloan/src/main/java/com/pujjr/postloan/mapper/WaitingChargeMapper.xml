@@ -336,6 +336,15 @@
   	order by GEN_TIME ASC
   </select>
 
+  <select id="selectListTypePlanOrderByGentimeAsc" resultMap="BaseResultMap">
+  	select * from t_waiting_charge
+  	where APP_ID = #{appId}
+  	an FEE_TYPE = 'fylx01' 
+  	<if test="isContainCurPeriod ==false">
+  		and CLOSING_DATE != #{curDate}
+  	</if>
+  	order by GEN_TIME ASC
+  </select>
   <select id="selectNeedCalOverdueAmountList" resultMap="BaseResultMap">
   	select * from t_waiting_charge
   	where 1=1 

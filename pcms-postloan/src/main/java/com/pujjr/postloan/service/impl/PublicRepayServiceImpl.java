@@ -57,7 +57,7 @@ public class PublicRepayServiceImpl implements IPublicRepayService {
 	@Override
 	public RepayFeeItemVo getPublicRepayFeeItem(String appId) {
 		// TODO Auto-generated method stub
-		return accountingService.getRepayingFeeItems(appId, false, null, true);
+		return accountingService.getRepayingFeeItems(appId, false, null, true,true);
 	}
 
 	@Override

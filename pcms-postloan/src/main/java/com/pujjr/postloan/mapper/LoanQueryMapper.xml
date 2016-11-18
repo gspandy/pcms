@@ -25,6 +25,7 @@
   	
   	<select id="selectLoanCustApplyInfo" resultType="HashMap">
   		select 
+  		a.APP_ID as appId,
   		b.NAME as name,
   		b.ID_NO as idNo,
   		a.FINANCE_AMT as financeAmt,
@@ -32,12 +33,16 @@
   		a.LOAN_DATE as loanDate,
   		a.REPAY_STATUS as repayStatus,
   		c.DICT_DATA_NAME as repayStatusDesc,
-  		c1.DICT_DATA_NAME as repayModeDesc
+  		a.REPAY_MODE as repayMode,
+  		c1.DICT_DATA_NAME as repayModeDesc,
+  		e.CONTRACT_NO as contractNo
   		from 
   		T_GENERAL_LEDGER a 
   		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
   		left join SYS_DICT_DATA c on a.REPAY_STATUS =  c.DICT_DATA_CODE
   		left join SYS_DICT_DATA c1 on a.REPAY_MODE = c1.DICT_DATA_CODE
+  		left join T_APPLY d on a.APP_ID = d.APP_ID
+  		left join T_SIGN_CONTRACT e on a.APP_ID  = e.APP_ID
 		where a.APP_ID = #{appId}
   	</select>
   	

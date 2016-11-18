@@ -82,7 +82,7 @@ public class SettleServiceImpl implements ISettleService{
 		boolean isCalOverdueAmount = true;
 		boolean isReduceStayAmount = true;
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount);
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount,true);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
@@ -128,7 +128,7 @@ public class SettleServiceImpl implements ISettleService{
 		boolean isCalOverdueAmount = true;
 		boolean isReduceStayAmount = true;
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount);
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount,true);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
