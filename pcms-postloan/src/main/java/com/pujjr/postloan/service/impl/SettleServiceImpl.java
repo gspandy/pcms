@@ -79,39 +79,28 @@ public class SettleServiceImpl implements ISettleService{
 	
 	@Override
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
-		boolean isCalOverdueAmount = true;
-		boolean isReduceStayAmount = true;
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount,true);
+		//还款费用分类汇总信息（逾期+当期）
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, true, true);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
-//		//应还本金
-//		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//应还本金
+		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//还款费用分类汇总信息（逾期）
+		RepayFeeItemVo repayFeeItemVoNoCurr = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, true, false);
+		//应还本金（逾期）
+		double repayCapitalNoCurr = repayFeeItemVoNoCurr.getRepayCapital();
 		//当期本金
-		double currCaptital = 0.00;//来源：1、当前日期为当期结账日，则当期本金来自于“代扣明细表”中当期本金，2、当前日期小于结账日，当期本机来源于“还款计划”当期本金
-		//当期利息
-		double currInterest = 0.00;
-		//逾期本金
-		double overdueCaptital = 0.00;
-		//逾期利息
-		double overdueInterest = 0.00;
-		//逾期罚息
-		double overdueFine = 0.00;
-		//结清本金
-		double settleCapital = remainCapital - currCaptital-overdueCaptital;
-		//当期已起息未结账本金
-//		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
+		double currCapital = repayCapital - repayCapitalNoCurr;
+		//结清本金（不含当期）
+		double settleCapital = remainCapital - repayCapital;
 		double lateRate  = accountingServiceImpl.getSettleRate(appId);
 		//违约金
-		double lateFee = lateRate * (settleCapital + currCaptital);
+		double lateFee = lateRate * (settleCapital + currCapital);
 		//结清金额
-//		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
-//				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
-//				+ settleCapital
-//				+ lateFee;
-		double settleTotalAmt = overdueCaptital + overdueInterest + overdueFine
-				+ currCaptital + currInterest
+		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
+				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
 				+ settleCapital
 				+ lateFee;
 		//结清后剩余本金
@@ -125,27 +114,20 @@ public class SettleServiceImpl implements ISettleService{
 
 	@Override
 	public SettleFeeItemVo getPartSettleFeeItem(String appId, int beginPeriod, int endPeriod, Date settleEffectDate) {
-		boolean isCalOverdueAmount = true;
-		boolean isReduceStayAmount = true;
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, isCalOverdueAmount, settleEffectDate, isReduceStayAmount,true);
+		//还款费用分类汇总信息（逾期+当期）
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, true,true);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
-//		//应还本金
-//		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//应还本金
+		double repayCapital = settleFeeItemVo.getRepayCapital();
+		//还款费用分类汇总信息（逾期）
+		RepayFeeItemVo repayFeeItemVoNoCurr = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, true,false);
+		//应还本金（逾期）
+		double repayCapitalNoCurr = repayFeeItemVoNoCurr.getRepayCapital();
 		//当期本金
-		double currCaptital = 0.00;//来源：1、当前日期为当期结账日，则当期本金来自于“代扣明细表”中当期本金，2、当前日期小于结账日，当期本机来源于“还款计划”当期本金
-		//当期利息
-		double currInterest = 0.00;
-		//逾期本金
-		double overdueCaptital = 0.00;
-		//逾期利息
-		double overdueInterest = 0.00;
-		//逾期罚息
-		double overdueFine = 0.00;
-		//结清本金
-//		double settleCapital = remainCapital - currCaptital-overdueCaptital;
+		double currCapital = repayCapital - repayCapitalNoCurr;
 		//结清本金
 		double settleCapital = 0.00;
 		int queryPeriod = endPeriod - beginPeriod;
@@ -153,23 +135,17 @@ public class SettleServiceImpl implements ISettleService{
 		for (RepayPlan repayPlan : repayPlanList) {
 			settleCapital += repayPlan.getRepayCapital();
 		}
-		//当期已起息未结账本金
-//		double currRepayCapital = accountingServiceImpl.getCurrentPeriodRepayPlan(appId).getRepayCapital();
 		//违约金率
 		double lateRate  = accountingServiceImpl.getSettleRate(appId);
 		//违约金
-		double lateFee = lateRate * (settleCapital + currCaptital);
+		double lateFee = lateRate * (settleCapital + currCapital);
 		//结清金额
-//		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
-//				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
-//				+ settleCapital
-//				+ lateFee;
-		double settleTotalAmt = overdueCaptital + overdueInterest + overdueFine
-				+ currCaptital + currInterest
+		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
+				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
 				+ settleCapital
 				+ lateFee;
 		//结清后剩余本金
-		double settleAfterAmount = remainCapital - overdueCaptital - currCaptital - settleCapital;
+		double settleAfterAmount = remainCapital - repayFeeItemVo.getRepayCapital() - settleCapital;
 		settleFeeItemVo.setLateFee(lateFee);
 		settleFeeItemVo.setSettleCapital(settleCapital);
 		settleFeeItemVo.setSettleTotalAmount(settleTotalAmt);
@@ -386,13 +362,15 @@ public class SettleServiceImpl implements ISettleService{
 			int period = lastRepayPlan.getPeriod() - currPeriod;
 			//当前还款周期下一期
 			List<RepayPlan> nextPlanList = planServiceImpl.getRepayPlanList(appId, currPeriod+1, currPeriod+1);
-			RepayPlan nextPlan = nextPlanList.get(0);
-			Date valueDate = nextPlan.getValueDate();
-			EInterestMode eInterestMode = planServiceImpl.getInterestMode(appId);
-			planServiceImpl.refreshRepayPlan(id, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+			if(nextPlanList.size() == 0){
+				throw new Exception("无法获取下一还款周期信息（当前为最后一期）");
+			}else{
+				Date valueDate = nextPlanList.get(0).getValueDate();
+				EInterestMode eInterestMode = planServiceImpl.getInterestMode(appId);
+				planServiceImpl.refreshRepayPlan(id, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
+			}
 		} 
-		else
-		{
+		else{
 			taskProcessResult.setProcessResultDesc("拒绝");
 		}
 		taskProcessResult.setComment(vo.getApproveComment());
