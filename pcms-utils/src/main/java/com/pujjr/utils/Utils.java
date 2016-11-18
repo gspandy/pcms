@@ -700,6 +700,18 @@ public class Utils {
 		NumberFormat nf = new DecimalFormat("#");
 		return nf.format(amount*100);
 	}
-	
-	
+	/**
+	 * HTML时间转换为JAVA时间
+	 * @param time
+	 * @param format
+	 * @return
+	 * @throws ParseException
+	 */
+	public static Date htmlTime2Date(String time,String format) throws ParseException
+	{
+		String tmp = time.replace("Z", " UTC");//注意是空格+UTC
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
+		tmp = Utils.getFormatDate(sd.parse(tmp), "yyyy-MM-dd");
+		return Utils.formateString2Date(tmp, format);
+	}
 }

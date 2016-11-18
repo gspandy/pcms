@@ -1,11 +1,11 @@
 package com.pujjr.postloan.enumeration;
 /**
- * 结清方式
+ * 结清类型
  * **/
-public enum SettleMode 
+public enum SettleType
 {
-	NORMAL("jqfs01","正常结清"),
-	FORWARD("jqfs02","提前结清");
+	AllSettle("jqlx01","提前结清"),
+	PartSettle("jqlx02","部分提前结清");
 	
 	private String name;
 	private String text;
@@ -20,7 +20,7 @@ public enum SettleMode
 		return text;
 	}
 
-	private SettleMode(String name,String text)
+	private SettleType(String name,String text)
 	{
 		this.name = name;
 		this.text = text;

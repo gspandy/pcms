@@ -1,17 +1,26 @@
 package com.pujjr.postloan.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.pujjr.base.controller.BaseController;
+import com.pujjr.base.domain.SysAccount;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.EInterestMode;
@@ -29,9 +38,9 @@ import com.pujjr.utils.Utils;
  * @author tom
  *
  */
-@Controller
+@RestController
 @RequestMapping("/settle")
-public class SettleController {
+public class SettleController extends BaseController {
 	@Autowired
 	private IPlanService planServiceImpl;
 	@Autowired
@@ -48,7 +57,6 @@ public class SettleController {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value="/refreshRepayPlan/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.POST)
 	public void refreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
 			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
@@ -69,7 +77,6 @@ public class SettleController {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	@ResponseBody
 	@RequestMapping(value="/refreshRepayPlan/select/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.GET)
 	public List<RepayPlan> getRefreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
 			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
@@ -81,6 +88,20 @@ public class SettleController {
 		return repayPlanList;
 	}
 	
+	@RequestMapping(value="/getAllSettleFeeItem/{appId}",method=RequestMethod.GET)
+	public RepayFeeItemVo getAllSettleFeeItem(@PathVariable String appId,String settleEffectDate) throws Exception
+	{
+		if(settleEffectDate !="")
+		{
+			return settleService.getAllSettleFeeItem(appId,Utils.htmlTime2Date(settleEffectDate, "yyyyMMdd"));
+		}
+		else
+		{
+			throw new Exception("有效截止日期不能为空");
+		}
+	}
+	
+		
 	/**
 	 *功能：查询指定客户部分提前结清应还项
 	 * @param appId 申请单号
@@ -96,20 +117,6 @@ public class SettleController {
 		Date settleEeffectDate = Utils.formateString2Date(settleEeffectDateStr, "yyyy-MM-dd");
 		return settleService.getPartSettleFeeItem(appId, beginPeriod, endPeriod, settleEeffectDate);
 	}
-	
-	/**功能：查询指定客户提前结清应还项
-	 * tom 2016年11月14日
-	 * @param appId 申请单号
-	 * @param settleEeffectDate 有效截止日期
-	 * @return 提前结清各项费用金额
-	 */
-	@RequestMapping(value="/getAllSettleFeeItem/{appId}/{settleEffectDateStr}",method=RequestMethod.GET)
-	public RepayFeeItemVo getAllSettleFeeItem(@PathVariable String appId,@PathVariable String settleEffectDateStr)
-	{
-		Date settleEffectDate = Utils.formateString2Date(settleEffectDateStr, "yyyy-MM-dd");
-		return settleService.getAllSettleFeeItem(appId, settleEffectDate);
-	}
-	
 	/**
 	 * 功能：提交提前结清申请
 	 * 参数：
@@ -118,9 +125,10 @@ public class SettleController {
 	 * 返回：无
 	 * @throws Exception 
 	 * **/
-	@RequestMapping(value="/commitApplySettleTask/{appId}/{operId}",method=RequestMethod.POST)
-	public void commitApplySettleTask(@PathVariable String operId,@PathVariable String appId,@RequestBody ApplySettleVo vo) throws Exception{
-		settleService.commitApplySettleTask(operId, appId, vo);
+	@RequestMapping(value="/commitApplySettleTask/{appId}",method=RequestMethod.POST)
+	public void commitApplySettleTask(@PathVariable String appId,@RequestBody ApplySettleVo vo,HttpServletRequest request) throws Exception{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		settleService.commitApplySettleTask(account.getAccountId(), appId, vo);
 	}
 	
 	/**
