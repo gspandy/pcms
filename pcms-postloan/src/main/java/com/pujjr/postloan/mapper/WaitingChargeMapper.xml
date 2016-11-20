@@ -356,4 +356,8 @@
   	select * from t_waiting_charge
   	where OFFER_ID = #{offerId}
   </select>
+  <select id="selectByFeeInfo" resultMap="BaseResultMap">
+  	select * from t_waiting_charge
+  	where FEE_TYPE = #{feeType} and FEE_REF_ID = #{feeRefId}
+  </select>
 </mapper>

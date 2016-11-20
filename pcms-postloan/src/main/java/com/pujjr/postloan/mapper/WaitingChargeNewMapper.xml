@@ -280,4 +280,11 @@
       RESERVER6 = #{reserver6,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * from t_waiting_charge_new 
+  	where APPLY_TYPE = #{applyType}
+  	and APPLY_REF_ID  = #{applyRefId}
+  	and FEE_TYPE = #{feeType}
+  	order by VALUE_DATE
+  </select>
 </mapper>

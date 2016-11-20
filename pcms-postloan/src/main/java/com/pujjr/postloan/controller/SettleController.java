@@ -19,15 +19,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.vo.PageVo;
+import com.pujjr.base.vo.QueryParamPageVo;
+import com.pujjr.postloan.domain.ApplyPublicRepay;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.postloan.service.ISettleService;
+import com.pujjr.postloan.vo.ApplyPublicRepayVo;
 import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
+import com.pujjr.postloan.vo.PublicRepayTaskVo;
 import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.postloan.vo.SettleFeeItemVo;
@@ -125,10 +132,10 @@ public class SettleController extends BaseController {
 	 * 返回：无
 	 * @throws Exception 
 	 * **/
-	@RequestMapping(value="/commitApplySettleTask/{appId}",method=RequestMethod.POST)
-	public void commitApplySettleTask(@PathVariable String appId,@RequestBody ApplySettleVo vo,HttpServletRequest request) throws Exception{
+	@RequestMapping(value="/commitApplySettleTask/{appId}/{settleType}",method=RequestMethod.POST)
+	public void commitApplySettleTask(@PathVariable String appId,@PathVariable String settleType,@RequestBody ApplySettleVo vo,HttpServletRequest request) throws Exception{
 		SysAccount account = (SysAccount)request.getAttribute("account");
-		settleService.commitApplySettleTask(account.getAccountId(), appId, vo);
+		settleService.commitApplySettleTask(account.getAccountId(), appId, settleType,vo);
 	}
 	
 	/**
@@ -162,9 +169,10 @@ public class SettleController extends BaseController {
 	 * 	vo-减免费项
 	 * @throws Exception 
 	 * **/
-	@RequestMapping(value="/commitApplyConfirmSettleTask/{operId}/{taskId}",method=RequestMethod.POST)
-	public void commitApplyConfirmSettleTask(@PathVariable String operId,@PathVariable String taskId,@RequestBody RemissionFeeItemVo vo) throws Exception{
-		settleService.commitApplyConfirmSettleTask(operId, taskId, vo);
+	@RequestMapping(value="/commitApplyConfirmSettleTask/{taskId}",method=RequestMethod.POST)
+	public void commitApplyConfirmSettleTask(@PathVariable String taskId,@RequestBody RemissionFeeItemVo vo,HttpServletRequest request) throws Exception{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		settleService.commitApplyConfirmSettleTask(account.getAccountId(), taskId, vo);
 	}
 	
 	/**
@@ -192,24 +200,50 @@ public class SettleController extends BaseController {
 		settleService.cancelSettleTask(taskId, operId, cancelComment);
 	}
 	
-	/**
-	 * 功能：查询提前结清任务列表
-	 * 参数：
-	 * createId-任务创建人
-	 * settleType-结清类型
-	 * applyStatus-申请状态	
-	 * **/
-/*	@RequestMapping(value="/commitApproveRemissionTask/{createId}/{settleType}/{cancelComment}",method=RequestMethod.POST)
-	public List<SettleTaskVo> getApplySettleTaskList(String createId,String settleType,List<String> applyStatus){
-		return settleService.getApplySettleTaskList(createId, settleType, applyStatus);
-	}*/
-	public ApplySettle getApplySettleTaskById(String id){
-		return settleService.getApplySettleTaskById(id);
+	@RequestMapping(value="/getApplySettleInfo/{applyId}",method=RequestMethod.GET)
+	public ApplySettleVo getApplySettleInfo(@PathVariable String applyId)
+	{
+		ApplySettleVo vo = new ApplySettleVo();
+		SettleFeeItemVo feeItemVo = new SettleFeeItemVo();
+		ApplySettle po = settleService.getApplySettleTaskById(applyId);
+		
+		feeItemVo.setRepayCapital(po.getRepayCapital());
+		feeItemVo.setRepayInterest(po.getRepayInterest());
+		feeItemVo.setRepayOverdueAmount(po.getRepayOverdueAmount());
+		feeItemVo.setOtherAmount(po.getOtherFee());
+		feeItemVo.setOtherOverdueAmount(po.getOtherOverdueAmount());
+		feeItemVo.setSettleCapital(po.getSettleCapital());
+		feeItemVo.setSettleTotalAmount(po.getSettleTotalAmount());
+		feeItemVo.setLateFee(po.getLateFee());
+		feeItemVo.setSettleAfterAmount(po.getSettleAfterCapital());
+		vo.setFeeItem(feeItemVo);
+		
+		vo.setApplyComment(po.getApplyComment());
+		vo.setApplyEffectDate(po.getApplyEndDate());
+		vo.setBeginPeriod(po.getSettleStartPeriod());
+		vo.setEndPeriod(po.getSettleEndPeriod());
+		
+		RemissionFeeItemVo remissionFeeItemVo = new RemissionFeeItemVo();
+		remissionFeeItemVo.setCapital(po.getRemissionItem().getCapital());
+		remissionFeeItemVo.setInterest(po.getRemissionItem().getInterest());
+		remissionFeeItemVo.setOverdueAmount(po.getRemissionItem().getOverdueAmount());
+		remissionFeeItemVo.setOtherFee(po.getRemissionItem().getOtherFee());
+		remissionFeeItemVo.setOtherOverdueAmount(po.getRemissionItem().getOtherOverdueAmount());
+		remissionFeeItemVo.setLateFee(po.getRemissionItem().getLateFee());
+		
+		vo.setRemissionFeeItemVo(remissionFeeItemVo);
+		return vo;
 	}
-	public void modifyApplySettleInfo(ApplySettle record){
-		settleService.modifyApplySettleInfo(record);
-	}
-	public void deleteApplySettleInfoById(String id){
-		settleService.deleteApplySettleInfoById(id);
+	
+	@RequestMapping(value="/getApplySettleTaskList",method=RequestMethod.GET)
+	public PageVo getApplySettleTaskList(String settleType,QueryParamPageVo param,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
+		List<SettleTaskVo> list = settleService.getApplySettleTaskList(account.getAccountId(),settleType, null);
+		PageVo page=new PageVo();
+		page.setTotalItem(((Page)list).getTotal());
+		page.setData(list);
+		return page;
 	}
 }

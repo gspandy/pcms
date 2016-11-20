@@ -42,4 +42,11 @@ public interface WaitingChargeMapper {
      * @return
      */
     WaitingCharge selectByOfferId(@Param("offerId")String offerId);
+    /**
+     * 根据费用类型及费用类型ID查询代扣款记录
+     * @param feeType
+     * @param feeRefId
+     * @return
+     */
+    WaitingCharge selectByFeeInfo(@Param("feeType")String feeType,@Param("feeRefId")String feeRefId); 
 }

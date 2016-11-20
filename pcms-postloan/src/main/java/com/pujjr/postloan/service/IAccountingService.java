@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
+import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
 
 /**
@@ -91,7 +92,7 @@ public interface IAccountingService
 	 * **/
 	public List<Integer> getAfterCurrentPeriodRemainPeroidList(String appId);
 	/**
-	 * 功能：还款冲账处理
+	 * 功能：还款冲账处理(重要接口)
 	 * @param appId-申请单号
 	 * @param repayAmount-还款金额
 	 * @param repayDate-还款日期 
@@ -100,14 +101,13 @@ public interface IAccountingService
 	 * **/
 	public void repayReverseAccounting(String appId,double repayAmount,Date repayDate,String repayMode);
 	/**
-	 * 功能：用新的代扣明细表冲账处理
-	 * @param appId-申请单号
-	 * @param repayAmount-还款金额
-	 * @param repayDate-还款日期 
-	 * @param repayMode-还款方式
+	 * 功能：用新的代扣明细表对提前结清、展期、变更还款日交易进行冲账处理，并用新的还款计划替换原还款计划
+	 * @param applyId-申请任务ID
+	 * @param applyType
+	 * @param appId-关联申请单号
 	 * @return
 	 * **/
-	public void repayReverseAccountingUserNewWaitingChargeTable(String appId,double repayAmount,Date repayDate,String repayMode);
+	public void repayReverseAccountingUserNewWaitingChargeTable(String applyId,LoanApplyTaskType applyType,String appId);
 	/**
 	 * 获取当前挂账金额
 	 * @param appId申请单号

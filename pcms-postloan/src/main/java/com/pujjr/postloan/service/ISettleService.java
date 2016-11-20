@@ -39,12 +39,14 @@ public interface ISettleService
 	/**
 	 * 功能：提交提前结清申请
 	 * 参数：
-	 * 	appId-提前结清申请单编号
-	 * 	vo-提前结清申请要素
+	 * @param operId-申请人	
+	 * @param appId-提前结清申请单编号
+	 * @param settleType-结清类型
+	 * @param vo-提前结清申请要素
 	 * 返回：无
 	 * @throws Exception 
 	 * **/
-	public void commitApplySettleTask(String operId,String appId,ApplySettleVo vo) throws Exception;
+	public void commitApplySettleTask(String operId,String appId,String settleType,ApplySettleVo vo) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：

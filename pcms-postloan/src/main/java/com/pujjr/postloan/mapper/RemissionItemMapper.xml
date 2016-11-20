@@ -139,4 +139,9 @@
       LATE_FEE = #{lateFee,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByApplyId" resultMap="BaseResultMap">
+  	select * from t_remission_item
+  	where APPLY_TYPE = #{applyType}
+  	and APPLY_REF_ID  = #{applyId}
+  </select>
 </mapper>

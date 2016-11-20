@@ -10,22 +10,33 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.base.service.IProductService;
 import com.pujjr.enumeration.EIntervalMode;
+import com.pujjr.postloan.dao.ApplyAlterRepayDateMapper;
+import com.pujjr.postloan.dao.ApplyExtendPeriodMapper;
+import com.pujjr.postloan.dao.ApplySettleMapper;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
+import com.pujjr.postloan.dao.RemissionItemMapper;
 import com.pujjr.postloan.dao.RepayLogMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.StayAccountLogMapper;
 import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
+import com.pujjr.postloan.dao.WaitingChargeNewMapper;
+import com.pujjr.postloan.domain.ApplyAlterRepayDate;
+import com.pujjr.postloan.domain.ApplyExtendPeriod;
+import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OtherFee;
+import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayLog;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.StayAccountLog;
 import com.pujjr.postloan.domain.WaitingCharge;
+import com.pujjr.postloan.domain.WaitingChargeNew;
 import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.enumeration.SettleMode;
@@ -51,6 +62,16 @@ public class AccountingServiceImpl implements IAccountingService {
 	private RepayLogMapper repayLogDao;
 	@Autowired
 	private StayAccountLogMapper stayAccountLogDao;
+	@Autowired
+	private WaitingChargeNewMapper waitingchargeNewDao;
+	@Autowired
+	private RemissionItemMapper remissionItemDao;
+	@Autowired
+	private ApplySettleMapper applySettleDao;
+	@Autowired
+	private ApplyExtendPeriodMapper applyExtendPeriodDao;
+	@Autowired
+	private ApplyAlterRepayDateMapper applyAlterRepayDateDao;
 	
 	@Override
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
@@ -541,13 +562,6 @@ public class AccountingServiceImpl implements IAccountingService {
 		
 	}
 
-	
-
-	@Override
-
-	public void repayReverseAccountingUserNewWaitingChargeTable(String appId, double repayAmount, Date repayDate,String repayMode) {
-
-	}
 
 	@Override
 	public double getStayAmount(String appId) {
@@ -568,6 +582,189 @@ public class AccountingServiceImpl implements IAccountingService {
 	public boolean checkCandoPublicRepay(String appId) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public void repayReverseAccountingUserNewWaitingChargeTable(String applyId, LoanApplyTaskType applyType,
+			String appId) {
+		// TODO Auto-generated method stub
+		/**
+		 * 获取申请信息
+		 * **/
+		ApplySettle  settlePo = new ApplySettle();
+		ApplyExtendPeriod extendPeriodPo = new ApplyExtendPeriod();
+		ApplyAlterRepayDate alterRepayDatePo = new ApplyAlterRepayDate();
+		Date chargeDate = new Date();
+		if(applyType.equals(LoanApplyTaskType.Settle))
+		{
+			settlePo = applySettleDao.selectByPrimaryKey(applyId);
+			chargeDate = settlePo.getApplyEndDate();
+		}
+		if(applyType.equals(LoanApplyTaskType.ExtendPeriod))
+		{
+			extendPeriodPo = applyExtendPeriodDao.selectByPrimaryKey(applyId);
+			chargeDate = extendPeriodPo.getCreateDate();
+		}
+		/**
+		 * 获取挂账信息
+		 * **/
+		StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
+		double stayAmount = 0.00;
+		if(stayAccount!=null)
+		{
+			stayAmount = stayAccount.getStayAmount();
+		}
+		/**
+		 * 获取减免信息
+		 * **/
+		double remissionCaptial = 0.00;
+		double remissionInterest = 0.00;
+		double remissionOverdueAmt = 0.00;
+		double remissionOtherFee = 0.00;
+		double remissionOtherOverdueAmt = 0.00;
+		RemissionItem remissionItem = remissionItemDao.selectByApplyId(applyType.getName(), applyId);
+		if(remissionItem!=null)
+		{
+			remissionCaptial = remissionItem.getCapital();
+			remissionInterest = remissionItem.getInterest();
+			remissionOverdueAmt = remissionItem.getOverdueAmount();
+			remissionOtherFee = remissionItem.getOtherFee();
+			remissionOtherOverdueAmt = remissionItem.getOtherOverdueAmount();
+		}
+		/**
+		 * 第一步获取新代扣明细表其他费用
+		 * **/
+		List<WaitingChargeNew> otherNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Other.getName());
+		for(WaitingChargeNew item : otherNewWaitingCharge)
+		{
+			//应还本金
+			double repayCaptital = item.getRepayCapital();
+			//应还罚息
+			double repayOverdueAmt = item.getRepayOverdueAmount();
+					
+			//如需结清则做结清处理，结清后原其他费用记录被结清，对应费项=新扣款明细费项+已扣款费项 
+			if(item.getDoSettle())
+			{
+				/**
+				 * 处理其他费用罚息,用挂账金额处理其他费用罚息，如果其他费用罚息大于0，则应还计算时是用挂账金额减掉了的
+				 */
+				if(Double.compare(stayAmount, 0.00)>0&&Double.compare(repayOverdueAmt, 0.00)>0)
+				{
+					if(Double.compare(repayOverdueAmt, stayAmount)>=0)
+					{
+						repayOverdueAmt -=stayAmount;
+						stayAmount = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+					}
+					else
+					{
+						stayAmount -=repayOverdueAmt;
+						repayOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+					}
+				}
+				/**
+				 * 如果还大于零并且存在减免其费用则再用减免项扣款
+				 */
+				if(Double.compare(remissionOtherOverdueAmt, 0.00)>0&&Double.compare(repayOverdueAmt, 0.00)>0)
+				{
+					if(Double.compare(repayOverdueAmt, remissionOtherOverdueAmt)>=0)
+					{
+						repayOverdueAmt -=remissionOtherOverdueAmt;
+						remissionOtherOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, remissionOtherOverdueAmt,chargeDate, RepayMode.Remission.getName());
+					}
+					else
+					{
+						remissionOtherOverdueAmt -=repayOverdueAmt;
+						repayOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission.getName());
+					}
+				}
+				/**
+				 * 如果其他费用罚息还大于零则直接做对公还款处理
+				 */
+
+				if(Double.compare(repayOverdueAmt,0.00)>0)
+				{
+					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay.getName());
+				}
+				/**
+				 * 处理其他费用,用挂账金额处理其他费用
+				 */
+				if(Double.compare(stayAmount, 0.00)>0&&Double.compare(repayCaptital, 0.00)>0)
+				{
+					if(Double.compare(repayCaptital, stayAmount)>=0)
+					{
+						repayCaptital -=stayAmount;
+						stayAmount = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+					}
+					else
+					{
+						stayAmount -=repayCaptital;
+						repayCaptital = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+					}
+				}
+				/**
+				 * 如果还大于零并且存在减免其费用则再用减免项扣款
+				 */
+				if(Double.compare(remissionOtherFee, 0.00)>0&&Double.compare(repayCaptital, 0.00)>0)
+				{
+					if(Double.compare(repayCaptital, remissionOtherFee)>=0)
+					{
+						repayCaptital -=remissionOtherFee;
+						remissionOtherFee = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, remissionOtherFee,chargeDate, RepayMode.Remission.getName());
+					}
+					else
+					{
+						remissionOtherFee -=repayCaptital;
+						repayCaptital = 0.00;
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.Remission.getName());
+					}
+				}
+				/**
+				 * 如果其他费用本金还大于零则直接做对公还款处理
+				 */
+				if(Double.compare(repayCaptital,0.00)>0)
+				{
+					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.PublicRepay.getName());
+				}
+				/**
+				 * 删除代扣款明细,用新的数据替换原始还款数据
+				 */
+				WaitingCharge waitingChargePo = waitingChargeDao.selectByFeeInfo(item.getFeeType(), item.getFeeRefId());
+				if(waitingChargePo!=null)
+				{
+					waitingChargeDao.deleteByPrimaryKey(waitingChargePo.getId());
+				}
+				//获取对应其他费用信息
+				OtherFee otherFee  = otherFeeDao.selectByPrimaryKey(item.getFeeRefId());
+				//获取对应其他费用罚息还款记录
+				List<RepayLog> otherOverdueList = repayLogDao.selectList(appId, FeeType.Other.getName(), otherFee.getId(), ChargeItem.OTHEROVERDUEAMT.getName());
+				otherFee.setAddupOverdueDay(item.getAddupOverdueDay());
+				double tempOtherOverdueAmt = item.getAddupOverdueAmount();
+				for(RepayLog otherOverdueItem : otherOverdueList)
+				{
+					tempOtherOverdueAmt += otherOverdueItem.getChargeAmount();
+				}
+				otherFee.setAddupOverdueAmount(tempOtherOverdueAmt);
+				//获取对应其他费用还款记录
+				List<RepayLog> otherFeeList = repayLogDao.selectList(appId, FeeType.Other.getName(), otherFee.getId(), ChargeItem.OTHERFEE.getName());
+				double tempOtherFeeAmt = item.getRepayCapital();
+				for(RepayLog otherFeeItem : otherFeeList)
+				{
+					tempOtherFeeAmt+=otherFeeItem.getChargeAmount();
+				}
+				otherFee.setFeeTotalAmount(tempOtherFeeAmt);
+				otherFee.setRepayStatus(RepayStatus.Settled.getName());
+				otherFee.setSettleDate(chargeDate);
+				otherFeeDao.updateByPrimaryKey(otherFee);
+				
+			}
+		}
 	}
 
 }

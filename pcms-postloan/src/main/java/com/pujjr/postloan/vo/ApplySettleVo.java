@@ -21,7 +21,15 @@ public class ApplySettleVo
 	private Date applyEffectDate;
 	//申请日期
 	private Date applyDate;
+	//减免项
+	private RemissionFeeItemVo remissionFeeItemVo;
 	
+	public RemissionFeeItemVo getRemissionFeeItemVo() {
+		return remissionFeeItemVo;
+	}
+	public void setRemissionFeeItemVo(RemissionFeeItemVo remissionFeeItemVo) {
+		this.remissionFeeItemVo = remissionFeeItemVo;
+	}
 	public List<NewRepayPlanVo> getRepayPlanList() {
 		return repayPlanList;
 	}

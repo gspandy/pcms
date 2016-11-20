@@ -125,4 +125,12 @@
       CHARGE_MODE = #{chargeMode,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select  * from 
+  	t_repay_log
+  	where APP_ID  = #{appId}
+  	and FEE_TYPE = #{feeType}
+  	and FEE_REF_ID  = #{feeRefId}
+  	and CHARGE_ITEM = #{chargeItem}
+  </select>
 </mapper>

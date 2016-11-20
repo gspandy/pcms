@@ -202,4 +202,15 @@ public class ApplySettle {
     public void setProcInstId(String procInstId) {
         this.procInstId = procInstId;
     }
+    
+    private RemissionItem remissionItem;
+
+	public RemissionItem getRemissionItem() {
+		return remissionItem;
+	}
+
+	public void setRemissionItem(RemissionItem remissionItem) {
+		this.remissionItem = remissionItem;
+	}
+    
 }

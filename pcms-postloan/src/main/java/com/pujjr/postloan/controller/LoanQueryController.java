@@ -150,4 +150,10 @@ public class LoanQueryController
 		}
 		return vo;
 	}
+	
+	@RequestMapping(value="/getAfterCurrentPeriodRemainPeroidList/{appId}",method=RequestMethod.GET)
+	List<Integer> getAfterCurrentPeriodRemainPeroidList(@PathVariable String appId)
+	{
+		return accountingService.getAfterCurrentPeriodRemainPeroidList(appId);
+	}
 }

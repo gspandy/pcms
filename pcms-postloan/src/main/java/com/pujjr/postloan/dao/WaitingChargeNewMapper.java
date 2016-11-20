@@ -1,5 +1,9 @@
 package com.pujjr.postloan.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.WaitingChargeNew;
 
 public interface WaitingChargeNewMapper {
@@ -14,4 +18,6 @@ public interface WaitingChargeNewMapper {
     int updateByPrimaryKeySelective(WaitingChargeNew record);
 
     int updateByPrimaryKey(WaitingChargeNew record);
+    
+    List<WaitingChargeNew>  selectList(@Param("applyType")String applyType,@Param("applyRefId")String applyRefId,@Param("feeType")String feeType);
 }

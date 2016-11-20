@@ -22,6 +22,7 @@
     <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
     <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
     <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+    <association column="ID" property="remissionItem" select="selectRemissionItem" />
   </resultMap>
   <sql id="Base_Column_List" >
     ID, APP_ID, SETTLE_TYPE, REPAY_CAPITAL, REPAY_INTEREST, REPAY_OVERDUE_AMOUNT, OTHER_FEE, 
@@ -275,4 +276,55 @@
     from t_apply_settle
     where PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
   </select>
+  
+  <resultMap id="SettleTaskResultMap" type="com.pujjr.postloan.vo.SettleTaskVo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="appId" jdbcType="VARCHAR" property="appId" />
+    <result column="contractNo" jdbcType="VARCHAR" property="contractNo" />
+    <result column="custName" jdbcType="VARCHAR" property="custName" />
+    <result column="idNo" jdbcType="VARCHAR" property="idNo" />
+    <result column="settleAmount" jdbcType="DOUBLE" property="settleAmount" />
+    <result column="applyDate" jdbcType="DATE" property="applyDate" />
+    <result column="applyStatus" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="applyComment" jdbcType="VARCHAR" property="applyComment" />
+    <result column="taskName" jdbcType="VARCHAR" property="taskName" />
+    <result column="assignee" jdbcType="VARCHAR" property="assignee" />
+  </resultMap>
+  
+  <select id="selectApplySettleTaskList" resultMap="SettleTaskResultMap">
+  	select 
+  	a.APP_ID as appId,
+  	d.CONTRACT_NO as contractNo,
+  	b.NAME as custName,
+  	b.ID_NO as idNo,
+  	a.SETTLE_TOTAL_AMOUNT as settleAmount,
+  	a.CREATE_DATE as applyDate,
+  	e.DICT_DATA_NAME as applyStatus,
+  	a.APPLY_COMMENT as applyComment,
+  	c.NAME_ as taskName,
+  	f.ACCOUNT_NAME as assignee
+  	from T_APPLY_SETTLE a
+  	left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  	left join ACT_RU_TASK c on a.PROC_INST_ID = c.PROC_INST_ID_
+  	left join T_SIGN_CONTRACT d on a.APP_ID = d.APP_ID
+  	left join SYS_DICT_DATA e on a.APPLY_STATUS = e.DICT_DATA_CODE
+  	left join SYS_ACCOUNT f on c.ASSIGNEE_ = f.ACCOUNT_ID
+  	where a.CREATE_ID = #{createId}
+  	and a.SETTLE_TYPE = #{settleType}
+  </select>
+  <resultMap id="RemissionItemResultMap" type="com.pujjr.postloan.domain.RemissionItem" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_TYPE" property="applyType" jdbcType="VARCHAR" />
+    <result column="APPLY_REF_ID" property="applyRefId" jdbcType="VARCHAR" />
+    <result column="CAPITAL" property="capital" jdbcType="DOUBLE" />
+    <result column="INTEREST" property="interest" jdbcType="DOUBLE" />
+    <result column="OVERDUE_AMOUNT" property="overdueAmount" jdbcType="DOUBLE" />
+    <result column="OTHER_FEE" property="otherFee" jdbcType="DOUBLE" />
+    <result column="OTHER_OVERDUE_AMOUNT" property="otherOverdueAmount" jdbcType="DOUBLE" />
+    <result column="LATE_FEE" property="lateFee" jdbcType="DOUBLE" />
+  </resultMap>
+  <select id="selectRemissionItem" parameterType="String" resultMap="RemissionItemResultMap">
+  	select * from T_REMISSION_ITEM where APPLY_REF_ID = #{ID}
+  </select>
+  
 </mapper>

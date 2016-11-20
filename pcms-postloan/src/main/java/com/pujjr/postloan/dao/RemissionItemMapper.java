@@ -1,5 +1,7 @@
 package com.pujjr.postloan.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.RemissionItem;
 
 public interface RemissionItemMapper {
@@ -14,4 +16,6 @@ public interface RemissionItemMapper {
     int updateByPrimaryKeySelective(RemissionItem record);
 
     int updateByPrimaryKey(RemissionItem record);
+    
+    RemissionItem selectByApplyId(@Param("applyType")String applyType,@Param("applyId")String applyId);
 }
