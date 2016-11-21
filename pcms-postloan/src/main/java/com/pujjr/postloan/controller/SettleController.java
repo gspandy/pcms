@@ -56,7 +56,6 @@ public class SettleController extends BaseController {
 	@Autowired
 	private IAccountingService accountingService;
 	
-	
 	/**刷新还款计划表
 	 * tom 2016年11月17日
 	 * @param appId 申请单号
@@ -67,14 +66,14 @@ public class SettleController extends BaseController {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	@RequestMapping(value="/refreshRepayPlan/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.POST)
+	@RequestMapping(value="/refreshRepayPlan/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{currPeriod}",method=RequestMethod.POST)
 	public void refreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
 			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
 			,@PathVariable("valueDate") String valueDateStr,@PathVariable("currPeriod") int currPeriod){
 		System.out.println(appId+"|"+fianceAmt+"|"+monthRate+"|"+period+"|"+valueDateStr);
 		List<RepayPlan> repayPlanList = new ArrayList<RepayPlan>();
 		Date valueDate = Utils.formateString2Date(valueDateStr, "yyyy-MM-dd");
-		planServiceImpl.refreshRepayPlan(appId, fianceAmt, monthRate, period, valueDate, currPeriod);
+		planServiceImpl.refreshRepayPlan(appId, fianceAmt, monthRate, period, valueDate,EInterestMode.CPM,currPeriod);
 	}
 	
 	/**获取提前结清后新的还款计划（还款计划表未刷新）

@@ -17,6 +17,16 @@ import com.pujjr.postloan.vo.RepayScheduleVo;
 @Service
 public interface IPlanService {
 	
+	/**获取预刷新后还款计划（全额提前结清）
+	 * tom 2016年11月21日
+	 * @param appId
+	 * @param financeAmt
+	 * @param currPeriod
+	 * @param lastPeriod
+	 * @return
+	 */
+	List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,int currPeriod,int lastPeriod);
+	
 	/**
 	 * 获取预刷新后还款计划（沿用原计息方式）
 	 * tom 2016年11月17日
@@ -120,4 +130,6 @@ public interface IPlanService {
 	 * @return 计息方式枚举对象
 	 */
 	EInterestMode getInterestMode(@Param("appId") String appId);
+	
+	
 }
