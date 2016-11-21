@@ -26,6 +26,7 @@ import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.postloan.domain.ApplyPublicRepay;
+import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.ILoanQueryService;
@@ -155,5 +156,11 @@ public class LoanQueryController
 	List<Integer> getAfterCurrentPeriodRemainPeroidList(@PathVariable String appId)
 	{
 		return accountingService.getAfterCurrentPeriodRemainPeroidList(appId);
+	}
+	
+	@RequestMapping(value="/getCurrentPeriodRepayPlan/{appId}",method=RequestMethod.GET)
+	RepayPlan getCurrentPeriodRepayPlan(@PathVariable String appId)
+	{
+		return accountingService.getCurrentPeriodRepayPlan(appId);
 	}
 }

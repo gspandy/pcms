@@ -24,7 +24,7 @@ public interface IAlterRepayDateService
 	 * 	appId-申请单号
 	 * 返回：变更还款日各项费用金额
 	 * **/
-	public AlterRepayDateFeeItemVo getAlterRepayDateFeeItem(String appId,Date newClosingDate);
+	public AlterRepayDateFeeItemVo getAlterRepayDateFeeItem(String appId,Date oldClosingDate,Date newClosingDate);
 	/**
 	 * 功能：提交变更申请
 	 * 参数：

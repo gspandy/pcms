@@ -1,5 +1,6 @@
 package com.pujjr.postloan.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -88,8 +89,8 @@ public class SettleServiceImpl implements ISettleService{
 	@Override
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		//还款费用分类汇总信息（逾期+当期）
-		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, true, true);
+		//还款费用分类汇总信息（逾期+当期+挂账金额）
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, settleEffectDate, false, true);
 		BeanUtils.copyProperties(repayFeeItemVo, settleFeeItemVo);
 		//剩余本金
 		double remainCapital = settleFeeItemVo.getRemainCapital();
@@ -105,12 +106,16 @@ public class SettleServiceImpl implements ISettleService{
 		double settleCapital = remainCapital - repayCapital;
 		double lateRate  = accountingServiceImpl.getSettleRate(appId);
 		//违约金
-		double lateFee = lateRate * (settleCapital + currCapital);
+		DecimalFormat  nf = new DecimalFormat("#.00");
+		double lateFee = Double.valueOf(nf.format(lateRate * (settleCapital + currCapital)));
+		//挂账金额
+		double stayAmount = settleFeeItemVo.getStayAmount();
 		//结清金额
 		double settleTotalAmt = repayFeeItemVo.getRepayCapital() + repayFeeItemVo.getRepayInterest() + repayFeeItemVo.getOtherOverdueAmount()
 				+ repayFeeItemVo.getOtherAmount() + repayFeeItemVo.getOtherOverdueAmount()
 				+ settleCapital
-				+ lateFee;
+				+ lateFee
+				- stayAmount;
 		//结清后剩余本金
 		double settleAfterAmount = 0.00;
 		settleFeeItemVo.setLateFee(lateFee);

@@ -1,153 +1,165 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.ApplyAlterRepayDateMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyAlterRepayDate" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="OLD_CLOSING_DATE" property="oldClosingDate" jdbcType="DATE" />
-    <result column="NEW_CLOSING_DATE" property="newClosingDate" jdbcType="DATE" />
-    <result column="ALTER_DAY" property="alterDay" jdbcType="INTEGER" />
-    <result column="ALTER_INTEREST" property="alterInterest" jdbcType="DOUBLE" />
-    <result column="APPLY_COMMENT" property="applyComment" jdbcType="VARCHAR" />
-    <result column="APPLY_STATUS" property="applyStatus" jdbcType="VARCHAR" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
-    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.ApplyAlterRepayDateMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ApplyAlterRepayDate">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="OLD_CLOSING_DATE" jdbcType="DATE" property="oldClosingDate" />
+    <result column="NEW_CLOSING_DATE" jdbcType="DATE" property="newClosingDate" />
+    <result column="ALTER_DAY" jdbcType="INTEGER" property="alterDay" />
+    <result column="ALTER_INTEREST" jdbcType="DOUBLE" property="alterInterest" />
+    <result column="APPLY_COMMENT" jdbcType="VARCHAR" property="applyComment" />
+    <result column="APPLY_STATUS" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="APPLY_EFFECT_DATE" jdbcType="DATE" property="applyEffectDate" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+    <result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     ID, APP_ID, OLD_CLOSING_DATE, NEW_CLOSING_DATE, ALTER_DAY, ALTER_INTEREST, APPLY_COMMENT, 
-    APPLY_STATUS, CREATE_ID, CREATE_DATE, PROC_INST_ID
+    APPLY_STATUS, APPLY_EFFECT_DATE, CREATE_ID, CREATE_DATE, PROC_INST_ID
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_apply_alter_repaydate
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_apply_alter_repaydate
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate" >
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate">
     insert into t_apply_alter_repaydate (ID, APP_ID, OLD_CLOSING_DATE, 
       NEW_CLOSING_DATE, ALTER_DAY, ALTER_INTEREST, 
-      APPLY_COMMENT, APPLY_STATUS, CREATE_ID, 
-      CREATE_DATE, PROC_INST_ID)
+      APPLY_COMMENT, APPLY_STATUS, APPLY_EFFECT_DATE, 
+      CREATE_ID, CREATE_DATE, PROC_INST_ID
+      )
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{oldClosingDate,jdbcType=DATE}, 
       #{newClosingDate,jdbcType=DATE}, #{alterDay,jdbcType=INTEGER}, #{alterInterest,jdbcType=DOUBLE}, 
-      #{applyComment,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR})
+      #{applyComment,jdbcType=VARCHAR}, #{applyStatus,jdbcType=VARCHAR}, #{applyEffectDate,jdbcType=DATE}, 
+      #{createId,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE}, #{procInstId,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate">
     insert into t_apply_alter_repaydate
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="oldClosingDate != null" >
+      <if test="oldClosingDate != null">
         OLD_CLOSING_DATE,
       </if>
-      <if test="newClosingDate != null" >
+      <if test="newClosingDate != null">
         NEW_CLOSING_DATE,
       </if>
-      <if test="alterDay != null" >
+      <if test="alterDay != null">
         ALTER_DAY,
       </if>
-      <if test="alterInterest != null" >
+      <if test="alterInterest != null">
         ALTER_INTEREST,
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         APPLY_COMMENT,
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         APPLY_STATUS,
       </if>
-      <if test="createId != null" >
+      <if test="applyEffectDate != null">
+        APPLY_EFFECT_DATE,
+      </if>
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         CREATE_DATE,
       </if>
-      <if test="procInstId != null" >
+      <if test="procInstId != null">
         PROC_INST_ID,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="oldClosingDate != null" >
+      <if test="oldClosingDate != null">
         #{oldClosingDate,jdbcType=DATE},
       </if>
-      <if test="newClosingDate != null" >
+      <if test="newClosingDate != null">
         #{newClosingDate,jdbcType=DATE},
       </if>
-      <if test="alterDay != null" >
+      <if test="alterDay != null">
         #{alterDay,jdbcType=INTEGER},
       </if>
-      <if test="alterInterest != null" >
+      <if test="alterInterest != null">
         #{alterInterest,jdbcType=DOUBLE},
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         #{applyComment,jdbcType=VARCHAR},
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         #{applyStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="applyEffectDate != null">
+        #{applyEffectDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         #{createDate,jdbcType=DATE},
       </if>
-      <if test="procInstId != null" >
+      <if test="procInstId != null">
         #{procInstId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate">
     update t_apply_alter_repaydate
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="oldClosingDate != null" >
+      <if test="oldClosingDate != null">
         OLD_CLOSING_DATE = #{oldClosingDate,jdbcType=DATE},
       </if>
-      <if test="newClosingDate != null" >
+      <if test="newClosingDate != null">
         NEW_CLOSING_DATE = #{newClosingDate,jdbcType=DATE},
       </if>
-      <if test="alterDay != null" >
+      <if test="alterDay != null">
         ALTER_DAY = #{alterDay,jdbcType=INTEGER},
       </if>
-      <if test="alterInterest != null" >
+      <if test="alterInterest != null">
         ALTER_INTEREST = #{alterInterest,jdbcType=DOUBLE},
       </if>
-      <if test="applyComment != null" >
+      <if test="applyComment != null">
         APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
       </if>
-      <if test="applyStatus != null" >
+      <if test="applyStatus != null">
         APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="applyEffectDate != null">
+        APPLY_EFFECT_DATE = #{applyEffectDate,jdbcType=DATE},
+      </if>
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null" >
+      <if test="createDate != null">
         CREATE_DATE = #{createDate,jdbcType=DATE},
       </if>
-      <if test="procInstId != null" >
+      <if test="procInstId != null">
         PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ApplyAlterRepayDate">
     update t_apply_alter_repaydate
     set APP_ID = #{appId,jdbcType=VARCHAR},
       OLD_CLOSING_DATE = #{oldClosingDate,jdbcType=DATE},
@@ -156,6 +168,7 @@
       ALTER_INTEREST = #{alterInterest,jdbcType=DOUBLE},
       APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
       APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      APPLY_EFFECT_DATE = #{applyEffectDate,jdbcType=DATE},
       CREATE_ID = #{createId,jdbcType=VARCHAR},
       CREATE_DATE = #{createDate,jdbcType=DATE},
       PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}

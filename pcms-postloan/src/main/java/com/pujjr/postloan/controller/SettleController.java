@@ -29,6 +29,7 @@ import com.pujjr.postloan.domain.ApplyPublicRepay;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.EInterestMode;
+import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.postloan.service.ISettleService;
 import com.pujjr.postloan.vo.ApplyPublicRepayVo;
@@ -52,6 +53,8 @@ public class SettleController extends BaseController {
 	private IPlanService planServiceImpl;
 	@Autowired
 	private ISettleService settleService;
+	@Autowired
+	private IAccountingService accountingService;
 	
 	
 	/**刷新还款计划表
@@ -216,6 +219,8 @@ public class SettleController extends BaseController {
 		feeItemVo.setSettleTotalAmount(po.getSettleTotalAmount());
 		feeItemVo.setLateFee(po.getLateFee());
 		feeItemVo.setSettleAfterAmount(po.getSettleAfterCapital());
+		//获取挂账金额
+		feeItemVo.setStayAmount(accountingService.getStayAmount(po.getAppId()));
 		vo.setFeeItem(feeItemVo);
 		
 		vo.setApplyComment(po.getApplyComment());

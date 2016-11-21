@@ -5,111 +5,121 @@ import java.util.Date;
 public class ApplyAlterRepayDate {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private Date oldClosingDate;
+	private Date oldClosingDate;
 
-    private Date newClosingDate;
+	private Date newClosingDate;
 
-    private Integer alterDay;
+	private Integer alterDay;
 
-    private Double alterInterest;
+	private Double alterInterest;
 
-    private String applyComment;
+	private String applyComment;
 
-    private String applyStatus;
+	private String applyStatus;
 
-    private String createId;
+	private Date applyEffectDate;
 
-    private Date createDate;
+	private String createId;
 
-    private String procInstId;
+	private Date createDate;
 
-    public String getId() {
-        return id;
-    }
+	private String procInstId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public Date getOldClosingDate() {
-        return oldClosingDate;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setOldClosingDate(Date oldClosingDate) {
-        this.oldClosingDate = oldClosingDate;
-    }
+	public Date getOldClosingDate() {
+		return oldClosingDate;
+	}
 
-    public Date getNewClosingDate() {
-        return newClosingDate;
-    }
+	public void setOldClosingDate(Date oldClosingDate) {
+		this.oldClosingDate = oldClosingDate;
+	}
 
-    public void setNewClosingDate(Date newClosingDate) {
-        this.newClosingDate = newClosingDate;
-    }
+	public Date getNewClosingDate() {
+		return newClosingDate;
+	}
 
-    public Integer getAlterDay() {
-        return alterDay;
-    }
+	public void setNewClosingDate(Date newClosingDate) {
+		this.newClosingDate = newClosingDate;
+	}
 
-    public void setAlterDay(Integer alterDay) {
-        this.alterDay = alterDay;
-    }
+	public Integer getAlterDay() {
+		return alterDay;
+	}
 
-    public Double getAlterInterest() {
-        return alterInterest;
-    }
+	public void setAlterDay(Integer alterDay) {
+		this.alterDay = alterDay;
+	}
 
-    public void setAlterInterest(Double alterInterest) {
-        this.alterInterest = alterInterest;
-    }
+	public Double getAlterInterest() {
+		return alterInterest;
+	}
 
-    public String getApplyComment() {
-        return applyComment;
-    }
+	public void setAlterInterest(Double alterInterest) {
+		this.alterInterest = alterInterest;
+	}
 
-    public void setApplyComment(String applyComment) {
-        this.applyComment = applyComment;
-    }
+	public String getApplyComment() {
+		return applyComment;
+	}
 
-    public String getApplyStatus() {
-        return applyStatus;
-    }
+	public void setApplyComment(String applyComment) {
+		this.applyComment = applyComment;
+	}
 
-    public void setApplyStatus(String applyStatus) {
-        this.applyStatus = applyStatus;
-    }
+	public String getApplyStatus() {
+		return applyStatus;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setApplyStatus(String applyStatus) {
+		this.applyStatus = applyStatus;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getApplyEffectDate() {
+		return applyEffectDate;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public void setApplyEffectDate(Date applyEffectDate) {
+		this.applyEffectDate = applyEffectDate;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getProcInstId() {
-        return procInstId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setProcInstId(String procInstId) {
-        this.procInstId = procInstId;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+
+	public String getProcInstId() {
+		return procInstId;
+	}
+
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
+	}
 }
