@@ -1,8 +1,11 @@
 package com.pujjr.postloan.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -191,5 +194,22 @@ public class PlanServiceImpl implements IPlanService {
 			break;
 		}
 		return eInterestMode;
+	}
+
+	@Override
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId, double financeAmt, int currPeriod,int lastPeriod) {
+		List<RepayPlan> repayPlanListNew = new LinkedList<RepayPlan>();
+		List<RepayPlan> repayPlanListOld = repayPlanMapper.selectSpecialRepayPlanList(appId, currPeriod+1, lastPeriod);
+		if(lastPeriod > currPeriod){
+			BigDecimal bgAmt = new BigDecimal(financeAmt/lastPeriod-currPeriod);
+			double repayCaptital =  Utils.formateDouble2Double(bgAmt, 2);
+			for (RepayPlan repayPlan : repayPlanListOld) {
+				repayPlan.setRepayCapital(repayCaptital);
+				repayPlan.setRepayInterest(0.00);
+				repayPlanListNew.add(repayPlan);
+			}
+		}
+		System.out.println("repayPlanListNew:"+repayPlanListNew);
+		return repayPlanListNew;
 	}
 }

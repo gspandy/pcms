@@ -210,4 +210,12 @@
       PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectListByAppId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_other_fee
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>

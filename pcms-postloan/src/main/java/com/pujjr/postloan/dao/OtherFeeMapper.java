@@ -1,5 +1,7 @@
 package com.pujjr.postloan.dao;
 
+import java.util.List;
+
 import com.pujjr.postloan.domain.OtherFee;
 
 public interface OtherFeeMapper {
@@ -14,4 +16,6 @@ public interface OtherFeeMapper {
     int updateByPrimaryKeySelective(OtherFee record);
 
     int updateByPrimaryKey(OtherFee record);
+    
+    List<OtherFee> selectListByAppId(String appId);
 }
