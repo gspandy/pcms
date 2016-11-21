@@ -9,15 +9,15 @@ import com.pujjr.postloan.domain.WaitingChargeNew;
 public interface WaitingChargeNewMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(WaitingChargeNew record);
+	int insert(WaitingChargeNew record);
 
-    int insertSelective(WaitingChargeNew record);
+	int insertSelective(WaitingChargeNew record);
 
-    WaitingChargeNew selectByPrimaryKey(String id);
+	WaitingChargeNew selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(WaitingChargeNew record);
+	int updateByPrimaryKeySelective(WaitingChargeNew record);
 
-    int updateByPrimaryKey(WaitingChargeNew record);
+	int updateByPrimaryKey(WaitingChargeNew record);
     
     List<WaitingChargeNew>  selectList(@Param("applyType")String applyType,@Param("applyRefId")String applyRefId,@Param("feeType")String feeType);
 }

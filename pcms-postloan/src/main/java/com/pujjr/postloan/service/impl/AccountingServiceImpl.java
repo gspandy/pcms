@@ -40,6 +40,7 @@ import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.enumeration.SettleMode;
+import com.pujjr.postloan.enumeration.SettleType;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
 import com.pujjr.utils.Utils;
@@ -617,7 +618,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 获取减免信息
 		 * **/
-		double remissionCaptial = 0.00;
+		double remissionCapital = 0.00;
 		double remissionInterest = 0.00;
 		double remissionOverdueAmt = 0.00;
 		double remissionOtherFee = 0.00;
@@ -625,7 +626,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		RemissionItem remissionItem = remissionItemDao.selectByApplyId(applyType.getName(), applyId);
 		if(remissionItem!=null)
 		{
-			remissionCaptial = remissionItem.getCapital();
+			remissionCapital = remissionItem.getCapital();
 			remissionInterest = remissionItem.getInterest();
 			remissionOverdueAmt = remissionItem.getOverdueAmount();
 			remissionOtherFee = remissionItem.getOtherFee();
@@ -765,6 +766,256 @@ public class AccountingServiceImpl implements IAccountingService {
 				
 			}
 		}
+		/**
+		 * 获取计划还款费用
+		 */
+		List<WaitingChargeNew> planNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Plan.getName());
+		for(WaitingChargeNew item : planNewWaitingCharge)
+		{
+			double repayCapital = item.getRepayCapital();
+			double repayInterest = item.getRepayInterest();
+			double repayOverdueAmt = item.getRepayOverdueAmount();
+			if(item.getDoSettle())
+			{
+				/****************************************************应还罚息处理阶段***************************/
+				/**
+				 * 用挂账处理应还罚息
+				 */
+				if(Double.compare(stayAmount, 0.00)>0&&Double.compare(repayOverdueAmt, 0.00)>0)
+				{
+					if(Double.compare(repayOverdueAmt, stayAmount)>=0)
+					{
+						repayOverdueAmt -=stayAmount;
+						stayAmount = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+					}
+					else
+					{
+						stayAmount -=repayOverdueAmt;
+						repayOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+					}
+				}
+				/**
+				 * 用减免项处理应还罚息
+				 */
+				if(Double.compare(remissionOverdueAmt, 0.00)>0&&Double.compare(repayOverdueAmt, 0.00)>0)
+				{
+					if(Double.compare(repayOverdueAmt, remissionOverdueAmt)>=0)
+					{
+						repayOverdueAmt -=remissionOverdueAmt;
+						remissionOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, remissionOverdueAmt,chargeDate, RepayMode.Remission.getName());
+					}
+					else
+					{
+						remissionOverdueAmt -=repayOverdueAmt;
+						repayOverdueAmt = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission.getName());
+					}
+				}
+				/**
+				 * 如果应还罚息还大于零则直接做对公还款处理
+				 */
+
+				if(Double.compare(repayOverdueAmt,0.00)>0)
+				{
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay.getName());
+				}
+				
+				/****************************************************应还利息处理阶段***************************/
+				/**
+				 * 用挂账处理应还利息
+				 */
+				if(Double.compare(stayAmount, 0.00)>0&&Double.compare(repayInterest, 0.00)>0)
+				{
+					if(Double.compare(repayInterest, stayAmount)>=0)
+					{
+						repayInterest -=stayAmount;
+						stayAmount = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+					}
+					else
+					{
+						stayAmount -=repayInterest;
+						repayInterest = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.StayAccounting.getName());
+					}
+				}
+				/**
+				 * 用减免项处理应还罚息
+				 */
+				if(Double.compare(remissionInterest, 0.00)>0&&Double.compare(repayInterest, 0.00)>0)
+				{
+					if(Double.compare(repayInterest, remissionInterest)>=0)
+					{
+						repayInterest -=remissionInterest;
+						remissionInterest = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, remissionInterest,chargeDate, RepayMode.Remission.getName());
+					}
+					else
+					{
+						remissionInterest -=repayInterest;
+						repayInterest = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.Remission.getName());
+					}
+				}
+				/**
+				 * 如果应还罚息还大于零则直接做对公还款处理
+				 */
+
+				if(Double.compare(repayInterest,0.00)>0)
+				{
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.PublicRepay.getName());
+				}
+				
+				/****************************************************应还本金处理阶段***************************/
+				/**
+				 * 处理应还本金,用挂账金额处理应还本金
+				 */
+				if(Double.compare(stayAmount, 0.00)>0&&Double.compare(repayCapital, 0.00)>0)
+				{
+					if(Double.compare(repayCapital, stayAmount)>=0)
+					{
+						repayCapital -=stayAmount;
+						stayAmount = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+					}
+					else
+					{
+						stayAmount -=repayCapital;
+						repayCapital = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.StayAccounting.getName());
+					}
+				}
+				/**
+				 * 如果还大于零并且存在减免本金用则再用减免项扣款
+				 */
+				if(Double.compare(remissionCapital, 0.00)>0&&Double.compare(repayCapital, 0.00)>0)
+				{
+					if(Double.compare(repayCapital, remissionCapital)>=0)
+					{
+						repayCapital -=remissionCapital;
+						remissionCapital = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, remissionCapital,chargeDate, RepayMode.Remission.getName());
+					}
+					else
+					{
+						remissionCapital -=repayCapital;
+						repayCapital = 0.00;
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.Remission.getName());
+					}
+				}
+				/**
+				 * 如果其他费用本金还大于零则直接做对公还款处理
+				 */
+				if(Double.compare(repayCapital,0.00)>0)
+				{
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.PublicRepay.getName());
+				}
+				
+				/******************************************************更新原始还款计划**********************************/
+				RepayPlan oldPlan = repayPlanDao.selectRepayPlan(appId, item.getPeriod());
+				oldPlan.setAddupOverdueDay(item.getAddupOverdueDay());
+				oldPlan.setValueDate(item.getValueDate());
+				oldPlan.setClosingDate(item.getClosingDate());
+				//获取对应的罚息还款记录
+				List<RepayLog> planOverdueList = repayLogDao.selectList(appId, FeeType.Plan.getName(), oldPlan.getId(), ChargeItem.OVERDUEAMT.getName());
+				double tempOverdueAmount = item.getRepayOverdueAmount();
+				for(RepayLog log: planOverdueList)
+				{
+					tempOverdueAmount += log.getChargeAmount();
+				}
+				oldPlan.setAddupOverdueAmount(tempOverdueAmount);
+				//获取对应的应还利息
+				List<RepayLog> planInterestList = repayLogDao.selectList(appId, FeeType.Plan.getName(),oldPlan.getAppId(), ChargeItem.INTEREST.getName());
+				double tempInterestAmount = item.getRepayInterest();
+				for(RepayLog log : planInterestList)
+				{
+					tempInterestAmount += log.getChargeAmount();
+				}
+				oldPlan.setRepayInterest(tempInterestAmount);
+				//获取对应的应还本金
+				List<RepayLog> planCapitalList = repayLogDao.selectList(appId, FeeType.Plan.getName(), oldPlan.getAppId(), ChargeItem.CAPITAL.getName());
+				double tempCapitalAmount = item.getRepayCapital();
+				for(RepayLog log : planCapitalList)
+				{
+					tempCapitalAmount += log.getChargeAmount();
+				}
+				oldPlan.setRepayCapital(tempCapitalAmount);
+				oldPlan.setRepayStatus(RepayStatus.Settled.getName());
+				oldPlan.setSettleDate(chargeDate);
+				repayPlanDao.updateByPrimaryKey(oldPlan);
+				/******************************************************删除对应待扣款明细**********************************/
+				WaitingCharge waitingChargePo = waitingChargeDao.selectByFeeInfo(item.getFeeType(), item.getFeeRefId());
+				if(waitingChargePo!=null)
+				{
+					waitingChargeDao.deleteByPrimaryKey(waitingChargePo.getId());
+				}
+			}
+			else
+			{
+				/**
+				 * 如不做结清处理，这种情况只发生在产生新的还款计划，如部分结清、展期、变更还款日，此时还没有待扣款明细产生，则直接更新原始还款计划或插入新的还款计划
+				 */
+				RepayPlan oldPlan = repayPlanDao.selectRepayPlan(appId, item.getPeriod());
+				if(oldPlan!=null)
+				{
+					oldPlan.setRepayCapital(item.getRepayCapital());
+					oldPlan.setRepayInterest(item.getRepayInterest());
+					oldPlan.setAddupOverdueAmount(item.getAddupOverdueAmount());
+					oldPlan.setAddupOverdueDay(item.getAddupOverdueDay());
+					oldPlan.setValueDate(item.getValueDate());
+					oldPlan.setClosingDate(item.getClosingDate());
+					oldPlan.setRepayStatus(RepayStatus.Repaying.getName());
+					repayPlanDao.updateByPrimaryKey(oldPlan);
+				}
+				else
+				{
+					RepayPlan newPlan = new RepayPlan();
+					newPlan.setId(Utils.get16UUID());
+					newPlan.setAppId(appId);
+					newPlan.setPeriod(item.getPeriod());
+					newPlan.setRepayCapital(item.getRepayCapital());
+					newPlan.setRepayInterest(item.getRepayInterest());
+					newPlan.setValueDate(item.getValueDate());
+					newPlan.setClosingDate(item.getClosingDate());
+					newPlan.setRemainCapital(0.00);
+					newPlan.setRepayTotalAmount(0.00);
+					newPlan.setAddupOverdueAmount(0.00);
+					newPlan.setAddupOverdueDay(0);
+					newPlan.setRepayStatus(RepayStatus.Repaying.getName());
+					repayPlanDao.insert(newPlan);
+				}
+				
+			}
+		}
+		
+		/*************************************************修改总账相关数据***********************************************************/
+		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+		if(applyType.equals(LoanApplyTaskType.Settle))
+		{
+			ledgerPo.setRemainCapital(settlePo.getSettleAfterCapital());
+			if(settlePo.getSettleType().equals(SettleType.AllSettle.getName()))
+			{
+				ledgerPo.setRepayStatus(RepayStatus.Settled.getName());
+				ledgerPo.setSettleDate(chargeDate);
+			}
+			else
+			{
+				ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
+			}
+		}
+		if(applyType.equals(LoanApplyTaskType.ExtendPeriod))
+		{
+			ledgerPo.setRemainCapital(extendPeriodPo.getNewCapital());
+			ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
+		}
+		if(applyType.equals(LoanApplyTaskType.AlterRepayDate))
+		{
+			ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
+		}
+		ledgerDao.updateByPrimaryKey(ledgerPo);
 	}
 
 }
