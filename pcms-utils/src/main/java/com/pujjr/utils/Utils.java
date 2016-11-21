@@ -711,7 +711,7 @@ public class Utils {
 	{
 		String tmp = time.replace("Z", " UTC");//注意是空格+UTC
 		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-		tmp = Utils.getFormatDate(sd.parse(tmp), "yyyy-MM-dd");
+		tmp = Utils.getFormatDate(sd.parse(tmp), format);
 		return Utils.formateString2Date(tmp, format);
 	}
 }

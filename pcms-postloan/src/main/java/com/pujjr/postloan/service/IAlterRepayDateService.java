@@ -32,28 +32,23 @@ public interface IAlterRepayDateService
 	 * 	vo-变更申请要素
 	 * 返回：无
 	 * **/
-	public void commitApplyAlterRepayDateTask(String appId,ApplyAlterRepayDateVo vo);
+	public void commitApplyAlterRepayDateTask(String appId,ApplyAlterRepayDateVo vo,String operId);
 	/**
 	 * 功能：提交审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveAlterRepayDateTask(String taskId,ApproveResultVo vo);
-	/**
-	 * 功能：提交确认变更还款日申请
-	 * 参数：
-	 * 	taskId-任务ID
-	 * 	vo-减免费项
-	 * **/
-	public void commitApplyConfirmAlterRepayDateTask(String taskId);
+	public void commitApproveAlterRepayDateTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：提交确认入账
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitConfirmAlterRepayDateTask(String taskId,ApproveResultVo vo);
+	public void commitConfirmAlterRepayDateTask(String taskId) throws Exception;
 	/**
 	 * 功能：取消结清任务
 	 * 参数：
@@ -68,7 +63,7 @@ public interface IAlterRepayDateService
 	 * createId-任务创建人
 	 * applyStatus-申请状态	
 	 * **/
-	public List<AlterRepayDateTaskVo> getApplyExtendPeriodTaskList(String createId,List<String> applyStatus);
+	public List<AlterRepayDateTaskVo> getApplyAlterRepayDateTaskList(String createId,List<String> applyStatus);
 	/**
 	 * 功能：根据主键查询变更还款日申请信息
 	 * **/

@@ -25,7 +25,7 @@ public interface IPlanService {
 	 * @param lastPeriod
 	 * @return
 	 */
-	List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,int currPeriod,int lastPeriod);
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,int currPeriod,int lastPeriod);
 	
 	/**
 	 * 获取预刷新后还款计划（沿用原计息方式）
@@ -39,7 +39,7 @@ public interface IPlanService {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,double monthRate,int period,Date valueDate,int currPeriod);
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId,double financeAmt,double monthRate,int period,Date valueDate,int currPeriod);
 	
 	
 	/**
@@ -54,7 +54,7 @@ public interface IPlanService {
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
-	List<RepayPlan> selectRefreshRepayPlanList(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
+	public List<RepayPlan> selectRefreshRepayPlanList(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
 	
 	/**刷新还款计划（沿用原计息方式）
 	 * tom 2016年11月17日
@@ -66,7 +66,7 @@ public interface IPlanService {
 	 * @param eInterestMode 计息方 式
 	 * @param startPeriod 当期还款周期
 	 */
-	void refreshRepayPlan(String appId,double financeAmt,double monthRate,int period,Date valueDate,int currPeriod);
+	public void refreshRepayPlan(String appId,double financeAmt,double monthRate,int period,Date valueDate,int currPeriod);
 	
 	/**刷新还款计划(指定计息方式)
 	 * tom 2016年11月17日
@@ -78,7 +78,7 @@ public interface IPlanService {
 	 * @param eInterestMode 计息方 式
 	 * @param startPeriod 当期还款周期
 	 */
-	void refreshRepayPlan(String appId,double financeAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
+	public void refreshRepayPlan(String appId,double financeAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
 	/**
 	 * 生成还款计划
 	 * tom 2016年11月10日
@@ -89,7 +89,7 @@ public interface IPlanService {
 	 * @param valueDate 起息日（首期）
 	 * @param eInterestMode 利息计息方式
 	 */
-	void generateRepayPlan(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode);
+	public void generateRepayPlan(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode);
 	/**
 	 * 获取还款计划列表列表
 	 * tom 2016年11月10日
@@ -97,7 +97,7 @@ public interface IPlanService {
 	 * @param period 还款期数
 	 * @return
 	 */
-	List<RepayPlanVo> selectRepayPlanList(String appId,int period);
+	public List<RepayPlanVo> selectRepayPlanList(String appId,int period);
 	/**
 	 * 获取单条还款计划
 	 * tom 2016年11月10日
@@ -105,7 +105,7 @@ public interface IPlanService {
 	 * @param period 还款期数
 	 * @return
 	 */
-	RepayPlanVo selectRepayPlay(String appId,int period);
+	public RepayPlanVo selectRepayPlay(String appId,int period);
 	
 	/**获取还款计划(包含总还款、总利息、本金、月供、各期还款计划明细数据)
 	 * tom 2016年11月11日
@@ -113,7 +113,7 @@ public interface IPlanService {
 	 * @param period
 	 * @return
 	 */
-	RepayScheduleVo selectRepaySchedule(String appId,int period);
+	public RepayScheduleVo selectRepaySchedule(String appId,int period);
 	/**
 	 * 获取制定申请单指定期数的还款计划
 	 * @param appId-申请单号
@@ -121,7 +121,7 @@ public interface IPlanService {
 	 * @param endPeriod-截止期数
 	 * @return 还款计划列表
 	 * **/
-	List<RepayPlan> getRepayPlanList(String appId,int beginPeriod, int endPeriod);
+	public List<RepayPlan> getRepayPlanList(String appId,int beginPeriod, int endPeriod);
 	
 	/**
 	 * 查询总账表对应订单计息方式
@@ -129,7 +129,7 @@ public interface IPlanService {
 	 * @param appId
 	 * @return 计息方式枚举对象
 	 */
-	EInterestMode getInterestMode(@Param("appId") String appId);
+	public EInterestMode getInterestMode(@Param("appId") String appId);
 	
 	
 }

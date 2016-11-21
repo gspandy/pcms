@@ -17,7 +17,15 @@ public class ApplyAlterRepayDateVo
 	private Date oldClosingDate;
 	//新还款日
 	private Date newClosingDate;
+	//申请有效日期
+	private Date applyEffectDate;
 	
+	public Date getApplyEffectDate() {
+		return applyEffectDate;
+	}
+	public void setApplyEffectDate(Date applyEffectDate) {
+		this.applyEffectDate = applyEffectDate;
+	}
 	public AlterRepayDateFeeItemVo getFeeItem() {
 		return feeItem;
 	}

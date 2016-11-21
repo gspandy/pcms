@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.pujjr.postloan.domain.WaitingChargeNew;
+
 @Service
 public interface ILoanQueryService 
 {
@@ -38,4 +40,12 @@ public interface ILoanQueryService
 	 * @return
 	 */
 	public List<HashMap<String,Object>> getLoanToDoTaskList(String assignee);
+	/**
+	 * 查询临时代扣明细表记录
+	 * @param applyId - 申请任务ID
+	 * @param applyType -申请任务类型
+	 * @param feeType - 明细费用类型
+	 * @return
+	 */
+	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId,String applyType,String feeType);
 }
