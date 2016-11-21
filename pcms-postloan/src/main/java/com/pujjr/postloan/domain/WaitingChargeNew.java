@@ -5,211 +5,221 @@ import java.util.Date;
 public class WaitingChargeNew {
     private String id;
 
-    private String applyType;
+	private String applyType;
 
-    private String applyRefId;
+	private String applyRefId;
 
-    private String appId;
+	private String appId;
 
-    private String feeType;
+	private String feeType;
 
-    private String feeRefId;
+	private String feeRefId;
 
-    private Integer period;
+	private Integer period;
 
-    private Boolean doSettle;
+	private Boolean doSettle;
 
-    private Double repayCapital;
+	private Double repayCapital;
 
-    private Double repayInterest;
+	private Double repayInterest;
 
-    private Double repayOverdueAmount;
+	private Double repayOverdueAmount;
 
-    private Date valueDate;
+	private Date valueDate;
 
-    private Date closingDate;
+	private Date closingDate;
 
-    private Integer addupOverdueDay;
+	private Double remainCapitao;
 
-    private Double addupOverdueAmount;
+	private Integer addupOverdueDay;
 
-    private String reserver1;
+	private Double addupOverdueAmount;
 
-    private String reserver2;
+	private String reserver1;
 
-    private Date reserver3;
+	private String reserver2;
 
-    private Date reserver4;
+	private Date reserver3;
 
-    private Double reserver5;
+	private Date reserver4;
 
-    private Double reserver6;
+	private Double reserver5;
 
-    public String getId() {
-        return id;
-    }
+	private Double reserver6;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getApplyType() {
-        return applyType;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setApplyType(String applyType) {
-        this.applyType = applyType;
-    }
+	public String getApplyType() {
+		return applyType;
+	}
 
-    public String getApplyRefId() {
-        return applyRefId;
-    }
+	public void setApplyType(String applyType) {
+		this.applyType = applyType;
+	}
 
-    public void setApplyRefId(String applyRefId) {
-        this.applyRefId = applyRefId;
-    }
+	public String getApplyRefId() {
+		return applyRefId;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setApplyRefId(String applyRefId) {
+		this.applyRefId = applyRefId;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getFeeType() {
-        return feeType;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setFeeType(String feeType) {
-        this.feeType = feeType;
-    }
+	public String getFeeType() {
+		return feeType;
+	}
 
-    public String getFeeRefId() {
-        return feeRefId;
-    }
+	public void setFeeType(String feeType) {
+		this.feeType = feeType;
+	}
 
-    public void setFeeRefId(String feeRefId) {
-        this.feeRefId = feeRefId;
-    }
+	public String getFeeRefId() {
+		return feeRefId;
+	}
 
-    public Integer getPeriod() {
-        return period;
-    }
+	public void setFeeRefId(String feeRefId) {
+		this.feeRefId = feeRefId;
+	}
 
-    public void setPeriod(Integer period) {
-        this.period = period;
-    }
+	public Integer getPeriod() {
+		return period;
+	}
 
-    public Boolean getDoSettle() {
-        return doSettle;
-    }
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
 
-    public void setDoSettle(Boolean doSettle) {
-        this.doSettle = doSettle;
-    }
+	public Boolean getDoSettle() {
+		return doSettle;
+	}
 
-    public Double getRepayCapital() {
-        return repayCapital;
-    }
+	public void setDoSettle(Boolean doSettle) {
+		this.doSettle = doSettle;
+	}
 
-    public void setRepayCapital(Double repayCapital) {
-        this.repayCapital = repayCapital;
-    }
+	public Double getRepayCapital() {
+		return repayCapital;
+	}
 
-    public Double getRepayInterest() {
-        return repayInterest;
-    }
+	public void setRepayCapital(Double repayCapital) {
+		this.repayCapital = repayCapital;
+	}
 
-    public void setRepayInterest(Double repayInterest) {
-        this.repayInterest = repayInterest;
-    }
+	public Double getRepayInterest() {
+		return repayInterest;
+	}
 
-    public Double getRepayOverdueAmount() {
-        return repayOverdueAmount;
-    }
+	public void setRepayInterest(Double repayInterest) {
+		this.repayInterest = repayInterest;
+	}
 
-    public void setRepayOverdueAmount(Double repayOverdueAmount) {
-        this.repayOverdueAmount = repayOverdueAmount;
-    }
+	public Double getRepayOverdueAmount() {
+		return repayOverdueAmount;
+	}
 
-    public Date getValueDate() {
-        return valueDate;
-    }
+	public void setRepayOverdueAmount(Double repayOverdueAmount) {
+		this.repayOverdueAmount = repayOverdueAmount;
+	}
 
-    public void setValueDate(Date valueDate) {
-        this.valueDate = valueDate;
-    }
+	public Date getValueDate() {
+		return valueDate;
+	}
 
-    public Date getClosingDate() {
-        return closingDate;
-    }
+	public void setValueDate(Date valueDate) {
+		this.valueDate = valueDate;
+	}
 
-    public void setClosingDate(Date closingDate) {
-        this.closingDate = closingDate;
-    }
+	public Date getClosingDate() {
+		return closingDate;
+	}
 
-    public Integer getAddupOverdueDay() {
-        return addupOverdueDay;
-    }
+	public void setClosingDate(Date closingDate) {
+		this.closingDate = closingDate;
+	}
 
-    public void setAddupOverdueDay(Integer addupOverdueDay) {
-        this.addupOverdueDay = addupOverdueDay;
-    }
+	public Double getRemainCapitao() {
+		return remainCapitao;
+	}
 
-    public Double getAddupOverdueAmount() {
-        return addupOverdueAmount;
-    }
+	public void setRemainCapitao(Double remainCapitao) {
+		this.remainCapitao = remainCapitao;
+	}
 
-    public void setAddupOverdueAmount(Double addupOverdueAmount) {
-        this.addupOverdueAmount = addupOverdueAmount;
-    }
+	public Integer getAddupOverdueDay() {
+		return addupOverdueDay;
+	}
 
-    public String getReserver1() {
-        return reserver1;
-    }
+	public void setAddupOverdueDay(Integer addupOverdueDay) {
+		this.addupOverdueDay = addupOverdueDay;
+	}
 
-    public void setReserver1(String reserver1) {
-        this.reserver1 = reserver1;
-    }
+	public Double getAddupOverdueAmount() {
+		return addupOverdueAmount;
+	}
 
-    public String getReserver2() {
-        return reserver2;
-    }
+	public void setAddupOverdueAmount(Double addupOverdueAmount) {
+		this.addupOverdueAmount = addupOverdueAmount;
+	}
 
-    public void setReserver2(String reserver2) {
-        this.reserver2 = reserver2;
-    }
+	public String getReserver1() {
+		return reserver1;
+	}
 
-    public Date getReserver3() {
-        return reserver3;
-    }
+	public void setReserver1(String reserver1) {
+		this.reserver1 = reserver1;
+	}
 
-    public void setReserver3(Date reserver3) {
-        this.reserver3 = reserver3;
-    }
+	public String getReserver2() {
+		return reserver2;
+	}
 
-    public Date getReserver4() {
-        return reserver4;
-    }
+	public void setReserver2(String reserver2) {
+		this.reserver2 = reserver2;
+	}
 
-    public void setReserver4(Date reserver4) {
-        this.reserver4 = reserver4;
-    }
+	public Date getReserver3() {
+		return reserver3;
+	}
 
-    public Double getReserver5() {
-        return reserver5;
-    }
+	public void setReserver3(Date reserver3) {
+		this.reserver3 = reserver3;
+	}
 
-    public void setReserver5(Double reserver5) {
-        this.reserver5 = reserver5;
-    }
+	public Date getReserver4() {
+		return reserver4;
+	}
 
-    public Double getReserver6() {
-        return reserver6;
-    }
+	public void setReserver4(Date reserver4) {
+		this.reserver4 = reserver4;
+	}
 
-    public void setReserver6(Double reserver6) {
-        this.reserver6 = reserver6;
-    }
+	public Double getReserver5() {
+		return reserver5;
+	}
+
+	public void setReserver5(Double reserver5) {
+		this.reserver5 = reserver5;
+	}
+
+	public Double getReserver6() {
+		return reserver6;
+	}
+
+	public void setReserver6(Double reserver6) {
+		this.reserver6 = reserver6;
+	}
 }
