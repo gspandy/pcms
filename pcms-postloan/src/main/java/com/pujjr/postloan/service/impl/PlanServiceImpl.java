@@ -135,8 +135,10 @@ public class PlanServiceImpl implements IPlanService {
 			break;
 		}
 //		1、获取第1期至当前还款周期还款计划
-		List<RepayPlan> repayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, currPeriod);
-//		System.out.println("合并前repayPlanList："+JSONObject.toJSONString(repayPlanList));
+		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
+		if(currPeriod >= 1){
+			repayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, currPeriod);
+		}
 //		2、生成当期后还款计划，合并
 		List<RepayPlan> repayPlanListAfter = rsp.getRepayPlanList();
 		for (RepayPlan repayPlan : repayPlanListAfter) {
@@ -145,7 +147,6 @@ public class PlanServiceImpl implements IPlanService {
 			repayPlan.setPeriod(repayPlan.getPeriod() + currPeriod);
 			repayPlanList.add(repayPlan);
 		}
-//		System.out.println("合并后repayPlanList："+JSONObject.toJSONString(repayPlanList));
 		return repayPlanList;
 	}
 
@@ -211,5 +212,36 @@ public class PlanServiceImpl implements IPlanService {
 		}
 		System.out.println("repayPlanListNew:"+repayPlanListNew);
 		return repayPlanListNew;
+	}
+
+	@Override
+	public List<RepayPlan> selectRefreshRepayPlanListExtendPeriod(String appId, double fianceAmt, double monthRate,
+			int period, Date valueDate, Enum eInterestMode, int currPeriod) {
+		RepaySchedulePo rsp = new RepaySchedulePo();
+		switch(eInterestMode.name()){
+		case "CPM":
+			rsp = interestAlgorithmImpl.cpmInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "CONST":
+			rsp = interestAlgorithmImpl.constInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "ONETIME":
+			rsp = interestAlgorithmImpl.onetimeInterest(fianceAmt, monthRate, period, valueDate);
+			break;
+		case "MONTLY":
+			rsp = interestAlgorithmImpl.monthlyIntetrest(fianceAmt, monthRate, period, valueDate);
+			break;
+		}
+//		1、获取第1期至当前还款周期还款计划
+		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
+//		2、生成当期后还款计划
+		List<RepayPlan> repayPlanListAfter = rsp.getRepayPlanList();
+		for (RepayPlan repayPlan : repayPlanListAfter) {
+			repayPlan.setId(Utils.get16UUID());
+			repayPlan.setAppId(appId);
+			repayPlan.setPeriod(repayPlan.getPeriod() + currPeriod);
+			repayPlanList.add(repayPlan);
+		}
+		return repayPlanList;
 	}
 }

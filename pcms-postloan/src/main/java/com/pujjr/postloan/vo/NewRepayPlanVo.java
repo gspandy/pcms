@@ -33,6 +33,7 @@ public class NewRepayPlanVo
 	public void setRepayCapital(double repayCapital) {
 		this.repayCapital = repayCapital;
 	}
+	
 	public double getRepayCnterest() {
 		return repayCnterest;
 	}

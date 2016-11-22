@@ -1,6 +1,11 @@
 package com.pujjr.postloan.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.ApplyExtendPeriod;
+import com.pujjr.postloan.vo.SettleTaskVo;
 
 public interface ApplyExtendPeriodMapper {
     int deleteByPrimaryKey(String id);
@@ -14,4 +19,7 @@ public interface ApplyExtendPeriodMapper {
 	int updateByPrimaryKeySelective(ApplyExtendPeriod record);
 
 	int updateByPrimaryKey(ApplyExtendPeriod record);
+	
+	ApplyExtendPeriod selectByProcInstId(String procInstId);
+	
 }

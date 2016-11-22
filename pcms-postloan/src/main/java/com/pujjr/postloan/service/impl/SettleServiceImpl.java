@@ -247,6 +247,7 @@ public class SettleServiceImpl implements ISettleService{
 						waitingCharge.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount() + intervalFine);
 						wcn.setId(Utils.get16UUID());
 						wcn.setApplyType(LoanApplyTaskType.Settle.getName());//提前结清
+						wcn.setApplyRefId(businessKey);
 						wcn.setAppId(appId);
 						wcn.setFeeType(waitingCharge.getFeeType());
 						wcn.setPeriod(repayPlan.getPeriod());
@@ -264,6 +265,7 @@ public class SettleServiceImpl implements ISettleService{
 						waitingCharge.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount());
 						wcn.setId(Utils.get16UUID());
 						wcn.setApplyType(LoanApplyTaskType.Settle.getName());//提前结清
+						wcn.setApplyRefId(businessKey);
 						wcn.setAppId(appId);
 						wcn.setFeeType(waitingCharge.getFeeType());
 						wcn.setPeriod(repayPlan.getPeriod());
@@ -291,6 +293,7 @@ public class SettleServiceImpl implements ISettleService{
 				WaitingChargeNew wcn = new WaitingChargeNew();
 				wcn.setId(Utils.get16UUID());
 				wcn.setApplyType(LoanApplyTaskType.Settle.getName());//提前结清
+				wcn.setApplyRefId(businessKey);
 				wcn.setAppId(appId);
 				wcn.setFeeType(waitingCharge.getFeeType());
 //				wcn.setPeriod(repayPlan.getPeriod());
@@ -339,6 +342,7 @@ public class SettleServiceImpl implements ISettleService{
 			WaitingChargeNew wcn = new WaitingChargeNew();
 			wcn.setId(Utils.get16UUID());
 			wcn.setApplyType(LoanApplyTaskType.Settle.getName());//提前结清
+			wcn.setApplyRefId(businessKey);
 			wcn.setAppId(appId);
 			wcn.setFeeType(FeeType.Plan.getName());
 			wcn.setPeriod(repayPlan.getPeriod());
