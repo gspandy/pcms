@@ -268,4 +268,12 @@
       PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+   <select id="selectByProcInstId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_apply_extend_period
+    where PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+  </select>
+  
 </mapper>

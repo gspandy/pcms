@@ -1,5 +1,6 @@
 package com.pujjr.postloan.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public interface IExtendPeriodService
 	 * 	appId-申请单号
 	 * 返回：展期各项费用金额
 	 * **/
-	public ExtendPeriodFeeItemVo getExtendPeriodFeeItem(String appId);
+	public ExtendPeriodFeeItemVo getExtendPeriodFeeItem(String appId,int extendPeriod);
 	/**
 	 * 功能：提交展期申请
 	 * 参数：
@@ -31,35 +32,39 @@ public interface IExtendPeriodService
 	 * 	vo-展期申请要素
 	 * 返回：无
 	 * **/
-	public void commitApplyExtendPeriodTask(String appId,ApplyExtendPeriodVo vo);
+	public void commitApplyExtendPeriodTask(String operId,String appId,ApplyExtendPeriodVo vo);
 	/**
 	 * 功能：提交审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveExtendPeriodTask(String taskId,ApproveResultVo vo);
+	public void commitApproveExtendPeriodTask(String operId,String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：提交减免审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveRemissionTask(String taskId,ApproveResultVo vo);
+	public void commitApproveRemissionTask(String operId,String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：提交确认展期申请
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-减免费项
+	 * @throws Exception 
 	 * **/
-	public void commitApplyConfirmExtendPeriodTask(String taskId,RemissionFeeItemVo vo);
+	public void commitApplyConfirmExtendPeriodTask(String operId,String taskId,RemissionFeeItemVo vo) throws Exception;
 	/**
 	 * 功能：提交确认入账
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitConfirmExtendPeriodTask(String taskId,ApproveResultVo vo);
+	public void commitConfirmExtendPeriodTask(String operId,String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：取消结清任务
 	 * 参数：
@@ -87,4 +92,14 @@ public interface IExtendPeriodService
 	 * 功能：删除展期申请信息
 	 * **/
 	public void deleteApplyExtendPeriodInfoById(String id);
+	/**
+	 * tom 2016年11月22日
+	 * @param currDate 当前日期
+	 * @param lastRepayDate 原最后一期还款日
+	 * @param currPeriod 当前还款周期数
+	 * @param lastPeriod 原还款计划最后一期周期数
+	 * @param extendPeriod 展期数
+	 * @return 展期费天数
+	 */
+	public long getLastDateInterval(Date currDate,Date lastRepayDate,int currPeriod,int lastPeriod,int extendPeriod);
 }

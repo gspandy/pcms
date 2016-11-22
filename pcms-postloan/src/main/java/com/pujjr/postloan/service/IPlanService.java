@@ -17,6 +17,20 @@ import com.pujjr.postloan.vo.RepayScheduleVo;
 @Service
 public interface IPlanService {
 	
+	/**
+	 * 获取预刷新后还款计划(展期，指定计息方式)
+	 * tom 2016年11月17日
+	 * @param appId 申请单号
+	 * @param fianceAmt 本金
+	 * @param monthRate 月利率
+	 * @param period 计息期数
+	 * @param valueDate 起息日（首期）
+	 * @param eInterestMode 计息方式
+	 * @param startPeriod 当期还款周期(新还款计划第一期周期数：startPeriod+1)
+	 * @return
+	 */
+	public List<RepayPlan> selectRefreshRepayPlanListExtendPeriod(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);
+	
 	/**获取预刷新后还款计划（全额提前结清）
 	 * tom 2016年11月21日
 	 * @param appId
@@ -35,7 +49,6 @@ public interface IPlanService {
 	 * @param monthRate 月利率
 	 * @param period 计息期数
 	 * @param valueDate 起息日（首期）
-	 * @param eInterestMode 计息方式
 	 * @param startPeriod 当期还款周期
 	 * @return
 	 */
@@ -51,7 +64,7 @@ public interface IPlanService {
 	 * @param period 计息期数
 	 * @param valueDate 起息日（首期）
 	 * @param eInterestMode 计息方式
-	 * @param startPeriod 当期还款周期
+	 * @param startPeriod 当期还款周期(新还款计划第一期周期数：startPeriod+1)
 	 * @return
 	 */
 	public List<RepayPlan> selectRefreshRepayPlanList(String appId,double fianceAmt,double monthRate,int period,Date valueDate,Enum eInterestMode,int currPeriod);

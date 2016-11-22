@@ -298,4 +298,10 @@
   	and FEE_TYPE = #{feeType}
   	order by VALUE_DATE
   </select>
+  
+  <delete id="deleteByAppId" parameterType="java.lang.String">
+    delete from t_waiting_charge_new
+    where APP_ID = #{appId,jdbcType=VARCHAR}
+  </delete>
+  
 </mapper>
