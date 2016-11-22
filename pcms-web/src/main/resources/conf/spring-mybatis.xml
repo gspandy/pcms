@@ -25,7 +25,7 @@
 	<context:component-scan base-package="com.pujjr.file.dao.impl,com.pujjr.file.service.impl"/>
 	<context:component-scan base-package="com.pujjr.carcredit.exthandle"/>
 	<context:component-scan base-package="com.pujjr.push.service.impl,com.pujjr.push.config,com.pujjr.push.handler,com.pujjr.push.intercepter"/>
-	<context:component-scan base-package="com.pujjr.postloan.service,com.pujjr.postloan.service.impl"/>
+	<context:component-scan base-package="com.pujjr.postloan.service,com.pujjr.postloan.service.impl,com.pujjr.postloan.exthandle"/>
 	<!-- 引入配置文件 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

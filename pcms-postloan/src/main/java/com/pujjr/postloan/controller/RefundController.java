@@ -26,7 +26,7 @@ import com.pujjr.postloan.vo.RefundTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 @RestController
 @RequestMapping(value="/refund")
-public class RefuncController extends BaseController 
+public class RefundController extends BaseController 
 {
 	@Autowired
 	private IRefundService refundService;

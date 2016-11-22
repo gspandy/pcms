@@ -13,13 +13,13 @@ public class ApplyRemissionVo
 	//减免日期
 	private Date remissionDate;
 	//减免项
-	private RemissionFeeItemVo feeItemVo;
+	private RemissionFeeItemVo remissionFeeItemVo;
 	
-	public RemissionFeeItemVo getFeeItemVo() {
-		return feeItemVo;
+	public RemissionFeeItemVo getRemissionFeeItemVo() {
+		return remissionFeeItemVo;
 	}
-	public void setFeeItemVo(RemissionFeeItemVo feeItemVo) {
-		this.feeItemVo = feeItemVo;
+	public void setRemissionFeeItemVo(RemissionFeeItemVo remissionFeeItemVo) {
+		this.remissionFeeItemVo = remissionFeeItemVo;
 	}
 	public String getApplyComment() {
 		return applyComment;

@@ -137,7 +137,7 @@ public class ScheduleService
 		{
 			String appId = item.getAppId();
 			double stayAmount = item.getStayAmount();
-			accountingService.repayReverseAccounting(appId, stayAmount, curDate, RepayMode.StayAccounting.getName());
+			accountingService.repayReverseAccounting(appId, stayAmount, curDate, RepayMode.StayAccounting.getName(),null);
 		}
 		System.out.println("结束日切处理");
 	}

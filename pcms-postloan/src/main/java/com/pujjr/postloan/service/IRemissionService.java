@@ -28,16 +28,18 @@ public interface IRemissionService
 	 * 参数：
 	 * 	appId-减免申请单编号
 	 * 	vo-减免申请要素
+	 * operId - 申请人
 	 * 返回：无
 	 * **/
-	public void commitApplyRemissionTask(String appId,ApplyRemissionVo vo);
+	public void commitApplyRemissionTask(String appId,ApplyRemissionVo vo,String operId);
 	/**
 	 * 功能：提交审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveRemissionTask(String taskId,ApproveResultVo vo);
+	public void commitApproveRemissionTask(String taskId,ApproveResultVo vo) throws Exception;
 	/**
 	 * 功能：取消减免任务
 	 * 参数：

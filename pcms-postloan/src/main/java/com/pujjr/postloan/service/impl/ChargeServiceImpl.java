@@ -365,7 +365,7 @@ public class ChargeServiceImpl implements IChargeService {
 						throw new Exception(orderNo+"原始扣款金额与回盘金额不一致");
 					}
 					//冲账处理
-					accountingService.repayReverseAccounting(chargeLog.getAppId(), tranAmt, chargeLog.getTranDate(), RepayMode.UnionFile.getName());
+					accountingService.repayReverseAccounting(chargeLog.getAppId(), tranAmt, chargeLog.getTranDate(), RepayMode.UnionFile.getName(),null);
 				}
 				
 				/**获取扣款对应的报盘信息，完成如下信息更新

@@ -350,7 +350,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		repayLogDao.insert(repayLog);
 	}
 	@Override
-	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode) 
+	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode,ChargeItem chargeItem) 
 	{
 		/**
 		 * 冲其他费用
@@ -363,7 +363,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			double otherFeeCapital = otherFeeItem.getRepayCapital();
 			double otherFeeOverdueAmt = otherFeeItem.getRepayOverdueAmount();
 			//先冲罚息
-			if(repayAmount>0)
+			if(repayAmount>0 && (chargeItem == null || chargeItem.equals(ChargeItem.OTHEROVERDUEAMT)))
 			{
 				if(otherFeeOverdueAmt>0)
 				{
@@ -383,7 +383,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 			}
 			//再冲本金
-			if(repayAmount>0)
+			if(repayAmount>0 && (chargeItem == null || chargeItem.equals(ChargeItem.OTHERFEE)))
 			{
 				if(otherFeeCapital>0)
 				{
@@ -433,7 +433,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			double interest = planItem.getRepayInterest();
 			double overdueAmt = planItem.getRepayOverdueAmount();
 			//先冲罚息
-			if(repayAmount>0)
+			if(repayAmount>0  && (chargeItem == null || chargeItem.equals(ChargeItem.OVERDUEAMT)))
 			{
 				if(overdueAmt>0)
 				{
@@ -453,7 +453,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 			}
 			//再冲利息
-			if(repayAmount>0)
+			if(repayAmount>0  && (chargeItem == null || chargeItem.equals(ChargeItem.INTEREST)))
 			{
 				if(interest>0)
 				{
@@ -473,7 +473,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			}
 			//再冲本金
 			
-			if(repayAmount>0)
+			if(repayAmount>0  && (chargeItem == null || chargeItem.equals(ChargeItem.CAPITAL)))
 			{
 				
 				if(capital>0)

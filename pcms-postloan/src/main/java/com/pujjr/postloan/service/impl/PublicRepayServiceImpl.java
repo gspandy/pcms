@@ -130,7 +130,7 @@ public class PublicRepayServiceImpl implements IPublicRepayService {
 		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
 		{
 			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
-			accountingService.repayReverseAccounting(po.getAppId(), po.getChargeAmount(), po.getChargeDate(), RepayMode.PublicRepay.getName());
+			accountingService.repayReverseAccounting(po.getAppId(), po.getChargeAmount(), po.getChargeDate(), RepayMode.PublicRepay.getName(),null);
 		}
 		else
 		{
