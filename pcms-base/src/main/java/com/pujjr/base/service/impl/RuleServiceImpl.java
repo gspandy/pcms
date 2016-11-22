@@ -11,10 +11,12 @@ import com.pujjr.base.dao.RuleDealerMapper;
 import com.pujjr.base.dao.RuleFinanceAmountMapper;
 import com.pujjr.base.dao.RuleMemberTaskCntMapper;
 import com.pujjr.base.dao.RuleProductMapper;
+import com.pujjr.base.dao.RuleRemissionMapper;
 import com.pujjr.base.domain.RuleDealer;
 import com.pujjr.base.domain.RuleFinanceAmount;
 import com.pujjr.base.domain.RuleMemberTaskCnt;
 import com.pujjr.base.domain.RuleProduct;
+import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.po.WorkgroupRulePo;
 import com.pujjr.base.service.IRuleService;
 import com.pujjr.utils.Utils;
@@ -29,6 +31,8 @@ public class RuleServiceImpl implements IRuleService {
 	private RuleFinanceAmountMapper ruleFinanceAmountDao;
 	@Autowired
 	private RuleMemberTaskCntMapper ruleMemberTaskCntDao;
+	@Autowired
+	private RuleRemissionMapper ruleRemissionDao;
 	
 	@Override
 	public WorkgroupRulePo getWorkgroupRule(String workgroupId) {
@@ -104,6 +108,18 @@ public class RuleServiceImpl implements IRuleService {
 			ruleMemberTaskCntDao.insert(record);
 		}
 		
+	}
+	@Override
+	public void addWorkgroupRemissionRule(String workgroupId, RuleRemission record) {
+		// TODO Auto-generated method stub
+		record.setWorkgroupId(workgroupId);
+		record.setId(Utils.get16UUID());
+		ruleRemissionDao.insert(record);
+	}
+	@Override
+	public RuleRemission getWorkgroupRemissionRule(String workgroupId) {
+		// TODO Auto-generated method stub
+		return ruleRemissionDao.selectByWorkgroupId(workgroupId);
 	}
 
 }

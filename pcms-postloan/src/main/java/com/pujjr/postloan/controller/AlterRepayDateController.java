@@ -108,7 +108,7 @@ public class AlterRepayDateController extends BaseController
 	}
 	
 	@RequestMapping(value="/getApplyAlterRepayDateTaskList",method=RequestMethod.GET)
-	public PageVo getApplyAlterRepayDateTaskList(String settleType,QueryParamPageVo param,HttpServletRequest request)
+	public PageVo getApplyAlterRepayDateTaskList(QueryParamPageVo param,HttpServletRequest request)
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);

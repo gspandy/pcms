@@ -9,6 +9,7 @@ import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.domain.RuleDealer;
 import com.pujjr.base.domain.RuleFinanceAmount;
 import com.pujjr.base.domain.RuleProduct;
+import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.po.WorkgroupRulePo;
 @Service
 public interface IRuleService 
@@ -24,4 +25,8 @@ public interface IRuleService
 	public void saveWorkgroupRule(String workgroupId,WorkgroupRulePo po);
 	
 	public void batchSetAssigneeTaskCnt(String workgroupId,int maxAssigneeTaskCnt,List<String> accountIds);
+	
+	public void addWorkgroupRemissionRule(String workgroupId,RuleRemission record);
+	
+	public RuleRemission getWorkgroupRemissionRule(String workgroupId);
 }

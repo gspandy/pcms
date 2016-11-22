@@ -141,7 +141,13 @@
   </update>
   <select id="selectByApplyId" resultMap="BaseResultMap">
   	select * from t_remission_item
-  	where APPLY_TYPE = #{applyType}
-  	and APPLY_REF_ID  = #{applyId}
+  	where 1=1
+  	<if test="applyType != null and applyType!=''">
+  		and  APPLY_TYPE = #{applyType}
+  	</if>
+  	<if test="applyId != null and applyId!=''">
+  	  	and APPLY_REF_ID  = #{applyId}
+  	</if>
+
   </select>
 </mapper>
