@@ -190,8 +190,16 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		applyExtendPeriod.setCreateDate(Utils.getDate());
 		applyExtendPeriodMapper.insert(applyExtendPeriod);
 		
-		//2、删除新代扣明细表对应appId代扣记录
-		waitingChargeNewMapper.deleteByAppId(appId);
+		//2、新代扣明细表对应appId代扣记录,代扣金额置为0
+//		waitingChargeNewMapper.deleteByAppId(appId);
+		List<WaitingChargeNew> wcnList = waitingChargeNewMapper.selectListByAppId(appId);
+		for (WaitingChargeNew waitingChargeNew : wcnList) {
+			waitingChargeNew.setRepayCapital(0.00);
+			waitingChargeNew.setRepayInterest(0.00);
+			waitingChargeNew.setRepayOverdueAmount(0.00);
+			waitingChargeNew.setDoSettle(true);
+			waitingChargeNewMapper.updateByPrimaryKeySelective(waitingChargeNew);
+		}
 		//3、新还款计划入代扣明细表
 		List<NewRepayPlanVo> repayPlanList = vo.getRepayPlanList();
 		for (NewRepayPlanVo newRepayPlanVo : repayPlanList) {
