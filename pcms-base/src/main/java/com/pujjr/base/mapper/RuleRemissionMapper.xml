@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.RuleRemissionMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleRemission" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="MAX_CAPITAL" property="maxCapital" jdbcType="DOUBLE" />
+    <result column="MAX_INTEREST" property="maxInterest" jdbcType="DOUBLE" />
+    <result column="MAX_OVERDUE_AMT" property="maxOverdueAmt" jdbcType="DOUBLE" />
+    <result column="MAX_OTHER_FEE" property="maxOtherFee" jdbcType="DOUBLE" />
+    <result column="MAX_LATE_FEE" property="maxLateFee" jdbcType="DOUBLE" />
+    <result column="RESERVER1" property="reserver1" jdbcType="DOUBLE" />
+    <result column="RESERVER2" property="reserver2" jdbcType="DOUBLE" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DOUBLE" />
+    <result column="RESERVER4" property="reserver4" jdbcType="VARCHAR" />
+    <result column="RESERVER5" property="reserver5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKGROUP_ID, MAX_CAPITAL, MAX_INTEREST, MAX_OVERDUE_AMT, MAX_OTHER_FEE, MAX_LATE_FEE, 
+    RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rule_remission
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_rule_remission
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleRemission" >
+    insert into t_rule_remission (ID, WORKGROUP_ID, MAX_CAPITAL, 
+      MAX_INTEREST, MAX_OVERDUE_AMT, MAX_OTHER_FEE, 
+      MAX_LATE_FEE, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4, RESERVER5
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{maxCapital,jdbcType=DOUBLE}, 
+      #{maxInterest,jdbcType=DOUBLE}, #{maxOverdueAmt,jdbcType=DOUBLE}, #{maxOtherFee,jdbcType=DOUBLE}, 
+      #{maxLateFee,jdbcType=DOUBLE}, #{reserver1,jdbcType=DOUBLE}, #{reserver2,jdbcType=DOUBLE}, 
+      #{reserver3,jdbcType=DOUBLE}, #{reserver4,jdbcType=VARCHAR}, #{reserver5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleRemission" >
+    insert into t_rule_remission
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+      <if test="maxCapital != null" >
+        MAX_CAPITAL,
+      </if>
+      <if test="maxInterest != null" >
+        MAX_INTEREST,
+      </if>
+      <if test="maxOverdueAmt != null" >
+        MAX_OVERDUE_AMT,
+      </if>
+      <if test="maxOtherFee != null" >
+        MAX_OTHER_FEE,
+      </if>
+      <if test="maxLateFee != null" >
+        MAX_LATE_FEE,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="maxCapital != null" >
+        #{maxCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInterest != null" >
+        #{maxInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="maxOverdueAmt != null" >
+        #{maxOverdueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="maxOtherFee != null" >
+        #{maxOtherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxLateFee != null" >
+        #{maxLateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleRemission" >
+    update t_rule_remission
+    <set >
+      <if test="workgroupId != null" >
+        WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="maxCapital != null" >
+        MAX_CAPITAL = #{maxCapital,jdbcType=DOUBLE},
+      </if>
+      <if test="maxInterest != null" >
+        MAX_INTEREST = #{maxInterest,jdbcType=DOUBLE},
+      </if>
+      <if test="maxOverdueAmt != null" >
+        MAX_OVERDUE_AMT = #{maxOverdueAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="maxOtherFee != null" >
+        MAX_OTHER_FEE = #{maxOtherFee,jdbcType=DOUBLE},
+      </if>
+      <if test="maxLateFee != null" >
+        MAX_LATE_FEE = #{maxLateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleRemission" >
+    update t_rule_remission
+    set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      MAX_CAPITAL = #{maxCapital,jdbcType=DOUBLE},
+      MAX_INTEREST = #{maxInterest,jdbcType=DOUBLE},
+      MAX_OVERDUE_AMT = #{maxOverdueAmt,jdbcType=DOUBLE},
+      MAX_OTHER_FEE = #{maxOtherFee,jdbcType=DOUBLE},
+      MAX_LATE_FEE = #{maxLateFee,jdbcType=DOUBLE},
+      RESERVER1 = #{reserver1,jdbcType=DOUBLE},
+      RESERVER2 = #{reserver2,jdbcType=DOUBLE},
+      RESERVER3 = #{reserver3,jdbcType=DOUBLE},
+      RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      RESERVER5 = #{reserver5,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByWorkgroupId" resultMap="BaseResultMap">
+  	select * from t_rule_remission where WORKGROUP_ID = #{workgroupId}
+  </select>
+</mapper>

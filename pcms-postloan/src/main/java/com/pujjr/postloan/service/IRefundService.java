@@ -8,6 +8,7 @@ import com.pujjr.postloan.domain.ApplyRefund;
 import com.pujjr.postloan.vo.ApplyRefundVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.postloan.vo.RefundTaskVo;
+import com.pujjr.postloan.vo.RepayFeeItemVo;
 
 
 /**
@@ -17,20 +18,35 @@ import com.pujjr.postloan.vo.RefundTaskVo;
 public interface IRefundService 
 {
 	/**
+	 * 功能：查询挂账费项信息
+	 * @param appId 申请单编号
+	 * @return
+	 */
+	public RepayFeeItemVo getRefundFeeItem(String appId);
+	/**
 	 * 功能：提交退款申请
 	 * 参数：
 	 * 	appId-退款申请单编号
 	 * 	vo-退款申请要素
+	 *  operId-任务申请人
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplyRefundTask(String appId,ApplyRefundVo vo);
+	public void commitApplyRefundTask(String appId,ApplyRefundVo vo,String operId) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：
 	 * 	taskId-任务ID
 	 * 	vo-审批结果
+	 * @throws Exception 
 	 * **/
-	public void commitApproveRefundTask(String taskId,ApproveResultVo vo);
+	public void commitApproveRefundTask(String taskId,ApproveResultVo vo) throws Exception;
+	/**功能：
+	 * 提交财务确认退款
+	 * @param taskId
+	 * @throws Exception 
+	 */
+	public void commitConfirmRefundTask(String taskId) throws Exception;
 	/**
 	 * 功能：取消退款任务
 	 * 参数：

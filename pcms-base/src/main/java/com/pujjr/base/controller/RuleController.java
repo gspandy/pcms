@@ -19,6 +19,7 @@ import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.base.domain.RuleFinanceAmount;
 import com.pujjr.base.domain.RuleProduct;
+import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.po.WorkgroupRulePo;
 import com.pujjr.base.service.IRuleService;
@@ -90,5 +91,34 @@ public class RuleController extends BaseController
 			accountIds.add(account.getId());
 		}
 		ruleService.batchSetAssigneeTaskCnt(workgroupId, maxAssigneeTaskCnt, accountIds);
+	}
+	
+	@RequestMapping(value="/saveWorkgroupRuleRemission/{workgroupId}",method=RequestMethod.POST)
+	public void saveWorkgroupRuleRemission(@PathVariable String workgroupId,@RequestBody RuleRemission record)
+	{
+		ruleService.addWorkgroupRemissionRule(workgroupId, record);
+	}
+	
+	@RequestMapping(value="/getWorkgroupRuleRemission/{workgroupId}",method=RequestMethod.GET)
+	public RuleRemission getWorkgroupRuleRemission(@PathVariable String workgroupId)
+	{
+		return ruleService.getWorkgroupRemissionRule(workgroupId);
+	}
+	
+	@RequestMapping(value="/getParentWorkgroupRuleRemission/{workgroupId}",method=RequestMethod.GET)
+	public RuleRemission getParentWorkgroupRuleRemission(@PathVariable String workgroupId)
+	{
+		SysWorkgroup workgroup = workgroupService.getWorkgroupById(workgroupId);
+		RuleRemission parentRule = ruleService.getWorkgroupRemissionRule(workgroup.getParentId());
+		if(parentRule ==null)
+		{
+			parentRule = new RuleRemission();
+			parentRule.setMaxCapital(10000000.00);
+			parentRule.setMaxInterest(10000000.00);
+			parentRule.setMaxLateFee(10000000.00);
+			parentRule.setMaxOverdueAmt(10000000.00);
+			parentRule.setMaxLateFee(10000000.00);
+		}
+		return parentRule;
 	}
 }

@@ -212,7 +212,7 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 		//4、根据审批结果执行相关操作
 		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
 		{
-			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
+			po.setApplyStatus(LoanApplyStatus.WaitingConfirm.getName());
 		}
 		else
 		{
