@@ -61,13 +61,13 @@ public class PlanServiceImpl implements IPlanService {
 //			rsp = new InterestAlgorithmImpl().monthlyIntetrest(fianceAmt, monthRate, period, valueDate);
 			break;
 		}
-		/*List<RepayPlan> repayPlanList = rsp.getRepayPlanList();
+		List<RepayPlan> repayPlanList = rsp.getRepayPlanList();
 		for (RepayPlan repayPlan : repayPlanList) {
 			repayPlan.setId(Utils.get16UUID());
 			repayPlan.setAppId(appId);
 			repayPlan.setRepayStatus(RepayStatus.Repaying.getName());
 			repayPlanMapper.insert(repayPlan);
-		}*/
+		}
 	}
 
 	@Override
