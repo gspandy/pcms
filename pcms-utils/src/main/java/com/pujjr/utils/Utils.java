@@ -188,7 +188,7 @@ public class Utils {
 	}
 	
 	/**
-	 * 双精度浮点数转制定格式双进度浮点数
+	 * 双精度浮点数转指定格式双精度浮点数
 	 * tom 2016年11月2日
 	 * @param number 数据源
 	 * @param scale 小数位数
