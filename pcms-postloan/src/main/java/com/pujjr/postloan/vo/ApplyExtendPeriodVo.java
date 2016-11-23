@@ -3,6 +3,8 @@ package com.pujjr.postloan.vo;
 import java.util.Date;
 import java.util.List;
 
+import com.pujjr.postloan.domain.RemissionItem;
+
 /**
  * 申请展期要素
  * **/
@@ -20,9 +22,17 @@ public class ApplyExtendPeriodVo
 	private String newRepayMode;
 	//展期费项
 	private ExtendPeriodFeeItemVo feeItem;
+	//减免费用
+	private RemissionItem remissionFeeItemVo;
 	//申请有效截止日期
 	private Date applyEndDate;
 	
+	public RemissionItem getRemissionFeeItemVo() {
+		return remissionFeeItemVo;
+	}
+	public void setRemissionFeeItemVo(RemissionItem remissionFeeItemVo) {
+		this.remissionFeeItemVo = remissionFeeItemVo;
+	}
 	public Date getApplyEndDate() {
 		return applyEndDate;
 	}

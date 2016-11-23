@@ -49,7 +49,7 @@ public class ExtendPeriodController
 		extendPeriodImpl.commitApproveExtendPeriodTask(account.getAccountId(), taskId, vo);
 	}
 	
-	@RequestMapping(value="/commitApproveRemissionTask{taskId}",method=RequestMethod.POST)
+	@RequestMapping(value="/commitApproveRemissionTask/{taskId}",method=RequestMethod.POST)
 	public void commitApproveRemissionTask(@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
@@ -63,10 +63,10 @@ public class ExtendPeriodController
 	}
 	
 	@RequestMapping(value="/commitConfirmExtendPeriodTask/{taskId}",method=RequestMethod.POST)
-	public void commitConfirmExtendPeriodTask(@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo,HttpServletRequest request) throws Exception
+	public void commitConfirmExtendPeriodTask(@PathVariable("taskId") String taskId,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
-		extendPeriodImpl.commitConfirmExtendPeriodTask(account.getAccountId(), taskId, vo);
+		extendPeriodImpl.commitConfirmExtendPeriodTask(account.getAccountId(), taskId, null);
 	}
 	
 	@RequestMapping(value="/cancelExtendPeriodTask/{taskId}/{operId}/{cancelComment}",method=RequestMethod.POST)

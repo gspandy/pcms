@@ -622,6 +622,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		double remissionOverdueAmt = 0.00;
 		double remissionOtherFee = 0.00;
 		double remissionOtherOverdueAmt = 0.00;
+		double remissionLateFee = 0.00;
+		Date remissionDate = new Date();
 		RemissionItem remissionItem = remissionItemDao.selectByApplyId(applyType.getName(), applyId);
 		if(remissionItem!=null)
 		{
@@ -630,6 +632,8 @@ public class AccountingServiceImpl implements IAccountingService {
 			remissionOverdueAmt = remissionItem.getOverdueAmount();
 			remissionOtherFee = remissionItem.getOtherFee();
 			remissionOtherOverdueAmt = remissionItem.getOtherOverdueAmount();
+			remissionLateFee = remissionItem.getLateFee();
+			remissionDate = remissionItem.getRemissionDate();
 		}
 		/**
 		 * 第一步获取新代扣明细表其他费用
@@ -990,7 +994,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			}
 		}
 		
-		/*************************************************修改总账相关数据***********************************************************/
+		/*************************************************修改总账相关数据,执行一些后续处理***********************************************************/
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 		if(applyType.equals(LoanApplyTaskType.Settle))
 		{
