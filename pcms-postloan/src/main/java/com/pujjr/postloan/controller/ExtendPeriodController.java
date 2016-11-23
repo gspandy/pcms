@@ -64,7 +64,7 @@ public class ExtendPeriodController
 	@RequestMapping(value="/commitApplyConfirmExtendPeriodTask/{operId}/{taskId}",method=RequestMethod.POST)
 	public void commitApplyConfirmExtendPeriodTask(@PathVariable("operId") String operId,@PathVariable("taskId") String taskId,@RequestBody RemissionFeeItemVo vo) throws Exception
 	{
-		extendPeriodImpl.commitApplyConfirmExtendPeriodTask(operId, taskId, vo);
+		extendPeriodImpl.commitApplyConfirmExtendPeriodTask(taskId, vo);
 	}
 	
 	@RequestMapping(value="/commitConfirmExtendPeriodTask/{operId}/{taskId}",method=RequestMethod.POST)

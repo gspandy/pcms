@@ -30,7 +30,9 @@ import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.dao.ApplyExtendPeriodMapper;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.RemissionItemMapper;
+import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.dao.WaitingChargeNewMapper;
 import com.pujjr.postloan.domain.ApplyAlterRepayDate;
@@ -38,6 +40,7 @@ import com.pujjr.postloan.domain.ApplyExtendPeriod;
 import com.pujjr.postloan.domain.ApplyRemission;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.GeneralLedger;
+import com.pujjr.postloan.domain.OtherFee;
 import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
@@ -95,7 +98,10 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	private RuntimeService runtimeService;
 	@Autowired
 	private IRuleService ruleService;
-	
+	@Autowired
+	private RepayPlanMapper repayPlanMapper;
+	@Autowired
+	private OtherFeeMapper otherFeeMapper;
 	@Override
 	public long getLastDateInterval(Date currDate,Date lastRepayDate,int currPeriod,int lastPeriod,int extendPeriod){
 		int newEndPeriod = lastPeriod + extendPeriod;
@@ -133,7 +139,8 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		//当期
 		double currCaptital = currRepayPlan.getRepayCapital();
 		double currInterest = currRepayPlan.getRepayInterest();
-		double remainCapital = currRepayPlan.getRemainCapital();//剩余本金
+		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, currDate, false, true);
+		double remainCapital = repayFeeItemVo.getRemainCapital();//剩余本金
 		int currPeriod = currRepayPlan.getPeriod();
 		//代扣明细表：其他费用汇总
 		double otherCapital = 0.00;
@@ -160,24 +167,32 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		ev.setNewCapital(newCapital);
 		ev.setNewOldInterest(newOldInterest);
 		ev.setExtendFee(extendFee);
-		ev.setOtherAmount(otherCapital + otherInterest + otherFine);
-		ev.setOtherOverdueAmount(otherFine);
+		
+//		ev.setOtherAmount(otherCapital + otherInterest + otherFine);
+		ev.setOtherAmount(repayFeeItemVo.getOtherAmount());
+//		ev.setOtherOverdueAmount(otherFine);
+		ev.setOtherOverdueAmount(repayFeeItemVo.getOtherOverdueAmount());
+		
 		ev.setRemainCapital(remainCapital);
-		ev.setRepayCapital(overDueCapital + currCaptital);
-		ev.setRepayInterest(overDueInterest + currInterest);
-		ev.setRepayOverdueAmount (overDueCapital + overDueInterest + overDueFine);
+		ev.setRepayCapital(repayFeeItemVo.getRepayCapital());
+		ev.setRepayInterest(repayFeeItemVo.getRepayInterest());
+		ev.setRepayOverdueAmount (repayFeeItemVo.getRepayOverdueAmount());
 		double stayAmount = accountingServiceImpl.getStayAmount(appId);//挂账金额
 		ev.setStayAmount(stayAmount);
 		ev.setRepayPlanList(repayPlanList);
 //		System.out.println("JSONObject.toJSONString(ev):"+JSONObject.toJSONString(ev));
+		
+		//double数据格式化
+		Utils.formateDoubleOfObject(ev, 2);
+		for (RepayPlan repayPlan : ev.getRepayPlanList()) {
+			Utils.formateDoubleOfObject(repayPlan, 2);
+		}
 		return ev;
 	}
 
 	@Override
 	public void commitApplyExtendPeriodTask(String operId,String appId, ApplyExtendPeriodVo vo) {
-		Map<String,Object> vars = new HashMap<String,Object>();
-		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
-		vars.put("appId", appId);
+		
 		//1、记录入申请表
 		ApplyExtendPeriod applyExtendPeriod = new ApplyExtendPeriod();
 		String businessKey = Utils.get16UUID();
@@ -203,40 +218,75 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		applyExtendPeriod.setCreateDate(Utils.getDate());
 		applyExtendPeriodMapper.insert(applyExtendPeriod);
 		
-		//2、新代扣明细表对应appId代扣记录,代扣金额置为0
-//		waitingChargeNewMapper.deleteByAppId(appId);
-		List<WaitingChargeNew> wcnList = waitingChargeNewMapper.selectListByAppId(appId);
-		for (WaitingChargeNew waitingChargeNew : wcnList) {
+		//2、待扣明细表逾期计划待扣款、其他费用待扣款----》新待扣明细表
+		List<WaitingCharge> waitingChargeListPlan = accountingServiceImpl.getWaitingChargeTypePlan(appId, false);
+		List<WaitingCharge> waitingChargeListOther = accountingServiceImpl.getWaitingChargeTypeOther(appId);
+		for (WaitingCharge waitingCharge : waitingChargeListPlan) {
+			WaitingChargeNew waitingChargeNew = new WaitingChargeNew();
+			waitingChargeNew.setId(Utils.get16UUID());
+			waitingChargeNew.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
+			waitingChargeNew.setApplyRefId(businessKey);
+			waitingChargeNew.setAppId(appId);
+			waitingChargeNew.setFeeType(FeeType.Plan.getName());
+			waitingChargeNew.setFeeRefId(waitingCharge.getFeeRefId());
+			waitingChargeNew.setDoSettle(true);
 			waitingChargeNew.setRepayCapital(0.00);
 			waitingChargeNew.setRepayInterest(0.00);
 			waitingChargeNew.setRepayOverdueAmount(0.00);
-			waitingChargeNew.setDoSettle(true);
-			waitingChargeNewMapper.updateByPrimaryKeySelective(waitingChargeNew);
+			RepayPlan repayPlan = repayPlanMapper.selectByPrimaryKey(waitingCharge.getFeeRefId());
+			waitingChargeNew.setValueDate(repayPlan.getValueDate());
+			waitingChargeNew.setClosingDate(repayPlan.getClosingDate());
+			waitingChargeNew.setAddupOverdueAmount(0.00);
+			waitingChargeNew.setAddupOverdueDay(repayPlan.getAddupOverdueDay());
+			waitingChargeNewMapper.insert(waitingChargeNew);
 		}
+		for (WaitingCharge waitingCharge : waitingChargeListOther) {
+			WaitingChargeNew waitingChargeNew = new WaitingChargeNew();
+			waitingChargeNew.setId(Utils.get16UUID());
+			waitingChargeNew.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
+			waitingChargeNew.setApplyRefId(businessKey);
+			waitingChargeNew.setAppId(appId);
+			waitingChargeNew.setFeeType(FeeType.Other.getName());
+			waitingChargeNew.setFeeRefId(waitingCharge.getFeeRefId());
+			waitingChargeNew.setDoSettle(true);
+			waitingChargeNew.setRepayCapital(0.00);
+			waitingChargeNew.setRepayInterest(0.00);
+			waitingChargeNew.setRepayOverdueAmount(0.00);
+			OtherFee otherFee = otherFeeMapper.selectByPrimaryKey(waitingCharge.getFeeRefId());
+			waitingChargeNew.setValueDate(otherFee.getValueDate());
+			waitingChargeNew.setClosingDate(otherFee.getClosingDate());
+			waitingChargeNew.setAddupOverdueAmount(0.00);
+			waitingChargeNew.setAddupOverdueDay(otherFee.getAddupOverdueDay());
+			waitingChargeNewMapper.insert(waitingChargeNew);
+		}
+		
 		//3、新还款计划入代扣明细表
-		List<NewRepayPlanVo> repayPlanList = vo.getRepayPlanList();
-		for (NewRepayPlanVo newRepayPlanVo : repayPlanList) {
+		List<RepayPlan> repayPlanList = vo.getFeeItem().getRepayPlanList();
+		for (RepayPlan repayPlan : repayPlanList) {
 			WaitingChargeNew wcn = new WaitingChargeNew();
-			BeanUtils.copyProperties(newRepayPlanVo, wcn);
+			BeanUtils.copyProperties(repayPlan, wcn);
 			wcn.setId(Utils.get16UUID());
 			wcn.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
 			wcn.setApplyRefId(businessKey);
 			wcn.setAppId(appId);
 			wcn.setFeeType(FeeType.Plan.getName());
 //			wcn.setFeeRefId("");//展期无关联费用id
-			wcn.setPeriod(newRepayPlanVo.getPeriod());
+			wcn.setPeriod(repayPlan.getPeriod());
 			wcn.setDoSettle(true);
-			wcn.setRepayCapital(newRepayPlanVo.getRepayCapital());
-			wcn.setRepayInterest(newRepayPlanVo.getRepayCnterest());
+			wcn.setRepayCapital(repayPlan.getRepayCapital());
+			wcn.setRepayInterest(repayPlan.getRepayInterest());
 			wcn.setRepayOverdueAmount(0.00);
-			wcn.setValueDate(newRepayPlanVo.getValueDate());
-			wcn.setClosingDate(newRepayPlanVo.getClosingDate());
+			wcn.setValueDate(repayPlan.getValueDate());
+			wcn.setClosingDate(repayPlan.getClosingDate());
 			wcn.setAddupOverdueDay(0);
 			wcn.setAddupOverdueAmount(0.00);
 			waitingChargeNewMapper.insert(wcn);
 		}
 		
 		//4、启动流程
+		Map<String,Object> vars = new HashMap<String,Object>();
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
+		vars.put("appId", appId);
 		ProcessInstance processInstance = runWorkflowServiceImpl.startProcess(ETaskTag.ZHANQI.getName(), businessKey, vars);
 		applyExtendPeriod.setProcInstId(processInstance.getProcessInstanceId());
 		applyExtendPeriodMapper.updateByPrimaryKeySelective(applyExtendPeriod);
@@ -404,15 +454,17 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	}
 
 	@Override
-	public void commitConfirmExtendPeriodTask(String operId,String taskId, ApproveResultVo vo) throws Exception {
+	public void commitConfirmExtendPeriodTask(String operId,String taskId, ApproveResultVo vo) throws Exception 
+	{
 		//1、检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
-		if (task == null) {
+		if (task == null) 
+		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
 		}
-		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
-				task.getTaskDefinitionKey());
-		if (runpath == null) {
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),task.getTaskDefinitionKey());
+		if (runpath == null) 
+		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
 		// 2、保存任务处理结果信息
@@ -421,22 +473,25 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		taskProcessResult.setRunPathId(runpath.getId());
 		taskProcessResult.setProcessResult(vo.getApproveResult());
 		// 建议通过
-		if (vo.getApproveResult().equals(TaskCommitType.PASS)) 
+		if (vo.getApproveResult().equals(TaskCommitType.LOAN_PASS)) 
 		{
 			taskProcessResult.setProcessResultDesc("通过");
 			ApplyExtendPeriod aep = applyExtendPeriodMapper.selectByProcInstId(task.getProcessInstanceId());
 			accountingServiceImpl.repayReverseAccountingUserNewWaitingChargeTable(aep.getId(), LoanApplyTaskType.ExtendPeriod, aep.getAppId());
 		} 
-		else{
+		else
+		{
 			taskProcessResult.setProcessResultDesc("拒绝");
 		}
 		taskProcessResult.setComment(vo.getApproveComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
 		taskProcessResultDao.insert(taskProcessResult);	
+		
 		//3、修改申请状态
 		ApplyExtendPeriod aep = applyExtendPeriodMapper.selectByProcInstId(task.getProcessInstanceId());
-		aep.setApplyStatus(vo.getApproveResult());
+		aep.setApplyStatus(LoanApplyStatus.Confirmed.getName());
 		applyExtendPeriodMapper.updateByPrimaryKeySelective(aep);
+		
 		//4、处理结果放入流程变量,完成任务
 		HashMap<String, Object> vars = new HashMap<String, Object>();
 		vars.put("approveProcessResult", vo.getApproveResult());
