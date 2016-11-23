@@ -1,5 +1,6 @@
 package com.pujjr.base.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +31,6 @@ public interface ProductMapper {
     int deleteBranchProduct(String branchId);
     
     Product selectProductByProductCode(@Param("productCode")String productCode);
+    
+    List<HashMap<String,Object>> getProductExtendPeriodList(@Param("productCode")String productCode,@Param("curPeriod")int curPeriod);
 }

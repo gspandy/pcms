@@ -275,4 +275,9 @@ public class ProductController  extends BaseController
 		return productService.getAllProductList();
 	}
 	
+	@RequestMapping(value="/getProductExtendPeriodList/{productCode}/{curPeriod}",method=RequestMethod.GET)
+	public List<HashMap<String,Object>> getProductExtendPeriodList(@PathVariable String productCode,@PathVariable int curPeriod)
+	{
+		return productService.getProductExtendPeriodList(productCode, curPeriod);
+	}
  }

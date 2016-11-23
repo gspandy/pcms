@@ -634,7 +634,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 第一步获取新代扣明细表其他费用
 		 * **/
-		List<WaitingChargeNew> otherNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Other.getName());
+		List<WaitingChargeNew> otherNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Other.getName(),true);
 		for(WaitingChargeNew item : otherNewWaitingCharge)
 		{
 			//应还本金
@@ -768,7 +768,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 获取计划还款费用
 		 */
-		List<WaitingChargeNew> planNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Plan.getName());
+		List<WaitingChargeNew> planNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Plan.getName(),true);
 		for(WaitingChargeNew item : planNewWaitingCharge)
 		{
 			double repayCapital = item.getRepayCapital();

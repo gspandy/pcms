@@ -45,7 +45,8 @@ public interface ILoanQueryService
 	 * @param applyId - 申请任务ID
 	 * @param applyType -申请任务类型
 	 * @param feeType - 明细费用类型
+	 * @param containSettleRecord - 是否包含结清记录
 	 * @return
 	 */
-	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId,String applyType,String feeType);
+	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId,String applyType,String feeType,boolean containSettleRecord);
 }

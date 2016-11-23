@@ -1,5 +1,6 @@
 package com.pujjr.base.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -56,6 +57,8 @@ public interface IProductService
 	public List<Product> getAllProductList();
 	
 	public double getProductSettleByPeriod(String productCode,int period);
+	
+	List<HashMap<String,Object>> getProductExtendPeriodList(String productCode,int curPeriod);
 	
 	
 }

@@ -367,4 +367,10 @@
   	select * from t_product
   	order by product_name,year_rate
   </select>
+  <select id="getProductExtendPeriodList" resultType="HashMap">
+  	select b.PERIOD as period from t_product a
+  	left join T_PRODUCT_PERIOD b on a.ID = b.PRODUCT_ID 
+  	where a.PRODUCT_CODE = #{productCode} and b.PERIOD > #{curPeriod}
+  	order by b.PERIOD
+  </select>
 </mapper>
