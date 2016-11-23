@@ -175,23 +175,23 @@ public class RemissionServiceImpl implements IRemissionService
 			{
 				if(Double.compare(otherOverdueAmt, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), otherOverdueAmt, po.getRemissionDate(), RepayMode.Remission.getName(), ChargeItem.OTHEROVERDUEAMT);
+					accountingService.repayReverseAccounting(po.getAppId(), otherOverdueAmt, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OTHEROVERDUEAMT);
 				}
 				if(Double.compare(otherFee, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), otherFee, po.getRemissionDate(), RepayMode.Remission.getName(), ChargeItem.OTHERFEE);
+					accountingService.repayReverseAccounting(po.getAppId(), otherFee, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OTHERFEE);
 				}
 				if(Double.compare(overdueAmt, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), overdueAmt, po.getRemissionDate(), RepayMode.Remission.getName(), ChargeItem.OVERDUEAMT);
+					accountingService.repayReverseAccounting(po.getAppId(), overdueAmt, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OVERDUEAMT);
 				}
 				if(Double.compare(interest, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), interest, po.getRemissionDate(), RepayMode.Remission.getName(), ChargeItem.INTEREST);
+					accountingService.repayReverseAccounting(po.getAppId(), interest, po.getRemissionDate(), RepayMode.Remission, ChargeItem.INTEREST);
 				}
 				if(Double.compare(capital, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), capital, po.getRemissionDate(), RepayMode.Remission.getName(), ChargeItem.CAPITAL);
+					accountingService.repayReverseAccounting(po.getAppId(), capital, po.getRemissionDate(), RepayMode.Remission, ChargeItem.CAPITAL);
 				}
 				runtimeService.setVariable(task.getExecutionId(), "needUpgradeApprove", false);
 				po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());

@@ -313,15 +313,16 @@
   	and a.SETTLE_TYPE = #{settleType}
   </select>
   <resultMap id="RemissionItemResultMap" type="com.pujjr.postloan.domain.RemissionItem" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APPLY_TYPE" property="applyType" jdbcType="VARCHAR" />
-    <result column="APPLY_REF_ID" property="applyRefId" jdbcType="VARCHAR" />
-    <result column="CAPITAL" property="capital" jdbcType="DOUBLE" />
-    <result column="INTEREST" property="interest" jdbcType="DOUBLE" />
-    <result column="OVERDUE_AMOUNT" property="overdueAmount" jdbcType="DOUBLE" />
-    <result column="OTHER_FEE" property="otherFee" jdbcType="DOUBLE" />
-    <result column="OTHER_OVERDUE_AMOUNT" property="otherOverdueAmount" jdbcType="DOUBLE" />
-    <result column="LATE_FEE" property="lateFee" jdbcType="DOUBLE" />
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APPLY_TYPE" jdbcType="VARCHAR" property="applyType" />
+    <result column="APPLY_REF_ID" jdbcType="VARCHAR" property="applyRefId" />
+    <result column="REMISSION_DATE" jdbcType="DATE" property="remissionDate" />
+    <result column="CAPITAL" jdbcType="DOUBLE" property="capital" />
+    <result column="INTEREST" jdbcType="DOUBLE" property="interest" />
+    <result column="OVERDUE_AMOUNT" jdbcType="DOUBLE" property="overdueAmount" />
+    <result column="OTHER_FEE" jdbcType="DOUBLE" property="otherFee" />
+    <result column="OTHER_OVERDUE_AMOUNT" jdbcType="DOUBLE" property="otherOverdueAmount" />
+    <result column="LATE_FEE" jdbcType="DOUBLE" property="lateFee" />
   </resultMap>
   <select id="selectRemissionItem" parameterType="String" resultMap="RemissionItemResultMap">
   	select * from T_REMISSION_ITEM where APPLY_REF_ID = #{ID}

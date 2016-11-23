@@ -228,14 +228,18 @@ public class SettleController extends BaseController {
 		vo.setEndPeriod(po.getSettleEndPeriod());
 		
 		RemissionFeeItemVo remissionFeeItemVo = new RemissionFeeItemVo();
-		remissionFeeItemVo.setCapital(po.getRemissionItem().getCapital());
-		remissionFeeItemVo.setInterest(po.getRemissionItem().getInterest());
-		remissionFeeItemVo.setOverdueAmount(po.getRemissionItem().getOverdueAmount());
-		remissionFeeItemVo.setOtherFee(po.getRemissionItem().getOtherFee());
-		remissionFeeItemVo.setOtherOverdueAmount(po.getRemissionItem().getOtherOverdueAmount());
-		remissionFeeItemVo.setLateFee(po.getRemissionItem().getLateFee());
+		if(po.getRemissionItem()!=null)
+		{
+			remissionFeeItemVo.setCapital(po.getRemissionItem().getCapital());
+			remissionFeeItemVo.setInterest(po.getRemissionItem().getInterest());
+			remissionFeeItemVo.setOverdueAmount(po.getRemissionItem().getOverdueAmount());
+			remissionFeeItemVo.setOtherFee(po.getRemissionItem().getOtherFee());
+			remissionFeeItemVo.setOtherOverdueAmount(po.getRemissionItem().getOtherOverdueAmount());
+			remissionFeeItemVo.setLateFee(po.getRemissionItem().getLateFee());
+			remissionFeeItemVo.setRemissionDate(po.getRemissionItem().getRemissionDate());
+			vo.setRemissionFeeItemVo(remissionFeeItemVo);
+		}
 		
-		vo.setRemissionFeeItemVo(remissionFeeItemVo);
 		return vo;
 	}
 	

@@ -50,6 +50,7 @@ import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.ETaskTag;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayMode;
@@ -193,6 +194,11 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	@Override
 	public void commitApplyExtendPeriodTask(String operId,String appId, ApplyExtendPeriodVo vo) {
 		
+		//修改总账处理状态为申请展期,避免其他交易操作
+		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(appId);
+		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyExtendPeriod.getName());
+		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
+				
 		//1、记录入申请表
 		ApplyExtendPeriod applyExtendPeriod = new ApplyExtendPeriod();
 		String businessKey = Utils.get16UUID();
@@ -494,7 +500,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	@Override
 	public List<ExtendPeriodTaskVo> getApplyExtendPeriodTaskList(String createId, List<String> applyStatus) {
 		// TODO Auto-generated method stub
-		return null;
+		return applyExtendPeriodMapper.selectApplyExtendPeriodTaskList(createId, applyStatus);
 	}
 
 	@Override
