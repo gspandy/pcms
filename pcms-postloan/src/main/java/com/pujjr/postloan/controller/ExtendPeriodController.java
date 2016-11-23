@@ -1,13 +1,9 @@
 package com.pujjr.postloan.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,14 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.postloan.domain.ApplyExtendPeriod;
-import com.pujjr.postloan.domain.RepayPlan;
-import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.service.IExtendPeriodService;
 import com.pujjr.postloan.vo.ApplyExtendPeriodVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.postloan.vo.ExtendPeriodFeeItemVo;
 import com.pujjr.postloan.vo.RemissionFeeItemVo;
-import com.pujjr.utils.Utils;
 
 /**
  * @author tom
