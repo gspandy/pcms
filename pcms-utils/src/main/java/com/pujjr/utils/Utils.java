@@ -30,6 +30,41 @@ public class Utils {
 	
 	public static int seq=0;
 	
+	/**格式化对象中的Double对象
+	 * tom 2016年11月23日
+	 * @param obj 待转换Double成员属性对象
+	 * @param scale 转换后Double成员属性小数位数
+	 * @return 转换后对象（当前对象）
+	 */
+	public static Object formateDoubleOfObject(Object obj,int scale){
+		Class objClass = obj.getClass();
+		Field[] fields = objClass.getDeclaredFields();
+		Method[] methods = objClass.getMethods();
+		List<Field> fieldList = Utils.getFieldList(objClass);
+		for (Field field : fieldList) {
+			if(field.getType().getName().equals("double") || field.getType().getName().equals("java.lang.Double")){//目前仅支持转double、Double对象数据
+				try {
+//					System.out.println(field.getName());
+					String getMethodStr = Utils.field2GetMethod(field.getName());
+					String setMethodStr = Utils.field2SetMethod(field.getName());
+					Method getMethod = objClass.getMethod(getMethodStr);
+					Method setMethod = null;
+					try {
+						setMethod = objClass.getMethod(setMethodStr,Double.class);
+					} catch (Exception e) {
+						setMethod = objClass.getMethod(setMethodStr,double.class);
+					}
+					Double score = (Double) getMethod.invoke(obj, null);
+					if(score != null)
+						setMethod.invoke(obj,Utils.formateDouble2Double(score, scale));
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
+		}
+		return obj;
+	}
+	
 	/**
 	 * 获取当前日期
 	 * tom 2016年11月14日
@@ -146,10 +181,24 @@ public class Utils {
 	 * tom 2016年11月2日
 	 * @param number 数据源
 	 * @param scale 小数位数
-	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出：123.1）
+	 * @return 格式化后双精度浮点数（输入：number=123.1对应BigDecimal对象 scale=3 输出：123.1）
 	 */
 	public static Double formateDouble2Double(BigDecimal bigDecimal,int scale){
 		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+	}
+	
+	/**
+	 * 双精度浮点数转制定格式双进度浮点数
+	 * tom 2016年11月2日
+	 * @param number 数据源
+	 * @param scale 小数位数
+	 * @return 格式化后双精度浮点数（输入：number=123.1 scale=3 输出：123.1）
+	 */
+	public static Double formateDouble2Double(double number,int scale){
+		Double formateDouble = null;
+		BigDecimal formater = new BigDecimal(number);
+		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		return formateDouble;
 	}
 	
 	/**

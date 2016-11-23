@@ -9,7 +9,7 @@ import java.util.List;
 public class ApplyExtendPeriodVo 
 {
 	//新还款计划
-	private List<NewRepayPlanVo> repayPlanList;
+//	private List<NewRepayPlanVo> repayPlanList;
 	//申请备注
 	private String applyComment;
 	//申请日期
@@ -23,12 +23,12 @@ public class ApplyExtendPeriodVo
 	//展期费项
 	private ExtendPeriodFeeItemVo feeItem;
 	
-	public List<NewRepayPlanVo> getRepayPlanList() {
-		return repayPlanList;
-	}
-	public void setRepayPlanList(List<NewRepayPlanVo> repayPlanList) {
-		this.repayPlanList = repayPlanList;
-	}
+//	public List<NewRepayPlanVo> getRepayPlanList() {
+//		return repayPlanList;
+//	}
+//	public void setRepayPlanList(List<NewRepayPlanVo> repayPlanList) {
+//		this.repayPlanList = repayPlanList;
+//	}
 	
 	public String getApplyComment() {
 		return applyComment;

@@ -128,6 +128,9 @@ public class SettleServiceImpl implements ISettleService{
 		settleFeeItemVo.setSettleTotalAmount(settleTotalAmt);
 		settleFeeItemVo.setSettleCapital(settleCapital);
 		settleFeeItemVo.setSettleAfterAmount(settleAfterAmount);
+		
+		//double数据格式化
+		Utils.formateDoubleOfObject(settleFeeItemVo, 2);
 		return settleFeeItemVo;
 	}
 
@@ -169,6 +172,9 @@ public class SettleServiceImpl implements ISettleService{
 		settleFeeItemVo.setSettleCapital(settleCapital);
 		settleFeeItemVo.setSettleTotalAmount(settleTotalAmt);
 		settleFeeItemVo.setSettleAfterAmount(settleAfterAmount);
+		
+		//double数据格式化
+		Utils.formateDoubleOfObject(settleFeeItemVo, 2);
 		return settleFeeItemVo;
 	}
 
