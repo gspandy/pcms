@@ -64,7 +64,7 @@ public class AlterRepayDateController extends BaseController
 		ApplyAlterRepayDate po = alterRepayDateService.getApplyAlterRepayDateTaskById(id);
 		feeItemVo.setAlterDay(po.getAlterDay());
 		feeItemVo.setAlterInterest(po.getAlterInterest());
-		List<WaitingChargeNew> newWaitingChargeList = loanQueryService.getWaitingChargeNewList(po.getId(), LoanApplyTaskType.AlterRepayDate.getName(), FeeType.Plan.getName());
+		List<WaitingChargeNew> newWaitingChargeList = loanQueryService.getWaitingChargeNewList(po.getId(), LoanApplyTaskType.AlterRepayDate.getName(), FeeType.Plan.getName(),false);
 		List<NewRepayPlanVo> newRepayPlanList = new ArrayList<NewRepayPlanVo>();
 		for(WaitingChargeNew item : newWaitingChargeList)
 		{

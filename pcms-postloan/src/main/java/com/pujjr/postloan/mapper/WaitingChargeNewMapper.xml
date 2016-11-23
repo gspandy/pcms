@@ -296,6 +296,9 @@
   	where APPLY_TYPE = #{applyType}
   	and APPLY_REF_ID  = #{applyRefId}
   	and FEE_TYPE = #{feeType}
+  	<if test="containSettleRecord == false">
+  		and DO_SETTLE = false 
+  	</if>
   	order by VALUE_DATE
   </select>
   

@@ -155,6 +155,7 @@ public class RemissionServiceImpl implements IRemissionService
 			double otherFee = remissionItemPo.getOtherFee();
 			double otherOverdueAmt = remissionItemPo.getOtherOverdueAmount();
 			double totalOverdueAmt = overdueAmt+otherOverdueAmt;
+			double lateFee = remissionItemPo.getLateFee();
 			//获取任务执行人组ID
 			String batchAssigneeWorkgroupId = runtimeService.getVariable(task.getExecutionId(), "batchAssigneeWorkgroupId").toString();
 			//获取组减免规则
@@ -164,6 +165,7 @@ public class RemissionServiceImpl implements IRemissionService
 					(Double.compare(capital, rule.getMaxCapital())>0 ||
 					Double.compare(interest, rule.getMaxInterest())>0 ||
 					Double.compare(otherFee, rule.getMaxOtherFee())>0 ||
+					Double.compare(lateFee, rule.getMaxLateFee())>0 ||
 					Double.compare(totalOverdueAmt, rule.getMaxOverdueAmt())>0) &&  !taskDefKey.equals("shjjmsp")
 			  )
 			{
@@ -224,7 +226,7 @@ public class RemissionServiceImpl implements IRemissionService
 	@Override
 	public List<RemissionTaskVo> getApplyRemissionTaskList(String createId, List<String> applyStatus) {
 		// TODO Auto-generated method stub
-		return null;
+		return applyRemissionDao.selectApplyRemissionTaskList(createId, applyStatus);
 	}
 
 	@Override

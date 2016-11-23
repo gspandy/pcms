@@ -56,7 +56,7 @@ public interface IExtendPeriodService
 	 * 	vo-减免费项
 	 * @throws Exception 
 	 * **/
-	public void commitApplyConfirmExtendPeriodTask(String operId,String taskId,RemissionFeeItemVo vo) throws Exception;
+	public void commitApplyConfirmExtendPeriodTask(String taskId,RemissionFeeItemVo vo) throws Exception;
 	/**
 	 * 功能：提交确认入账
 	 * 参数：
@@ -83,7 +83,7 @@ public interface IExtendPeriodService
 	/**
 	 * 功能：根据主键查询展期申请信息
 	 * **/
-	public ApplyExtendPeriod getApplyExtendPeriodTaskById(String id);
+	public ApplyExtendPeriodVo getApplyExtendPeriodTaskById(String id);
 	/**
 	 * 功能：修改展期申请信息
 	 * **/

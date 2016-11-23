@@ -1,93 +1,105 @@
 package com.pujjr.postloan.domain;
 
+import java.util.Date;
+
 public class RemissionItem {
     private String id;
 
-    private String applyType;
+	private String applyType;
 
-    private String applyRefId;
+	private String applyRefId;
 
-    private Double capital;
+	private Date remissionDate;
 
-    private Double interest;
+	private Double capital;
 
-    private Double overdueAmount;
+	private Double interest;
 
-    private Double otherFee;
+	private Double overdueAmount;
 
-    private Double otherOverdueAmount;
+	private Double otherFee;
 
-    private Double lateFee;
+	private Double otherOverdueAmount;
 
-    public String getId() {
-        return id;
-    }
+	private Double lateFee;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getApplyType() {
-        return applyType;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setApplyType(String applyType) {
-        this.applyType = applyType;
-    }
+	public String getApplyType() {
+		return applyType;
+	}
 
-    public String getApplyRefId() {
-        return applyRefId;
-    }
+	public void setApplyType(String applyType) {
+		this.applyType = applyType;
+	}
 
-    public void setApplyRefId(String applyRefId) {
-        this.applyRefId = applyRefId;
-    }
+	public String getApplyRefId() {
+		return applyRefId;
+	}
 
-    public Double getCapital() {
-        return capital;
-    }
+	public void setApplyRefId(String applyRefId) {
+		this.applyRefId = applyRefId;
+	}
 
-    public void setCapital(Double capital) {
-        this.capital = capital;
-    }
+	public Date getRemissionDate() {
+		return remissionDate;
+	}
 
-    public Double getInterest() {
-        return interest;
-    }
+	public void setRemissionDate(Date remissionDate) {
+		this.remissionDate = remissionDate;
+	}
 
-    public void setInterest(Double interest) {
-        this.interest = interest;
-    }
+	public Double getCapital() {
+		return capital;
+	}
 
-    public Double getOverdueAmount() {
-        return overdueAmount;
-    }
+	public void setCapital(Double capital) {
+		this.capital = capital;
+	}
 
-    public void setOverdueAmount(Double overdueAmount) {
-        this.overdueAmount = overdueAmount;
-    }
+	public Double getInterest() {
+		return interest;
+	}
 
-    public Double getOtherFee() {
-        return otherFee;
-    }
+	public void setInterest(Double interest) {
+		this.interest = interest;
+	}
 
-    public void setOtherFee(Double otherFee) {
-        this.otherFee = otherFee;
-    }
+	public Double getOverdueAmount() {
+		return overdueAmount;
+	}
 
-    public Double getOtherOverdueAmount() {
-        return otherOverdueAmount;
-    }
+	public void setOverdueAmount(Double overdueAmount) {
+		this.overdueAmount = overdueAmount;
+	}
 
-    public void setOtherOverdueAmount(Double otherOverdueAmount) {
-        this.otherOverdueAmount = otherOverdueAmount;
-    }
+	public Double getOtherFee() {
+		return otherFee;
+	}
 
-    public Double getLateFee() {
-        return lateFee;
-    }
+	public void setOtherFee(Double otherFee) {
+		this.otherFee = otherFee;
+	}
 
-    public void setLateFee(Double lateFee) {
-        this.lateFee = lateFee;
-    }
+	public Double getOtherOverdueAmount() {
+		return otherOverdueAmount;
+	}
+
+	public void setOtherOverdueAmount(Double otherOverdueAmount) {
+		this.otherOverdueAmount = otherOverdueAmount;
+	}
+
+	public Double getLateFee() {
+		return lateFee;
+	}
+
+	public void setLateFee(Double lateFee) {
+		this.lateFee = lateFee;
+	}
 }

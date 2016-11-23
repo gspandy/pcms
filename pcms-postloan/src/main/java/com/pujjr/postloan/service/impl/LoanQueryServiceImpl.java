@@ -44,9 +44,9 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 		return loanQueryDao.selectLoanToDoTaskList(assignee);
 	}
 	@Override
-	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId, String applyType, String feeType) {
+	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId, String applyType, String feeType,boolean containSettleRecord) {
 		// TODO Auto-generated method stub
-		return waitingChargeNewDao.selectList(applyType, applyId, feeType);
+		return waitingChargeNewDao.selectList(applyType, applyId, feeType,containSettleRecord);
 	}
 	
 

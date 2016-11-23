@@ -35,7 +35,9 @@
   		c.DICT_DATA_NAME as repayStatusDesc,
   		a.REPAY_MODE as repayMode,
   		c1.DICT_DATA_NAME as repayModeDesc,
-  		e.CONTRACT_NO as contractNo
+  		e.CONTRACT_NO as contractNo,
+  		d.CREATE_BRANCH_CODE as createBranchCode,
+  		a.PRODUCT_CODE as productCode
   		from 
   		T_GENERAL_LEDGER a 
   		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID

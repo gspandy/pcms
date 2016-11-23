@@ -2,6 +2,7 @@ package com.pujjr.base.service.impl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,6 +171,12 @@ public class ProductServiceImpl implements IProductService
 		{
 			return settle.getReate();
 		}
+	}
+
+	@Override
+	public List<HashMap<String,Object>> getProductExtendPeriodList(String productCode, int curPeriod) {
+		// TODO Auto-generated method stub
+		return productDao.getProductExtendPeriodList(productCode, curPeriod);
 	}
 
 }
