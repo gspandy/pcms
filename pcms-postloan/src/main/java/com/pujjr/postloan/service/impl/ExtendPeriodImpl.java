@@ -436,17 +436,18 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		if(Double.compare(vo.getLateFee(), 0.00)>0)
 		{
 			vars.put("needRemissionApprove", true);
-			RemissionItem remissiontItem = new RemissionItem();
-			remissiontItem.setId(Utils.get16UUID());
-			remissiontItem.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
-			remissiontItem.setApplyRefId(po.getId());
-			remissiontItem.setCapital(0.00);
-			remissiontItem.setInterest(0.00);
-			remissiontItem.setOverdueAmount(0.00);
-			remissiontItem.setOtherFee(0.00);
-			remissiontItem.setOtherOverdueAmount(0.00);
-			remissiontItem.setLateFee(vo.getLateFee());
-			remissionItemMapper.insert(remissiontItem);
+			RemissionItem remissionItem = new RemissionItem();
+			remissionItem.setId(Utils.get16UUID());
+			remissionItem.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
+			remissionItem.setApplyRefId(po.getId());
+			remissionItem.setCapital(0.00);
+			remissionItem.setInterest(0.00);
+			remissionItem.setOverdueAmount(0.00);
+			remissionItem.setOtherFee(0.00);
+			remissionItem.setOtherOverdueAmount(0.00);
+			remissionItem.setLateFee(vo.getLateFee());
+			remissionItem.setRemissionDate(vo.getRemissionDate());
+			remissionItemMapper.insert(remissionItem);
 		}
 		
 		//提交任务
@@ -518,7 +519,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		ApplyExtendPeriod po = applyExtendPeriodMapper.selectByPrimaryKey(id);
 		vo.setApplyComment(po.getApplyComment());
 		vo.setApplyEndDate(po.getApplyEndDate());
-		vo.setExtendPeriod(vo.getExtendPeriod());
+		vo.setExtendPeriod(po.getExtendPeriod());
 		vo.setNewRepayMode(po.getNewRepayMode());
 		
 		ExtendPeriodFeeItemVo feeItemVo = new ExtendPeriodFeeItemVo();

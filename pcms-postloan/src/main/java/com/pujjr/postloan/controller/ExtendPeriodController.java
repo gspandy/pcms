@@ -42,28 +42,31 @@ public class ExtendPeriodController
 		extendPeriodImpl.commitApplyExtendPeriodTask(account.getAccountId(), appId, vo);
 	}
 	
-	@RequestMapping(value="/commitApproveExtendPeriodTask/{operId}/{taskId}",method=RequestMethod.POST)
-	public void commitApproveExtendPeriodTask(@PathVariable("operId") String operId,@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo) throws Exception
+	@RequestMapping(value="/commitApproveExtendPeriodTask/{taskId}",method=RequestMethod.POST)
+	public void commitApproveExtendPeriodTask(@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo,HttpServletRequest request) throws Exception
 	{
-		extendPeriodImpl.commitApproveExtendPeriodTask(operId, taskId, vo);
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		extendPeriodImpl.commitApproveExtendPeriodTask(account.getAccountId(), taskId, vo);
 	}
 	
-	@RequestMapping(value="/commitApproveRemissionTask/{operId}/{taskId}",method=RequestMethod.POST)
-	public void commitApproveRemissionTask(@PathVariable("operId") String operId,@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo) throws Exception
+	@RequestMapping(value="/commitApproveRemissionTask{taskId}",method=RequestMethod.POST)
+	public void commitApproveRemissionTask(@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo,HttpServletRequest request) throws Exception
 	{
-		extendPeriodImpl.commitApproveRemissionTask(operId, taskId, vo);
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		extendPeriodImpl.commitApproveRemissionTask(account.getAccountId(), taskId, vo);
 	}
 	
-	@RequestMapping(value="/commitApplyConfirmExtendPeriodTask/{operId}/{taskId}",method=RequestMethod.POST)
-	public void commitApplyConfirmExtendPeriodTask(@PathVariable("operId") String operId,@PathVariable("taskId") String taskId,@RequestBody RemissionFeeItemVo vo) throws Exception
+	@RequestMapping(value="/commitApplyConfirmExtendPeriodTask/{taskId}",method=RequestMethod.POST)
+	public void commitApplyConfirmExtendPeriodTask(@PathVariable("taskId") String taskId,@RequestBody RemissionFeeItemVo vo,HttpServletRequest request) throws Exception
 	{
 		extendPeriodImpl.commitApplyConfirmExtendPeriodTask(taskId, vo);
 	}
 	
-	@RequestMapping(value="/commitConfirmExtendPeriodTask/{operId}/{taskId}",method=RequestMethod.POST)
-	public void commitConfirmExtendPeriodTask(@PathVariable("operId") String operId,@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo) throws Exception
+	@RequestMapping(value="/commitConfirmExtendPeriodTask/{taskId}",method=RequestMethod.POST)
+	public void commitConfirmExtendPeriodTask(@PathVariable("taskId") String taskId,@RequestBody ApproveResultVo vo,HttpServletRequest request) throws Exception
 	{
-		extendPeriodImpl.commitConfirmExtendPeriodTask(operId, taskId, vo);
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		extendPeriodImpl.commitConfirmExtendPeriodTask(account.getAccountId(), taskId, vo);
 	}
 	
 	@RequestMapping(value="/cancelExtendPeriodTask/{taskId}/{operId}/{cancelComment}",method=RequestMethod.POST)
