@@ -57,7 +57,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 		BigDecimal fenmu = new BigDecimal(Math.pow(1+monthRate, period)-1);
 		System.out.println("分子："+fenzi);
 		System.out.println("分母："+fenmu);
-		BigDecimal monthRepay = fenzi.divide(fenmu,2);
+		BigDecimal monthRepay = fenzi.divide(fenmu,RoundingMode.HALF_UP);
 		BigDecimal repayAmt = monthRepay.multiply(new BigDecimal(period));//总还款金额
 		BigDecimal interestAmt = new BigDecimal(0);//总利息
 		for (int i = 0; i < period; i++) {
@@ -106,7 +106,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 		rsp.setMortgageAmt(fianceAmt);
 		rsp.setPeriod(period);
 		rsp.setRepayAmt(Utils.formateDouble2Double(repayAmt, 2));
-		System.out.println("总利息："+interestAmt.setScale(2, RoundingMode.HALF_EVEN));
+//		System.out.println("总利息："+interestAmt.setScale(2, RoundingMode.HALF_UP));
 		return rsp;
 	}
 

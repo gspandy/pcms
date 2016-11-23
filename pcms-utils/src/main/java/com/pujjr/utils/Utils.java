@@ -172,7 +172,7 @@ public class Utils {
 		String formateDouble = "";
 		BigDecimal formater = new BigDecimal(number);
 //		new Double("");
-		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).toString();
+		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
 		return formateDouble;
 	}
 	
@@ -184,7 +184,7 @@ public class Utils {
 	 * @return 格式化后双精度浮点数（输入：number=123.1对应BigDecimal对象 scale=3 输出：123.1）
 	 */
 	public static Double formateDouble2Double(BigDecimal bigDecimal,int scale){
-		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 	
 	/**
@@ -197,7 +197,7 @@ public class Utils {
 	public static Double formateDouble2Double(double number,int scale){
 		Double formateDouble = null;
 		BigDecimal formater = new BigDecimal(number);
-		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		formateDouble = formater.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
 		return formateDouble;
 	}
 	

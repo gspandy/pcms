@@ -213,7 +213,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		applyExtendPeriod.setNewCapital(feeItem.getNewCapital());
 		applyExtendPeriod.setApplyComment(vo.getApplyComment());
 		applyExtendPeriod.setApplyStatus(LoanApplyStatus.WaitingApprove.getName());
-		applyExtendPeriod.setApplyEndDate(vo.getApplyDate());
+		applyExtendPeriod.setApplyEndDate(vo.getApplyEndDate());
 		applyExtendPeriod.setCreateId(operId);
 		applyExtendPeriod.setCreateDate(Utils.getDate());
 		applyExtendPeriodMapper.insert(applyExtendPeriod);
@@ -272,7 +272,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 			wcn.setFeeType(FeeType.Plan.getName());
 //			wcn.setFeeRefId("");//展期无关联费用id
 			wcn.setPeriod(repayPlan.getPeriod());
-			wcn.setDoSettle(true);
+			wcn.setDoSettle(false);
 			wcn.setRepayCapital(repayPlan.getRepayCapital());
 			wcn.setRepayInterest(repayPlan.getRepayInterest());
 			wcn.setRepayOverdueAmount(0.00);
