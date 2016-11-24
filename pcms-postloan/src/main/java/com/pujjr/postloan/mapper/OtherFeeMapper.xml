@@ -218,4 +218,20 @@
     where APP_ID = #{appId,jdbcType=VARCHAR}
   </select>
   
+  <resultMap id="OtherFeeDetailResultMap" type="com.pujjr.postloan.vo.OtherFeeDetailVo" >
+    <result column="itemName" property="itemName" jdbcType="VARCHAR" />
+    <result column="itemNameDesc" property="itemNameDesc" jdbcType="VARCHAR" />
+    <result column="itemAmount" property="itemAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  
+  <select id="selectFeeDetailList" resultMap="OtherFeeDetailResultMap">
+  	select 
+  	b.ITEM_NAME as itemName,
+  	c.DICT_DATA_NAME as itemNameDesc,
+  	b.ITEM_AMOUNT as itemAmount
+  	from T_OTHER_FEE a 
+  	left join T_OTHER_FEE_DETAIL b on a.id = b.OTHERFEE_APPLY_ID 
+  	left join SYS_DICT_DATA c on  c.DICT_DATA_CODE = b.ITEM_NAME
+  	where a.ID = #{otherFeeId}
+  </select>
 </mapper>

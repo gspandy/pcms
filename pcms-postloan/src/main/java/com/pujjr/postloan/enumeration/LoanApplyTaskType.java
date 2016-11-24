@@ -4,12 +4,12 @@ package com.pujjr.postloan.enumeration;
  * **/
 public  enum  LoanApplyTaskType
 {
-	PublicRepay("dhsqlx01","对公还款"),
-	Remission("dhsqlx02","减免"),
-	Refund("dhsqlx03","退款"),
-	Settle("dhsqlx04","提前结清"),
-	ExtendPeriod("dhsqlx05","展期"),
-	AlterRepayDate("dhsqlx06","变更还款日");
+	PublicRepay("dhsqlx01","申请对公还款"),
+	Remission("dhsqlx02","申请减免"),
+	Refund("dhsqlx03","申请退款"),
+	Settle("dhsqlx04","申请提前结清"),
+	ExtendPeriod("dhsqlx05","申请展期"),
+	AlterRepayDate("dhsqlx06","申请变更还款日");
 	
 	private String name;
 	private String text;

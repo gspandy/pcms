@@ -113,6 +113,6 @@
 	left join SYS_DICT_DATA h on g.REPAY_STATUS = h.DICT_DATA_CODE
 	left join SYS_ACCOUNT account on account.ACCOUNT_ID = prunpath.ASSIGNEE
 	where a.ASSIGNEE_ = #{assignee} 
-	and (c.KEY_ = 'DGHK'  or c.KEY_='TQJQ' or c.KEY_ ='ZHANQI' or c.KEY_ = 'HKRBG' or c.KEY_ ='TUIKUAN' or c.KEY_ ='JIANMIAN')
+	and c.KEY_ != 'PPCA' 
   	</select>
 </mapper>
