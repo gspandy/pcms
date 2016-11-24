@@ -278,7 +278,7 @@
   </select>
   
   <resultMap id="SettleTaskResultMap" type="com.pujjr.postloan.vo.SettleTaskVo">
-    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="id" jdbcType="VARCHAR" property="id" />
     <result column="appId" jdbcType="VARCHAR" property="appId" />
     <result column="contractNo" jdbcType="VARCHAR" property="contractNo" />
     <result column="custName" jdbcType="VARCHAR" property="custName" />
@@ -293,6 +293,7 @@
   
   <select id="selectApplySettleTaskList" resultMap="SettleTaskResultMap">
   	select 
+  	a.ID as id,
   	a.APP_ID as appId,
   	d.CONTRACT_NO as contractNo,
   	b.NAME as custName,

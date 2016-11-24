@@ -119,11 +119,12 @@ public class SettleController extends BaseController {
 	 * @param settleEeffectDate 有效截止日期
 	 * @param settleCapital 结清本金
 	 * @return
+	 * @throws ParseException 
 	 */
-	@RequestMapping(value="/getPartSettleFeeItem/{appId}/{beginPeriod}/{endPeriod}/{settleEeffectDateStr}",method=RequestMethod.GET)
-	public SettleFeeItemVo getPartSettleFeeItem(@PathVariable String appId,@PathVariable int beginPeriod
-			, @PathVariable int endPeriod,@PathVariable String settleEeffectDateStr){
-		Date settleEeffectDate = Utils.formateString2Date(settleEeffectDateStr, "yyyy-MM-dd");
+	@RequestMapping(value="/getPartSettleFeeItem/{appId}",method=RequestMethod.GET)
+	public SettleFeeItemVo getPartSettleFeeItem(@PathVariable String appId,int beginPeriod
+			,int endPeriod,String settleEffectDateStr) throws ParseException{
+		Date settleEeffectDate = Utils.htmlTime2Date(settleEffectDateStr, "yyyyMMdd");
 		return settleService.getPartSettleFeeItem(appId, beginPeriod, endPeriod, settleEeffectDate);
 	}
 	/**

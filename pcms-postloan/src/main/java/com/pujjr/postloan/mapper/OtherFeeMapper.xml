@@ -234,4 +234,40 @@
   	left join SYS_DICT_DATA c on  c.DICT_DATA_CODE = b.ITEM_NAME
   	where a.ID = #{otherFeeId}
   </select>
+  
+  <resultMap id="OtherFeeTaskResultMap" type="com.pujjr.postloan.vo.OtherFeeTaskVo">
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="appId" jdbcType="VARCHAR" property="appId" />
+    <result column="contractNo" jdbcType="VARCHAR" property="contractNo" />
+    <result column="custName" jdbcType="VARCHAR" property="custName" />
+    <result column="idNo" jdbcType="VARCHAR" property="idNo" />
+     <result column="feeTotalAmount" jdbcType="DOUBLE" property="feeTotalAmount" />
+    <result column="applyDate" jdbcType="DATE" property="applyDate" />
+    <result column="applyStatus" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="applyComment" jdbcType="VARCHAR" property="applyComment" />
+    <result column="taskName" jdbcType="VARCHAR" property="taskName" />
+    <result column="assignee" jdbcType="VARCHAR" property="assignee" />
+  </resultMap>
+  
+  <select id="selectApplyOtherFeeTaskList" resultMap="OtherFeeTaskResultMap">
+  	select 
+  	a.ID as id,
+  	a.APP_ID as appId,
+  	d.CONTRACT_NO as contractNo,
+  	b.NAME as custName,
+  	b.ID_NO as idNo,
+  	a.FEE_TOTAL_AMOUNT as feeTotalAmount,
+  	a.CREATE_DATE as applyDate,
+  	e.DICT_DATA_NAME as applyStatus,
+  	a.APPLY_COMMENT as applyComment,
+  	c.NAME_ as taskName,
+  	f.ACCOUNT_NAME as assignee
+  	from T_OTHER_FEE a
+  	left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
+  	left join ACT_RU_TASK c on a.PROC_INST_ID = c.PROC_INST_ID_
+  	left join T_SIGN_CONTRACT d on a.APP_ID = d.APP_ID
+  	left join SYS_DICT_DATA e on a.APPLY_STATUS = e.DICT_DATA_CODE
+  	left join SYS_ACCOUNT f on c.ASSIGNEE_ = f.ACCOUNT_ID
+  	where a.CREATE_ID = #{createId}
+  </select>
 </mapper>

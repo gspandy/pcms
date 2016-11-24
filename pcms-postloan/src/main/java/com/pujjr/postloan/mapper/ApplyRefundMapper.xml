@@ -162,7 +162,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <resultMap id="RefundTaskResultMap" type="com.pujjr.postloan.vo.RefundTaskVo">
-    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="appId" jdbcType="VARCHAR" property="appId" />
     <result column="contractNo" jdbcType="VARCHAR" property="contractNo" />
     <result column="custName" jdbcType="VARCHAR" property="custName" />
@@ -178,6 +178,7 @@
   
   <select id="selectApplyRefundTaskList" resultMap="RefundTaskResultMap">
   	select 
+  	a.ID as id,
   	a.APP_ID as appId,
   	d.CONTRACT_NO as contractNo,
   	b.NAME as custName,

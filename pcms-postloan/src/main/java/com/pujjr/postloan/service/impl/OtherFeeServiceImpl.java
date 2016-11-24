@@ -21,21 +21,27 @@ import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.dao.OtherFeeDetailMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
+import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.ApplyAlterRepayDate;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OtherFee;
 import com.pujjr.postloan.domain.OtherFeeDetail;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.BatchProcessStatus;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
+import com.pujjr.postloan.enumeration.OfferStatus;
+import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.IOtherFeeService;
 import com.pujjr.postloan.vo.ApplyOtherFeeVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.postloan.vo.NewRepayPlanVo;
 import com.pujjr.postloan.vo.OtherFeeDetailVo;
+import com.pujjr.postloan.vo.OtherFeeTaskVo;
 import com.pujjr.utils.Utils;
 @Service
 public class OtherFeeServiceImpl implements IOtherFeeService 
@@ -54,6 +60,8 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 	private RuntimeService runtimeService;
 	@Autowired
 	private IRunWorkflowService runWorkflowService;
+	@Autowired
+	private WaitingChargeMapper waitingchargeDao;
 	
 	@Override
 	public void commitApplyOtherFeeTask(String appId,ApplyOtherFeeVo vo, String operId) 
@@ -126,9 +134,29 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 		//4、根据审批结果执行相关操作
 		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
 		{
-			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
 			//审批通过日期作为最终扣款日期，加入待扣款明细表
+			Date chargeDate = new Date();
+			WaitingCharge waitingChargePo = new WaitingCharge();
+			waitingChargePo.setId(Utils.get16UUID());
+			waitingChargePo.setAppId(po.getAppId());
+			waitingChargePo.setFeeType(FeeType.Other.getName());
+			waitingChargePo.setFeeRefId(po.getId());
+			waitingChargePo.setRepayCapital(po.getFeeTotalAmount());
+			waitingChargePo.setRepayInterest(0.00);
+			waitingChargePo.setRepayOverdueAmount(0.00);
+			waitingChargePo.setClosingDate(chargeDate);
+			waitingChargePo.setRepayDate(chargeDate);
+			waitingChargePo.setOfferStatus(OfferStatus.WaitOffer.getName());
+			waitingChargePo.setGenTime(chargeDate);
+			waitingChargePo.setVersionId(1);
+			waitingChargePo.setBatchProcessStatus(BatchProcessStatus.Waiting.getName());
+			waitingchargeDao.insert(waitingChargePo);
 			
+			//更新下其他费用的申请信息
+			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
+			po.setValueDate(chargeDate);
+			po.setClosingDate(chargeDate);
+			po.setRepayStatus(RepayStatus.Repaying.getName());
 		}
 		else
 		{
@@ -137,9 +165,7 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 		otherFeeDao.updateByPrimaryKey(po);
 		
 		//5、提交任务
-		HashMap<String,Object> vars = new HashMap<String,Object>();
-		vars.put("approveProcessResult", vo.getApproveResult());
-		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
 	}
 
 	@Override
@@ -153,6 +179,12 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 		List<OtherFeeDetailVo> detailVo = otherFeeDao.selectFeeDetailList(po.getId());
 		vo.setDetailList(detailVo);
 		return vo;
+	}
+
+	@Override
+	public List<OtherFeeTaskVo> getApplyOtherFeeTaskList(String createId, List<String> applyStatus) {
+		// TODO Auto-generated method stub
+		return otherFeeDao.selectApplyOtherFeeTaskList(createId, applyStatus);
 	}
 
 }
