@@ -20,15 +20,15 @@ public class RepayPlanCalc {
 		String settleDateStr = "2015-01-31";//结账日
 		String valueDateStr = "2015-05-02";//起息日/放款完成日
 		int dayCount = 360;
-		double yearRate = 0.138;//年利率
+		double yearRate = 0.0325;//年利率0.138
 		double monthRate = yearRate/12;//月利率
 		double darRate = yearRate/dayCount;//日利率
-		double fianceAmt = 10000;//融资总金额
-		double interestAmt = 10000;//计息总本金
-		int period = 2;//融资总期数
+		double fianceAmt = 400000;//融资总金额
+		double interestAmt = 400000;//计息总本金
+		int period = 240;//融资总期数
 		String appId = "WZXK161020N10136";
 		Date valueDate = Utils.formateString2Date(valueDateStr, "yyyy-MM-dd");
-		new PlanServiceImpl().generateRepayPlan(appId,fianceAmt, monthRate, period, valueDate, EInterestMode.MONTLY);
+		new PlanServiceImpl().generateRepayPlan(appId,fianceAmt, monthRate, period, valueDate, EInterestMode.CPM);
 
 	}
 }
