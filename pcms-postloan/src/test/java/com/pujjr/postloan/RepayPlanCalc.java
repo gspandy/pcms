@@ -25,7 +25,7 @@ public class RepayPlanCalc {
 		double darRate = yearRate/dayCount;//日利率
 		double fianceAmt = 400000;//融资总金额
 		double interestAmt = 400000;//计息总本金
-		int period = 240;//融资总期数
+		int period = 24;//融资总期数
 		String appId = "WZXK161020N10136";
 		Date valueDate = Utils.formateString2Date(valueDateStr, "yyyy-MM-dd");
 		new PlanServiceImpl().generateRepayPlan(appId,fianceAmt, monthRate, period, valueDate, EInterestMode.CPM);

@@ -12,6 +12,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,7 @@ import com.pujjr.utils.Utils;
  */
 @Service
 public class ExtendPeriodImpl implements IExtendPeriodService {
+	private Logger logger = Logger.getLogger(ExtendPeriodImpl.class);
 	@Autowired
 	private IAccountingService accountingServiceImpl;
 	@Autowired
@@ -188,6 +190,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		for (RepayPlan repayPlan : ev.getRepayPlanList()) {
 			Utils.formateDoubleOfObject(repayPlan, 2);
 		}
+		logger.debug("ev:"+ev);
 		return ev;
 	}
 

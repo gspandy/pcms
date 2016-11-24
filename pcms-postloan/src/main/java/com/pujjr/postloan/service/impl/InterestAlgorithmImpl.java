@@ -88,7 +88,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 		
 			repayPlan.setRepayTotalAmount(Utils.formateDouble2Double(monthRepay, 2));
 			repayPlan.setRepayInterest(Utils.formateDouble2Double(currInterest, 2));
-			repayPlan.setRepayCapital(Utils.formateDouble2Double(currCapital, 2));
+			repayPlan.setRepayCapital(Utils.formateDouble2Double(repayPlan.getRepayTotalAmount() - repayPlan.getRepayInterest(), 2));
 			repayPlan.setRemainCapital(Utils.formateDouble2Double(remainCapital, 2));
 			repayPlanList.add(repayPlan);
 			rsp.setRepayPlanList(repayPlanList);
@@ -149,7 +149,7 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 				repayPlan.setPeriod(i+1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
-				repayPlan.setRepayCapital(0.0);
+				repayPlan.setRepayCapital(Utils.formateDouble2Double(remainCaptital, 2));
 				repayPlan.setRepayInterest(Utils.formateDouble2Double(monthIntetrest, 2));
 				repayPlan.setRepayTotalAmount(Utils.formateDouble2Double(remainCaptital.add(monthIntetrest), 2));
 				repayPlan.setRemainCapital(0.0);
