@@ -335,7 +335,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		return tmpList;
 	}
 
-	private void saveRepayLog(String appId,FeeType feeType,String feeRefId,ChargeItem chargeItem,double chargeAmount,Date chargeDate,String chargeMode)
+	private void saveRepayLog(String appId,FeeType feeType,String feeRefId,ChargeItem chargeItem,double chargeAmount,Date chargeDate,RepayMode chargeMode)
 	{
 		//记录还款记录
 		RepayLog repayLog = new RepayLog();
@@ -346,11 +346,11 @@ public class AccountingServiceImpl implements IAccountingService {
 		repayLog.setChargeItem(chargeItem.getName());
 		repayLog.setChargeAmount(chargeAmount);
 		repayLog.setChargeTime(new Date());
-		repayLog.setChargeMode(chargeMode);
+		repayLog.setChargeMode(chargeMode.getName());
 		repayLogDao.insert(repayLog);
 	}
 	@Override
-	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,String repayMode,ChargeItem chargeItem) 
+	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,RepayMode repayMode,ChargeItem chargeItem) 
 	{
 		/**
 		 * 冲其他费用
@@ -494,7 +494,7 @@ public class AccountingServiceImpl implements IAccountingService {
 					}
 				}
 			}
-			//如果冲账后本金、利息、F爱惜都为0，则为结清状态，否则只更新代扣款明细相关数据
+			//如果冲账后本金、利息、罚息为0，则为结清状态，否则只更新代扣款明细相关数据
 			if(capital==0 && interest==0 && overdueAmt ==0)
 			{
 				RepayPlan repayPlanPo = repayPlanDao.selectByPrimaryKey(planItem.getFeeRefId());
@@ -534,27 +534,32 @@ public class AccountingServiceImpl implements IAccountingService {
 		if(repayAmount>0)
 		{
 			StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
-			if(stayAccount!=null)
+			//如果是挂账还款则更新挂账表记录,否则将多余的余额挂账处理并做挂账记录
+			if(repayMode.equals(RepayMode.StayAccounting))
 			{
-				stayAccount.setStayAmount(stayAccount.getStayAmount()+repayAmount);
+				stayAccount.setStayAmount(repayAmount);
 				stayAccountDao.updateByPrimaryKey(stayAccount);
 			}
 			else
 			{
-				stayAccount = new StayAccount();
-				stayAccount.setId(Utils.get16UUID());
-				stayAccount.setAppId(appId);
-				stayAccount.setStayAmount(repayAmount);
-				stayAccountDao.insert(stayAccount);
-			}
-			//如果不是挂账还款需要做挂账记录
-			if(!repayMode.equals(RepayMode.StayAccounting.getName()))
-			{
+				if(stayAccount!=null)
+				{
+					stayAccount.setStayAmount(stayAccount.getStayAmount()+repayAmount);
+					stayAccountDao.updateByPrimaryKey(stayAccount);
+				}
+				else
+				{
+					stayAccount = new StayAccount();
+					stayAccount.setId(Utils.get16UUID());
+					stayAccount.setAppId(appId);
+					stayAccount.setStayAmount(repayAmount);
+					stayAccountDao.insert(stayAccount);
+				}
 				StayAccountLog stayLog = new StayAccountLog();
 				stayLog.setId(Utils.get16UUID());
 				stayLog.setStayId(stayAccount.getId());
 				stayLog.setStayAmount(repayAmount);
-				stayLog.setStaySource(repayMode);
+				stayLog.setStaySource(repayMode.getName());
 				stayLog.setStayDate(new Date());
 				stayAccountLogDao.insert(stayLog);
 			}
@@ -585,8 +590,8 @@ public class AccountingServiceImpl implements IAccountingService {
 	}
 
 	@Override
-	public void repayReverseAccountingUserNewWaitingChargeTable(String applyId, LoanApplyTaskType applyType,
-			String appId) {
+	public void repayReverseAccountingUserNewWaitingChargeTable(String applyId, LoanApplyTaskType applyType,String appId) 
+	{
 		// TODO Auto-generated method stub
 		/**
 		 * 获取申请信息
@@ -622,6 +627,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		double remissionOverdueAmt = 0.00;
 		double remissionOtherFee = 0.00;
 		double remissionOtherOverdueAmt = 0.00;
+		double remissionLateFee = 0.00;
+		Date remissionDate = new Date();
 		RemissionItem remissionItem = remissionItemDao.selectByApplyId(applyType.getName(), applyId);
 		if(remissionItem!=null)
 		{
@@ -630,6 +637,8 @@ public class AccountingServiceImpl implements IAccountingService {
 			remissionOverdueAmt = remissionItem.getOverdueAmount();
 			remissionOtherFee = remissionItem.getOtherFee();
 			remissionOtherOverdueAmt = remissionItem.getOtherOverdueAmount();
+			remissionLateFee = remissionItem.getLateFee();
+			remissionDate = remissionItem.getRemissionDate();
 		}
 		/**
 		 * 第一步获取新代扣明细表其他费用
@@ -654,13 +663,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayOverdueAmt -=stayAmount;
 						stayAmount = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting);
 					}
 					else
 					{
 						stayAmount -=repayOverdueAmt;
 						repayOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting);
 					}
 				}
 				/**
@@ -672,13 +681,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayOverdueAmt -=remissionOtherOverdueAmt;
 						remissionOtherOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, remissionOtherOverdueAmt,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, remissionOtherOverdueAmt,chargeDate, RepayMode.Remission);
 					}
 					else
 					{
 						remissionOtherOverdueAmt -=repayOverdueAmt;
 						repayOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission);
 					}
 				}
 				/**
@@ -687,7 +696,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
 				if(Double.compare(repayOverdueAmt,0.00)>0)
 				{
-					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay.getName());
+					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHEROVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay);
 				}
 				/**
 				 * 处理其他费用,用挂账金额处理其他费用
@@ -698,13 +707,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayCaptital -=stayAmount;
 						stayAmount = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, stayAmount,chargeDate, RepayMode.StayAccounting);
 					}
 					else
 					{
 						stayAmount -=repayCaptital;
 						repayCaptital = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayOverdueAmt,chargeDate, RepayMode.StayAccounting);
 					}
 				}
 				/**
@@ -716,13 +725,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayCaptital -=remissionOtherFee;
 						remissionOtherFee = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, remissionOtherFee,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, remissionOtherFee,chargeDate, RepayMode.Remission);
 					}
 					else
 					{
 						remissionOtherFee -=repayCaptital;
 						repayCaptital = 0.00;
-						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.Remission);
 					}
 				}
 				/**
@@ -730,7 +739,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				 */
 				if(Double.compare(repayCaptital,0.00)>0)
 				{
-					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.PublicRepay.getName());
+					this.saveRepayLog(appId, FeeType.Other, item.getFeeRefId(), ChargeItem.OTHERFEE, repayCaptital,chargeDate, RepayMode.PublicRepay);
 				}
 				/**
 				 * 删除代扣款明细,用新的数据替换原始还款数据
@@ -786,13 +795,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayOverdueAmt -=stayAmount;
 						stayAmount = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, stayAmount,chargeDate, RepayMode.StayAccounting);
 					}
 					else
 					{
 						stayAmount -=repayOverdueAmt;
 						repayOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.StayAccounting);
 					}
 				}
 				/**
@@ -804,13 +813,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayOverdueAmt -=remissionOverdueAmt;
 						remissionOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, remissionOverdueAmt,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, remissionOverdueAmt,chargeDate, RepayMode.Remission);
 					}
 					else
 					{
 						remissionOverdueAmt -=repayOverdueAmt;
 						repayOverdueAmt = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.Remission);
 					}
 				}
 				/**
@@ -819,7 +828,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
 				if(Double.compare(repayOverdueAmt,0.00)>0)
 				{
-					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay.getName());
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.OVERDUEAMT, repayOverdueAmt,chargeDate, RepayMode.PublicRepay);
 				}
 				
 				/****************************************************应还利息处理阶段***************************/
@@ -832,13 +841,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayInterest -=stayAmount;
 						stayAmount = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, stayAmount,chargeDate, RepayMode.StayAccounting);
 					}
 					else
 					{
 						stayAmount -=repayInterest;
 						repayInterest = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.StayAccounting);
 					}
 				}
 				/**
@@ -850,13 +859,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayInterest -=remissionInterest;
 						remissionInterest = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, remissionInterest,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, remissionInterest,chargeDate, RepayMode.Remission);
 					}
 					else
 					{
 						remissionInterest -=repayInterest;
 						repayInterest = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.Remission);
 					}
 				}
 				/**
@@ -865,7 +874,7 @@ public class AccountingServiceImpl implements IAccountingService {
 
 				if(Double.compare(repayInterest,0.00)>0)
 				{
-					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.PublicRepay.getName());
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.INTEREST, repayInterest,chargeDate, RepayMode.PublicRepay);
 				}
 				
 				/****************************************************应还本金处理阶段***************************/
@@ -878,13 +887,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayCapital -=stayAmount;
 						stayAmount = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, stayAmount,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, stayAmount,chargeDate, RepayMode.StayAccounting);
 					}
 					else
 					{
 						stayAmount -=repayCapital;
 						repayCapital = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.StayAccounting.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.StayAccounting);
 					}
 				}
 				/**
@@ -896,13 +905,13 @@ public class AccountingServiceImpl implements IAccountingService {
 					{
 						repayCapital -=remissionCapital;
 						remissionCapital = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, remissionCapital,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, remissionCapital,chargeDate, RepayMode.Remission);
 					}
 					else
 					{
 						remissionCapital -=repayCapital;
 						repayCapital = 0.00;
-						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.Remission.getName());
+						this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.Remission);
 					}
 				}
 				/**
@@ -910,7 +919,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				 */
 				if(Double.compare(repayCapital,0.00)>0)
 				{
-					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.PublicRepay.getName());
+					this.saveRepayLog(appId, FeeType.Plan, item.getFeeRefId(), ChargeItem.CAPITAL, repayCapital,chargeDate, RepayMode.PublicRepay);
 				}
 				
 				/******************************************************更新原始还款计划**********************************/
@@ -986,11 +995,10 @@ public class AccountingServiceImpl implements IAccountingService {
 					newPlan.setRepayStatus(RepayStatus.Repaying.getName());
 					repayPlanDao.insert(newPlan);
 				}
-				
 			}
 		}
 		
-		/*************************************************修改总账相关数据***********************************************************/
+		/*************************************************修改总账相关数据,执行一些后续处理***********************************************************/
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 		if(applyType.equals(LoanApplyTaskType.Settle))
 		{
@@ -1007,6 +1015,9 @@ public class AccountingServiceImpl implements IAccountingService {
 		}
 		if(applyType.equals(LoanApplyTaskType.ExtendPeriod))
 		{
+			//展期需要更新总账剩余本金、还款方式、新的还款期数
+			ledgerPo.setRepayMode(extendPeriodPo.getNewRepayMode());
+			ledgerPo.setPeriod(ledgerPo.getPeriod()+extendPeriodPo.getExtendPeriod());
 			ledgerPo.setRemainCapital(extendPeriodPo.getNewCapital());
 			ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
 		}

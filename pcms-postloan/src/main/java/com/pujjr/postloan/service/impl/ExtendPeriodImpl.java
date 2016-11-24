@@ -50,6 +50,7 @@ import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.ETaskTag;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayMode;
@@ -193,6 +194,11 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	@Override
 	public void commitApplyExtendPeriodTask(String operId,String appId, ApplyExtendPeriodVo vo) {
 		
+		//修改总账处理状态为申请展期,避免其他交易操作
+		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(appId);
+		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyExtendPeriod.getName());
+		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
+				
 		//1、记录入申请表
 		ApplyExtendPeriod applyExtendPeriod = new ApplyExtendPeriod();
 		String businessKey = Utils.get16UUID();
@@ -436,17 +442,18 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		if(Double.compare(vo.getLateFee(), 0.00)>0)
 		{
 			vars.put("needRemissionApprove", true);
-			RemissionItem remissiontItem = new RemissionItem();
-			remissiontItem.setId(Utils.get16UUID());
-			remissiontItem.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
-			remissiontItem.setApplyRefId(po.getId());
-			remissiontItem.setCapital(0.00);
-			remissiontItem.setInterest(0.00);
-			remissiontItem.setOverdueAmount(0.00);
-			remissiontItem.setOtherFee(0.00);
-			remissiontItem.setOtherOverdueAmount(0.00);
-			remissiontItem.setLateFee(vo.getLateFee());
-			remissionItemMapper.insert(remissiontItem);
+			RemissionItem remissionItem = new RemissionItem();
+			remissionItem.setId(Utils.get16UUID());
+			remissionItem.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
+			remissionItem.setApplyRefId(po.getId());
+			remissionItem.setCapital(0.00);
+			remissionItem.setInterest(0.00);
+			remissionItem.setOverdueAmount(0.00);
+			remissionItem.setOtherFee(0.00);
+			remissionItem.setOtherOverdueAmount(0.00);
+			remissionItem.setLateFee(vo.getLateFee());
+			remissionItem.setRemissionDate(vo.getRemissionDate());
+			remissionItemMapper.insert(remissionItem);
 		}
 		
 		//提交任务
@@ -467,35 +474,20 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
-		// 2、保存任务处理结果信息
-		TaskProcessResult taskProcessResult = new TaskProcessResult();
-		taskProcessResult.setId(Utils.get16UUID());
-		taskProcessResult.setRunPathId(runpath.getId());
-		taskProcessResult.setProcessResult(vo.getApproveResult());
-		// 建议通过
-		if (vo.getApproveResult().equals(TaskCommitType.LOAN_PASS)) 
-		{
-			taskProcessResult.setProcessResultDesc("通过");
-			ApplyExtendPeriod aep = applyExtendPeriodMapper.selectByProcInstId(task.getProcessInstanceId());
-			accountingServiceImpl.repayReverseAccountingUserNewWaitingChargeTable(aep.getId(), LoanApplyTaskType.ExtendPeriod, aep.getAppId());
-		} 
-		else
-		{
-			taskProcessResult.setProcessResultDesc("拒绝");
-		}
-		taskProcessResult.setComment(vo.getApproveComment());
-		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
-		taskProcessResultDao.insert(taskProcessResult);	
 		
-		//3、修改申请状态
-		ApplyExtendPeriod aep = applyExtendPeriodMapper.selectByProcInstId(task.getProcessInstanceId());
-		aep.setApplyStatus(LoanApplyStatus.Confirmed.getName());
-		applyExtendPeriodMapper.updateByPrimaryKeySelective(aep);
+		ApplyExtendPeriod po = applyExtendPeriodMapper.selectByProcInstId(task.getProcessInstanceId());
+		po.setApplyStatus(LoanApplyStatus.Confirmed.getName());
 		
-		//4、处理结果放入流程变量,完成任务
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-		vars.put("approveProcessResult", vo.getApproveResult());
-		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+		//刷新新的变更后还款计划
+		accountingServiceImpl.repayReverseAccountingUserNewWaitingChargeTable(po.getId(), LoanApplyTaskType.ExtendPeriod, po.getAppId());
+		
+		//释放总账状态
+		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(po.getAppId());
+		ledgerPo.setProcessStatus("");
+		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
+		
+		//提交任务
+		runWorkflowServiceImpl.completeTask(taskId, "", null, CommandType.COMMIT);
 
 	}
 
@@ -508,7 +500,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	@Override
 	public List<ExtendPeriodTaskVo> getApplyExtendPeriodTaskList(String createId, List<String> applyStatus) {
 		// TODO Auto-generated method stub
-		return null;
+		return applyExtendPeriodMapper.selectApplyExtendPeriodTaskList(createId, applyStatus);
 	}
 
 	@Override
@@ -518,7 +510,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		ApplyExtendPeriod po = applyExtendPeriodMapper.selectByPrimaryKey(id);
 		vo.setApplyComment(po.getApplyComment());
 		vo.setApplyEndDate(po.getApplyEndDate());
-		vo.setExtendPeriod(vo.getExtendPeriod());
+		vo.setExtendPeriod(po.getExtendPeriod());
 		vo.setNewRepayMode(po.getNewRepayMode());
 		
 		ExtendPeriodFeeItemVo feeItemVo = new ExtendPeriodFeeItemVo();
@@ -549,6 +541,10 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		}
 		feeItemVo.setRepayPlanList(newRepayPlanList);
 		vo.setFeeItem(feeItemVo);
+		
+		//获取减免费用
+		RemissionItem remissionItem = remissionItemMapper.selectByApplyId(LoanApplyTaskType.ExtendPeriod.getName(), id);
+		vo.setRemissionFeeItemVo(remissionItem);
 		return vo;
 	}
 

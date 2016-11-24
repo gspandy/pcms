@@ -1,4 +1,7 @@
 package com.pujjr.postloan.vo;
+
+import java.util.Date;
+
 /**
  * 减免费项
  * **/
@@ -16,7 +19,15 @@ public class RemissionFeeItemVo
 	private double otherOverdueAmount;
 	//减免违约金
 	private double lateFee;
+	//减免日期
+	private Date remissionDate;
 	
+	public Date getRemissionDate() {
+		return remissionDate;
+	}
+	public void setRemissionDate(Date remissionDate) {
+		this.remissionDate = remissionDate;
+	}
 	public double getCapital() {
 		return capital;
 	}

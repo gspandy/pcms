@@ -15,9 +15,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pujjr.base.domain.RuleRemission;
+import com.pujjr.base.service.IRuleService;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.TaskProcessResult;
-import com.pujjr.carcredit.vo.SignCommitType;
 import com.pujjr.carcredit.vo.TaskCommitType;
 import com.pujjr.enumeration.EIntervalMode;
 import com.pujjr.jbpm.core.command.CommandType;
@@ -38,17 +39,13 @@ import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
-import com.pujjr.postloan.enumeration.EInterestMode;
-import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
-import com.pujjr.postloan.enumeration.RepayMode;
-import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.enumeration.SettleType;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IPlanService;
-import com.pujjr.postloan.service.IRemissionService;
 import com.pujjr.postloan.service.ISettleService;
 import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -90,6 +87,8 @@ public class SettleServiceImpl implements ISettleService{
 	private RuntimeService runtimeService;
 	@Autowired
 	private OtherFeeMapper otherFeeMapper;
+	@Autowired
+	private IRuleService ruleService;
 	
 	@Override
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
@@ -179,7 +178,13 @@ public class SettleServiceImpl implements ISettleService{
 	}
 
 	@Override
-	public void commitApplySettleTask(String operId,String appId,String settleType,ApplySettleVo vo) throws Exception {
+	public void commitApplySettleTask(String operId,String appId,String settleType,ApplySettleVo vo) throws Exception 
+	{
+		//修改总账处理状态为申请提前结清,避免其他交易操作
+		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(appId);
+		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplySettle.getName());
+		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
+		
 		RepayPlan lastRepayPlan = accountingServiceImpl.getLatestPeriodRepayPlan(appId);
 		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
 		int endPeriod = vo.getEndPeriod();
@@ -415,42 +420,80 @@ public class SettleServiceImpl implements ISettleService{
 
 	@Override
 	public void commitApproveRemissionTask(String taskId, ApproveResultVo vo) throws Exception {
-		//1、检查任务合法性
+		//检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if (task == null) {
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
 		}
-		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
-				task.getTaskDefinitionKey());
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),task.getTaskDefinitionKey());
 		if (runpath == null) {
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
-		// 2、保存任务处理结果信息
+		
+		//获取申请数据
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		ApplySettle po = applySettleMapper.selectByPrimaryKey(businessKey);
+		
+		//保存任务处理结果信息
+		String procId = Utils.get16UUID();
 		TaskProcessResult taskProcessResult = new TaskProcessResult();
-		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setId(procId);
 		taskProcessResult.setRunPathId(runpath.getId());
 		taskProcessResult.setProcessResult(vo.getApproveResult());
-		// 建议通过
-		if (vo.getApproveResult().equals(TaskCommitType.PASS)) 
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+				
+		//判断审批结果，并根据是否超过自身减免额度，如超过则由下一级来决定
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("needUpgradeApprove", false);
+		vars.put("approveProcessResult", vo.getApproveResult());
+		
+		//通过
+		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
 		{
-			taskProcessResult.setProcessResultDesc("通过");
-		} 
+			//获取减免费项
+			RemissionItem remissionItemPo = remissionItemMapper.selectByApplyId(LoanApplyTaskType.Settle.getName(), businessKey);
+			double capital = remissionItemPo.getCapital();
+			double interest = remissionItemPo.getInterest();
+			double overdueAmt = remissionItemPo.getOverdueAmount();
+			double otherFee = remissionItemPo.getOtherFee();
+			double otherOverdueAmt = remissionItemPo.getOtherOverdueAmount();
+			double totalOverdueAmt = overdueAmt+otherOverdueAmt;
+			double lateFee = remissionItemPo.getLateFee();
+			//获取任务执行人组ID
+			String batchAssigneeWorkgroupId = runtimeService.getVariable(task.getExecutionId(), "batchAssigneeWorkgroupId").toString();
+			//获取组减免规则
+			RuleRemission rule = ruleService.getWorkgroupRemissionRule(batchAssigneeWorkgroupId);
+			//当任何一项减免费用超过组设定则任务需要升级处理
+			if(
+					(Double.compare(capital, rule.getMaxCapital())>0 ||
+					Double.compare(interest, rule.getMaxInterest())>0 ||
+					Double.compare(otherFee, rule.getMaxOtherFee())>0 ||
+					Double.compare(lateFee, rule.getMaxLateFee())>0 ||
+					Double.compare(totalOverdueAmt, rule.getMaxOverdueAmt())>0)
+			  )
+			{
+				vars.put("needUpgradeApprove", true);
+			}
+			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
+		}
 		else
 		{
-			taskProcessResult.setProcessResultDesc("拒绝");
+			po.setApplyStatus(LoanApplyStatus.ApproveRefuse.getName());
+			//如果失败流程结束则释放总账状态
+			GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(po.getAppId());
+			ledgerPo.setProcessStatus("");
+			generalLedgerMapper.updateByPrimaryKey(ledgerPo);
 		}
-		taskProcessResult.setComment(vo.getApproveComment());
-		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
-		taskProcessResultDao.insert(taskProcessResult);	
-		//3、处理结果放入流程变量,完成任务
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-		vars.put("approveProcessResult", vo.getApproveResult());
-		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+		applySettleMapper.updateByPrimaryKey(po);
+		
+		//提交任务
+		runWorkflowServiceImpl.completeTask(taskId, "", vars, CommandType.COMMIT);
 	}
 
 	@Override
 	public void commitApplyConfirmSettleTask(String operId,String taskId, RemissionFeeItemVo vo) throws Exception {
-		//1、检查任务合法性
+		//检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
 		if (task == null) {
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
@@ -461,85 +504,71 @@ public class SettleServiceImpl implements ISettleService{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
 		
-		ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
-		//2、获取"提前结清减免"对应"提前结清申请"信息
-		RemissionItem remissiontItem = new RemissionItem();
-		remissiontItem.setId(Utils.get16UUID());
-		remissiontItem.setApplyType(ERemissionType.SETTLE.getName());
-		remissiontItem.setApplyRefId(applySettle.getId());//关联提前结清申请主键
-		remissiontItem.setCapital(vo.getCapital());
-		remissiontItem.setInterest(vo.getInterest());
-		remissiontItem.setOverdueAmount(vo.getOverdueAmount());
-		remissiontItem.setOtherFee(vo.getOtherFee());
-		remissiontItem.setOtherOverdueAmount(vo.getOtherOverdueAmount());
-		remissiontItem.setLateFee(vo.getLateFee());
-		remissionItemMapper.insert(remissiontItem);
-		// 3、处理结果放入流程变量,完成任务
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-		//vars变量待定....
+		//获取申请数据
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		ApplySettle po = applySettleMapper.selectByPrimaryKey(businessKey);
+		
+
+		//判断是否存在减免项，如有则保存展期费用并设置进入减免审批标志
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("needRemissionApprove", false);
+		if(
+				Double.compare(vo.getLateFee(), 0.00)>0||
+				Double.compare(vo.getCapital(), 0.00)>0||
+				Double.compare(vo.getInterest(), 0.00)>0||
+				Double.compare(vo.getOverdueAmount(), 0.00)>0||
+				Double.compare(vo.getOtherFee(), 0.00)>0||
+				Double.compare(vo.getOtherOverdueAmount(), 0.00)>0
+		)
+		{
+			vars.put("needRemissionApprove", true);
+			RemissionItem remissionItem = new RemissionItem();
+			remissionItem.setId(Utils.get16UUID());
+			remissionItem.setApplyType(LoanApplyTaskType.Settle.getName());
+			remissionItem.setApplyRefId(po.getId());
+			remissionItem.setCapital(vo.getCapital());
+			remissionItem.setInterest(vo.getInterest());
+			remissionItem.setOverdueAmount(vo.getOverdueAmount());
+			remissionItem.setOtherFee(vo.getOtherFee());
+			remissionItem.setOtherOverdueAmount(vo.getOtherOverdueAmount());
+			remissionItem.setLateFee(vo.getLateFee());
+			remissionItem.setRemissionDate(vo.getRemissionDate());
+			remissionItemMapper.insert(remissionItem);
+		}
+		
+		//提交任务
 		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
 	}
 
 	@Override
 	public void commitConfirmSettleTask(String taskId, ApproveResultVo vo) throws Exception {
 		//1、检查任务合法性
+		//1、检查任务合法性
 		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
-		if (task == null) {
+		if (task == null) 
+		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
 		}
-		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
-				task.getTaskDefinitionKey());
-		if (runpath == null) {
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),task.getTaskDefinitionKey());
+		if (runpath == null) 
+		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
-		// 2、保存任务处理结果信息
-		TaskProcessResult taskProcessResult = new TaskProcessResult();
-		taskProcessResult.setId(Utils.get16UUID());
-		taskProcessResult.setRunPathId(runpath.getId());
-		taskProcessResult.setProcessResult(vo.getApproveResult());
-		// 建议通过
-		if (vo.getApproveResult().equals(TaskCommitType.PASS)) 
-		{
-			taskProcessResult.setProcessResultDesc("通过");
-			ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
-			accountingServiceImpl.repayReverseAccountingUserNewWaitingChargeTable(applySettle.getId(), LoanApplyTaskType.Settle, applySettle.getAppId());
-			/*//刷新还款计划
-			ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
-			String id = applySettle.getId();
-			String appId = applySettle.getAppId();
-			GeneralLedger generalLedger = generalLedgerMapper.selectByAppId(appId);
-			//部分提前结清后剩余本金
-			double financeAmt = applySettle.getSettleAfterCapital();
-			double monthRate = generalLedger.getYearRate()/12;
-			RepayPlan lastRepayPlan = accountingServiceImpl.getLatestPeriodRepayPlan(appId);
-			RepayPlan currRepayPlan = accountingServiceImpl.getCurrentPeriodRepayPlan(appId);
-			int currPeriod = currRepayPlan.getPeriod();
-			//剩余还款期数
-			int period = lastRepayPlan.getPeriod() - currPeriod;
-			//当前还款周期下一期
-			List<RepayPlan> nextPlanList = planServiceImpl.getRepayPlanList(appId, currPeriod+1, currPeriod+1);
-			if(nextPlanList.size() == 0){
-				throw new Exception("无法获取下一还款周期信息（当前为最后一期）");
-			}else{
-				Date valueDate = nextPlanList.get(0).getValueDate();
-				EInterestMode eInterestMode = planServiceImpl.getInterestMode(appId);
-				planServiceImpl.refreshRepayPlan(id, financeAmt, monthRate, period, valueDate, eInterestMode, currPeriod);
-			}*/
-		} 
-		else{
-			taskProcessResult.setProcessResultDesc("拒绝");
-		}
-		taskProcessResult.setComment(vo.getApproveComment());
-		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
-		taskProcessResultDao.insert(taskProcessResult);	
-		//3、修改申请状态
-		ApplySettle applySettle = applySettleMapper.selectByProcInstId(task.getProcessInstanceId());
-		applySettle.setApplyStatus(vo.getApproveResult());
-		applySettleMapper.updateByPrimaryKeySelective(applySettle);
-		//4、处理结果放入流程变量,完成任务
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-		vars.put("approveProcessResult", vo.getApproveResult());
-		runWorkflowServiceImpl.completeTask(taskId, "提交任务", vars, CommandType.COMMIT);
+		
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		ApplySettle po = applySettleMapper.selectByPrimaryKey(businessKey);
+		po.setApplyStatus(LoanApplyStatus.Confirmed.getName());
+		
+		//刷新新的变更后还款计划
+		accountingServiceImpl.repayReverseAccountingUserNewWaitingChargeTable(po.getId(), LoanApplyTaskType.Settle, po.getAppId());
+		
+		//释放总账状态
+		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(po.getAppId());
+		ledgerPo.setProcessStatus("");
+		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
+		
+		//提交任务
+		runWorkflowServiceImpl.completeTask(taskId, "", null, CommandType.COMMIT);
 	}
 
 	@Override
