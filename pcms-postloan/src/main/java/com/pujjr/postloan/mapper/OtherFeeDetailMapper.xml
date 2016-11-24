@@ -1,92 +1,81 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.postloan.dao.OtherFeeDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OtherFeeDetail" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="SEQ" property="seq" jdbcType="INTEGER" />
-    <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
-    <result column="FEE_ID" property="feeId" jdbcType="VARCHAR" />
-    <result column="ITEM_AMOUNT" property="itemAmount" jdbcType="DOUBLE" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.OtherFeeDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OtherFeeDetail">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+    <result column="OTHERFEE_APPLY_ID" jdbcType="VARCHAR" property="otherfeeApplyId" />
+    <result column="ITEM_AMOUNT" jdbcType="DOUBLE" property="itemAmount" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, SEQ, ITEM_NAME, FEE_ID, ITEM_AMOUNT
+  <sql id="Base_Column_List">
+    ID, ITEM_NAME, OTHERFEE_APPLY_ID, ITEM_AMOUNT
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_other_fee_detail
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_other_fee_detail
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.postloan.domain.OtherFeeDetail" >
-    insert into t_other_fee_detail (ID, SEQ, ITEM_NAME, 
-      FEE_ID, ITEM_AMOUNT)
-    values (#{id,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{itemName,jdbcType=VARCHAR}, 
-      #{feeId,jdbcType=VARCHAR}, #{itemAmount,jdbcType=DOUBLE})
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OtherFeeDetail">
+    insert into t_other_fee_detail (ID, ITEM_NAME, OTHERFEE_APPLY_ID, 
+      ITEM_AMOUNT)
+    values (#{id,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, #{otherfeeApplyId,jdbcType=VARCHAR}, 
+      #{itemAmount,jdbcType=DOUBLE})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OtherFeeDetail" >
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OtherFeeDetail">
     insert into t_other_fee_detail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="seq != null" >
-        SEQ,
-      </if>
-      <if test="itemName != null" >
+      <if test="itemName != null">
         ITEM_NAME,
       </if>
-      <if test="feeId != null" >
-        FEE_ID,
+      <if test="otherfeeApplyId != null">
+        OTHERFEE_APPLY_ID,
       </if>
-      <if test="itemAmount != null" >
+      <if test="itemAmount != null">
         ITEM_AMOUNT,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="seq != null" >
-        #{seq,jdbcType=INTEGER},
-      </if>
-      <if test="itemName != null" >
+      <if test="itemName != null">
         #{itemName,jdbcType=VARCHAR},
       </if>
-      <if test="feeId != null" >
-        #{feeId,jdbcType=VARCHAR},
+      <if test="otherfeeApplyId != null">
+        #{otherfeeApplyId,jdbcType=VARCHAR},
       </if>
-      <if test="itemAmount != null" >
+      <if test="itemAmount != null">
         #{itemAmount,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OtherFeeDetail" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OtherFeeDetail">
     update t_other_fee_detail
-    <set >
-      <if test="seq != null" >
-        SEQ = #{seq,jdbcType=INTEGER},
-      </if>
-      <if test="itemName != null" >
+    <set>
+      <if test="itemName != null">
         ITEM_NAME = #{itemName,jdbcType=VARCHAR},
       </if>
-      <if test="feeId != null" >
-        FEE_ID = #{feeId,jdbcType=VARCHAR},
+      <if test="otherfeeApplyId != null">
+        OTHERFEE_APPLY_ID = #{otherfeeApplyId,jdbcType=VARCHAR},
       </if>
-      <if test="itemAmount != null" >
+      <if test="itemAmount != null">
         ITEM_AMOUNT = #{itemAmount,jdbcType=DOUBLE},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OtherFeeDetail" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OtherFeeDetail">
     update t_other_fee_detail
-    set SEQ = #{seq,jdbcType=INTEGER},
-      ITEM_NAME = #{itemName,jdbcType=VARCHAR},
-      FEE_ID = #{feeId,jdbcType=VARCHAR},
+    set ITEM_NAME = #{itemName,jdbcType=VARCHAR},
+      OTHERFEE_APPLY_ID = #{otherfeeApplyId,jdbcType=VARCHAR},
       ITEM_AMOUNT = #{itemAmount,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>

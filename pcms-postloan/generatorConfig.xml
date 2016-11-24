@@ -36,10 +36,7 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		<table tableName="T_OTHER_FEE_DETAIL" domainObjectName="OtherFeeDetail" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		
 		<table tableName="T_OFFER_DETAIL" domainObjectName="OfferDetail" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -129,9 +126,15 @@
 		<table tableName="T_APPLY_ALTER_REPAYDATE" domainObjectName="ApplyAlterRepayDate" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>	
-		-->
+		</table>
+		
 		<table tableName="T_REMISSION_ITEM" domainObjectName="RemissionItem" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>	
+		
+		-->
+		<table tableName="T_OTHER_FEE_DETAIL" domainObjectName="OtherFeeDetail" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
