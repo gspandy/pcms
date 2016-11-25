@@ -109,4 +109,11 @@ public class QueryController extends BaseController
    	{
    		return queryService.queryApplyRunPathNodeList(appId);
    	}
+    
+
+	@RequestMapping(value="/getWorkflowProcessResultByProcInstId/{procInstId}",method=RequestMethod.GET)
+	public List<WorkflowProcessResultPo> getWorkflowProcessResultByProcInstId(@PathVariable String procInstId) throws Exception
+	{
+		return taskService.getWorkflowProcessResult(procInstId);
+	}
 }

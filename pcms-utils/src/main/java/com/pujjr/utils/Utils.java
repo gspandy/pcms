@@ -577,9 +577,10 @@ public class Utils {
 		return (int) ((endDate.getTime()-beginDate.getTime())/(24*60*60*1000)+1);
 	}
 	/**比较时间大小**/
-	public static int compareDateTime(Date beginDate,Date endDate)
+	public static long compareDateTime(Date beginDate,Date endDate)
 	{
-		return (int)(endDate.getTime()-beginDate.getTime());
+		Long space = (endDate.getTime()-beginDate.getTime());
+		return Long.compare(space, 0);
 	}
 	/**
 	 * 按照指定格式获取当前日期

@@ -3,6 +3,7 @@ package com.pujjr.postloan.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
 import com.pujjr.postloan.domain.WaitingChargeNew;
@@ -49,4 +50,10 @@ public interface ILoanQueryService
 	 * @return
 	 */
 	public List<WaitingChargeNew> getWaitingChargeNewList(String applyId,String applyType,String feeType,boolean containSettleRecord);
+	/**
+	 * 查询已审批的其他费用
+	 * @param appId
+	 * @return
+	 */
+	public List<HashMap<String,Object>> getOtherFeeList(String appId);
 }

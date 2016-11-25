@@ -23,4 +23,6 @@ public interface HolidayMapper {
 	Holiday seleteByHolidayDate(@Param("holidayDate")Date holidayDate);
     
     List<Holiday> selectAll();
+    
+    void deleteHoliday(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
 }

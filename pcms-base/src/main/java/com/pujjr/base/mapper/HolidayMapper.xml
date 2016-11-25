@@ -97,4 +97,10 @@
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from t_holiday
   </select>
+  <delete id="deleteHoliday">
+  	delete from t_holiday where  
+  	<![CDATA[
+  		HOLIDAY_DATE >= #{startDate} and HOLIDAY_DATE <= #{endDate}
+  	]]>
+  </delete>
 </mapper>

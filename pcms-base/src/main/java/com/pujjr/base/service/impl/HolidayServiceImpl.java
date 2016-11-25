@@ -1,5 +1,7 @@
 package com.pujjr.base.service.impl;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -71,6 +73,38 @@ public class HolidayServiceImpl implements IHolidayService {
 				}
 			}
 			return date;
+		}
+	}
+
+	@Override
+	public void initHoliday(String year,String operId) throws ParseException {
+		// TODO Auto-generated method stub
+		Date startDate = Utils.str82date(year+"0101");
+		Date endDate = Utils.str82date(year+"1231");
+		//先删除目前的节假日设置
+		holidayDao.deleteHoliday(startDate, endDate);
+		
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(startDate);
+		while(true)
+		{
+		     int w = cal.get(Calendar.DAY_OF_WEEK);
+		     if(w==1||w==7)
+		     {
+		    	 Holiday holiday = new Holiday();
+		    	 holiday.setId(Utils.get16UUID());
+		    	 holiday.setHolidayDate(cal.getTime());
+		    	 holiday.setHolidayDesc("周末");
+		    	 holiday.setCreateId(operId);
+		    	 holiday.setCreateTime(new Date());
+		    	 holidayDao.insert(holiday);
+		     }
+		     cal.add(Calendar.DATE, 1);
+		     if(Utils.compareDateTime(endDate, cal.getTime())>0)
+		     {
+		    	 break;
+		     }
+		     
 		}
 	}
 

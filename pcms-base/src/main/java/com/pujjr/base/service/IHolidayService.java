@@ -1,5 +1,6 @@
 package com.pujjr.base.service;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface IHolidayService
 	public void deleteHolidayById(String id);
 	//获取指定日期工作日
 	public Date getWorkDate(Date date);
+	//初始年周末
+	public void initHoliday(String year, String operId) throws ParseException;
 }
