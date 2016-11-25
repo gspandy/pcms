@@ -602,4 +602,5 @@ public class TaskController extends BaseController
 	{
 		taskService.batchDoLoanTask(list);
 	}
+
 }

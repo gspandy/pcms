@@ -115,4 +115,22 @@
 	where a.ASSIGNEE_ = #{assignee} 
 	and c.KEY_ != 'PPCA' 
   	</select>
+  	<select id="selectOtherFeeList" resultType="HashMap">
+  		select 
+  		a.ID as id,
+  		a.FEE_TOTAL_AMOUNT as feeTotalAmount ,
+  		c.ACCOUNT_NAME 	as createName,
+  		a.CREATE_DATE as  applyDate,
+  		d.DICT_DATA_NAME  as repayStatus,
+  		a.SETTLE_DATE as settleDate,
+  		b.REPAY_CAPITAL as repayCapital,
+  		b.REPAY_OVERDUE_AMOUNT as overDueAmount,
+  		a.ADDUP_OVERDUE_DAY as addupOverdueDay,
+  		a.ADDUP_OVERDUE_AMOUNT as addupOverdueAmount
+  		from T_OTHER_FEE a 
+  		left join T_WAITING_CHARGE b on a.ID = b.FEE_REF_ID 
+  		left join SYS_ACCOUNT c on a.CREATE_ID = c.ACCOUNT_ID
+  		left join SYS_DICT_DATA d on a.REPAY_STATUS  = d.DICT_DATA_CODE
+  		where a.APP_ID  = #{appId} and a.APPLY_STATUS = 'dhsqzt03'
+  	</select>
 </mapper>

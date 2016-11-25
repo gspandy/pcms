@@ -28,6 +28,10 @@ public class RemissionTaskVo
 	private String taskName;
 	//审批人
 	private String assignee;
+	//流程定义ID
+	private String procDefId;
+	//流程实例ID
+	private String procInstId;
 	
 	public String getId() {
 		return id;
@@ -94,6 +98,18 @@ public class RemissionTaskVo
 	}
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
+	}
+	public String getProcDefId() {
+		return procDefId;
+	}
+	public void setProcDefId(String procDefId) {
+		this.procDefId = procDefId;
+	}
+	public String getProcInstId() {
+		return procInstId;
+	}
+	public void setProcInstId(String procInstId) {
+		this.procInstId = procInstId;
 	}
 	
 }

@@ -1,5 +1,6 @@
 package com.pujjr.base.controller;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -50,5 +51,11 @@ public class HolidayController extends BaseController
 	public void deleteHoliday(@PathVariable String id)
 	{
 		holidayService.deleteHolidayById(id);
+	}
+	@RequestMapping(value="/initHoliday/{year}",method=RequestMethod.GET)
+	public void initHoliday(@PathVariable String year,HttpServletRequest request) throws ParseException
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		holidayService.initHoliday(year, account.getAccountId());
 	}
 }

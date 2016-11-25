@@ -137,6 +137,8 @@
     <result column="applyComment" jdbcType="VARCHAR" property="applyComment" />
     <result column="taskName" jdbcType="VARCHAR" property="taskName" />
     <result column="assignee" jdbcType="VARCHAR" property="assignee" />
+    <result column="procDefId" jdbcType="VARCHAR" property="procDefId" />
+    <result column="procInstId" jdbcType="VARCHAR" property="procInstId" />
     <association property="feeItem" column="id" select="selectRemissionItem"></association>
   </resultMap>
   
@@ -151,13 +153,16 @@
   	e.DICT_DATA_NAME as applyStatus,
   	a.APPLY_COMMENT as applyComment,
   	c.NAME_ as taskName,
-  	f.ACCOUNT_NAME as assignee
+  	f.ACCOUNT_NAME as assignee,
+  	a.PROC_INST_ID as procInstId,
+  	g.PROC_DEF_ID_ as procDefId
   	from T_APPLY_REMISSION a
   	left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
   	left join ACT_RU_TASK c on a.PROC_INST_ID = c.PROC_INST_ID_
   	left join T_SIGN_CONTRACT d on a.APP_ID = d.APP_ID
   	left join SYS_DICT_DATA e on a.APPLY_STATUS = e.DICT_DATA_CODE
   	left join SYS_ACCOUNT f on c.ASSIGNEE_ = f.ACCOUNT_ID
+  	left join ACT_HI_PROCINST g on a.PROC_INST_ID =  g.PROC_INST_ID_
   	where a.CREATE_ID = #{createId}
   </select>
   

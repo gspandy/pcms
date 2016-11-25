@@ -21,6 +21,8 @@ import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.QueryParamPageVo;
 import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
+import com.pujjr.carcredit.po.WorkflowProcessResultPo;
+import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.TaskVo;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
@@ -28,6 +30,7 @@ import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.postloan.domain.ApplyPublicRepay;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
+import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.ILoanQueryService;
 import com.pujjr.postloan.service.IPublicRepayService;
@@ -49,6 +52,8 @@ public class LoanQueryController
 	private IRunPathService runPathService;
 	@Autowired
 	private IPublicRepayService publicRepayService;
+	@Autowired
+	private ITaskService taskService;
 	
 	@RequestMapping(value="/getLoanCustList",method=RequestMethod.GET)
 	public PageVo getLoanCustList(QueryParamPageVo param,HttpServletRequest request)
@@ -163,4 +168,17 @@ public class LoanQueryController
 	{
 		return accountingService.getCurrentPeriodRepayPlan(appId);
 	}
+	
+	@RequestMapping(value="/getOtherFeeList/{appId}",method=RequestMethod.GET)
+	public PageVo getOtherFeeList(@PathVariable String appId,QueryParamPageVo param,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
+		List<HashMap<String,Object>> list = loanQueryService.getOtherFeeList(appId);
+		PageVo page=new PageVo();
+		page.setTotalItem(((Page)list).getTotal());
+		page.setData(list);
+		return page;
+	}
+	
 }

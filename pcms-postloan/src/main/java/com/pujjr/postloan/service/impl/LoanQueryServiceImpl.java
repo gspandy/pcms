@@ -48,6 +48,11 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 		// TODO Auto-generated method stub
 		return waitingChargeNewDao.selectList(applyType, applyId, feeType,containSettleRecord);
 	}
+	@Override
+	public List<HashMap<String, Object>> getOtherFeeList(String appId) {
+		// TODO Auto-generated method stub
+		return loanQueryDao.selectOtherFeeList(appId);
+	}
 	
 
  	

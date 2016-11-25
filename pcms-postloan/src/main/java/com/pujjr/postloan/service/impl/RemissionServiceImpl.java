@@ -105,6 +105,7 @@ public class RemissionServiceImpl implements IRemissionService
 		remissionItemPo.setOverdueAmount(vo.getRemissionFeeItemVo().getOverdueAmount());
 		remissionItemPo.setOtherFee(vo.getRemissionFeeItemVo().getOtherFee());
 		remissionItemPo.setOtherOverdueAmount(vo.getRemissionFeeItemVo().getOtherOverdueAmount());
+		remissionItemPo.setLateFee(0.00);
 		remissionItemDao.insert(remissionItemPo);
 		
 		//启动流程

@@ -43,4 +43,10 @@ public interface LoanQueryMapper
 	 * @return
 	 */
 	public List<HashMap<String,Object>> selectLoanToDoTaskList(@Param("assignee")String assignee);
+	/**
+	 * 查询其他费用信息
+	 * @param appId申请单号
+	 * @return
+	 */
+	public List<HashMap<String,Object>> selectOtherFeeList(@Param("appId")String appId);
 }
