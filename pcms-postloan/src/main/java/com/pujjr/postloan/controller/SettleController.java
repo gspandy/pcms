@@ -77,24 +77,20 @@ public class SettleController extends BaseController {
 	}
 	
 	/**获取提前结清后新的还款计划（还款计划表未刷新）
-	 * tom 2016年11月17日
-	 * @param appId 申请单号
-	 * @param fianceAmt 本金
-	 * @param monthRate 月利率
-	 * @param period 计息期数
-	 * @param valueDate 起息日
-	 * @param startPeriod 当期还款周期
+	 * tom 2016年11月25日
+	 * @param appId 申请编号
+	 * @param settleCapital 结清本金
+	 * @param settlePeriod 结清期数
+	 * @param applyEndDate 申请有效截止日期
 	 * @return
+	 * @throws ParseException 
 	 */
-	@RequestMapping(value="/refreshRepayPlan/select/{appId}/{fianceAmt}/{monthRate}/{period}/{valueDate}/{eInterestMode}/{currPeriod}",method=RequestMethod.GET)
-	public List<RepayPlan> getRefreshRepayPlan(@PathVariable("appId") String appId,@PathVariable("fianceAmt") double fianceAmt
-			,@PathVariable("monthRate") double monthRate,@PathVariable("period") int period
-			,@PathVariable("valueDate") String valueDateStr,@PathVariable("currPeriod") int currPeriod){
-		System.out.println(appId+"|"+fianceAmt+"|"+monthRate+"|"+period+"|"+valueDateStr);
-		List<RepayPlan> repayPlanList = new ArrayList<RepayPlan>();
-		Date valueDate = Utils.formateString2Date(valueDateStr, "yyyy-MM-dd");
-		repayPlanList = planServiceImpl.selectRefreshRepayPlanList(appId, fianceAmt, monthRate, period, valueDate, currPeriod);
-		return repayPlanList;
+	@RequestMapping(value="/refreshRepayPlan/select/{appId}/{settleCapital}/{settlePeriod}/{applyEndDate}",method=RequestMethod.GET)
+	public List<RepayPlan> getRefreshRepayPlan(@PathVariable("appId") String appId
+			,@PathVariable("settleCapital") double settleCapital
+			,@PathVariable("settlePeriod") int settlePeriod
+			,@PathVariable("applyEndDate") String applyEndDate) throws ParseException{
+		return settleService.getRefreshRepayPlan(appId, settleCapital, settlePeriod,applyEndDate);
 	}
 	
 	@RequestMapping(value="/getAllSettleFeeItem/{appId}",method=RequestMethod.GET)

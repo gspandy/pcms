@@ -1,16 +1,20 @@
 package com.pujjr.postloan.service;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.pujjr.postloan.domain.ApplySettle;
+import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.SettleFeeItemVo;
 import com.pujjr.postloan.vo.SettleTaskVo;
+import com.pujjr.utils.Utils;
 
 /**
  * 结清处理服务
@@ -18,6 +22,17 @@ import com.pujjr.postloan.vo.SettleTaskVo;
 @Service
 public interface ISettleService 
 {
+	
+	/**查询结清后还款计划（还款计划表未刷新）
+	 * tom 2016年11月25日
+	 * @param appId 申请单号
+	 * @param settleCapital 结清本金
+	 * @param period 结清期数
+	 * @param applyEndDate 申请有效截止日期
+	 * @return
+	 * @throws ParseException 
+	 */
+	public List<RepayPlan> getRefreshRepayPlan(String appId,double settleCapital,int period,String applyEndDate) throws ParseException;
 	/**功能：查询指定客户提前结清应还项
 	 * tom 2016年11月14日
 	 * @param appId 申请单号
