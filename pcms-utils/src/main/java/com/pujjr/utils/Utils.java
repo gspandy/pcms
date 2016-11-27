@@ -574,7 +574,9 @@ public class Utils {
 	 * **/
 	public static int getSpaceDay(Date beginDate,Date endDate)
 	{
-		return (int) ((endDate.getTime()-beginDate.getTime())/(24*60*60*1000)+1);
+		Date fBeginDate = Utils.formateDate(beginDate, "yyyyMMdd");
+		Date fEndDate = Utils.formateDate(endDate, "yyyyMMdd");
+		return (int) ((fEndDate.getTime()-fBeginDate.getTime())/(24*60*60*1000));
 	}
 	/**比较时间大小**/
 	public static long compareDateTime(Date beginDate,Date endDate)

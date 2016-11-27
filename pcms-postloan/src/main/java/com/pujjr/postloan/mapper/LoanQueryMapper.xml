@@ -59,6 +59,7 @@
   		left join SYS_DICT_DATA b1 on a.FEE_TYPE = b1.DICT_DATA_CODE
   		left join SYS_DICT_DATA b2 on a.CHARGE_ITEM = b2.DICT_DATA_CODE
   		left join SYS_DICT_DATA b3 on a.CHARGE_MODE = b3.DICT_DATA_CODE
+  		order by a.CHARGE_TIME desc
   	</select>
   	
   	<select id="selectLoanCustChargeLog" resultType="HashMap">

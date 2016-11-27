@@ -134,20 +134,23 @@ public class PlanServiceImpl implements IPlanService {
 			rsp = interestAlgorithmImpl.monthlyIntetrest(fianceAmt, monthRate, period, valueDate);
 			break;
 		}
+		/** 这里为啥把之前的合并？？之前的还款计划已经处理了，再合并进去就多了
 //		1、获取第1期至当前还款周期还款计划
 		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
 		if(currPeriod >= 1){
 			repayPlanList = repayPlanMapper.selectSpecialRepayPlanList(appId, 1, currPeriod);
-		}
+		}**/
 //		2、生成当期后还款计划，合并
 		List<RepayPlan> repayPlanListAfter = rsp.getRepayPlanList();
-		for (RepayPlan repayPlan : repayPlanListAfter) {
+		for(int i = 0 ;i<repayPlanListAfter.size();i++)
+		{
+			RepayPlan repayPlan = repayPlanListAfter.get(i);
 			repayPlan.setId(Utils.get16UUID());
 			repayPlan.setAppId(appId);
 			repayPlan.setPeriod(repayPlan.getPeriod() + currPeriod);
-			repayPlanList.add(repayPlan);
+			repayPlanListAfter.set(i, repayPlan);
 		}
-		return repayPlanList;
+		return rsp.getRepayPlanList();
 	}
 
 	@Override

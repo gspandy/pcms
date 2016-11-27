@@ -21,6 +21,8 @@ public class ApplySettleVo
 	private Date applyEffectDate;
 	//申请日期
 	private Date applyDate;
+	//结清类型
+	private String settleType;
 	//减免项
 	private RemissionFeeItemVo remissionFeeItemVo;
 	
@@ -72,6 +74,12 @@ public class ApplySettleVo
 	}
 	public void setApplyDate(Date applyDate) {
 		this.applyDate = applyDate;
+	}
+	public String getSettleType() {
+		return settleType;
+	}
+	public void setSettleType(String settleType) {
+		this.settleType = settleType;
 	}
 	
 	

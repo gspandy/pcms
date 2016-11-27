@@ -28,13 +28,18 @@ import com.pujjr.base.vo.QueryParamPageVo;
 import com.pujjr.postloan.domain.ApplyPublicRepay;
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
+import com.pujjr.postloan.domain.WaitingChargeNew;
 import com.pujjr.postloan.enumeration.EInterestMode;
+import com.pujjr.postloan.enumeration.FeeType;
+import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.service.IAccountingService;
+import com.pujjr.postloan.service.ILoanQueryService;
 import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.postloan.service.ISettleService;
 import com.pujjr.postloan.vo.ApplyPublicRepayVo;
 import com.pujjr.postloan.vo.ApplySettleVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
+import com.pujjr.postloan.vo.NewRepayPlanVo;
 import com.pujjr.postloan.vo.PublicRepayTaskVo;
 import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
@@ -55,6 +60,8 @@ public class SettleController extends BaseController {
 	private ISettleService settleService;
 	@Autowired
 	private IAccountingService accountingService;
+	@Autowired
+	private ILoanQueryService loanQueryService;
 	
 	/**刷新还款计划表
 	 * tom 2016年11月17日
@@ -85,12 +92,12 @@ public class SettleController extends BaseController {
 	 * @return
 	 * @throws ParseException 
 	 */
-	@RequestMapping(value="/refreshRepayPlan/select/{appId}/{settleCapital}/{settlePeriod}/{applyEndDate}",method=RequestMethod.GET)
+	@RequestMapping(value="/refreshRepayPlan/select/{appId}",method=RequestMethod.GET)
 	public List<RepayPlan> getRefreshRepayPlan(@PathVariable("appId") String appId
-			,@PathVariable("settleCapital") double settleCapital
-			,@PathVariable("settlePeriod") int settlePeriod
-			,@PathVariable("applyEndDate") String applyEndDate) throws ParseException{
-		return settleService.getRefreshRepayPlan(appId, settleCapital, settlePeriod,applyEndDate);
+			,double settleCapital
+			,int settlePeriod
+			,String settleEffectDateStr) throws ParseException{
+		return settleService.getRefreshRepayPlan(appId, settleCapital, settlePeriod,settleEffectDateStr);
 	}
 	
 	@RequestMapping(value="/getAllSettleFeeItem/{appId}",method=RequestMethod.GET)
@@ -223,7 +230,7 @@ public class SettleController extends BaseController {
 		vo.setApplyEffectDate(po.getApplyEndDate());
 		vo.setBeginPeriod(po.getSettleStartPeriod());
 		vo.setEndPeriod(po.getSettleEndPeriod());
-		
+		vo.setSettleType(po.getSettleType());
 		RemissionFeeItemVo remissionFeeItemVo = new RemissionFeeItemVo();
 		if(po.getRemissionItem()!=null)
 		{
@@ -236,7 +243,22 @@ public class SettleController extends BaseController {
 			remissionFeeItemVo.setRemissionDate(po.getRemissionItem().getRemissionDate());
 			vo.setRemissionFeeItemVo(remissionFeeItemVo);
 		}
-		
+		//获取结清申请产生的新还款计划
+		List<WaitingChargeNew> newWaitingChargeList = loanQueryService.getWaitingChargeNewList(po.getId(), LoanApplyTaskType.Settle.getName(), FeeType.Plan.getName(),false);
+		List<NewRepayPlanVo> newRepayPlanList = new ArrayList<NewRepayPlanVo>();
+		for(WaitingChargeNew item : newWaitingChargeList)
+		{
+			NewRepayPlanVo newPlanVo = new NewRepayPlanVo();
+			newPlanVo.setPeriod(item.getPeriod());
+			newPlanVo.setRepayCapital(item.getRepayCapital());
+			newPlanVo.setRepayCnterest(item.getRepayInterest());
+			newPlanVo.setRemainCapital(item.getRemainCapitao());
+			newPlanVo.setRepayTotalAmount(item.getRepayCapital()+item.getRepayInterest());
+			newPlanVo.setValueDate(item.getValueDate());
+			newPlanVo.setClosingDate(item.getClosingDate());
+			newRepayPlanList.add(newPlanVo);
+		}
+		vo.setRepayPlanList(newRepayPlanList);
 		return vo;
 	}
 	
