@@ -24,181 +24,181 @@ import com.pujjr.jbpm.vo.WorkflowNodeVo;
 public interface IConfigWorkflowService 
 {
 	/**
-	 * Í¨¹ıÁ÷³Ì°æ±¾ID»ñÈ¡Á÷³ÌÈ«¾ÖÅäÖÃ²ÎÊı
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @return Á÷³ÌÈ«¾ÖÅäÖÃ²ÎÊı
+	 * é€šè¿‡æµç¨‹ç‰ˆæœ¬IDè·å–æµç¨‹å…¨å±€é…ç½®å‚æ•°
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @return æµç¨‹å…¨å±€é…ç½®å‚æ•°
 	 * **/
 	public WorkflowGlobalParamVo getWorkflowGlobalParamByVersionId(String workflowVersionId);
 	/**
-	 * ±£´æÁ÷³ÌÈ«¾Ö²ÎÊı
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param WorkflowGlobalParamVo È«¾Ö²ÎÊı
+	 * ä¿å­˜æµç¨‹å…¨å±€å‚æ•°
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param WorkflowGlobalParamVo å…¨å±€å‚æ•°
 	 * @return 
 	 * **/
 	public void saveWorkflowGlobalParam(String workflowVersionId,WorkflowGlobalParamVo vo);
 	/**
-	 * ¸ù¾İ½ÚµãÀàĞÍ»ñÈ¡Á÷³Ì½ÚµãÁĞ±í
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param nodeType ½ÚµãÀàĞÍ
-	 * @return ½ÚµãĞÅÏ¢ÁĞ±í
+	 * æ ¹æ®èŠ‚ç‚¹ç±»å‹è·å–æµç¨‹èŠ‚ç‚¹åˆ—è¡¨
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param nodeType èŠ‚ç‚¹ç±»å‹
+	 * @return èŠ‚ç‚¹ä¿¡æ¯åˆ—è¡¨
 	 * **/
 	public List<WorkflowNodeVo> getWorkflowNodesByNodeType(String workflowVersionId,String nodeType);
 	/**
-	 * »ñÈ¡Á÷³ÌËùÓĞÈË¹¤ÈÎÎñ½Úµã±íµ¥ĞÅÏ¢
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @return ±íµ¥²ÎÊıÁĞ±íĞÅÏ¢
+	 * è·å–æµç¨‹æ‰€æœ‰äººå·¥ä»»åŠ¡èŠ‚ç‚¹è¡¨å•ä¿¡æ¯
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @return è¡¨å•å‚æ•°åˆ—è¡¨ä¿¡æ¯
 	 * **/
 	public List<WorkflowNodeFormVo> getWorkflowUserTaskNodeForms(String workflowVersionId); 
 	/**
-	 * ±£´æÁ÷³ÌËùÓĞÈË¹¤ÈÎÎñ½Úµã±íµ¥ĞÅÏ¢
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param List<WorkflowNodeFormVo> ±íµ¥²ÎÊı
+	 * ä¿å­˜æµç¨‹æ‰€æœ‰äººå·¥ä»»åŠ¡èŠ‚ç‚¹è¡¨å•ä¿¡æ¯
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param List<WorkflowNodeFormVo> è¡¨å•å‚æ•°
 	 * @return
 	 * **/
 	public void saveWorkflowUserTaskNodeForms(String workflowVersionId,List<WorkflowNodeFormVo> vos);
 	/**
-	 * »ñÈ¡Á÷³ÌÖ¸¶¨½Úµã²ÎÊıÅäÖÃĞÅÏ¢
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param nodeId ½ÚµãID
-	 * @return ½Úµã²ÎÊıĞÅÏ¢
+	 * è·å–æµç¨‹æŒ‡å®šèŠ‚ç‚¹å‚æ•°é…ç½®ä¿¡æ¯
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param nodeId èŠ‚ç‚¹ID
+	 * @return èŠ‚ç‚¹å‚æ•°ä¿¡æ¯
 	 * **/
 	
 	public WorkflowNodeParamVo getWorkflowNodeParam(String workflowVersionId,String nodeId);
 	/**
-	 * ±£´æÁ÷³Ì½Úµã²ÎÊıÅäÖÃĞÅÏ¢
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param WorkflowNodeParamVo ½Úµã²ÎÊı
+	 * ä¿å­˜æµç¨‹èŠ‚ç‚¹å‚æ•°é…ç½®ä¿¡æ¯
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param WorkflowNodeParamVo èŠ‚ç‚¹å‚æ•°
 	 * @return
 	 * **/
 	public void saveWorkflowNodeParam(String workflowVersionId,WorkflowNodeParamVo vo);
 	/**
-	 * ¸ù¾İÁ÷³Ì¶¨ÒåID´´½¨½ÚµãĞÅÏ¢
+	 * æ ¹æ®æµç¨‹å®šä¹‰IDåˆ›å»ºèŠ‚ç‚¹ä¿¡æ¯
 	 * **/
 	public void createWorkflowNodes(String workflowVersionId);
 	/**
-	 * »ñÈ¡Ö¸¶¨Á÷³Ì°æ±¾¶ÔÓ¦·¢²¼µÄÍ¼Æ¬×ÊÔ´
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @return Í¼Æ¬¶ş½øÖÆĞÅÏ¢
+	 * è·å–æŒ‡å®šæµç¨‹ç‰ˆæœ¬å¯¹åº”å‘å¸ƒçš„å›¾ç‰‡èµ„æº
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @return å›¾ç‰‡äºŒè¿›åˆ¶ä¿¡æ¯
 	 * **/
 	public InputStream getWorkflowImg(String workflowVersionId);
 	/**
-	 * »ñÈ¡Íø¹Ø²ÎÊı
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param nodeId ½ÚµãID
+	 * è·å–ç½‘å…³å‚æ•°
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param nodeId èŠ‚ç‚¹ID
 	 * @throws Exception 
 	 * **/
 	public GatewayNodeVo getWorkflowGatewayNodeParam(String workflowVersionId,String nodeId) throws Exception;
 	/**
-	 * ±£´æÍø¹Ø²ÎÊıÅäÖÃ
+	 * ä¿å­˜ç½‘å…³å‚æ•°é…ç½®
 	 * **/
 	public void saveWorkflowGatewayNodeParam(String workflowVersionId,GatewayNodeVo param);
 	
 	/**
-	 * ´´½¨Á÷³Ì²¢·µ»Ø¶ÔÓ¦Ä£ĞÍID
+	 * åˆ›å»ºæµç¨‹å¹¶è¿”å›å¯¹åº”æ¨¡å‹ID
 	 * **/
 	public void addWorkflowDefine(WorkflowDefine record) throws UnsupportedEncodingException;
 	/**
-	 * ¸ù¾İÁ÷³ÌÀàĞÍID»ñÈ¡Á÷³Ì¶¨ÒåÁĞ±í
-	 * @param workflowTypeId Á÷³ÌÀàĞÍID
-	 * @return List<HashMap> Á÷³Ì¶¨ÒåÁĞ±í
+	 * æ ¹æ®æµç¨‹ç±»å‹IDè·å–æµç¨‹å®šä¹‰åˆ—è¡¨
+	 * @param workflowTypeId æµç¨‹ç±»å‹ID
+	 * @return List<HashMap> æµç¨‹å®šä¹‰åˆ—è¡¨
 	 * **/
 	public List<HashMap> getWorkflowDefineListByTypeId(String workflowTypeId);
 	/**
-	 * ¸ù¾İÁ÷³Ì°æ±¾ID»ñÈ¡¶ÔÓ¦Á÷³Ì¶¨ÒåÏà¹ØĞÅÏ¢
-	 * @param versionId °æ±¾ID
+	 * æ ¹æ®æµç¨‹ç‰ˆæœ¬IDè·å–å¯¹åº”æµç¨‹å®šä¹‰ç›¸å…³ä¿¡æ¯
+	 * @param versionId ç‰ˆæœ¬ID
 	 * **/
 	public WorkflowDefine getWorkflowDefineByVersionId(String versionId);
 	/**
-	 * ¸ù¾İÁ÷³Ì¶¨Òåkey»ñÈ¡¶ÔÓ¦Á÷³Ì¶¨ÒåÏà¹ØĞÅÏ¢
-	 * @param workflowKey Á÷³Ì¶¨Òåkey
+	 * æ ¹æ®æµç¨‹å®šä¹‰keyè·å–å¯¹åº”æµç¨‹å®šä¹‰ç›¸å…³ä¿¡æ¯
+	 * @param workflowKey æµç¨‹å®šä¹‰key
 	 * **/
 	public WorkflowDefine getWorkflowDefineByDefineKey(String workflowKey);
 	/**
-	 * ¸üĞÂÁ÷³Ì¶¨ÒåĞÅÏ¢
-	 * @param define Á÷³Ì¶¨ÒåÊµÌå
+	 * æ›´æ–°æµç¨‹å®šä¹‰ä¿¡æ¯
+	 * @param define æµç¨‹å®šä¹‰å®ä½“
 	 * **/
 	public void updateWorkflowDefine(WorkflowDefine define);
 	/**
-	 * ÉèÖÃÁ÷³ÌÖ÷°æ±¾ĞÅÏ¢
-	 * @param defineId Á÷³Ì¶¨ÒåID
-	 * @param versionId °æ±¾ID
+	 * è®¾ç½®æµç¨‹ä¸»ç‰ˆæœ¬ä¿¡æ¯
+	 * @param defineId æµç¨‹å®šä¹‰ID
+	 * @param versionId ç‰ˆæœ¬ID
 	 * **/
 	public void setActivateVersion(String defineId,String versionId);
 	/**
-	 * »ñÈ¡Á÷³ÌÀàĞÍ¶¨ÒåÁĞ±í
-	 * @return Á÷³Ì¶¨ÒåÁĞ±íĞÅÏ¢
+	 * è·å–æµç¨‹ç±»å‹å®šä¹‰åˆ—è¡¨
+	 * @return æµç¨‹å®šä¹‰åˆ—è¡¨ä¿¡æ¯
 	 * **/
 	public List<WorkflowType> getWorkflowTypeList();
 	/**
-	 * ´´½¨Á÷³ÌÀàĞÍ
-	 * @param record Á÷³Ì¶¨ÒåÊµÌå
+	 * åˆ›å»ºæµç¨‹ç±»å‹
+	 * @param record æµç¨‹å®šä¹‰å®ä½“
 	 * **/
 	public void createWorkflowType(WorkflowType record);
 	/**
-	 * ¸üĞÂÁ÷³ÌÀàĞÍ¶¨Òå
+	 * æ›´æ–°æµç¨‹ç±»å‹å®šä¹‰
 	 * **/
 	public void updateWorkflowType(WorkflowType record);
 	/**
-	 * Í¨¹ıÁ÷³Ì¶¨ÒåID»ñÈ¡°æ±¾ÁĞ±í
-	 * @param defineId Á÷³Ì¶¨ÒåID
-	 * @return °æ±¾ĞÅÏ¢ÁĞ±í
+	 * é€šè¿‡æµç¨‹å®šä¹‰IDè·å–ç‰ˆæœ¬åˆ—è¡¨
+	 * @param defineId æµç¨‹å®šä¹‰ID
+	 * @return ç‰ˆæœ¬ä¿¡æ¯åˆ—è¡¨
 	 * **/
 	public List<HashMap<String,Object>> getWorkflowVersionListByDefineId(String defineId);
 	/**
-	 * Í¨¹ıÄ£ĞÍID»ñÈ¡°æ±¾ÁĞ±í
-	 * @param defineId Á÷³Ì¶¨ÒåID
-	 * @return °æ±¾ĞÅÏ¢ÁĞ±í
+	 * é€šè¿‡æ¨¡å‹IDè·å–ç‰ˆæœ¬åˆ—è¡¨
+	 * @param defineId æµç¨‹å®šä¹‰ID
+	 * @return ç‰ˆæœ¬ä¿¡æ¯åˆ—è¡¨
 	 * **/
 	public WorkflowVersion getWorkflowVersionByModelId(String modelId);
 	/**
-	 * Í¨¹ı°æ±¾ID²éÑ¯°æ±¾ĞÅÏ¢
-	 * @param versionId °æ±¾ID
+	 * é€šè¿‡ç‰ˆæœ¬IDæŸ¥è¯¢ç‰ˆæœ¬ä¿¡æ¯
+	 * @param versionId ç‰ˆæœ¬ID
 	 * **/
 	public WorkflowVersion getWorkflowVersionByVersionId(String versionId);
 	/**
-	 * ¸üĞÂ°æ±¾ĞÅÏ¢
-	 * @param  version °æ±¾ĞÅÏ¢ÊµÌå
+	 * æ›´æ–°ç‰ˆæœ¬ä¿¡æ¯
+	 * @param  version ç‰ˆæœ¬ä¿¡æ¯å®ä½“
 	 * **/
 	public void updateWorkflowVersion(WorkflowVersion version);
 	/**
-	 * ´´½¨°æ±¾ĞÅÏ¢
-	 * @param  version °æ±¾ĞÅÏ¢ÊµÌå
+	 * åˆ›å»ºç‰ˆæœ¬ä¿¡æ¯
+	 * @param  version ç‰ˆæœ¬ä¿¡æ¯å®ä½“
 	 * **/
 	public void createWorkflowVersion(WorkflowVersion version);
 	/**
-	 * ¸ù¾İÁ÷³Ì¶¨ÒåID»ñÈ¡¼¤»îÖ÷°æ±¾ĞÅÏ¢
+	 * æ ¹æ®æµç¨‹å®šä¹‰IDè·å–æ¿€æ´»ä¸»ç‰ˆæœ¬ä¿¡æ¯
 	 * **/
 	public WorkflowVersion getActivateVersionByDefineId(String defineId);
 	/**
-	 * »ñÈ¡Á÷³ÌÈ«¾Ö²ÎÊı
-	 *@param versionId Á÷³Ì°æ±¾ID
-	 *@return WorkflowGlobalParam Á÷³ÌÈ«¾Ö²ÎÊı
+	 * è·å–æµç¨‹å…¨å±€å‚æ•°
+	 *@param versionId æµç¨‹ç‰ˆæœ¬ID
+	 *@return WorkflowGlobalParam æµç¨‹å…¨å±€å‚æ•°
 	 * **/
 	public WorkflowGlobalParam getGlobalParamByVersionId(String versionId);
 	/**
-	 * »ñÈ¡Íø¹Ø½ÚµãÅäÖÃ²ÎÊı
-	 * @param versionId °æ±¾ID
-	 * @param nodeId½ÚµãID
+	 * è·å–ç½‘å…³èŠ‚ç‚¹é…ç½®å‚æ•°
+	 * @param versionId ç‰ˆæœ¬ID
+	 * @param nodeIdèŠ‚ç‚¹ID
 	 * **/
 	public List<WorkflowGateWayParam> getGateWayParamListByNodeId(String versionId,String nodeId);
 	/**
-	 * »ñÈ¡½ÚµãÉóÅúÈËÉèÖÃ²ÎÊı
-	 * @param versionID °æ±¾ID
-	 * @return ÉóÅúÈË²ÎÊıÁĞ±í
+	 * è·å–èŠ‚ç‚¹å®¡æ‰¹äººè®¾ç½®å‚æ•°
+	 * @param versionID ç‰ˆæœ¬ID
+	 * @return å®¡æ‰¹äººå‚æ•°åˆ—è¡¨
 	 * **/
 	public List<WorkflowNodeAssigneeVo> getWorkflowUserTaskNodeAssignee(String versionId);
 	/**
-	 * ±£´æÁ÷³ÌÉóÅúÈË²ÎÊıÉèÖÃĞÅÏ¢
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param List<WorkflowNodeAssigneeVo> ½ÚµãÉóÅú²ÎÊı
+	 * ä¿å­˜æµç¨‹å®¡æ‰¹äººå‚æ•°è®¾ç½®ä¿¡æ¯
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param List<WorkflowNodeAssigneeVo> èŠ‚ç‚¹å®¡æ‰¹å‚æ•°
 	 * @return
 	 * **/
 	public void saveWorkflowUserTaskNodeAssignee(String workflowVersionId,List<WorkflowNodeAssigneeVo> vos);
 	/**
-	 * ²éÑ¯Ö¸¶¨Á÷³Ì°æ±¾Ö¸¶¨½ÚµãÉóÅúÈËÉèÖÃ
-	 * @param workflowVersionId Á÷³Ì°æ±¾ID
-	 * @param nodeId ½ÚµãID
-	 * @return WorkflowNodeAssignee ½ÚµãÉóÅúÈË²ÎÊı
+	 * æŸ¥è¯¢æŒ‡å®šæµç¨‹ç‰ˆæœ¬æŒ‡å®šèŠ‚ç‚¹å®¡æ‰¹äººè®¾ç½®
+	 * @param workflowVersionId æµç¨‹ç‰ˆæœ¬ID
+	 * @param nodeId èŠ‚ç‚¹ID
+	 * @return WorkflowNodeAssignee èŠ‚ç‚¹å®¡æ‰¹äººå‚æ•°
 	 * **/
 	public WorkflowNodeAssignee getNodeAssignee(String workflowVersionId,String nodeId);
 }

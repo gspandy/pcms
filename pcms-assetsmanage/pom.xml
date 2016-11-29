@@ -22,5 +22,25 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+			<groupId>com.pujjr</groupId>
+			<artifactId>pcms-base</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+			<groupId>com.pujjr</groupId>
+			<artifactId>pcms-jbpm</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+			<groupId>com.pujjr</groupId>
+			<artifactId>pcms-carcredit</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+	<dependency>
+			<groupId>com.pujjr</groupId>
+			<artifactId>pcms-postloan</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+	</dependency>
   </dependencies>
 </project>

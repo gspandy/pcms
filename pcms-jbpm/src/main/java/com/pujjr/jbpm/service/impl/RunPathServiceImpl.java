@@ -21,14 +21,14 @@ public class RunPathServiceImpl implements IRunPathService
 	@Autowired
 	private TaskService actTaskService;
 	/**
-	 * »ñÈ¡Ö¸¶¨½Úµã×îÔ¶Â·¾¶
-	 * @param procInstId Á÷³ÌÊµÀıID
-	 * @param actId »î¶¯ID
-	 * @return Â·¾¶½Úµã
+	 * è·å–æŒ‡å®šèŠ‚ç‚¹æœ€è¿œè·¯å¾„
+	 * @param procInstId æµç¨‹å®ä¾‹ID
+	 * @param actId æ´»åŠ¨ID
+	 * @return è·¯å¾„èŠ‚ç‚¹
 	 * **/
 	public WorkflowRunPath getFarestRunPathByActId(String procInstId,String actId)
 	{
-		//»ñÈ¡Á÷³ÌÔËĞĞÂ·¾¶Ê÷µÄÒ¶×Ó½Úµã
+		//è·å–æµç¨‹è¿è¡Œè·¯å¾„æ ‘çš„å¶å­èŠ‚ç‚¹
 		List<WorkflowRunPath> paths = workflowRunPathDao.selectAllByProcInstIdAndActId(procInstId, actId);
 		if(paths.size()>0)
 		{
@@ -41,8 +41,8 @@ public class RunPathServiceImpl implements IRunPathService
 	}
 	
 	/**
-	 * ´´½¨Á÷³ÌÂ·¾¶
-	 * @param path Â·¾¶ĞÅÏ¢
+	 * åˆ›å»ºæµç¨‹è·¯å¾„
+	 * @param path è·¯å¾„ä¿¡æ¯
 	 * @return void
 	 * **/
 	public void createWorkflowRunPath(WorkflowRunPath path)
@@ -50,8 +50,8 @@ public class RunPathServiceImpl implements IRunPathService
 		workflowRunPathDao.insert(path);
 	}
 	/**
-	 * ¸üĞÂÁ÷³ÌÂ·¾¶
-	 * @param path Â·¾¶ĞÅÏ¢
+	 * æ›´æ–°æµç¨‹è·¯å¾„
+	 * @param path è·¯å¾„ä¿¡æ¯
 	 * @return void
 	 * **/
 	public void updateWorkflowRunPath(WorkflowRunPath path)
@@ -60,8 +60,8 @@ public class RunPathServiceImpl implements IRunPathService
 	}
 	
 	/**
-	 * »ñÈ¡Á÷³ÌÊµÀıÀúÊ·¹ì¼£ÁĞ±í
-	 * @param procInstId Á÷³ÌÊµÀıID
+	 * è·å–æµç¨‹å®ä¾‹å†å²è½¨è¿¹åˆ—è¡¨
+	 * @param procInstId æµç¨‹å®ä¾‹ID
 	 * @return List<WorkflowRunPah>
 	 * **/
 	public List<WorkflowRunPath> getRunPathList(String procInstId)
@@ -70,9 +70,9 @@ public class RunPathServiceImpl implements IRunPathService
 	}
 	
 	/**
-	 * ¸ù¾İÂ·¾¶ID»ñÈ¡Â·¾¶ĞÅÏ¢
-	 * @param pathId Â·¾¶ID
-	 * @return Â·¾¶ĞÅÏ¢
+	 * æ ¹æ®è·¯å¾„IDè·å–è·¯å¾„ä¿¡æ¯
+	 * @param pathId è·¯å¾„ID
+	 * @return è·¯å¾„ä¿¡æ¯
 	 * **/
 	public WorkflowRunPath getRunPathById(String pathId)
 	{

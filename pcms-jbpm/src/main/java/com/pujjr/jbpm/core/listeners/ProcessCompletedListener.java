@@ -21,7 +21,7 @@ public class ProcessCompletedListener implements EventHandler {
 	{
 		// TODO Auto-generated method stub
 		 ActivitiEntityEventImpl  eventImpl = (  ActivitiEntityEventImpl)event;	
-		//执行流程完成脚本
+		//鎵ц娴佺▼瀹屾垚鑴氭湰
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
 		if(globalParam !=null &&(globalParam.getWorkflowCompleteScript()!=null && !globalParam.getWorkflowCompleteScript().equals("")))

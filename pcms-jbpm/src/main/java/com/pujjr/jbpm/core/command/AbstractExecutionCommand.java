@@ -5,13 +5,13 @@ import java.util.Map;
 
 public abstract class AbstractExecutionCommand 
 {
-	//活动节点ID
+	//娲诲姩鑺傜偣ID
 	private String actId;
-	//审批意见
+	//瀹℃壒鎰忚
 	private String message;
-	//命令类型
+	//鍛戒护绫诲瀷
 	private CommandType commandType;
-	//命令变量集合
+	//鍛戒护鍙橀噺闆嗗悎
 	private Map<String,Object> vars =new HashMap<String,Object>();
 
 	public String getActId() {

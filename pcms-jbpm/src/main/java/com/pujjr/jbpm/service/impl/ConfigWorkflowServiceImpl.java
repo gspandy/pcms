@@ -195,13 +195,13 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 
 	public void createWorkflowNodes(String workflowVersionId) {
 		// TODO Auto-generated method stub
-		//»ñÈ¡Á÷³Ì°æ±¾ĞÅÏ¢
+		//è·å–æµç¨‹ç‰ˆæœ¬ä¿¡æ¯
 		WorkflowVersion workflowVersion = workflowVersionDao.selectByPrimaryKey(workflowVersionId);
-		//»ñÈ¡Á÷³Ì¶¨Òå
+		//è·å–æµç¨‹å®šä¹‰
 		ProcessDefinitionEntity def =  (ProcessDefinitionEntity)repositoryService.getProcessDefinition(workflowVersion.getActivitiProcdefId());
-		//É¾³ıÁ÷³Ì½ÚµãĞÅÏ¢
+		//åˆ é™¤æµç¨‹èŠ‚ç‚¹ä¿¡æ¯
 		workflowNodesDao.deleteNodesByVersionId(workflowVersionId);
-		//´´½¨½ÚµãĞÅÏ¢
+		//åˆ›å»ºèŠ‚ç‚¹ä¿¡æ¯
 		List<ActivityImpl> acts = def.getActivities();
 		int seq = 0;
 		for(ActivityImpl act : acts)
@@ -243,7 +243,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		WorkflowNodes node = workflowNodesDao.selectWorkflowNodeByNodeId(workflowVersionId, nodeId);
 		if(node == null)
 		{
-			throw new Exception("½Úµã²»´æÔÚ");
+			throw new Exception("èŠ‚ç‚¹ä¸å­˜åœ¨");
 		}
 		WorkflowVersion workflowVersion = workflowVersionDao.selectByPrimaryKey(node.getWorkflowVersionId());
 		ProcessDefinitionEntity def =  (ProcessDefinitionEntity)repositoryService.getProcessDefinition(workflowVersion.getActivitiProcdefId());
@@ -258,12 +258,12 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		for(PvmTransition o:outTrans)
 		{
 			String outNodeId = o.getDestination().getId();
-			//»ñÈ¡³ö¿Ú½ÚµãĞÅÏ¢
+			//è·å–å‡ºå£èŠ‚ç‚¹ä¿¡æ¯
 			WorkflowNodes outNode = workflowNodesDao.selectWorkflowNodeByNodeId(workflowVersionId, outNodeId);
 			OutTransNodeVo outVo = new OutTransNodeVo();
 			outVo.setNodeId(outNodeId);
 			outVo.setNodeName(outNode.getNodeName());
-			//»ñÈ¡³ö¿Ú²ÎÊıĞÅÏ¢
+			//è·å–å‡ºå£å‚æ•°ä¿¡æ¯
 			WorkflowGateWayParam param = workflowGatewayParamDao.selectByNodeId(workflowVersionId, nodeId, outNodeId);
 			if(param != null)
 			{
@@ -294,9 +294,9 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 	
 	public void addWorkflowDefine(WorkflowDefine record) throws UnsupportedEncodingException
 	{
-		//´´½¨Á÷³ÌĞÅÏ¢
+		//åˆ›å»ºæµç¨‹ä¿¡æ¯
 		workflowDefineDao.insert(record);
-		//´´½¨Á÷³ÌÄ£ĞÍ
+		//åˆ›å»ºæµç¨‹æ¨¡å‹
 		ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode editorNode = objectMapper.createObjectNode();
         editorNode.put("id", "canvas");
@@ -320,7 +320,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
         repositoryService.saveModel(modelData);
         repositoryService.addModelEditorSource(modelData.getId(), editorNode.toString().getBytes("utf-8"));
         
-        //´´½¨Á÷³Ì°æ±¾
+        //åˆ›å»ºæµç¨‹ç‰ˆæœ¬
         WorkflowVersion version = new WorkflowVersion();
         version.setId(Utils.get16UUID());
         version.setWorkflowDefineId(record.getId());
@@ -329,7 +329,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
         version.setVersionStatus("INIT");
         workflowVersionDao.insert(version);
         
-        //ÔÙ´ÎË¢ĞÂÁ÷³ÌĞÅÏ¢
+        //å†æ¬¡åˆ·æ–°æµç¨‹ä¿¡æ¯
         record.setActivateVersionId(version.getId());
         workflowDefineDao.updateByPrimaryKey(record);
 	}

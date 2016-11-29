@@ -9,14 +9,14 @@ public class ActivityBehaviorFactoryExt extends DefaultActivityBehaviorFactory
 	private ExclusiveGatewayActivityBehaviorExt exclusiveGatewayActivityBehaviorExt;  
     
     /** 
-     * Í¨¹ıSpringÈİÆ÷×¢ÈëĞÂµÄ·ÖÖ§Ìõ¼şĞĞÎªÖ´ĞĞÀà 
+     * é€šè¿‡Springå®¹å™¨æ³¨å…¥æ–°çš„åˆ†æ”¯æ¡ä»¶è¡Œä¸ºæ‰§è¡Œç±» 
      * @param exclusiveGatewayActivityBehaviorExt 
      */  
     public void setExclusiveGatewayActivityBehaviorExt(ExclusiveGatewayActivityBehaviorExt exclusiveGatewayActivityBehaviorExt) {  
         this.exclusiveGatewayActivityBehaviorExt = exclusiveGatewayActivityBehaviorExt;  
     }  
       
-    //ÖØĞ´¸¸ÀàÖĞµÄ·ÖÖ§Ìõ¼şĞĞÎªÖ´ĞĞÀà  
+    //é‡å†™çˆ¶ç±»ä¸­çš„åˆ†æ”¯æ¡ä»¶è¡Œä¸ºæ‰§è¡Œç±»  
     @Override  
     public ExclusiveGatewayActivityBehavior createExclusiveGatewayActivityBehavior(ExclusiveGateway exclusiveGateway) {  
         return exclusiveGatewayActivityBehaviorExt;  

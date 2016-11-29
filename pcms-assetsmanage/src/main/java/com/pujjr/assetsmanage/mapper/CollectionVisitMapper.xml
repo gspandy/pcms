@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.CollectionVisitMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.CollectionVisit" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
+    <result column="VISIT_REASON" property="visitReason" jdbcType="VARCHAR" />
+    <result column="VISIT_COMMENT" property="visitComment" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_ID, VISIT_REASON, VISIT_COMMENT, RESERVER1, RESERVER2, RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_collection_visit
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_collection_visit
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.CollectionVisit" >
+    insert into t_collection_visit (ID, APPLY_ID, VISIT_REASON, 
+      VISIT_COMMENT, RESERVER1, RESERVER2, 
+      RESERVER3)
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{visitReason,jdbcType=VARCHAR}, 
+      #{visitComment,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.CollectionVisit" >
+    insert into t_collection_visit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyId != null" >
+        APPLY_ID,
+      </if>
+      <if test="visitReason != null" >
+        VISIT_REASON,
+      </if>
+      <if test="visitComment != null" >
+        VISIT_COMMENT,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitReason != null" >
+        #{visitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitComment != null" >
+        #{visitComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.CollectionVisit" >
+    update t_collection_visit
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="visitReason != null" >
+        VISIT_REASON = #{visitReason,jdbcType=VARCHAR},
+      </if>
+      <if test="visitComment != null" >
+        VISIT_COMMENT = #{visitComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.CollectionVisit" >
+    update t_collection_visit
+    set APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      VISIT_REASON = #{visitReason,jdbcType=VARCHAR},
+      VISIT_COMMENT = #{visitComment,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectByApplyId" resultMap="BaseResultMap">
+  	select * from t_collection_visit where APPLY_ID = #{applyId}
+  </select>
+</mapper>

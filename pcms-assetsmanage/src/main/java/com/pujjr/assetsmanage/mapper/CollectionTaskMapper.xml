@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.assetsmanage.dao.CollectionTaskMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.CollectionTask">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="TASK_TYPE" jdbcType="VARCHAR" property="taskType" />
+    <result column="WORKFLOW_KEY" jdbcType="VARCHAR" property="workflowKey" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="APPLY_STATUS" jdbcType="VARCHAR" property="applyStatus" />
+    <result column="APPLY_COMMENT" jdbcType="VARCHAR" property="applyComment" />
+    <result column="APPROVE_ID" jdbcType="VARCHAR" property="approveId" />
+    <result column="APPROVE_TIME" jdbcType="TIMESTAMP" property="approveTime" />
+    <result column="APPROVE_COMMENT" jdbcType="VARCHAR" property="approveComment" />
+    <result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, TASK_TYPE, WORKFLOW_KEY, CREATE_ID, CREATE_TIME, APPLY_STATUS, APPLY_COMMENT, 
+    APPROVE_ID, APPROVE_TIME, APPROVE_COMMENT, PROC_INST_ID, PARENT_ID, RESERVER1, RESERVER2, 
+    RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_collection_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_collection_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.CollectionTask">
+    insert into t_collection_task (ID, APP_ID, TASK_TYPE, 
+      WORKFLOW_KEY, CREATE_ID, CREATE_TIME, 
+      APPLY_STATUS, APPLY_COMMENT, APPROVE_ID, 
+      APPROVE_TIME, APPROVE_COMMENT, PROC_INST_ID, 
+      PARENT_ID, RESERVER1, RESERVER2, 
+      RESERVER3)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}, 
+      #{workflowKey,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{applyStatus,jdbcType=VARCHAR}, #{applyComment,jdbcType=VARCHAR}, #{approveId,jdbcType=VARCHAR}, 
+      #{approveTime,jdbcType=TIMESTAMP}, #{approveComment,jdbcType=VARCHAR}, #{procInstId,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.CollectionTask">
+    insert into t_collection_task
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="taskType != null">
+        TASK_TYPE,
+      </if>
+      <if test="workflowKey != null">
+        WORKFLOW_KEY,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="applyStatus != null">
+        APPLY_STATUS,
+      </if>
+      <if test="applyComment != null">
+        APPLY_COMMENT,
+      </if>
+      <if test="approveId != null">
+        APPROVE_ID,
+      </if>
+      <if test="approveTime != null">
+        APPROVE_TIME,
+      </if>
+      <if test="approveComment != null">
+        APPROVE_COMMENT,
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID,
+      </if>
+      <if test="parentId != null">
+        PARENT_ID,
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowKey != null">
+        #{workflowKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyStatus != null">
+        #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null">
+        #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="approveId != null">
+        #{approveId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+        #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveComment != null">
+        #{approveComment,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null">
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.CollectionTask">
+    update t_collection_task
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null">
+        TASK_TYPE = #{taskType,jdbcType=VARCHAR},
+      </if>
+      <if test="workflowKey != null">
+        WORKFLOW_KEY = #{workflowKey,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applyStatus != null">
+        APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="applyComment != null">
+        APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      </if>
+      <if test="approveId != null">
+        APPROVE_ID = #{approveId,jdbcType=VARCHAR},
+      </if>
+      <if test="approveTime != null">
+        APPROVE_TIME = #{approveTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="approveComment != null">
+        APPROVE_COMMENT = #{approveComment,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.CollectionTask">
+    update t_collection_task
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      TASK_TYPE = #{taskType,jdbcType=VARCHAR},
+      WORKFLOW_KEY = #{workflowKey,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      APPLY_STATUS = #{applyStatus,jdbcType=VARCHAR},
+      APPLY_COMMENT = #{applyComment,jdbcType=VARCHAR},
+      APPROVE_ID = #{approveId,jdbcType=VARCHAR},
+      APPROVE_TIME = #{approveTime,jdbcType=TIMESTAMP},
+      APPROVE_COMMENT = #{approveComment,jdbcType=VARCHAR},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectCollectionApplyTask" resultMap="BaseResultMap">
+  	select * from t_collection_task where APP_ID = #{appId}
+  </select>
+</mapper>

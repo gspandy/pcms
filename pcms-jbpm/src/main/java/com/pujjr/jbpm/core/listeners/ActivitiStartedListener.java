@@ -42,7 +42,7 @@ public class ActivitiStartedListener implements EventHandler
 		ExecutionContext executionContext = Context.getExecutionContext();
 		ExecutionEntity executionEntity = executionContext.getExecution();
 		
-		//Ö´ĞĞ»î¶¯Æô¶¯½Å±¾
+		//æ‰§è¡Œæ´»åŠ¨å¯åŠ¨è„šæœ¬
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId, eventImpl.getActivityId());
 		if(nodeParam!= null && nodeParam.getActStartScript()!=null && !nodeParam.getActStartScript().equals(""))
@@ -53,7 +53,7 @@ public class ActivitiStartedListener implements EventHandler
 		
 		ActivityImpl curAct = executionEntity.getActivity();
 		
-		//ÉèÖÃÂ·¾¶ĞÅÏ¢
+		//è®¾ç½®è·¯å¾„ä¿¡æ¯
 		WorkflowRunPath path = new WorkflowRunPath();
 		path.setId(Utils.get16UUID());
 		path.setProcDefId(eventImpl.getProcessDefinitionId());
@@ -72,7 +72,7 @@ public class ActivitiStartedListener implements EventHandler
 		path.setStartTime(new Date());
 		path.setInJumpType(cmd.getCommandType().toString());
 		
-		//¿ªÊ¼½ÚµãÔòÉèÖÃ¸¸½ÚµãÎª0
+		//å¼€å§‹èŠ‚ç‚¹åˆ™è®¾ç½®çˆ¶èŠ‚ç‚¹ä¸º0
 		if(curAct.getActivityBehavior() instanceof  NoneStartEventActivityBehavior)
 		{
 			path.setNodeLevel(1);
@@ -80,7 +80,7 @@ public class ActivitiStartedListener implements EventHandler
 		}
 		else
 		{
-			//»ñÈ¡¸¸½ÚµãÂ·¾¶
+			//è·å–çˆ¶èŠ‚ç‚¹è·¯å¾„
 			WorkflowRunPath parentNode = runPathService.getFarestRunPathByActId(eventImpl.getProcessInstanceId(), cmd.getActId());
 			path.setNodeLevel(parentNode.getNodeLevel()+1);
 			path.setParentPathId(parentNode.getId());

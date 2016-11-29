@@ -2,9 +2,9 @@ package com.pujjr.jbpm.core.command;
 
 public class StartProcessCommand extends AbstractExecutionCommand 
 {
-	//流程定义标识
+	//娴佺▼瀹氫箟鏍囪瘑
 	private String processDefinitionKey;
-	//业务主键
+	//涓氬姟涓婚敭
 	private String businessKey;
 
 	public String getProcessDefinitionKey() {

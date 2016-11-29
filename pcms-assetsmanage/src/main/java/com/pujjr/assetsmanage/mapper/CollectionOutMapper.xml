@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.CollectionOutMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.CollectionOut" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
+    <result column="OUT_REASON" property="outReason" jdbcType="VARCHAR" />
+    <result column="OUT_UNIT_ID" property="outUnitId" jdbcType="VARCHAR" />
+    <result column="OUT_COMMENT" property="outComment" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_ID, OUT_REASON, OUT_UNIT_ID, OUT_COMMENT, RESERVER1, RESERVER2, RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_collection_out
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_collection_out
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.CollectionOut" >
+    insert into t_collection_out (ID, APPLY_ID, OUT_REASON, 
+      OUT_UNIT_ID, OUT_COMMENT, RESERVER1, 
+      RESERVER2, RESERVER3)
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{outReason,jdbcType=VARCHAR}, 
+      #{outUnitId,jdbcType=VARCHAR}, #{outComment,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
+      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.CollectionOut" >
+    insert into t_collection_out
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyId != null" >
+        APPLY_ID,
+      </if>
+      <if test="outReason != null" >
+        OUT_REASON,
+      </if>
+      <if test="outUnitId != null" >
+        OUT_UNIT_ID,
+      </if>
+      <if test="outComment != null" >
+        OUT_COMMENT,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="outReason != null" >
+        #{outReason,jdbcType=VARCHAR},
+      </if>
+      <if test="outUnitId != null" >
+        #{outUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="outComment != null" >
+        #{outComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.CollectionOut" >
+    update t_collection_out
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="outReason != null" >
+        OUT_REASON = #{outReason,jdbcType=VARCHAR},
+      </if>
+      <if test="outUnitId != null" >
+        OUT_UNIT_ID = #{outUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="outComment != null" >
+        OUT_COMMENT = #{outComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.CollectionOut" >
+    update t_collection_out
+    set APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      OUT_REASON = #{outReason,jdbcType=VARCHAR},
+      OUT_UNIT_ID = #{outUnitId,jdbcType=VARCHAR},
+      OUT_COMMENT = #{outComment,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByApplyId" resultMap="BaseResultMap">
+  	select * from t_collection_out where APPLY_ID = #{applyId}
+  </select>
+</mapper>

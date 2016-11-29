@@ -25,7 +25,7 @@ public class ProcessCancelledListener implements EventHandler
 	{
 		// TODO Auto-generated method stub
 		ActivitiProcessCancelledEventImpl  eventImpl = ( ActivitiProcessCancelledEventImpl)event;	
-		//执行流程取消脚本
+		//鎵ц娴佺▼鍙栨秷鑴氭湰
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
 		if(globalParam !=null &&(globalParam.getWorkflowCancelScript()!=null && !globalParam.getWorkflowCancelScript().equals("")))

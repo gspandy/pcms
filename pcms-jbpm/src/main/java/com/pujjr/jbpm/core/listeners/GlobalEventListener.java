@@ -10,7 +10,7 @@ import com.pujjr.jbpm.core.exception.NoAssigneeException;
 import com.pujjr.utils.SpringBeanUtils;
 
 /**
- * 流程运行全局事件监控
+ * 娴佺▼杩愯鍏ㄥ眬浜嬩欢鐩戞帶
  * **/
 public class GlobalEventListener implements ActivitiEventListener {
 
@@ -20,7 +20,7 @@ public class GlobalEventListener implements ActivitiEventListener {
 		// TODO Auto-generated method stub
 		String eventType = event.getType().name();
 		System.out.println(eventType);
-		// 根据事件的类型ID,找到对应的事件处理器
+		// 鏍规嵁浜嬩欢鐨勭被鍨婭D,鎵惧埌瀵瑰簲鐨勪簨浠跺鐞嗗櫒
 		String eventHandlerBeanId = handlers.get(eventType);
 		if (eventHandlerBeanId != null) 
 		{

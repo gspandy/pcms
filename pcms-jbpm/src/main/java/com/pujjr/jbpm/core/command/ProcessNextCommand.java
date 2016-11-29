@@ -2,13 +2,13 @@ package com.pujjr.jbpm.core.command;
 
 public class ProcessNextCommand extends AbstractExecutionCommand
 {
-	//ÈÎÎñID
+	//ä»»åŠ¡ID
 	private String taskId;
-	//ÈÎÎñÖ´ĞĞÕß
+	//ä»»åŠ¡æ‰§è¡Œè€…
 	private String assignee; 
-	//ÈÎÎñÄ¿µÄ½Úµã
+	//ä»»åŠ¡ç›®çš„èŠ‚ç‚¹
 	private String destNodeId;
-	//µ±Ç°Â·¾¶ID
+	//å½“å‰è·¯å¾„ID
 	private String curRunPathId;
 	
 	public String getTaskId() {

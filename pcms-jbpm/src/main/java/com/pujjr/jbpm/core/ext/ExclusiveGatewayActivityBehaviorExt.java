@@ -22,7 +22,7 @@ public class ExclusiveGatewayActivityBehaviorExt extends ExclusiveGatewayActivit
 		String workflowVersionId = execution.getVariable("workflowVersionId").toString();
 		String nodeId = execution.getActivity().getId();
 		List<PvmTransition> outTransActs = execution.getActivity().getOutgoingTransitions();
-		//»ñÈ¡Íø¹Ø²ÎÊıĞÅÏ¢
+		//è·å–ç½‘å…³å‚æ•°ä¿¡æ¯
 		try 
 		{
 			List<WorkflowGateWayParam>  gatewayParam = gatewayParamDao.selectGatewayParamsByNodeId(workflowVersionId, nodeId);
@@ -32,7 +32,7 @@ public class ExclusiveGatewayActivityBehaviorExt extends ExclusiveGatewayActivit
 				{
 					if(o.getOutScript() !=null && o.getOutScript()!="")
 					{
-						//Ö´ĞĞ½Å±¾
+						//æ‰§è¡Œè„šæœ¬
 						Object boolVal = GroovyEngine.execScript(o.getOutScript(),execution.getId(),execution.getVariables());
 						if(boolVal instanceof Boolean)
 						{
@@ -50,7 +50,7 @@ public class ExclusiveGatewayActivityBehaviorExt extends ExclusiveGatewayActivit
 						}
 						else
 						{
-							throw new RuntimeException("±í´ïÊ½:\n"+o.getOutScript()+"\n²»ÎªBooleanÖµ");
+							throw new RuntimeException("è¡¨è¾¾å¼:\n"+o.getOutScript()+"\nä¸ä¸ºBooleanå€¼");
 						}
 					}
 				}

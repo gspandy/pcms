@@ -21,7 +21,7 @@ public class ProcessStartedListener implements EventHandler {
 	public void handle(ActivitiEvent event) {
 		// TODO Auto-generated method stub
 		ActivitiProcessStartedEventImpl  eventImpl = ( ActivitiProcessStartedEventImpl)event;	
-		//执行流程启动脚本
+		//鎵ц娴佺▼鍚姩鑴氭湰
 		String workflowVersionId = runtimeService.getVariable(eventImpl.getExecutionId(), "workflowVersionId").toString();
 		WorkflowGlobalParam globalParam = configWorkflowService.getGlobalParamByVersionId(workflowVersionId);
 		if(globalParam !=null &&(globalParam.getWorkflowStartScript()!=null && !globalParam.getWorkflowStartScript().equals("")))

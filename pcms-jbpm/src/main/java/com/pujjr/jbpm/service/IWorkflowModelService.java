@@ -13,48 +13,48 @@ import com.pujjr.jbpm.domain.ActGeBytearray;
 public interface IWorkflowModelService 
 {
 	/**
-	 * ±£´æÁ÷³ÌÄ£ĞÍ
-	 * @param modelId Ä£ĞÍID
-	 * @param values Ä£ĞÍJSONÊı¾İ
+	 * ä¿å­˜æµç¨‹æ¨¡å‹
+	 * @param modelId æ¨¡å‹ID
+	 * @param values æ¨¡å‹JSONæ•°æ®
 	 * **/
 	public void saveModel(String modelId , MultiValueMap<String, String> values) throws JsonProcessingException, IOException, TranscoderException;
 	
 	/**
-	 * ·¢²¼Ä£ĞÍ
-	 * @param modelId Ä£ĞÍID
+	 * å‘å¸ƒæ¨¡å‹
+	 * @param modelId æ¨¡å‹ID
 	 * **/
 	public String deployModel(String modelId) throws JsonProcessingException, IOException;
 	
 	/**
-	 * ·¢²¼Ä£ĞÍÎªĞÂ°æ±¾
-	 * @param modelId Ä£ĞÍID
-	 * @param values Ä£ĞÍJSONÊı¾İ
+	 * å‘å¸ƒæ¨¡å‹ä¸ºæ–°ç‰ˆæœ¬
+	 * @param modelId æ¨¡å‹ID
+	 * @param values æ¨¡å‹JSONæ•°æ®
 	 * **/
 	
 	public HashMap<String,String>  deployAsNewModel(String  modelId, MultiValueMap<String, String> values) throws JsonProcessingException, IOException, TranscoderException;
 	/**
-	 * ¸ù¾İÄ£ĞÍID»ñÈ¡Á÷³ÌÄ£ĞÍÊı¾İ
-	 * @param modelIdÄ£ĞÍID
+	 * æ ¹æ®æ¨¡å‹IDè·å–æµç¨‹æ¨¡å‹æ•°æ®
+	 * @param modelIdæ¨¡å‹ID
 	 * **/
 	public HashMap<String,Object> getModelByModelId(String modelId);
 	/**
-	 * ¸ù¾İÄ£ĞÍID»ñÈ¡ÒÑ·¢²¼Á÷³ÌÍ¼ÅäÖÃ¶ş½øÖÆÊı¾İ
-	 *@param deploymentId Á÷³Ì·¢²¼ID
+	 * æ ¹æ®æ¨¡å‹IDè·å–å·²å‘å¸ƒæµç¨‹å›¾é…ç½®äºŒè¿›åˆ¶æ•°æ®
+	 *@param deploymentId æµç¨‹å‘å¸ƒID
 	 * **/
 	public ActGeBytearray getBnpmByteByDeploymentId(String deploymentId);
 	/**
-	 * ¸ù¾İÄ£ĞÍID»ñÈ¡ÒÑ·¢²¼Á÷³ÌÍ¼Í¼Æ¬¶ş½øÖÆÊı¾İ
-	 *@param deploymentId Á÷³Ì·¢²¼ID
+	 * æ ¹æ®æ¨¡å‹IDè·å–å·²å‘å¸ƒæµç¨‹å›¾å›¾ç‰‡äºŒè¿›åˆ¶æ•°æ®
+	 *@param deploymentId æµç¨‹å‘å¸ƒID
 	 * **/
 	public ActGeBytearray getPngByteByDeploymentId(String deploymentId);
 	/**
-	 * ¸ù¾İÖ÷¼ü»ñÈ¡Á÷³ÌÍ¼ÅäÖÃ¶ş½øÖÆĞÅÏ¢
-	 *@param id Ö÷¼ü
+	 * æ ¹æ®ä¸»é”®è·å–æµç¨‹å›¾é…ç½®äºŒè¿›åˆ¶ä¿¡æ¯
+	 *@param id ä¸»é”®
 	 * **/
 	public ActGeBytearray getActGeBytearrayById(String id);
 	/**
-	 * ¸ù¾İÖ÷¼ü¸üĞÂÁ÷³ÌÍ¼ÅäÖÃ¶ş½øÖÆĞÅÏ¢
-	 *@param record ²ÎÊıÊµÌå
+	 * æ ¹æ®ä¸»é”®æ›´æ–°æµç¨‹å›¾é…ç½®äºŒè¿›åˆ¶ä¿¡æ¯
+	 *@param record å‚æ•°å®ä½“
 	 * **/
 	public void updateActGeBytearray(ActGeBytearray record);
 }

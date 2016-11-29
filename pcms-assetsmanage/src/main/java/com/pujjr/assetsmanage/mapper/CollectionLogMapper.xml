@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.CollectionLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.CollectionLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="OPER_TIME" property="operTime" jdbcType="TIMESTAMP" />
+    <result column="OPER_ID" property="operId" jdbcType="VARCHAR" />
+    <result column="COLLECTION_STATUS" property="collectionStatus" jdbcType="VARCHAR" />
+    <result column="OVERDUE_REASON" property="overdueReason" jdbcType="VARCHAR" />
+    <result column="COLLECTION_COMMENT" property="collectionComment" jdbcType="VARCHAR" />
+    <result column="IS_IMPORTANT" property="isImportant" jdbcType="BIT" />
+    <result column="OUT_FEE" property="outFee" jdbcType="DOUBLE" />
+    <result column="RECOVER_STATUS" property="recoverStatus" jdbcType="VARCHAR" />
+    <result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+    <result column="AGE_LIMIT" property="ageLimit" jdbcType="INTEGER" />
+    <result column="IS_DAMAGE" property="isDamage" jdbcType="BIT" />
+    <result column="RECOVER_COMMENT" property="recoverComment" jdbcType="VARCHAR" />
+    <result column="RECOVER_FEE" property="recoverFee" jdbcType="DOUBLE" />
+    <result column="REFUND_STATUS" property="refundStatus" jdbcType="VARCHAR" />
+    <result column="REFUND_TIME" property="refundTime" jdbcType="DATE" />
+    <result column="REFUND_EVAL_PRICE" property="refundEvalPrice" jdbcType="DOUBLE" />
+    <result column="KM" property="km" jdbcType="DOUBLE" />
+    <result column="REFUND_COMMENT" property="refundComment" jdbcType="VARCHAR" />
+    <result column="DISPOSE_STATUS" property="disposeStatus" jdbcType="VARCHAR" />
+    <result column="DISPOSE_TIME" property="disposeTime" jdbcType="DATE" />
+    <result column="DISPOSE_EVAL_PRICE" property="disposeEvalPrice" jdbcType="DOUBLE" />
+    <result column="EVAL_PRICE" property="evalPrice" jdbcType="DOUBLE" />
+    <result column="DISPOSE_COMMENT" property="disposeComment" jdbcType="VARCHAR" />
+    <result column="LAWSUIT_STATUS" property="lawsuitStatus" jdbcType="VARCHAR" />
+    <result column="LAWSUIT_UNIT_ID" property="lawsuitUnitId" jdbcType="VARCHAR" />
+    <result column="LAWYER_NAME" property="lawyerName" jdbcType="VARCHAR" />
+    <result column="LAWSUIT_FEE" property="lawsuitFee" jdbcType="DOUBLE" />
+    <result column="LAWSUIT_COMMENT" property="lawsuitComment" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+    <result column="RESERVER4" property="reserver4" jdbcType="DOUBLE" />
+    <result column="RESERVER5" property="reserver5" jdbcType="DOUBLE" />
+    <result column="RESERVER6" property="reserver6" jdbcType="INTEGER" />
+    <result column="RESERVER7" property="reserver7" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_ID, APP_ID, OPER_TIME, OPER_ID, COLLECTION_STATUS, OVERDUE_REASON, COLLECTION_COMMENT, 
+    IS_IMPORTANT, OUT_FEE, RECOVER_STATUS, DEGREE, AGE_LIMIT, IS_DAMAGE, RECOVER_COMMENT, 
+    RECOVER_FEE, REFUND_STATUS, REFUND_TIME, REFUND_EVAL_PRICE, KM, REFUND_COMMENT, DISPOSE_STATUS, 
+    DISPOSE_TIME, DISPOSE_EVAL_PRICE, EVAL_PRICE, DISPOSE_COMMENT, LAWSUIT_STATUS, LAWSUIT_UNIT_ID, 
+    LAWYER_NAME, LAWSUIT_FEE, LAWSUIT_COMMENT, RESERVER1, RESERVER2, RESERVER3, RESERVER4, 
+    RESERVER5, RESERVER6, RESERVER7
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_collection_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_collection_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.CollectionLog" >
+    insert into t_collection_log (ID, APPLY_ID, APP_ID, 
+      OPER_TIME, OPER_ID, COLLECTION_STATUS, 
+      OVERDUE_REASON, COLLECTION_COMMENT, IS_IMPORTANT, 
+      OUT_FEE, RECOVER_STATUS, DEGREE, 
+      AGE_LIMIT, IS_DAMAGE, RECOVER_COMMENT, 
+      RECOVER_FEE, REFUND_STATUS, REFUND_TIME, 
+      REFUND_EVAL_PRICE, KM, REFUND_COMMENT, 
+      DISPOSE_STATUS, DISPOSE_TIME, DISPOSE_EVAL_PRICE, 
+      EVAL_PRICE, DISPOSE_COMMENT, LAWSUIT_STATUS, 
+      LAWSUIT_UNIT_ID, LAWYER_NAME, LAWSUIT_FEE, 
+      LAWSUIT_COMMENT, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4, RESERVER5, 
+      RESERVER6, RESERVER7)
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{operTime,jdbcType=TIMESTAMP}, #{operId,jdbcType=VARCHAR}, #{collectionStatus,jdbcType=VARCHAR}, 
+      #{overdueReason,jdbcType=VARCHAR}, #{collectionComment,jdbcType=VARCHAR}, #{isImportant,jdbcType=BIT}, 
+      #{outFee,jdbcType=DOUBLE}, #{recoverStatus,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, 
+      #{ageLimit,jdbcType=INTEGER}, #{isDamage,jdbcType=BIT}, #{recoverComment,jdbcType=VARCHAR}, 
+      #{recoverFee,jdbcType=DOUBLE}, #{refundStatus,jdbcType=VARCHAR}, #{refundTime,jdbcType=DATE}, 
+      #{refundEvalPrice,jdbcType=DOUBLE}, #{km,jdbcType=DOUBLE}, #{refundComment,jdbcType=VARCHAR}, 
+      #{disposeStatus,jdbcType=VARCHAR}, #{disposeTime,jdbcType=DATE}, #{disposeEvalPrice,jdbcType=DOUBLE}, 
+      #{evalPrice,jdbcType=DOUBLE}, #{disposeComment,jdbcType=VARCHAR}, #{lawsuitStatus,jdbcType=VARCHAR}, 
+      #{lawsuitUnitId,jdbcType=VARCHAR}, #{lawyerName,jdbcType=VARCHAR}, #{lawsuitFee,jdbcType=DOUBLE}, 
+      #{lawsuitComment,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=DOUBLE}, #{reserver5,jdbcType=DOUBLE}, 
+      #{reserver6,jdbcType=INTEGER}, #{reserver7,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.CollectionLog" >
+    insert into t_collection_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyId != null" >
+        APPLY_ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="operTime != null" >
+        OPER_TIME,
+      </if>
+      <if test="operId != null" >
+        OPER_ID,
+      </if>
+      <if test="collectionStatus != null" >
+        COLLECTION_STATUS,
+      </if>
+      <if test="overdueReason != null" >
+        OVERDUE_REASON,
+      </if>
+      <if test="collectionComment != null" >
+        COLLECTION_COMMENT,
+      </if>
+      <if test="isImportant != null" >
+        IS_IMPORTANT,
+      </if>
+      <if test="outFee != null" >
+        OUT_FEE,
+      </if>
+      <if test="recoverStatus != null" >
+        RECOVER_STATUS,
+      </if>
+      <if test="degree != null" >
+        DEGREE,
+      </if>
+      <if test="ageLimit != null" >
+        AGE_LIMIT,
+      </if>
+      <if test="isDamage != null" >
+        IS_DAMAGE,
+      </if>
+      <if test="recoverComment != null" >
+        RECOVER_COMMENT,
+      </if>
+      <if test="recoverFee != null" >
+        RECOVER_FEE,
+      </if>
+      <if test="refundStatus != null" >
+        REFUND_STATUS,
+      </if>
+      <if test="refundTime != null" >
+        REFUND_TIME,
+      </if>
+      <if test="refundEvalPrice != null" >
+        REFUND_EVAL_PRICE,
+      </if>
+      <if test="km != null" >
+        KM,
+      </if>
+      <if test="refundComment != null" >
+        REFUND_COMMENT,
+      </if>
+      <if test="disposeStatus != null" >
+        DISPOSE_STATUS,
+      </if>
+      <if test="disposeTime != null" >
+        DISPOSE_TIME,
+      </if>
+      <if test="disposeEvalPrice != null" >
+        DISPOSE_EVAL_PRICE,
+      </if>
+      <if test="evalPrice != null" >
+        EVAL_PRICE,
+      </if>
+      <if test="disposeComment != null" >
+        DISPOSE_COMMENT,
+      </if>
+      <if test="lawsuitStatus != null" >
+        LAWSUIT_STATUS,
+      </if>
+      <if test="lawsuitUnitId != null" >
+        LAWSUIT_UNIT_ID,
+      </if>
+      <if test="lawyerName != null" >
+        LAWYER_NAME,
+      </if>
+      <if test="lawsuitFee != null" >
+        LAWSUIT_FEE,
+      </if>
+      <if test="lawsuitComment != null" >
+        LAWSUIT_COMMENT,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5,
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6,
+      </if>
+      <if test="reserver7 != null" >
+        RESERVER7,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null" >
+        #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operId != null" >
+        #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionStatus != null" >
+        #{collectionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueReason != null" >
+        #{overdueReason,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionComment != null" >
+        #{collectionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isImportant != null" >
+        #{isImportant,jdbcType=BIT},
+      </if>
+      <if test="outFee != null" >
+        #{outFee,jdbcType=DOUBLE},
+      </if>
+      <if test="recoverStatus != null" >
+        #{recoverStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isDamage != null" >
+        #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="recoverComment != null" >
+        #{recoverComment,jdbcType=VARCHAR},
+      </if>
+      <if test="recoverFee != null" >
+        #{recoverFee,jdbcType=DOUBLE},
+      </if>
+      <if test="refundStatus != null" >
+        #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTime != null" >
+        #{refundTime,jdbcType=DATE},
+      </if>
+      <if test="refundEvalPrice != null" >
+        #{refundEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="km != null" >
+        #{km,jdbcType=DOUBLE},
+      </if>
+      <if test="refundComment != null" >
+        #{refundComment,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeStatus != null" >
+        #{disposeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        #{disposeTime,jdbcType=DATE},
+      </if>
+      <if test="disposeEvalPrice != null" >
+        #{disposeEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="evalPrice != null" >
+        #{evalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="disposeComment != null" >
+        #{disposeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitStatus != null" >
+        #{lawsuitStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitUnitId != null" >
+        #{lawsuitUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerName != null" >
+        #{lawyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitFee != null" >
+        #{lawsuitFee,jdbcType=DOUBLE},
+      </if>
+      <if test="lawsuitComment != null" >
+        #{lawsuitComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null" >
+        #{reserver4,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver5 != null" >
+        #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        #{reserver6,jdbcType=INTEGER},
+      </if>
+      <if test="reserver7 != null" >
+        #{reserver7,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.CollectionLog" >
+    update t_collection_log
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="operTime != null" >
+        OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operId != null" >
+        OPER_ID = #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionStatus != null" >
+        COLLECTION_STATUS = #{collectionStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="overdueReason != null" >
+        OVERDUE_REASON = #{overdueReason,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionComment != null" >
+        COLLECTION_COMMENT = #{collectionComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isImportant != null" >
+        IS_IMPORTANT = #{isImportant,jdbcType=BIT},
+      </if>
+      <if test="outFee != null" >
+        OUT_FEE = #{outFee,jdbcType=DOUBLE},
+      </if>
+      <if test="recoverStatus != null" >
+        RECOVER_STATUS = #{recoverStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        DEGREE = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        AGE_LIMIT = #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isDamage != null" >
+        IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="recoverComment != null" >
+        RECOVER_COMMENT = #{recoverComment,jdbcType=VARCHAR},
+      </if>
+      <if test="recoverFee != null" >
+        RECOVER_FEE = #{recoverFee,jdbcType=DOUBLE},
+      </if>
+      <if test="refundStatus != null" >
+        REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTime != null" >
+        REFUND_TIME = #{refundTime,jdbcType=DATE},
+      </if>
+      <if test="refundEvalPrice != null" >
+        REFUND_EVAL_PRICE = #{refundEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="km != null" >
+        KM = #{km,jdbcType=DOUBLE},
+      </if>
+      <if test="refundComment != null" >
+        REFUND_COMMENT = #{refundComment,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeStatus != null" >
+        DISPOSE_STATUS = #{disposeStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeTime != null" >
+        DISPOSE_TIME = #{disposeTime,jdbcType=DATE},
+      </if>
+      <if test="disposeEvalPrice != null" >
+        DISPOSE_EVAL_PRICE = #{disposeEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="evalPrice != null" >
+        EVAL_PRICE = #{evalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="disposeComment != null" >
+        DISPOSE_COMMENT = #{disposeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitStatus != null" >
+        LAWSUIT_STATUS = #{lawsuitStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitUnitId != null" >
+        LAWSUIT_UNIT_ID = #{lawsuitUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="lawyerName != null" >
+        LAWYER_NAME = #{lawyerName,jdbcType=VARCHAR},
+      </if>
+      <if test="lawsuitFee != null" >
+        LAWSUIT_FEE = #{lawsuitFee,jdbcType=DOUBLE},
+      </if>
+      <if test="lawsuitComment != null" >
+        LAWSUIT_COMMENT = #{lawsuitComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null" >
+        RESERVER4 = #{reserver4,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver5 != null" >
+        RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver6 != null" >
+        RESERVER6 = #{reserver6,jdbcType=INTEGER},
+      </if>
+      <if test="reserver7 != null" >
+        RESERVER7 = #{reserver7,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.CollectionLog" >
+    update t_collection_log
+    set APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      OPER_TIME = #{operTime,jdbcType=TIMESTAMP},
+      OPER_ID = #{operId,jdbcType=VARCHAR},
+      COLLECTION_STATUS = #{collectionStatus,jdbcType=VARCHAR},
+      OVERDUE_REASON = #{overdueReason,jdbcType=VARCHAR},
+      COLLECTION_COMMENT = #{collectionComment,jdbcType=VARCHAR},
+      IS_IMPORTANT = #{isImportant,jdbcType=BIT},
+      OUT_FEE = #{outFee,jdbcType=DOUBLE},
+      RECOVER_STATUS = #{recoverStatus,jdbcType=VARCHAR},
+      DEGREE = #{degree,jdbcType=VARCHAR},
+      AGE_LIMIT = #{ageLimit,jdbcType=INTEGER},
+      IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      RECOVER_COMMENT = #{recoverComment,jdbcType=VARCHAR},
+      RECOVER_FEE = #{recoverFee,jdbcType=DOUBLE},
+      REFUND_STATUS = #{refundStatus,jdbcType=VARCHAR},
+      REFUND_TIME = #{refundTime,jdbcType=DATE},
+      REFUND_EVAL_PRICE = #{refundEvalPrice,jdbcType=DOUBLE},
+      KM = #{km,jdbcType=DOUBLE},
+      REFUND_COMMENT = #{refundComment,jdbcType=VARCHAR},
+      DISPOSE_STATUS = #{disposeStatus,jdbcType=VARCHAR},
+      DISPOSE_TIME = #{disposeTime,jdbcType=DATE},
+      DISPOSE_EVAL_PRICE = #{disposeEvalPrice,jdbcType=DOUBLE},
+      EVAL_PRICE = #{evalPrice,jdbcType=DOUBLE},
+      DISPOSE_COMMENT = #{disposeComment,jdbcType=VARCHAR},
+      LAWSUIT_STATUS = #{lawsuitStatus,jdbcType=VARCHAR},
+      LAWSUIT_UNIT_ID = #{lawsuitUnitId,jdbcType=VARCHAR},
+      LAWYER_NAME = #{lawyerName,jdbcType=VARCHAR},
+      LAWSUIT_FEE = #{lawsuitFee,jdbcType=DOUBLE},
+      LAWSUIT_COMMENT = #{lawsuitComment,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      RESERVER4 = #{reserver4,jdbcType=DOUBLE},
+      RESERVER5 = #{reserver5,jdbcType=DOUBLE},
+      RESERVER6 = #{reserver6,jdbcType=INTEGER},
+      RESERVER7 = #{reserver7,jdbcType=DATE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectCollectionLogInfo" resultMap="BaseResultMap">
+  	select a.* from t_collection_log a 
+  	left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  	where a.APP_ID = #{appId}
+  	and a.TASK_TYPE = #{taskType}
+  	order by OPER_TIME
+  </select>
+  <select id="selectImportanCollectionLogInfo" resultMap="BaseResultMap">
+  	select * from t_collection_log where APP_ID = #{appId}
+  	where IS_IMPORTANT = true
+  	order by OPER_TIME
+  </select>
+</mapper>

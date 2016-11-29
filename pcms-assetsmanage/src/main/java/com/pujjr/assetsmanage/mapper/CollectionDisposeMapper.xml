@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.CollectionDisposeMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.CollectionDispose" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APPLY_ID" property="applyId" jdbcType="VARCHAR" />
+    <result column="DISPOSE_UNIT_ID" property="disposeUnitId" jdbcType="VARCHAR" />
+    <result column="REFUND_TIME" property="refundTime" jdbcType="DATE" />
+    <result column="REFUND_EVAL_PRICE" property="refundEvalPrice" jdbcType="DOUBLE" />
+    <result column="RESALE_PRICE" property="resalePrice" jdbcType="DOUBLE" />
+    <result column="RESALE_TIME" property="resaleTime" jdbcType="DATE" />
+    <result column="CUR_EVAL_PRICE" property="curEvalPrice" jdbcType="DOUBLE" />
+    <result column="KM" property="km" jdbcType="DOUBLE" />
+    <result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+    <result column="AGE_LIMIT" property="ageLimit" jdbcType="INTEGER" />
+    <result column="IS_DAMAGE" property="isDamage" jdbcType="BIT" />
+    <result column="DISPOSE_REASON" property="disposeReason" jdbcType="VARCHAR" />
+    <result column="DISPOSE_COMMENT" property="disposeComment" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APPLY_ID, DISPOSE_UNIT_ID, REFUND_TIME, REFUND_EVAL_PRICE, RESALE_PRICE, RESALE_TIME, 
+    CUR_EVAL_PRICE, KM, DEGREE, AGE_LIMIT, IS_DAMAGE, DISPOSE_REASON, DISPOSE_COMMENT, 
+    RESERVER1, RESERVER2, RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_collection_dispose
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_collection_dispose
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.CollectionDispose" >
+    insert into t_collection_dispose (ID, APPLY_ID, DISPOSE_UNIT_ID, 
+      REFUND_TIME, REFUND_EVAL_PRICE, RESALE_PRICE, 
+      RESALE_TIME, CUR_EVAL_PRICE, KM, 
+      DEGREE, AGE_LIMIT, IS_DAMAGE, 
+      DISPOSE_REASON, DISPOSE_COMMENT, RESERVER1, 
+      RESERVER2, RESERVER3)
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{disposeUnitId,jdbcType=VARCHAR}, 
+      #{refundTime,jdbcType=DATE}, #{refundEvalPrice,jdbcType=DOUBLE}, #{resalePrice,jdbcType=DOUBLE}, 
+      #{resaleTime,jdbcType=DATE}, #{curEvalPrice,jdbcType=DOUBLE}, #{km,jdbcType=DOUBLE}, 
+      #{degree,jdbcType=VARCHAR}, #{ageLimit,jdbcType=INTEGER}, #{isDamage,jdbcType=BIT}, 
+      #{disposeReason,jdbcType=VARCHAR}, #{disposeComment,jdbcType=VARCHAR}, #{reserver1,jdbcType=VARCHAR}, 
+      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.CollectionDispose" >
+    insert into t_collection_dispose
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="applyId != null" >
+        APPLY_ID,
+      </if>
+      <if test="disposeUnitId != null" >
+        DISPOSE_UNIT_ID,
+      </if>
+      <if test="refundTime != null" >
+        REFUND_TIME,
+      </if>
+      <if test="refundEvalPrice != null" >
+        REFUND_EVAL_PRICE,
+      </if>
+      <if test="resalePrice != null" >
+        RESALE_PRICE,
+      </if>
+      <if test="resaleTime != null" >
+        RESALE_TIME,
+      </if>
+      <if test="curEvalPrice != null" >
+        CUR_EVAL_PRICE,
+      </if>
+      <if test="km != null" >
+        KM,
+      </if>
+      <if test="degree != null" >
+        DEGREE,
+      </if>
+      <if test="ageLimit != null" >
+        AGE_LIMIT,
+      </if>
+      <if test="isDamage != null" >
+        IS_DAMAGE,
+      </if>
+      <if test="disposeReason != null" >
+        DISPOSE_REASON,
+      </if>
+      <if test="disposeComment != null" >
+        DISPOSE_COMMENT,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null" >
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeUnitId != null" >
+        #{disposeUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTime != null" >
+        #{refundTime,jdbcType=DATE},
+      </if>
+      <if test="refundEvalPrice != null" >
+        #{refundEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="resalePrice != null" >
+        #{resalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="resaleTime != null" >
+        #{resaleTime,jdbcType=DATE},
+      </if>
+      <if test="curEvalPrice != null" >
+        #{curEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="km != null" >
+        #{km,jdbcType=DOUBLE},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isDamage != null" >
+        #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="disposeReason != null" >
+        #{disposeReason,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeComment != null" >
+        #{disposeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.CollectionDispose" >
+    update t_collection_dispose
+    <set >
+      <if test="applyId != null" >
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeUnitId != null" >
+        DISPOSE_UNIT_ID = #{disposeUnitId,jdbcType=VARCHAR},
+      </if>
+      <if test="refundTime != null" >
+        REFUND_TIME = #{refundTime,jdbcType=DATE},
+      </if>
+      <if test="refundEvalPrice != null" >
+        REFUND_EVAL_PRICE = #{refundEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="resalePrice != null" >
+        RESALE_PRICE = #{resalePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="resaleTime != null" >
+        RESALE_TIME = #{resaleTime,jdbcType=DATE},
+      </if>
+      <if test="curEvalPrice != null" >
+        CUR_EVAL_PRICE = #{curEvalPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="km != null" >
+        KM = #{km,jdbcType=DOUBLE},
+      </if>
+      <if test="degree != null" >
+        DEGREE = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        AGE_LIMIT = #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="isDamage != null" >
+        IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="disposeReason != null" >
+        DISPOSE_REASON = #{disposeReason,jdbcType=VARCHAR},
+      </if>
+      <if test="disposeComment != null" >
+        DISPOSE_COMMENT = #{disposeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.CollectionDispose" >
+    update t_collection_dispose
+    set APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      DISPOSE_UNIT_ID = #{disposeUnitId,jdbcType=VARCHAR},
+      REFUND_TIME = #{refundTime,jdbcType=DATE},
+      REFUND_EVAL_PRICE = #{refundEvalPrice,jdbcType=DOUBLE},
+      RESALE_PRICE = #{resalePrice,jdbcType=DOUBLE},
+      RESALE_TIME = #{resaleTime,jdbcType=DATE},
+      CUR_EVAL_PRICE = #{curEvalPrice,jdbcType=DOUBLE},
+      KM = #{km,jdbcType=DOUBLE},
+      DEGREE = #{degree,jdbcType=VARCHAR},
+      AGE_LIMIT = #{ageLimit,jdbcType=INTEGER},
+      IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      DISPOSE_REASON = #{disposeReason,jdbcType=VARCHAR},
+      DISPOSE_COMMENT = #{disposeComment,jdbcType=VARCHAR},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByApplyId" resultMap="BaseResultMap">
+  	select * from t_collection_dispose where APPLY_ID = #{applyId}
+  </select>
+</mapper>

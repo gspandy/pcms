@@ -35,7 +35,7 @@ public class TaskCompleteListener implements EventHandler {
 		{
 			taskEntity = (TaskEntity) ((ActivitiEntityEventImpl)event).getEntity();
 		}
-		//执行任务完成脚本
+		//鎵ц浠诲姟瀹屾垚鑴氭湰
 		String workflowVersionId = runtimeService.getVariable(taskEntity.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
 		if(nodeParam!=null && nodeParam.getTaskCompleteHandle()!=null && !nodeParam.getTaskCompleteHandle().equals(""))

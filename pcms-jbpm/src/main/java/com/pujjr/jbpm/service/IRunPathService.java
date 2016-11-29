@@ -9,38 +9,38 @@ import com.pujjr.jbpm.domain.WorkflowRunPath;
 public interface IRunPathService 
 {
 	/**
-	 * »ñÈ¡Ö¸¶¨½Úµã×îÔ¶Â·¾¶
-	 * @param procInstId Á÷³ÌÊµÀıID
-	 * @param actId »î¶¯ID
-	 * @return Â·¾¶½Úµã
+	 * è·å–æŒ‡å®šèŠ‚ç‚¹æœ€è¿œè·¯å¾„
+	 * @param procInstId æµç¨‹å®ä¾‹ID
+	 * @param actId æ´»åŠ¨ID
+	 * @return è·¯å¾„èŠ‚ç‚¹
 	 * **/
 	public WorkflowRunPath getFarestRunPathByActId(String procInstId,String actId);
 	/**
-	 * ´´½¨Á÷³ÌÂ·¾¶
-	 * @param path Â·¾¶ĞÅÏ¢
+	 * åˆ›å»ºæµç¨‹è·¯å¾„
+	 * @param path è·¯å¾„ä¿¡æ¯
 	 * @return void
 	 * **/
 	public void createWorkflowRunPath(WorkflowRunPath path);
 	/**
-	 * ¸üĞÂÁ÷³ÌÂ·¾¶
-	 * @param path Â·¾¶ĞÅÏ¢
+	 * æ›´æ–°æµç¨‹è·¯å¾„
+	 * @param path è·¯å¾„ä¿¡æ¯
 	 * @return void
 	 * **/
 	public void updateWorkflowRunPath(WorkflowRunPath path);
 	/**
-	 * »ñÈ¡Á÷³ÌÊµÀıÀúÊ·¹ì¼£ÁĞ±í
-	 * @param procInstId Á÷³ÌÊµÀıID
+	 * è·å–æµç¨‹å®ä¾‹å†å²è½¨è¿¹åˆ—è¡¨
+	 * @param procInstId æµç¨‹å®ä¾‹ID
 	 * @return List<WorkflowRunPah>
 	 * **/
 	public List<WorkflowRunPath> getRunPathList(String procInstId);
 	/**
-	 * ¸ù¾İÂ·¾¶ID»ñÈ¡Â·¾¶ĞÅÏ¢
-	 * @param pathId Â·¾¶ID
-	 * @return Â·¾¶ĞÅÏ¢
+	 * æ ¹æ®è·¯å¾„IDè·å–è·¯å¾„ä¿¡æ¯
+	 * @param pathId è·¯å¾„ID
+	 * @return è·¯å¾„ä¿¡æ¯
 	 * **/
 	public WorkflowRunPath getRunPathById(String pathId);
-	/**¸üĞÂÂ·¾¶ÈÎÎñÖ´ĞĞÊ±¼ä
-	 * @param taskId ÈÎÎñID
+	/**æ›´æ–°è·¯å¾„ä»»åŠ¡æ‰§è¡Œæ—¶é—´
+	 * @param taskId ä»»åŠ¡ID
 	 * **/
 	public void updateRunPathProcessTimeByTaskId(String taskId);
 }

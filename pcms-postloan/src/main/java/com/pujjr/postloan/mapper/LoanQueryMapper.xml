@@ -37,7 +37,11 @@
   		c1.DICT_DATA_NAME as repayModeDesc,
   		e.CONTRACT_NO as contractNo,
   		d.CREATE_BRANCH_CODE as createBranchCode,
-  		a.PRODUCT_CODE as productCode
+  		a.PRODUCT_CODE as productCode,
+  		f.PRODUCT_NAME as productName,
+  		g.BRANCH_NAME as branchName,
+  		e.REPAY_ACCT_NO repayAcctNo,
+  		h.BANK_NAME as bankName
   		from 
   		T_GENERAL_LEDGER a 
   		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
@@ -45,6 +49,9 @@
   		left join SYS_DICT_DATA c1 on a.REPAY_MODE = c1.DICT_DATA_CODE
   		left join T_APPLY d on a.APP_ID = d.APP_ID
   		left join T_SIGN_CONTRACT e on a.APP_ID  = e.APP_ID
+  		left join T_PRODUCT f on a.PRODUCT_CODE = f.PRODUCT_CODE
+  		left join SYS_BRANCH g on g.BRANCH_CODE = d.CREATE_BRANCH_CODE
+  		left join T_BANK_INFO h on h.ID = e.REPAY_BANK_ID
 		where a.APP_ID = #{appId}
   	</select>
   	

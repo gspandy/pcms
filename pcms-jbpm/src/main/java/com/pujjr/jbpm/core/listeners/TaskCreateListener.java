@@ -43,7 +43,7 @@ public class TaskCreateListener implements EventHandler
 	{
 		// TODO Auto-generated method stub
 		TaskEntity taskEntity = (TaskEntity) ((ActivitiEntityEventImpl)event).getEntity();
-		//Ö´ĞĞÈÎÎñ´´½¨½Å±¾
+		//æ‰§è¡Œä»»åŠ¡åˆ›å»ºè„šæœ¬
 		String workflowVersionId = runtimeService.getVariable(taskEntity.getExecutionId(), "workflowVersionId").toString();
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
 		if(nodeParam!=null && nodeParam.getTaskCreatePrehandle()!=null && !nodeParam.getTaskCreatePrehandle().equals(""))
@@ -56,13 +56,13 @@ public class TaskCreateListener implements EventHandler
 			Map<String, Object> vars = runtimeService.getVariables(taskEntity.getExecutionId());
 			GroovyEngine.execScript(nodeParam.getTaskCreateScript(),taskEntity.getExecutionId(), vars);
 		}
-		//¸üĞÂÀúÊ·Â·¾¶ĞÅÏ¢
+		//æ›´æ–°å†å²è·¯å¾„ä¿¡æ¯
 		AbstractExecutionCommand cmd = ProcessHandleHelper.getProcessCommand();
 		WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(taskEntity.getProcessInstanceId(), taskEntity.getTaskDefinitionKey());
 		if(cmd instanceof ProcessNextCommand)
 		{
 			ProcessNextCommand nextCommand = (ProcessNextCommand) cmd;
-			//Èç¹ûÊÇ»ØÍË²Ù×÷£¬Ôò»ØÍËµ½µÄÈÎÎñ½ÚµãÓ¦ÓÉÔ­Ö´ĞĞÈË²Ù×÷
+			//å¦‚æœæ˜¯å›é€€æ“ä½œï¼Œåˆ™å›é€€åˆ°çš„ä»»åŠ¡èŠ‚ç‚¹åº”ç”±åŸæ‰§è¡Œäººæ“ä½œ
 			if(nextCommand.getCommandType().equals(CommandType.BACK)||nextCommand.getCommandType().equals(CommandType.BACT_TO_STARTER))
 			{
 				WorkflowRunPath refRunPath = runPathService.getRunPathById(runPath.getRefPathId());
@@ -82,7 +82,7 @@ public class TaskCreateListener implements EventHandler
 			}
 			else
 			{
-				//Èç¹ûÊÇÁ÷³ÌÍùÇ°×ßÔò»ñÈ¡½ÚµãÉóÅúÈË²ÎÊı,¸ù¾İ²ÎÊı»ñÈ¡½ÚµãÉóÅúÈË
+				//å¦‚æœæ˜¯æµç¨‹å¾€å‰èµ°åˆ™è·å–èŠ‚ç‚¹å®¡æ‰¹äººå‚æ•°,æ ¹æ®å‚æ•°è·å–èŠ‚ç‚¹å®¡æ‰¹äºº
 				String assignee = getTaskAssignee(workflowVersionId,taskEntity);
 				taskEntity.setAssignee(assignee);
 				publishAssignEvent(taskEntity);
@@ -130,7 +130,7 @@ public class TaskCreateListener implements EventHandler
 	}
 	
 	 /** 
-	  * ·¢²¼ÈÎÎñ·ÖÅäÊÂ¼ş 
+	  * å‘å¸ƒä»»åŠ¡åˆ†é…äº‹ä»¶ 
 	  * @param taskEntity 
 	  */  
 	 private void publishAssignEvent(TaskEntity taskEntity)
