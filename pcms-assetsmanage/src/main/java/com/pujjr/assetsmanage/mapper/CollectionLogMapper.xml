@@ -481,15 +481,131 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectCollectionLogInfo" resultMap="BaseResultMap">
-  	select a.* from t_collection_log a 
-  	left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
-  	where a.APP_ID = #{appId}
-  	and a.TASK_TYPE = #{taskType}
-  	order by OPER_TIME
+    <if test="taskType == 'csrwlx01' or taskType == 'csrwlx02'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		d.DICT_DATA_NAME as collectionStatus,
+  		d1.DICT_DATA_NAME as overdueReason,
+  		a.COLLECTION_COMMENT as collectionComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.COLLECTION_STATUS = d.DICT_DATA_CODE
+  		left join SYS_DICT_DATA d1 on a.OVERDUE_REASON = d1.DICT_DATA_CODE
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
+  	<if test="taskType == 'csrwlx03'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		f.UNIT_NAME as reserver1,
+  		d.DICT_DATA_NAME as collectionStatus,
+  		d1.DICT_DATA_NAME  as overdueReason,
+  		a.COLLECTION_COMMENT as collectionComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.COLLECTION_STATUS = d.DICT_DATA_CODE
+  		left join SYS_DICT_DATA d1 on a.OVERDUE_REASON = d1.DICT_DATA_CODE
+  		left join T_COLLECTION_OUT e on e.APPLY_ID = b.id
+  		left join T_UNIT_INFO f on f.ID = e.OUT_UNIT_ID
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
+    <if test="taskType == 'csrwlx04'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		f.UNIT_NAME as reserver1,
+  		d.DICT_DATA_NAME as recoverStatus,
+  		a.RECOVER_COMMENT as recoverComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.RECOVER_STATUS = d.DICT_DATA_CODE
+  		left join T_COLLECTION_RECOVER e on e.APPLY_ID = b.id
+  		left join T_UNIT_INFO f on f.ID = e.RECOVER_UNIT_ID
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
+    <if test="taskType == 'csrwlx05'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		d.DICT_DATA_NAME as refundStatus,
+  		a.REFUND_COMMENT as refundComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.REFUND_STATUS = d.DICT_DATA_CODE
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
+    <if test="taskType == 'csrwlx06'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		d.DICT_DATA_NAME as disposeStatus,
+  		a.DISPOSE_COMMENT as disposeComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.DISPOSE_STATUS = d.DICT_DATA_CODE
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
+    <if test="taskType == 'csrwlx07'">
+    	select 
+  		a.OPER_TIME as operTime,
+  		c.ACCOUNT_NAME  as operId,
+  		f.UNIT_NAME as reserver1,
+  		d.DICT_DATA_NAME as lawsuitStatus,
+  		a.LAWSUIT_COMMENT as lawsuitComment
+  		from t_collection_log a 
+  		left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  		left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  		left join SYS_DICT_DATA d on a.LAWSUIT_STATUS = d.DICT_DATA_CODE
+  		left join T_COLLECTION_LAWSUIT e on e.APPLY_ID = b.id
+  		left join T_UNIT_INFO f on f.ID = e.LAWSUIT_UNIT_ID
+  		where a.APP_ID = #{appId}
+  		and b.TASK_TYPE = #{taskType}
+  		order by OPER_TIME
+    </if>
   </select>
   <select id="selectImportanCollectionLogInfo" resultMap="BaseResultMap">
-  	select * from t_collection_log where APP_ID = #{appId}
-  	where IS_IMPORTANT = true
+  	select 
+  	a.OPER_TIME as operTime,
+  	c.ACCOUNT_NAME  as operId,
+  	a.COLLECTION_COMMENT as collectionComment,
+  	a.RECOVER_COMMENT as recoverComment,
+  	a.REFUND_COMMENT as refundComment,
+  	a.DISPOSE_COMMENT as disposeComment,
+  	a.LAWSUIT_COMMENT as lawsuitComment,
+  	d1.DICT_DATA_NAME as collectionStatus,
+  	d2.DICT_DATA_NAME as recoverStatus,
+  	d3.DICT_DATA_NAME as refundStatus,
+  	d4.DICT_DATA_NAME as disposeStatus,
+  	d5.DICT_DATA_NAME as lawsuitStatus,
+  	b.TASK_TYPE as reserver1
+  	from 
+  	t_collection_log a
+  	left join T_COLLECTION_TASK b on a.APPLY_ID = b.id
+  	left join SYS_ACCOUNT c on c.ACCOUNT_ID = a.OPER_ID
+  	left join SYS_DICT_DATA d1 on a.COLLECTION_STATUS = d1.DICT_DATA_CODE
+  	left join SYS_DICT_DATA d2 on a.RECOVER_STATUS = d2.DICT_DATA_CODE
+  	left join SYS_DICT_DATA d3 on a.REFUND_STATUS = d3.DICT_DATA_CODE
+  	left join SYS_DICT_DATA d4 on a.DISPOSE_STATUS = d4.DICT_DATA_CODE
+  	left join SYS_DICT_DATA d5 on a.LAWSUIT_STATUS = d5.DICT_DATA_CODE
+  	where 
+  	a.APP_ID = #{appId}
+  	and a.IS_IMPORTANT = true
   	order by OPER_TIME
   </select>
 </mapper>
