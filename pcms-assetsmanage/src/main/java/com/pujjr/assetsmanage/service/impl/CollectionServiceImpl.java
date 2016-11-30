@@ -49,6 +49,7 @@ import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.domain.ApplyAlterRepayDate;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.RepayStatus;
@@ -271,7 +272,7 @@ public class CollectionServiceImpl implements ICollectionService
 		//获取流程版本信息
 		String workflowVersionId = runtimeService.getVariable(task.getProcessInstanceId(),ProcessGlobalVariable.WORKFLOW_VERSION_ID).toString();
 		//获取节点参数配置
-		WorkflowNodeAssignee nodeAssignee = configWorkflowService.getNodeAssignee(workflowVersionId, "");
+		WorkflowNodeAssignee nodeAssignee = configWorkflowService.getNodeAssignee(workflowVersionId, task.getTaskDefinitionKey());
 		
 		List<OnlineAcctPo> userList = taskService.getOnlineAcctInfo(nodeAssignee.getAssigneeParam(), false);
 		return userList;
@@ -306,6 +307,7 @@ public class CollectionServiceImpl implements ICollectionService
 		taskProcessResultDao.insert(taskProcessResult);
 			
 		po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
+		po.setApproveId(task.getAssignee());
 		//启动新的任务
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("appId", po.getAppId());
@@ -469,6 +471,56 @@ public class CollectionServiceImpl implements ICollectionService
 		recoverPo.setRecoverComment(vo.getRecoverComment());
 		recoverPo.setRecoverUnitId(vo.getRecoverUnitId());
 		collectionRecoverDao.insert(recoverPo);
+	}
+
+	@Override
+	public void commitApproveRecoverCollectionTask(String taskId, ApproveResultVo vo) throws Exception {
+		// TODO Auto-generated method stub
+		//检查任务合法性
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+		
+		//获取申请数据
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		CollectionTask po = collectionTaskDao.selectByPrimaryKey(businessKey);
+		
+		//保存任务处理结果信息
+		String procId = Utils.get16UUID();
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(procId);
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResultDao.insert(taskProcessResult);
+		
+		//根据审批结果执行相关操作
+		po.setApplyStatus(vo.getApproveResult());
+		collectionTaskDao.updateByPrimaryKey(po);
+		
+		//5、提交任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("approveProcessResult", vo.getApproveResult());
+		runWorkflowService.completeTask(taskId, "", vars, CommandType.COMMIT);
+	}
+
+	@Override
+	public void applyReAssigneeTask(String taskId, String reason) throws Exception {
+		// TODO Auto-generated method stub
+		//检查任务合法性
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		//提交任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("taskCommitType", CollectionTaskCommitType.ReAssignee.getName());
+		runWorkflowService.completeTask(taskId, reason, vars, CommandType.COMMIT);
 	}
 
 }

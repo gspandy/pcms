@@ -44,6 +44,20 @@ public interface ICollectionService
 	 */
 	public void applyRecoverCollectionTask(String appId,String createId,CollectionApplyVo vo);
 	/**
+	 * 申请重新分配任务执行人
+	 * @param taskId 任务ID
+	 * @param reason 原因
+	 * @throws Exception 
+	 */
+	public void applyReAssigneeTask(String taskId,String reason) throws Exception;
+	/** 
+	 * 审批委外收车申请任务
+	 * @param taskId任务ID
+	 * @param vo审批信息
+	 * @throws Exception 
+	 */
+	public void commitApproveRecoverCollectionTask(String taskId,ApproveResultVo vo) throws Exception;
+	/**
 	 * 重新分配任务催收任务执行人
 	 * @param taskId 当前任务节点ID
 	 * @param newOperId 任务新执行人

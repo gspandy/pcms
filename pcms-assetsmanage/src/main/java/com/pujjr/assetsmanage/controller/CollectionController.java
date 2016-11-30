@@ -135,4 +135,16 @@ public class CollectionController extends BaseController
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		collectionService.applyRecoverCollectionTask(appId, account.getAccountId(), vo);
 	}
+	
+	@RequestMapping(value="/commitApproveRecoverCollectionTask/{taskId}",method=RequestMethod.POST)
+	public void commitApproveRecoverCollectionTask(@PathVariable String taskId,@RequestBody ApproveResultVo vo) throws Exception
+	{
+		collectionService.commitApproveRecoverCollectionTask(taskId, vo);
+	}
+	
+	@RequestMapping(value="/applyReAssigneeTask/{taskId}",method=RequestMethod.POST)
+	public void applyReAssigneeTask(@PathVariable String taskId,@RequestBody String reason) throws Exception
+	{
+		collectionService.applyReAssigneeTask(taskId, reason);
+	}
 }
