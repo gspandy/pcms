@@ -1,5 +1,6 @@
 package com.pujjr.base.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,7 @@ public interface MerchantMapper {
 
 	int updateByPrimaryKey(Merchant record);
 	
-	List<Merchant> selectAll(@Param("enabled")boolean enabled);
+	List<HashMap<String,Object>> selectAll(@Param("enabled")boolean enabled,@Param("chnlType")String chnlType);
 	
 	Merchant selectByMerchantNo(@Param("merchantNo")String merchantNo);
 }

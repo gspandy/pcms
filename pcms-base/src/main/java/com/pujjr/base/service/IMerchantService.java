@@ -1,5 +1,6 @@
 package com.pujjr.base.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public interface IMerchantService
 	 * @param enabled
 	 * @return
 	 */
-	public List<Merchant> getMerchantList(boolean enabled);
+	public List<HashMap<String,Object>> getMerchantList(boolean enabled,String chnlType);
 	/**
 	 * 增加商户
 	 * @param record

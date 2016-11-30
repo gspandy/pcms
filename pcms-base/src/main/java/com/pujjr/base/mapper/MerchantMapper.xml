@@ -185,10 +185,31 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectAll" resultMap="BaseResultMap">
-  	select * from t_merchant where 1=1
+  <select id="selectAll" resultType="HashMap">
+  	select 
+  		a.ID as id,
+  		a.MERCHANT_NAME as merchantName,
+  		a.MERCHANT_NO as merchantNo,
+  		a.BANK_ID as bankId,
+  		a.RESERVER1 as reserver1,
+  		a.RESERVER2 as reserver2,
+  		a.RESERVER3 as reserver3,
+  		a.RESERVER4 as reserver4,
+  		a.ENABLED as enabled,
+  		a.CREATE_ID as createId ,
+  		a.CREATE_TIME as createTime,
+  		a.UPDATE_ID as updateId,
+  		a.UPDATE_TIME as updateTime,
+  		b.DICT_DATA_NAME as chnlTypeDesc
+  	from 
+  	t_merchant a 
+  	left join SYS_DICT_DATA b on a.RESERVER1 = b.DICT_DATA_CODE
+  	where 1=1
   	<if test="enabled==true">
   		and ENABLED = true
+  	</if>
+  	<if test="chnlType!=null and chnlType !=''">
+  		and RESERVER1 = #{chnlType}
   	</if>
   </select>
   <select id="selectByMerchantNo" resultMap="BaseResultMap">

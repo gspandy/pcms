@@ -85,43 +85,48 @@
   	</select>
   	
   	<select id="selectLoanToDoTaskList" resultType="HashMap">
-  	select 
-	a.ID_ as taskId,
-	a.name_ as taskName,
-	a.PROC_INST_ID_ as procInstId,
-	a.TASK_DEF_KEY_ as taskDefKey,
-	b.BUSINESS_KEY_ as businessKey,
-	c.KEY_ as workflowKey,
-	dp.NAME_ as workflowName,
-	form.form_name as taskRouter,
-	d.TEXT_ as appId,
-	e.NAME as custName,
-	f.TOTAL_FINANCE_AMT as totalFinanceAmount,
-	f.PERIOD as period,
-	g.REPAY_STATUS as repayStatus,
-	h.DICT_DATA_NAME as repayStatusDesc,
-	g.REMAIN_CAPITAL as remainCapital,
-	runpath.START_TIME as startTime,
-	runpath.IN_JUMP_TYPE as inJumpType,
-	prunpath.ACT_NAME as parentTaskName,
-	prunpath.ASSIGNEE as parentAssignee,
-	account.ACCOUNT_NAME as parentAssigneeName
-	from act_ru_task a 
-	left join act_ru_execution b on a.PROC_INST_ID_  = b. PROC_INST_ID_
-	left join act_re_procdef c on b.PROC_DEF_ID_ = c.ID_
-	left join act_re_deployment dp on dp.ID_ = c.DEPLOYMENT_ID_
-	left join t_workflow_runpath runpath on runpath.PROC_INST_ID =a.PROC_INST_ID_ and runpath.ACT_ID = a.TASK_DEF_KEY_
-	left join t_workflow_runpath prunpath on runpath.PARENT_USERTASK_PATH_ID =prunpath.ID
-	left join t_workflow_version flowversion on flowversion.activiti_procdef_id = a.PROC_DEF_ID_
-	left join t_workflow_node_form form on form.workflow_version_id = flowversion.id and a.TASK_DEF_KEY_ = form.node_id
-	inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
-	left join t_apply_tenant e on d.TEXT_ = e.APP_ID 
-	left join t_apply f on e.APP_ID = f.APP_ID
-	left join T_GENERAL_LEDGER g on f.APP_ID = g.APP_ID
-	left join SYS_DICT_DATA h on g.REPAY_STATUS = h.DICT_DATA_CODE
-	left join SYS_ACCOUNT account on account.ACCOUNT_ID = prunpath.ASSIGNEE
-	where a.ASSIGNEE_ = #{assignee} 
-	and c.KEY_ != 'PPCA' 
+  	select * from
+  	(
+  		select 
+		a.ID_ as taskId,
+		a.name_ as taskName,
+		a.PROC_INST_ID_ as procInstId,
+		a.TASK_DEF_KEY_ as taskDefKey,
+		b.BUSINESS_KEY_ as businessKey,
+		c.KEY_ as workflowKey,
+		dp.NAME_ as workflowName,
+		form.form_name as taskRouter,
+		d.TEXT_ as appId,
+		e.NAME as custName,
+		f.TOTAL_FINANCE_AMT as totalFinanceAmount,
+		f.PERIOD as period,
+		g.REPAY_STATUS as repayStatus,
+		h.DICT_DATA_NAME as repayStatusDesc,
+		g.REMAIN_CAPITAL as remainCapital,
+		runpath.START_TIME as startTime,
+		runpath.IN_JUMP_TYPE as inJumpType,
+		prunpath.ACT_NAME as parentTaskName,
+		prunpath.ASSIGNEE as parentAssignee,
+		account.ACCOUNT_NAME as parentAssigneeName
+		from act_ru_task a 
+		left join act_ru_execution b on a.PROC_INST_ID_  = b. PROC_INST_ID_
+		left join act_re_procdef c on b.PROC_DEF_ID_ = c.ID_
+		left join act_re_deployment dp on dp.ID_ = c.DEPLOYMENT_ID_
+		left join t_workflow_runpath runpath on runpath.PROC_INST_ID =a.PROC_INST_ID_ and runpath.ACT_ID = a.TASK_DEF_KEY_
+		left join t_workflow_runpath prunpath on runpath.PARENT_USERTASK_PATH_ID =prunpath.ID
+		left join t_workflow_version flowversion on flowversion.activiti_procdef_id = a.PROC_DEF_ID_
+		left join t_workflow_node_form form on form.workflow_version_id = flowversion.id and a.TASK_DEF_KEY_ = form.node_id
+		inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
+		left join t_apply_tenant e on d.TEXT_ = e.APP_ID 
+		left join t_apply f on e.APP_ID = f.APP_ID
+		left join T_GENERAL_LEDGER g on f.APP_ID = g.APP_ID
+		left join SYS_DICT_DATA h on g.REPAY_STATUS = h.DICT_DATA_CODE
+		left join SYS_ACCOUNT account on account.ACCOUNT_ID = prunpath.ASSIGNEE
+		where a.ASSIGNEE_ = #{assignee} 
+		and c.KEY_ != 'PPCA' 
+		order by runpath.START_TIME desc 
+  	)
+  	tmp group by taskId	
   	</select>
   	<select id="selectOtherFeeList" resultType="HashMap">
   		select 

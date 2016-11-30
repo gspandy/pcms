@@ -1,5 +1,6 @@
 package com.pujjr.base.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,9 @@ public class MerchantServiceImpl implements IMerchantService {
 	private MerchantMapper merchantDao;
 	
 	@Override
-	public List<Merchant> getMerchantList(boolean enabled) {
+	public List<HashMap<String,Object>>  getMerchantList(boolean enabled,String chnlType) {
 		// TODO Auto-generated method stub
-		return merchantDao.selectAll(enabled);
+		return merchantDao.selectAll(enabled,chnlType);
 	}
 
 	@Override

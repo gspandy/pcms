@@ -112,6 +112,7 @@ public class RuleServiceImpl implements IRuleService {
 	@Override
 	public void addWorkgroupRemissionRule(String workgroupId, RuleRemission record) {
 		// TODO Auto-generated method stub
+		ruleRemissionDao.deleteByWorkgroupId(workgroupId);
 		record.setWorkgroupId(workgroupId);
 		record.setId(Utils.get16UUID());
 		ruleRemissionDao.insert(record);

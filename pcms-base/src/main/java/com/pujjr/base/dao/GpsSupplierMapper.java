@@ -19,5 +19,5 @@ public interface GpsSupplierMapper {
 
 	int updateByPrimaryKey(GpsSupplier record);
 	
-	List<GpsSupplier> selectAll(@Param("enabled")boolean eanbled);
+	List<GpsSupplier> selectAll(@Param("enabled")boolean enabled);
 }

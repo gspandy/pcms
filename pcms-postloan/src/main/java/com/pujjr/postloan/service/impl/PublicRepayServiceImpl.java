@@ -97,7 +97,7 @@ public class PublicRepayServiceImpl implements IPublicRepayService {
 			vars.put("appId", appId);
 			vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, vo.getCreateId());
 			ProcessInstance instance = runWorkflowService.startProcess("DGHK", businessKey, vars);
-			po.setProcInstId(instance.getId());
+			po.setProcInstId(instance.getProcessInstanceId());
 			publicRepayDao.insert(po);
 		}
 		else

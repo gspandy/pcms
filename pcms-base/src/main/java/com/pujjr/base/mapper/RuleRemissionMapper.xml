@@ -177,4 +177,7 @@
   <select id="selectByWorkgroupId" resultMap="BaseResultMap">
   	select * from t_rule_remission where WORKGROUP_ID = #{workgroupId}
   </select>
+  <delete id="deleteByWorkgroupId">
+  	delete from t_rule_remission where WORKGROUP_ID = #{workgroupId}
+  </delete>
 </mapper>

@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +22,7 @@ import com.pujjr.assetsmanage.vo.CollectionLogVo;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.po.OnlineAcctPo;
+import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.vo.ApproveResultVo;
 
 @RestController
@@ -27,6 +31,10 @@ public class CollectionController extends BaseController
 {
 	@Autowired
 	private ICollectionService collectionService;
+	@Autowired
+	private RuntimeService runtimeService;
+	@Autowired
+	private TaskService actTaskService;
 
 	@RequestMapping(value="/createPhoneCollectionTask/{appId}/{applyComment}",method=RequestMethod.POST)
 	public void createPhoneCollectionTask(@PathVariable String appId,@PathVariable String applyComment,HttpServletRequest request)
@@ -94,6 +102,15 @@ public class CollectionController extends BaseController
 		return collectionService.getCollectionAppyInfo(applyId);
 	}
 	
+	@RequestMapping(value="/getNewCollectionAppyInfo/{taskId}",method=RequestMethod.GET)
+	public CollectionApplyVo getNewCollectionAppyInfo(@PathVariable String taskId)
+	{
+		//获取申请的新催收方式申请ID
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		String newAppId = runtimeService.getVariable(task.getExecutionId(),"newApplyId").toString();
+		return collectionService.getCollectionAppyInfo(newAppId);
+	}
+	
 	@RequestMapping(value="/getCollectionLogInfo/{appId}/{taskType}",method=RequestMethod.GET)
 	public List<CollectionLog> getCollectionLogInfo(@PathVariable String appId,@PathVariable String taskType)
 	{
@@ -110,5 +127,12 @@ public class CollectionController extends BaseController
 	public void saveCollectionLog(@PathVariable String taskId,@RequestBody CollectionLogVo vo) throws Exception
 	{
 		collectionService.saveCollectionLog(taskId, vo);
+	}
+	
+	@RequestMapping(value="/applyRecoverCollectionTask/{appId}",method=RequestMethod.POST)
+	public void applyRecoverCollectionTask(@PathVariable String appId, @RequestBody CollectionApplyVo vo,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		collectionService.applyRecoverCollectionTask(appId, account.getAccountId(), vo);
 	}
 }

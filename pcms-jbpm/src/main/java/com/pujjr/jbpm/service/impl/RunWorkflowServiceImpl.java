@@ -127,7 +127,9 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 			}
 			else
 			{
-				WorkflowRunPath backNodeRunPath = getBackNodeRunPath(task.getProcessDefinitionId(),task.getProcessInstanceId(),task.getTaskDefinitionKey());
+				//WorkflowRunPath backNodeRunPath = getBackNodeRunPath(task.getProcessDefinitionId(),task.getProcessInstanceId(),task.getTaskDefinitionKey());
+				//如果没配置则通过流程路径记录的父节点任务进行回退
+				WorkflowRunPath backNodeRunPath = runPathService.getRunPathById(runPath.getParentUsertaskPathId());
 				ProcessHandleHelper.setBackNode(backNodeRunPath);
 				processNextCommand.setDestNodeId(backNodeRunPath.getActId());
 			}

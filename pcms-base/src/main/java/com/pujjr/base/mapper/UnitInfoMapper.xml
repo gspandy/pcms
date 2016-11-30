@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.UnitInfoMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.UnitInfo">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="UNIT_TYPE" jdbcType="VARCHAR" property="unitType" />
+    <result column="UNIT_NAME" jdbcType="VARCHAR" property="unitName" />
+    <result column="UNIT_ADDR" jdbcType="VARCHAR" property="unitAddr" />
+    <result column="UNIT_TLE" jdbcType="VARCHAR" property="unitTle" />
+    <result column="UNIT_LEADER" jdbcType="VARCHAR" property="unitLeader" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="UNIT_PROPERTY" jdbcType="VARCHAR" property="unitProperty" />
+    <result column="ENABLED" jdbcType="BIT" property="enabled" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="VARCHAR" property="reserver3" />
+    <result column="RESERVER4" jdbcType="VARCHAR" property="reserver4" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, UNIT_TYPE, UNIT_NAME, UNIT_ADDR, UNIT_TLE, UNIT_LEADER, MOBILE, UNIT_PROPERTY, 
+    ENABLED, CREATE_ID, CREATE_TIME, UPDATE_ID, UPDATE_TIME, RESERVER1, RESERVER2, RESERVER3, 
+    RESERVER4
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_unit_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_unit_info
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.UnitInfo">
+    insert into t_unit_info (ID, UNIT_TYPE, UNIT_NAME, 
+      UNIT_ADDR, UNIT_TLE, UNIT_LEADER, 
+      MOBILE, UNIT_PROPERTY, ENABLED, 
+      CREATE_ID, CREATE_TIME, UPDATE_ID, 
+      UPDATE_TIME, RESERVER1, RESERVER2, 
+      RESERVER3, RESERVER4)
+    values (#{id,jdbcType=VARCHAR}, #{unitType,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, 
+      #{unitAddr,jdbcType=VARCHAR}, #{unitTle,jdbcType=VARCHAR}, #{unitLeader,jdbcType=VARCHAR}, 
+      #{mobile,jdbcType=VARCHAR}, #{unitProperty,jdbcType=VARCHAR}, #{enabled,jdbcType=BIT}, 
+      #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR}, #{reserver4,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.UnitInfo">
+    insert into t_unit_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="unitType != null">
+        UNIT_TYPE,
+      </if>
+      <if test="unitName != null">
+        UNIT_NAME,
+      </if>
+      <if test="unitAddr != null">
+        UNIT_ADDR,
+      </if>
+      <if test="unitTle != null">
+        UNIT_TLE,
+      </if>
+      <if test="unitLeader != null">
+        UNIT_LEADER,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="unitProperty != null">
+        UNIT_PROPERTY,
+      </if>
+      <if test="enabled != null">
+        ENABLED,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null">
+        #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null">
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddr != null">
+        #{unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTle != null">
+        #{unitTle,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLeader != null">
+        #{unitLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="unitProperty != null">
+        #{unitProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null">
+        #{reserver4,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.UnitInfo">
+    update t_unit_info
+    <set>
+      <if test="unitType != null">
+        UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="unitName != null">
+        UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitAddr != null">
+        UNIT_ADDR = #{unitAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="unitTle != null">
+        UNIT_TLE = #{unitTle,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLeader != null">
+        UNIT_LEADER = #{unitLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="unitProperty != null">
+        UNIT_PROPERTY = #{unitProperty,jdbcType=VARCHAR},
+      </if>
+      <if test="enabled != null">
+        ENABLED = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4 = #{reserver4,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.UnitInfo">
+    update t_unit_info
+    set UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      UNIT_NAME = #{unitName,jdbcType=VARCHAR},
+      UNIT_ADDR = #{unitAddr,jdbcType=VARCHAR},
+      UNIT_TLE = #{unitTle,jdbcType=VARCHAR},
+      UNIT_LEADER = #{unitLeader,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      UNIT_PROPERTY = #{unitProperty,jdbcType=VARCHAR},
+      ENABLED = #{enabled,jdbcType=BIT},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      RESERVER4 = #{reserver4,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAll" resultType="HashMap">
+  	select 
+  		a.ID as id,
+  		a.UNIT_TYPE as unitType,
+  		a.UNIT_NAME as unitName,
+  		a.UNIT_ADDR as unitTle,
+  		a.UNIT_LEADER as unitLeader,
+  		a.MOBILE as mobile ,
+  		a.UNIT_PROPERTY as unitProperty,
+  		a.ENABLED as enabled,
+  		a.CREATE_ID as createId,
+  		a.CREATE_TIME as createTime,
+  		a.UPDATE_ID as updateId ,
+  		a.UPDATE_TIME as updateTime,
+  		a.RESERVER1 as reserver1,
+  		a.RESERVER2 as reserver2,
+  		a.RESERVER3 as reserver3,
+  		a.RESERVER4 as reserver4,
+  		b.DICT_DATA_NAME as unitTypeDesc
+  	from t_unit_info a  
+  	left join SYS_DICT_DATA  b on a.UNIT_TYPE = b.DICT_DATA_CODE
+  	where 1=1
+  	<if test="enabled==true">
+  		and a.ENABLED = true
+  	</if>
+  	<if test="unitType !=null and unitType !=''">
+  		and a.UNIT_TYPE = #{unitType}
+  	</if>
+  </select>
+</mapper>

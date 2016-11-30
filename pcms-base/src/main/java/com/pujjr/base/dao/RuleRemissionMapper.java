@@ -18,4 +18,6 @@ public interface RuleRemissionMapper {
     int updateByPrimaryKey(RuleRemission record);
     
     RuleRemission selectByWorkgroupId(@Param("workgroupId")String workgroupId);
+    
+    void deleteByWorkgroupId(@Param("workgroupId")String workgroupId);
 }

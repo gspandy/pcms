@@ -100,7 +100,7 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		ProcessInstance instance = runWorkflowService.startProcess("OTHERFEE", businessKey, vars);
 		po = otherFeeDao.selectByPrimaryKey(businessKey);
-		po.setProcInstId(instance.getId());
+		po.setProcInstId(instance.getProcessInstanceId());
 		otherFeeDao.updateByPrimaryKey(po);
 	}
 

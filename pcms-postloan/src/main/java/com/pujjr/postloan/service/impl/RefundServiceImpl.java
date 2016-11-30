@@ -102,7 +102,7 @@ public class RefundServiceImpl implements IRefundService {
 		vars.put("appId", appId);
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		ProcessInstance instance = runWorkflowService.startProcess("TUIKUAN", businessKey, vars);
-		po.setProcInstId(instance.getId());
+		po.setProcInstId(instance.getProcessInstanceId());
 		applyRefundDao.insert(po);
 	}
 

@@ -37,6 +37,13 @@ public interface ICollectionService
 	 */
 	public void applyNewCollectionTask(String taskId,String appId,CollectionTaskType taskType,String createId,CollectionApplyVo vo) throws Exception;
 	/**
+	 * 单独发起委外收车申请
+	 * @param appId申请单号
+	 * @param createId创建人
+	 * @param vo 申请信息
+	 */
+	public void applyRecoverCollectionTask(String appId,String createId,CollectionApplyVo vo);
+	/**
 	 * 重新分配任务催收任务执行人
 	 * @param taskId 当前任务节点ID
 	 * @param newOperId 任务新执行人

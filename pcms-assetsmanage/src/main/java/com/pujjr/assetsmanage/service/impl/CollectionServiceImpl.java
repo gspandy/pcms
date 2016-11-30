@@ -113,7 +113,7 @@ public class CollectionServiceImpl implements ICollectionService
 		vars.put("appId", appId);
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, createId);
 		ProcessInstance instance = runWorkflowService.startProcess(CollectionTaskType.PhoneCollection.getTaskKey(), businessKey, vars);
-		po.setProcInstId(instance.getId());
+		po.setProcInstId(instance.getProcessInstanceId());
 		collectionTaskDao.insert(po);
 	}
 
@@ -175,7 +175,7 @@ public class CollectionServiceImpl implements ICollectionService
 			CollectionRecover recoverPo = new CollectionRecover();
 			recoverPo.setId(Utils.get16UUID());
 			recoverPo.setApplyId(businessKey);
-			recoverPo.setRecoverReason(vo.getRecoverComment());
+			recoverPo.setRecoverReason(vo.getRecoverReason());
 			recoverPo.setRecoverUnitId(vo.getRecoverUnitId());
 			recoverPo.setRecoverComment(vo.getRecoverComment());
 			collectionRecoverDao.insert(recoverPo);
@@ -193,6 +193,7 @@ public class CollectionServiceImpl implements ICollectionService
 		{
 			CollectionRecover recoverPo = new CollectionRecover();
 			recoverPo.setId(Utils.get16UUID());
+			recoverPo.setApplyId(businessKey);
 			recoverPo.setRecoverReason(vo.getRecoverReason());
 			recoverPo.setRecoverComment(vo.getRecoverComment());
 			recoverPo.setRecoverUnitId(vo.getRecoverUnitId());
@@ -300,25 +301,18 @@ public class CollectionServiceImpl implements ICollectionService
 		TaskProcessResult taskProcessResult = new TaskProcessResult();
 		taskProcessResult.setId(procId);
 		taskProcessResult.setRunPathId(runpath.getId());
-		taskProcessResult.setProcessResult(vo.getApproveResult());
-		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResult.setProcessResult(TaskCommitType.LOAN_PASS);
+		taskProcessResult.setComment(vo.getApproveComment()==null?"通过":vo.getApproveComment());
 		taskProcessResultDao.insert(taskProcessResult);
-				
-		//审批通过则创建新的申请催收任务
-		if(vo.getApproveResult().equals(TaskCommitType.LOAN_PASS))
-		{
-			po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
-			//启动新的任务
-			HashMap<String,Object> vars = new HashMap<String,Object>();
-			vars.put("appId", po.getAppId());
-			vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, po.getCreateId());
-			ProcessInstance instance = runWorkflowService.startProcess(po.getTaskType(), po.getId(), vars);
-			po.setProcInstId(instance.getId());
-		}
-		else
-		{
-			po.setApplyStatus(LoanApplyStatus.ApproveRefuse.getName());
-		}
+			
+		po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
+		//启动新的任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("appId", po.getAppId());
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, po.getCreateId());
+		ProcessInstance instance = runWorkflowService.startProcess(po.getWorkflowKey(), po.getId(), vars);
+		po.setProcInstId(instance.getProcessInstanceId());
+	
 		collectionTaskDao.updateByPrimaryKey(po);
 		
 		//完成当前任务
@@ -441,6 +435,40 @@ public class CollectionServiceImpl implements ICollectionService
 		po.setOperTime(new Date());
 		po.setOperId(task.getAssignee());
 		collectionLogDao.insert(po);
+	}
+
+	@Override
+	public void applyRecoverCollectionTask(String appId, String createId, CollectionApplyVo vo) {
+		// TODO Auto-generated method stub
+		//保存申请信息
+		CollectionTask po = new CollectionTask();
+		String businessKey = Utils.get16UUID();
+		po.setId(businessKey);
+		po.setAppId(appId);
+		po.setTaskType(CollectionTaskType.RecoverCollection.getName());
+		po.setWorkflowKey(CollectionTaskType.RecoverCollection.getTaskKey());
+		po.setCreateId(createId);
+		po.setCreateTime(new Date());
+		po.setApplyComment(vo.getApplyComment());
+		po.setApplyStatus(LoanApplyStatus.WaitingApprove.getName());
+		
+		//启动新的任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("appId", po.getAppId());
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, createId);
+		//这里设置任务启动方式,用于与上级任务联动发起的进行区分
+		vars.put("taskCreateMode", "manual");
+		ProcessInstance instance = runWorkflowService.startProcess(CollectionTaskType.RecoverCollection.getTaskKey(), businessKey, vars);
+		
+		po.setProcInstId(instance.getProcessInstanceId());
+		collectionTaskDao.insert(po);
+		CollectionRecover recoverPo = new CollectionRecover();
+		recoverPo.setId(Utils.get16UUID());
+		recoverPo.setApplyId(businessKey);
+		recoverPo.setRecoverReason(vo.getRecoverReason());
+		recoverPo.setRecoverComment(vo.getRecoverComment());
+		recoverPo.setRecoverUnitId(vo.getRecoverUnitId());
+		collectionRecoverDao.insert(recoverPo);
 	}
 
 }
