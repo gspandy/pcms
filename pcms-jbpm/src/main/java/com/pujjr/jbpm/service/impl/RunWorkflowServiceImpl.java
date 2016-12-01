@@ -19,6 +19,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
@@ -42,6 +43,7 @@ import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
 import com.pujjr.utils.SpringBeanUtils;
 
 @Service
+@Transactional
 public class RunWorkflowServiceImpl implements IRunWorkflowService
 {
 	@Autowired

@@ -39,7 +39,7 @@ public class WorkflowConfigController extends BaseController
 	@Autowired
 	private IConfigWorkflowService configWorkflowService;
 	/**
-	 * ²éÑ¯Á÷³Ì·ÖÀàÁĞ±í
+	 * æŸ¥è¯¢æµç¨‹åˆ†ç±»åˆ—è¡¨
 	 * **/
 	@RequestMapping(value="/workflowtype",method=RequestMethod.GET)
 	public List<WorkflowType> getWorkflowTypeList()
@@ -47,7 +47,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowTypeList();
 	}
 	/**
-	 * ´´½¨Á÷³Ì·ÖÀà
+	 * åˆ›å»ºæµç¨‹åˆ†ç±»
 	 * **/
 	@RequestMapping(value="/workflowtype",method=RequestMethod.POST)
 	public void createWorkflowType(@RequestBody WorkflowType record)
@@ -60,7 +60,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.createWorkflowType(record);
 	}
 	/**
-	 * ¸üĞÂÁ÷³Ì·ÖÀà
+	 * æ›´æ–°æµç¨‹åˆ†ç±»
 	 * **/
 	@RequestMapping(value="/workflowtype/{id}",method=RequestMethod.PUT)
 	public void updateWorkflowType(@RequestBody WorkflowType record)
@@ -70,7 +70,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.updateWorkflowType(record);
 	}
 	/**
-	 * ¸ù¾İÁ÷³Ì·ÖÀàID²éÑ¯¹ØÁªÁ÷³Ì
+	 * æ ¹æ®æµç¨‹åˆ†ç±»IDæŸ¥è¯¢å…³è”æµç¨‹
 	 * **/
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/workflow/list/{workflowTypeId}",method=RequestMethod.GET)
@@ -79,14 +79,14 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowDefineListByTypeId(workflowTypeId);
 	}
 	/**
-	 * ´´½¨Á÷³Ì
+	 * åˆ›å»ºæµç¨‹
 	 * **/
 	@RequestMapping(value="/workflow/create",method=RequestMethod.POST)
 	public void createWorkflow(@RequestBody WorkflowDefine workflowDefine) throws Exception
 	{
 		if(workflowDefine.getWorkflowName().equals(null)||workflowDefine.getWorkflowName()=="")
 		{
-			throw new Exception("Á÷³ÌÃû³Æ²»ÄÜÎª¿Õ");
+			throw new Exception("æµç¨‹åç§°ä¸èƒ½ä¸ºç©º");
 		}
 		workflowDefine.setId(Utils.get16UUID());
 		workflowDefine.setActivateVersionId(" ");
@@ -98,7 +98,7 @@ public class WorkflowConfigController extends BaseController
 	}
 	
 	/**
-	 * ²éÑ¯Ö¸¶¨Á÷³ÌµÄ°æ±¾ĞÅÏ¢
+	 * æŸ¥è¯¢æŒ‡å®šæµç¨‹çš„ç‰ˆæœ¬ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflowVersion/list",method=RequestMethod.GET)
 	public List<HashMap<String,Object>> getWorkflowVersionListByDefineId(String defineId)
@@ -106,7 +106,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowVersionListByDefineId(defineId);
 	}
 	/**
-	 * ÉèÖÃÁ÷³ÌÖ÷°æ±¾ĞÅÏ¢
+	 * è®¾ç½®æµç¨‹ä¸»ç‰ˆæœ¬ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflow/{defineId}/setActivateVersion/{versionId}",method=RequestMethod.GET)
 	public void setActivateVersion(@PathVariable String defineId,@PathVariable String versionId)
@@ -114,7 +114,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.setActivateVersion(defineId, versionId);
 	}
 	/**
-	 * ¸ù¾İÁ÷³Ì°æ±¾ID²éÑ¯Á÷³ÌÈ«¾Ö²ÎÊıÉèÖÃ
+	 * æ ¹æ®æµç¨‹ç‰ˆæœ¬IDæŸ¥è¯¢æµç¨‹å…¨å±€å‚æ•°è®¾ç½®
 	 * **/
 	@RequestMapping(value="/workflow/config/globalparam/{workflowVersionId}",method=RequestMethod.GET)
 	public WorkflowGlobalParamVo getWorkflowGlobalParamByVersionId(@PathVariable String workflowVersionId)
@@ -122,7 +122,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowGlobalParamByVersionId(workflowVersionId);
 	}
 	/**
-	 * ±£ÁôÁ÷³ÌÈ«¾Ö²ÎÊı
+	 * ä¿ç•™æµç¨‹å…¨å±€å‚æ•°
 	 * **/
 	@RequestMapping(value="/workflow/config/globalparam/{workflowVersionId}",method=RequestMethod.POST)
 	public void saveWorkflowGlobalParam(@PathVariable String workflowVersionId,@RequestBody WorkflowGlobalParamVo globalParam)
@@ -134,7 +134,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.saveWorkflowGlobalParam(workflowVersionId, globalParam);
 	}
 	/**
-	 * ¸ù¾İÁ÷³Ì°æ±¾ID²éÑ¯Á÷³ÌÈË¹¤ÈÎÎñ±íµ¥ÀîÁĞ±í
+	 * æ ¹æ®æµç¨‹ç‰ˆæœ¬IDæŸ¥è¯¢æµç¨‹äººå·¥ä»»åŠ¡è¡¨å•æåˆ—è¡¨
 	 * **/
 	@RequestMapping(value="/workflow/config/nodeforms/{workflowVersionId}",method=RequestMethod.GET)
 	public List<WorkflowNodeFormVo> getWorkflowUserTaskNodeForms(@PathVariable String workflowVersionId)
@@ -143,7 +143,7 @@ public class WorkflowConfigController extends BaseController
 	}
 	
 	/**
-	 * ±£´æ½Úµã±íµ¥²ÎÊı
+	 * ä¿å­˜èŠ‚ç‚¹è¡¨å•å‚æ•°
 	 * **/
 	@RequestMapping(value="/workflow/config/nodeforms/{workflowVersionId}",method=RequestMethod.POST)
 	public void saveWorkflowUsertaskNodeForms(@PathVariable String workflowVersionId,@RequestBody List<WorkflowNodeFormVo> nodeForms)
@@ -151,7 +151,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.saveWorkflowUserTaskNodeForms(workflowVersionId, nodeForms);
 	}
 	/**
-	 * ¸ù¾İÁ÷³Ì°æ±¾ID²éÑ¯Á÷³Ì½Úµã
+	 * æ ¹æ®æµç¨‹ç‰ˆæœ¬IDæŸ¥è¯¢æµç¨‹èŠ‚ç‚¹
 	 * **/
 	@RequestMapping(value="/workflow/config/nodes/{workflowVersionId}",method=RequestMethod.GET)
 	public List<WorkflowNodeVo> getWorkflowAllNodes(@PathVariable String workflowVersionId)
@@ -159,7 +159,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowNodesByNodeType(workflowVersionId, null);
 	}
 	/**
-	 * ²éÑ¯Ö¸¶¨Á÷³ÌÏÂÖ¸¶¨½Úµã²ÎÊıĞÅÏ¢
+	 * æŸ¥è¯¢æŒ‡å®šæµç¨‹ä¸‹æŒ‡å®šèŠ‚ç‚¹å‚æ•°ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflow/config/nodeparam/{workflowVersionId}/{nodeId}",method=RequestMethod.GET)
 	public WorkflowNodeParamVo getWorkflowNodeParam(@PathVariable String workflowVersionId, @PathVariable String nodeId)
@@ -167,7 +167,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowNodeParam(workflowVersionId, nodeId);
 	}
 	/**
-	 * ±£´æ½Úµã²ÎÊı
+	 * ä¿å­˜èŠ‚ç‚¹å‚æ•°
 	 * **/
 	@RequestMapping(value="/workflow/config/nodeparam/{workflowVersionId}",method=RequestMethod.POST)
 	public void saveWorkflowNodeParam(@PathVariable String workflowVersionId,@RequestBody WorkflowNodeParamVo vo)
@@ -175,7 +175,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.saveWorkflowNodeParam(workflowVersionId, vo);
 	}
 	/**
-	 * »ñÈ¡Íø¹Ø½Úµã²ÎÊı
+	 * è·å–ç½‘å…³èŠ‚ç‚¹å‚æ•°
 	 * @throws Exception 
 	 * **/
 	@RequestMapping(value="/workflow/config/gatewayparam/{workflowVersionId}/{nodeId}",method=RequestMethod.GET)
@@ -184,7 +184,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowGatewayNodeParam(workflowVersionId, nodeId);
 	}
 	/**
-	 * ±£´æÍø¹Ø½Úµã²ÎÊı
+	 * ä¿å­˜ç½‘å…³èŠ‚ç‚¹å‚æ•°
 	 * **/
 	@RequestMapping(value="/workflow/config/gatewayparam/{workflowVersionId}",method=RequestMethod.POST)
 	public void saveWorkflowGatewayParam(@PathVariable String workflowVersionId,@RequestBody GatewayNodeVo vo)
@@ -192,7 +192,7 @@ public class WorkflowConfigController extends BaseController
 		configWorkflowService.saveWorkflowGatewayNodeParam(workflowVersionId, vo);
 	}
 	/**
-	 * »ñÈ¡Á÷³ÌÍ¼Æ¬×ÊÔ´
+	 * è·å–æµç¨‹å›¾ç‰‡èµ„æº
 	 * @throws IOException 
 	 * **/
 	@RequestMapping(value="/workflow/config/img/{workflowVersionId}",method=RequestMethod.GET)
@@ -212,7 +212,7 @@ public class WorkflowConfigController extends BaseController
         stream.close();
 	}
 	/**
-	 * ²éÑ¯Á÷³ÌÖ¸¶¨°æ±¾»ù±¾ĞÅÏ¢
+	 * æŸ¥è¯¢æµç¨‹æŒ‡å®šç‰ˆæœ¬åŸºæœ¬ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflow/config/baseinfo/{workflowVersionId}",method=RequestMethod.GET)
 	public WorkflowDefineVo getWorkflowBaseInfoByVersionId(@PathVariable String workflowVersionId)
@@ -227,7 +227,7 @@ public class WorkflowConfigController extends BaseController
 		return vo;
 	}
 	/**
-	 * ²éÑ¯Á÷³ÌÖÆ¶¨°æ±¾½ÚµãÉóÅúÈËÉèÖÃĞÅÏ¢
+	 * æŸ¥è¯¢æµç¨‹åˆ¶å®šç‰ˆæœ¬èŠ‚ç‚¹å®¡æ‰¹äººè®¾ç½®ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflow/config/assignee/{workflowVersionId}",method=RequestMethod.GET)
 	public List<WorkflowNodeAssigneeVo> getWorkflowNodeAssigneeList(@PathVariable String workflowVersionId)
@@ -235,7 +235,7 @@ public class WorkflowConfigController extends BaseController
 		return configWorkflowService.getWorkflowUserTaskNodeAssignee(workflowVersionId);
 	}
 	/**
-	 * ±£´æ½ÚµãÉóÅúÈËÉèÖÃĞÅÏ¢
+	 * ä¿å­˜èŠ‚ç‚¹å®¡æ‰¹äººè®¾ç½®ä¿¡æ¯
 	 * **/
 	@RequestMapping(value="/workflow/config/assignee/{workflowVersionId}",method=RequestMethod.POST)
 	public void saveWorkflowNodeAssignee(@PathVariable String workflowVersionId,@RequestBody List<WorkflowNodeAssigneeVo> vos)

@@ -20,4 +20,6 @@ public interface DirectoryTemplateCategoryRefDirectoryMapper {
     int deleteByTplCategoryId(@Param("tplCategoryId")String tplCategoryId);
     
     DirectoryTemplateCategoryRefDirectory selectByTplCategoryIdAndDirId(@Param("tplCategoryId")String tplCategoryId,@Param("dirId")String dirId);
+    
+    void updateCategoryDirNotRequired(@Param("tplCategoryId")String tplCategoryId);
 }

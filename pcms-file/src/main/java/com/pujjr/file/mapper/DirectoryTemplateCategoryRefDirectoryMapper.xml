@@ -85,4 +85,8 @@
   <select id="selectByTplCategoryIdAndDirId" resultMap="BaseResultMap">
   	select * from t_directory_template_category_ref_directory where  TPL_CATEGORY_ID = #{tplCategoryId} and DIR_ID =#{dirId}
   </select>
+  <update id="updateCategoryDirNotRequired">
+  	update t_directory_template_category_ref_directory set REQUIRED = false
+  	where TPL_CATEGORY_ID = #{tplCategoryId}
+  </update>
 </mapper>

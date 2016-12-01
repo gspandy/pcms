@@ -20,6 +20,7 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +31,7 @@ import com.pujjr.jbpm.domain.ActGeBytearray;
 import com.pujjr.jbpm.service.IWorkflowModelService;
 
 @Service
+@Transactional
 public class WorkflowModelServiceImpl implements ModelDataJsonConstants,IWorkflowModelService
 {
 	@Autowired

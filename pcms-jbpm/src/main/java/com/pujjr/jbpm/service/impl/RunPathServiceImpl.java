@@ -8,12 +8,14 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.jbpm.dao.WorkflowRunPathMapper;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 
 @Service
+@Transactional
 public class RunPathServiceImpl implements IRunPathService 
 {
 	@Autowired

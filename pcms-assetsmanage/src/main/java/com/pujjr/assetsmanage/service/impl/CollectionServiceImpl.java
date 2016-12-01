@@ -268,11 +268,40 @@ public class CollectionServiceImpl implements ICollectionService
 		{
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
 		}
+		//获取业务主键
+		String businessKey = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult().getBusinessKey();
+		CollectionTask po = collectionTaskDao.selectByPrimaryKey(businessKey);
+		String workflowKey = po.getWorkflowKey();
+		String collectionTaskNodeId = "";
 		
+		if(workflowKey.equals(CollectionTaskType.VisitCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_smcs";
+		}
+		if(workflowKey.equals(CollectionTaskType.OutCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_wwcs";
+		}
+		if(workflowKey.equals(CollectionTaskType.RecoverCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_wwsc";
+		}
+		if(workflowKey.equals(CollectionTaskType.RefundCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_clth";
+		}
+		if(workflowKey.equals(CollectionTaskType.DisposeCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_zccz";
+		}
+		if(workflowKey.equals(CollectionTaskType.LawsuitCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_ss";
+		}
 		//获取流程版本信息
 		String workflowVersionId = runtimeService.getVariable(task.getProcessInstanceId(),ProcessGlobalVariable.WORKFLOW_VERSION_ID).toString();
 		//获取节点参数配置
-		WorkflowNodeAssignee nodeAssignee = configWorkflowService.getNodeAssignee(workflowVersionId, task.getTaskDefinitionKey());
+		WorkflowNodeAssignee nodeAssignee = configWorkflowService.getNodeAssignee(workflowVersionId, collectionTaskNodeId);
 		
 		List<OnlineAcctPo> userList = taskService.getOnlineAcctInfo(nodeAssignee.getAssigneeParam(), false);
 		return userList;

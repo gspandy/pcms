@@ -1,30 +1,19 @@
 package com.pujjr.jbpm.controller;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import org.activiti.bpmn.converter.BpmnXMLConverter;
 import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.editor.constants.ModelDataJsonConstants;
 import org.activiti.editor.language.json.converter.BpmnJsonConverter;
-import org.activiti.engine.ActivitiException;
 import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.persistence.deploy.DeploymentCache;
 import org.activiti.engine.impl.persistence.deploy.DeploymentManager;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.repository.Deployment;
-import org.activiti.engine.repository.Model;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.apache.batik.transcoder.TranscoderException;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +46,7 @@ public class ModelController extends BaseController
 	private ProcessEngineConfiguration processEngineConfiguration;
 
 	/**
-	 * ·¢²¼Á÷³Ì
+	 * å‘å¸ƒæµç¨‹
 	 * **/
 	@RequestMapping(value = "/model/{modelId}/deploy", method = RequestMethod.PUT)
 	public void deployModel(@PathVariable String modelId, @RequestBody MultiValueMap<String, String> values)
@@ -68,27 +57,27 @@ public class ModelController extends BaseController
 		
 		if (wfVersion.getVersionStatus().equals("INIT")) 
 		{
-			// ±£´æµ±Ç°Á÷³Ì
+			// ä¿å­˜å½“å‰æµç¨‹
 			modelService.saveModel(modelId, values);
-			//·¢²¼Á÷³Ì
+			//å‘å¸ƒæµç¨‹
 			String deploymentId = modelService.deployModel(modelId);
-			// ¸üĞÂ°æ±¾ĞÅÏ¢²¢ÉèÖÃ×´Ì¬ÎªÒÑ·¢²¼
+			// æ›´æ–°ç‰ˆæœ¬ä¿¡æ¯å¹¶è®¾ç½®çŠ¶æ€ä¸ºå·²å‘å¸ƒ
 			ProcessDefinition procDefine = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId)
 					.singleResult();
 			wfVersion.setActivitiDeployId(deploymentId);
 			wfVersion.setActivitiProcdefId(procDefine.getId());
 			wfVersion.setVersionStatus("Deployed");
 			configWorkflowService.updateWorkflowVersion(wfVersion);	
-			  //´´½¨Á÷³Ì½ÚµãĞÅÏ¢
+			  //åˆ›å»ºæµç¨‹èŠ‚ç‚¹ä¿¡æ¯
 			configWorkflowService.createWorkflowNodes(wfVersion.getId());
 		} 
 		else 
 		{
-			//·¢²¼ÎªĞÂ°æ±¾
+			//å‘å¸ƒä¸ºæ–°ç‰ˆæœ¬
 			HashMap<String,String> map = modelService.deployAsNewModel(modelId, values);
 			ProcessDefinition procDefine = repositoryService.createProcessDefinitionQuery().deploymentId(map.get("depolymentId"))
 					.singleResult();
-			//´´½¨°æ±¾ĞÅÏ¢
+			//åˆ›å»ºç‰ˆæœ¬ä¿¡æ¯
 			WorkflowVersion version = new WorkflowVersion();
 			String versionId = Utils.get16UUID();
 			version.setId(versionId);
@@ -99,17 +88,17 @@ public class ModelController extends BaseController
 	        version.setVersion(procDefine.getVersion());
 	        version.setVersionStatus("Deployed");
 	        configWorkflowService.createWorkflowVersion(version);
-	        //¸üĞÂÁ÷³Ì¶¨ÒåÖ÷°æ±¾ĞÅÏ¢, ÔİÊ±²»¸üĞÂ£¬ÍòÒ»´íÁË²»ºÃ¸ã
+	        //æ›´æ–°æµç¨‹å®šä¹‰ä¸»ç‰ˆæœ¬ä¿¡æ¯, æš‚æ—¶ä¸æ›´æ–°ï¼Œä¸‡ä¸€é”™äº†ä¸å¥½æ
 	        //wfDefine.setActivateVersionId(versionId);
 	        //workflowDefineService.updateWorkflowDefine(wfDefine);
-	        //´´½¨Á÷³Ì½ÚµãĞÅÏ¢
+	        //åˆ›å»ºæµç¨‹èŠ‚ç‚¹ä¿¡æ¯
 			configWorkflowService.createWorkflowNodes(versionId);
 			
 		}
 	}
 	
 	/**
-	 * ¸üĞÂ·¢²¼Á÷³Ì
+	 * æ›´æ–°å‘å¸ƒæµç¨‹
 	 * **/
 	@RequestMapping(value = "/model/{modelId}/updateDeploy", method = RequestMethod.PUT)
 	public void updateDeployModel(@PathVariable String modelId, @RequestBody MultiValueMap<String, String> values)
@@ -118,44 +107,44 @@ public class ModelController extends BaseController
 		WorkflowVersion wfVersion = configWorkflowService.getWorkflowVersionByModelId(modelId);
 		WorkflowDefine wfDefine = configWorkflowService.getWorkflowDefineByVersionId(wfVersion.getId());
 		
-		//Èç¹ûÁ÷³ÌÎªÎ´·¢²¼£¬ÔòÖ±½Ó·¢²¼Á÷³Ì
+		//å¦‚æœæµç¨‹ä¸ºæœªå‘å¸ƒï¼Œåˆ™ç›´æ¥å‘å¸ƒæµç¨‹
 		if (wfVersion.getVersionStatus().equals("INIT")) 
 		{
-			// ±£´æµ±Ç°Á÷³Ì
+			// ä¿å­˜å½“å‰æµç¨‹
 			modelService.saveModel(modelId, values);
-			//·¢²¼Á÷³Ì
+			//å‘å¸ƒæµç¨‹
 			String deploymentId = modelService.deployModel(modelId);
-			// ¸üĞÂ°æ±¾ĞÅÏ¢²¢ÉèÖÃ×´Ì¬ÎªÒÑ·¢²¼
+			// æ›´æ–°ç‰ˆæœ¬ä¿¡æ¯å¹¶è®¾ç½®çŠ¶æ€ä¸ºå·²å‘å¸ƒ
 			ProcessDefinition procDefine = repositoryService.createProcessDefinitionQuery().deploymentId(deploymentId)
 					.singleResult();
 			wfVersion.setActivitiDeployId(deploymentId);
 			wfVersion.setActivitiProcdefId(procDefine.getId());
 			wfVersion.setVersionStatus("Deployed");
 			configWorkflowService.updateWorkflowVersion(wfVersion);	
-			  //´´½¨Á÷³Ì½ÚµãĞÅÏ¢
+			  //åˆ›å»ºæµç¨‹èŠ‚ç‚¹ä¿¡æ¯
 			configWorkflowService.createWorkflowNodes(wfVersion.getId());
 		}
-		//Èç¹ûÁ÷³ÌÒÑ·¢²¼£¬Ôò±£´æÁ÷³Ìºó£¬¸üĞÂÄ£ĞÍµÄ¶ş½øÖÆĞÅÏ¢ÖÁ·¢²¼Á÷³ÌÖĞ£¬È»ºóÇå¿Õ»º´æ
+		//å¦‚æœæµç¨‹å·²å‘å¸ƒï¼Œåˆ™ä¿å­˜æµç¨‹åï¼Œæ›´æ–°æ¨¡å‹çš„äºŒè¿›åˆ¶ä¿¡æ¯è‡³å‘å¸ƒæµç¨‹ä¸­ï¼Œç„¶åæ¸…ç©ºç¼“å­˜
 		else 
 		{
-			// ±£´æµ±Ç°Á÷³Ì
+			// ä¿å­˜å½“å‰æµç¨‹
 			modelService.saveModel(modelId, values);
 			String processDeployId = wfVersion.getActivitiDeployId();
 			HashMap<String,Object>  modelData = modelService.getModelByModelId(modelId);
 			String editorSourceId = modelData.get("editorSourceId").toString();
 			String editorSourceExtraId = modelData.get("editorSourceExtraId").toString();
-			//»ñÈ¡modelµÄBNPM×ÊÔ´
+			//è·å–modelçš„BNPMèµ„æº
 			ActGeBytearray source = modelService.getActGeBytearrayById(editorSourceId);
 			ActGeBytearray sourceExtra = modelService.getActGeBytearrayById(editorSourceExtraId);
 			
 			ObjectNode modelNode = (ObjectNode) new ObjectMapper()
 					.readTree(repositoryService.getModelEditorSource(modelId));
-			//×ª»»JSONÎªXML
+			//è½¬æ¢JSONä¸ºXML
 			BpmnModel model = new BpmnJsonConverter().convertToBpmnModel(modelNode);
 			byte[] bpmnBytes = new BpmnXMLConverter().convertToXML(model);
 			String bpmnString = new String(bpmnBytes,"UTF-8");
 			
-			//¸üĞÂ·¢²¼µÄBNPM×ÊÔ´
+			//æ›´æ–°å‘å¸ƒçš„BNPMèµ„æº
 			ActGeBytearray deployedBnpm = modelService.getBnpmByteByDeploymentId(processDeployId);
 			ActGeBytearray deployedPng = modelService.getPngByteByDeploymentId(processDeployId);
 			
@@ -164,13 +153,13 @@ public class ModelController extends BaseController
 			deployedPng.setBytes(sourceExtra.getBytes());
 			modelService.updateActGeBytearray(deployedPng);
 			
-			//Çå¿ÕÁ÷³Ì¶¨Òå»º´æ
+			//æ¸…ç©ºæµç¨‹å®šä¹‰ç¼“å­˜
 			DeploymentManager delpoymentManager = ((ProcessEngineConfigurationImpl)processEngineConfiguration).getDeploymentManager();
 			DeploymentCache<ProcessDefinitionEntity> processDefinitionCache = delpoymentManager.getProcessDefinitionCache();
 			processDefinitionCache.remove(wfVersion.getActivitiProcdefId());
 			
 			
-			  //´´½¨Á÷³Ì½ÚµãĞÅÏ¢
+			  //åˆ›å»ºæµç¨‹èŠ‚ç‚¹ä¿¡æ¯
 			configWorkflowService.createWorkflowNodes(wfVersion.getId());
 		}
 	}

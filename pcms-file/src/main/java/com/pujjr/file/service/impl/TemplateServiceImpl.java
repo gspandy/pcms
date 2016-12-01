@@ -141,6 +141,8 @@ public class TemplateServiceImpl implements ITemplateService {
 	public void saveTemplateCategoryRequireDirectory(String templateId, String categoryId, List<Directory> records) {
 		// TODO Auto-generated method stub
 		DirectoryTemplateCategory tplCategory = templateCategoryDao.selectByTplIdAndCategoryId(templateId, categoryId);
+		//设置当前分类目录为不必填，然后再更新为必填
+		templateCategoryRefDirDao.updateCategoryDirNotRequired(tplCategory.getId());
 		for(Directory record : records)
 		{
 			DirectoryTemplateCategoryRefDirectory po = templateCategoryRefDirDao.selectByTplCategoryIdAndDirId(tplCategory.getId(), record.getId());

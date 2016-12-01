@@ -83,6 +83,20 @@ public class ScheduleService
 			item.setRepayStatus(RepayStatus.Repaying.getName());
 			repayPlanDao.updateByPrimaryKey(item);
 		}
+		
+		/**
+		 * 挂账冲账处理阶段
+		 */
+		//找出挂账表金额大于0并且存在对应代扣明细记录的挂账记录
+		List<StayAccount> stayAccountList = stayAccountDao.selectNeedReserveList();
+		//按照申请单次序循环冲账
+		for(StayAccount item : stayAccountList)
+		{
+			String appId = item.getAppId();
+			double stayAmount = item.getStayAmount();
+			accountingService.repayReverseAccounting(appId, stayAmount, curDate, RepayMode.StayAccounting,null);
+		}
+		
 		/**
 		 * 罚息计算阶段
 		 */
@@ -127,18 +141,7 @@ public class ScheduleService
 			ledgerDao.updateByPrimaryKey(ledgerPo);
 		}
 		
-		/**
-		 * 挂账冲账处理阶段
-		 */
-		//找出挂账表金额大于0并且存在对应代扣明细记录的挂账记录
-		List<StayAccount> stayAccountList = stayAccountDao.selectNeedReserveList();
-		//按照申请单次序循环冲账
-		for(StayAccount item : stayAccountList)
-		{
-			String appId = item.getAppId();
-			double stayAmount = item.getStayAmount();
-			accountingService.repayReverseAccounting(appId, stayAmount, curDate, RepayMode.StayAccounting,null);
-		}
+		
 		System.out.println("结束日切处理");
 	}
 
