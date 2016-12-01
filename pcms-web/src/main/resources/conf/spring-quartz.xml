@@ -41,14 +41,14 @@
 	<bean id="pushScanSchedulerImpl" class="com.pujjr.push.scheduler.impl.PushScanSchedulerImpl"></bean>
 	
 	<!-- 定时任务-自动分配审核任务 -->
-	<bean id="autoAssigneeService" class="com.pujjr.carcredit.schedule.AutoAssigneeService"></bean>
+	<bean id="autoAssigneeService" class="com.pujjr.schedule.service.AutoAssigneeService"></bean>
 	
-	<!-- 定时任务-自动分配审核任务 -->
-	<bean id="scheduleService" class="com.pujjr.postloan.schedule.ScheduleService"></bean>
+	<!-- 定时任务-日切任务 -->
+	<bean id="cutOffService" class="com.pujjr.schedule.service.CutOffService"></bean>
 	
 	<task:scheduled-tasks>
 	  <task:scheduled ref="pushScanSchedulerImpl" method="pushScan" cron="${messagepush_scan_scheduler.timeCronExpression}" />
 	  <task:scheduled ref="autoAssigneeService" method="autoAssigneeCheckTask" cron="${checktask_assignee_scheduler.timeCronExpression}"/>
-	  <task:scheduled ref="scheduleService" method="dayJob" cron="${dayJob.timeCronExpression}"/>
+	  <task:scheduled ref="cutOffService" method="run" cron="${dayJob.timeCronExpression}"/>
 	</task:scheduled-tasks>
 </beans>

@@ -1,20 +1,22 @@
-package com.pujjr.postloan.schedule;
+package com.pujjr.schedule.service;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.pujjr.assetsmanage.service.ICollectionService;
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
+import com.pujjr.postloan.dao.OverdueLogMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OtherFee;
+import com.pujjr.postloan.domain.OverdueLog;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingCharge;
@@ -25,9 +27,8 @@ import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.utils.Utils;
 
-public class ScheduleService
+public class CutOffService
 {
-	
 	@Autowired
 	private WaitingChargeMapper waitingChargeDao;
 	@Autowired
@@ -42,12 +43,15 @@ public class ScheduleService
 	private StayAccountMapper stayAccountDao;
 	@Autowired
 	private IAccountingService accountingService;
-	
+	@Autowired
+	private OverdueLogMapper overdueLogDao;
+	@Autowired
+	private ICollectionService collectionService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
 	 */
-	private void cutOff() throws ParseException 
+	private void handleAccounting() throws ParseException 
 	{
 		// TODO Auto-generated method stub
 		//获取当前日期及下一个工作日
@@ -113,8 +117,17 @@ public class ScheduleService
 			//获取日罚息率
 			GeneralLedger ledgerPo = ledgerDao.selectByAppId(item.getAppId());
 			double dayLateFee = ledgerPo.getDayLateRate();
-			//计算产生的罚息
-			double genOverdueAmount = Math.round((capital+interest)*dayLateFee*100)*0.01d;
+			/**
+			 * 计算产生的罚息,如果还款日与结账日不是同一天则这段时间差为节假日，
+			**计算罚息时，如果当前日期为还款日后一天则应将节假日这几天计算罚息，否则只需要计算一天的罚息
+			**/
+			//计算罚息天数
+			int overdueDays = 1;
+			if(Utils.getSpaceDay(item.getRepayDate(), curDate)==1)
+			{
+				overdueDays = Utils.getSpaceDay(item.getClosingDate(), curDate);
+			}
+			double genOverdueAmount = Math.round((capital+interest)*dayLateFee*100*overdueDays)*0.01d;
 			item.setRepayOverdueAmount(overdueAmount+genOverdueAmount);
 			//更新待扣款明细表为新的逾期数据
 			waitingChargeDao.updateByPrimaryKey(item);
@@ -136,19 +149,70 @@ public class ScheduleService
 				otherFeePo.setRepayStatus(RepayStatus.Overdue.getName());
 				otherFeeDao.updateByPrimaryKey(otherFeePo);
 			}
-			//更新总账为已逾期状态
-			ledgerPo.setRepayStatus(RepayStatus.Overdue.getName());
-			ledgerDao.updateByPrimaryKey(ledgerPo);
 		}
 		
-		
+		/**
+		 * 总账逾期状态刷新及逾期日志记录
+		 */
+		List<String> overdueAppList = waitingChargeDao.selectHasOverdueAppIdList(curDate);
+		for(String appId : overdueAppList)
+		{
+			//更新总账逾期天数
+			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+			ledgerPo.setAddupOverdueDay(ledgerPo.getAddupOverdueDay()+1);
+			
+			//总账已经处于逾期状态，则获取最近逾期记录，更新最后逾期日期和逾期次数，否则新增逾期记录
+			OverdueLog latesetOverdueLog = overdueLogDao.selectLatesetLog(appId);
+			if(ledgerPo.getRepayStatus().equals(RepayStatus.Overdue.getName()))
+			{
+				latesetOverdueLog.setEndDate(curDate);
+				latesetOverdueLog.setAddupOverdueDay(latesetOverdueLog.getAddupOverdueDay()+1);
+				overdueLogDao.updateByPrimaryKey(latesetOverdueLog);
+			}
+			else
+			{
+				//总账之前未逾期，则设置扣款状态为逾期，逾期次数+1
+				ledgerPo.setRepayStatus(RepayStatus.Overdue.getName());
+				ledgerPo.setAddupOverdueTime(ledgerPo.getAddupOverdueTime()+1);
+				if(latesetOverdueLog!=null)
+				{
+					//逾期记录不是第一次则新的序号为最近一次+1
+					OverdueLog newOverdueLog = new OverdueLog();
+					newOverdueLog.setId(Utils.get16UUID());
+					newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
+					newOverdueLog.setStartDate(curDate);
+					newOverdueLog.setEndDate(curDate);
+					newOverdueLog.setAddupOverdueDay(1);
+					overdueLogDao.insert(newOverdueLog);
+				}
+				else
+				{
+					//第一次逾期创建新的逾期记录
+					OverdueLog newOverdueLog = new OverdueLog();
+					newOverdueLog.setId(Utils.get16UUID());
+					newOverdueLog.setSeq(1);
+					newOverdueLog.setStartDate(curDate);
+					newOverdueLog.setEndDate(curDate);
+					newOverdueLog.setAddupOverdueDay(1);
+					overdueLogDao.insert(newOverdueLog);
+				}
+			}
+			ledgerDao.updateByPrimaryKey(ledgerPo);
+			
+			//判断是否已经发起催收任务，如果没有则发起电话催收任务
+			if(collectionService.checkHasCollectionTask(appId)==false)
+			{
+				collectionService.createPhoneCollectionTask("admin", appId, "系统提示：客户已逾期，请进行电话催收");
+			}
+			
+		}
 		System.out.println("结束日切处理");
 	}
 
-	public void dayJob() throws ParseException {
+	public void run() throws ParseException {
 		// TODO Auto-generated method stub
 		//日切账务处理
-		cutOff();
+		handleAccounting();
 	}
 
 }

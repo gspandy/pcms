@@ -360,4 +360,12 @@
   	select * from t_waiting_charge
   	where FEE_TYPE = #{feeType} and FEE_REF_ID = #{feeRefId}
   </select>
+  <select id="selectHasOverdueAppIdList" resultType="String">
+  	select APP_ID
+  	from t_waiting_charge
+  	<![CDATA[
+  		and REPAY_DATE < #{curDate}  and OFFER_STATUS !='bpzt02'
+  	]]>
+  	group by APP_ID
+  </select>
 </mapper>

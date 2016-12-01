@@ -1,4 +1,4 @@
-package com.pujjr.carcredit.schedule;
+package com.pujjr.schedule.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -421,6 +421,7 @@
     <module>pcms-file</module>
     <module>pcms-postloan</module>
     <module>pcms-assetsmanage</module>
+    <module>pcms-schedule</module>
   </modules>
   
  <build>

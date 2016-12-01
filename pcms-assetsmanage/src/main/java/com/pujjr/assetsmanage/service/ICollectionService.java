@@ -117,5 +117,17 @@ public interface ICollectionService
 	 * @throws Exception 
 	 */
 	public void saveCollectionLog(String taskId,CollectionLogVo vo) throws Exception;
+	/**
+	 * 检查是否已经存在催收任务
+	 * @param appId
+	 * @return
+	 */
+	public boolean checkHasCollectionTask(String appId);
+	/**
+	 * 查询催收任务记录类型及对应数量
+	 * @param appId
+	 * @return
+	 */
+	HashMap<String,Object> getCollectionTaskCnt(String appId);
 		
 }

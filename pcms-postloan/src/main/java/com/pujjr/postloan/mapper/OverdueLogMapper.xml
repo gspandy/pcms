@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.OverdueLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.OverdueLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+    <result column="START_DATE" property="startDate" jdbcType="DATE" />
+    <result column="END_DATE" property="endDate" jdbcType="DATE" />
+    <result column="ADDUP_OVERDUE_DAY" property="addupOverdueDay" jdbcType="INTEGER" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="INTEGER" />
+    <result column="RESERVER3" property="reserver3" jdbcType="DATE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, SEQ, START_DATE, END_DATE, ADDUP_OVERDUE_DAY, RESERVER1, RESERVER2, RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_overdue_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_overdue_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.OverdueLog" >
+    insert into t_overdue_log (ID, APP_ID, SEQ, 
+      START_DATE, END_DATE, ADDUP_OVERDUE_DAY, 
+      RESERVER1, RESERVER2, RESERVER3
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{addupOverdueDay,jdbcType=INTEGER}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=INTEGER}, #{reserver3,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.OverdueLog" >
+    insert into t_overdue_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=INTEGER},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.OverdueLog" >
+    update t_overdue_log
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=DATE},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=DATE},
+      </if>
+      <if test="addupOverdueDay != null" >
+        ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=INTEGER},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.OverdueLog" >
+    update t_overdue_log
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      START_DATE = #{startDate,jdbcType=DATE},
+      END_DATE = #{endDate,jdbcType=DATE},
+      ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=INTEGER},
+      RESERVER3 = #{reserver3,jdbcType=DATE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectLatesetLog" resultMap="BaseResultMap">
+  	select a.* from 
+	(
+		select  *  from t_overdue_log 
+		where APP_ID = #{appId}
+		order by seq desc
+	) a 
+	group by a.APP_ID
+  </select>
+</mapper>

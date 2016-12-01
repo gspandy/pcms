@@ -552,4 +552,30 @@ public class CollectionServiceImpl implements ICollectionService
 		runWorkflowService.completeTask(taskId, reason, vars, CommandType.COMMIT);
 	}
 
+	@Override
+	public boolean checkHasCollectionTask(String appId) {
+		// TODO Auto-generated method stub
+		List<CollectionTask> taskList = collectionTaskDao.selectHasCollectionTaskRunning(appId);
+		if(taskList.size()==0)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+
+	@Override
+	public HashMap<String, Object> getCollectionTaskCnt(String appId) {
+		// TODO Auto-generated method stub
+		List<HashMap<String,Object>> list =  collectionTaskDao.selectCollectionTaskCnt(appId);
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		for(HashMap<String,Object> l : list)
+		{
+			map.put(l.get("taskType").toString(), l.get("cnt").toString());
+		}
+		return map;
+	}
+
 }

@@ -70,6 +70,8 @@ public class LoanServiceImpl implements ILoanService {
 		ledgerPo.setRemainCapital(applyVo.getTotalFinanceAmt());
 		ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
 		ledgerPo.setIsOffering(false);
+		ledgerPo.setAddupOverdueTime(0);
+		ledgerPo.setAddupOverdueDay(0);
 		ledgerDao.insert(ledgerPo);
 		
 		//创建还款计划-等额本息

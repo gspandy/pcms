@@ -41,7 +41,9 @@
   		f.PRODUCT_NAME as productName,
   		g.BRANCH_NAME as branchName,
   		e.REPAY_ACCT_NO repayAcctNo,
-  		h.BANK_NAME as bankName
+  		h.BANK_NAME as bankName,
+  		a.ADDUP_OVERDUE_TIME as  overdueTime,
+  		a.ADDUP_OVERDUE_DAY as overdueDay
   		from 
   		T_GENERAL_LEDGER a 
   		left join T_APPLY_TENANT b on a.APP_ID = b.APP_ID
@@ -107,7 +109,9 @@
 		runpath.IN_JUMP_TYPE as inJumpType,
 		prunpath.ACT_NAME as parentTaskName,
 		prunpath.ASSIGNEE as parentAssignee,
-		account.ACCOUNT_NAME as parentAssigneeName
+		account.ACCOUNT_NAME as parentAssigneeName,
+  		g.ADDUP_OVERDUE_TIME as  overdueTime,
+  		g.ADDUP_OVERDUE_DAY as overdueDay
 		from act_ru_task a 
 		left join act_ru_execution b on a.PROC_INST_ID_  = b. PROC_INST_ID_
 		left join act_re_procdef c on b.PROC_DEF_ID_ = c.ID_

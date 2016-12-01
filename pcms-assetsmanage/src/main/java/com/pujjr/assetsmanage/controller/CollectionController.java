@@ -1,5 +1,6 @@
 package com.pujjr.assetsmanage.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -146,5 +147,11 @@ public class CollectionController extends BaseController
 	public void applyReAssigneeTask(@PathVariable String taskId,@RequestBody String reason) throws Exception
 	{
 		collectionService.applyReAssigneeTask(taskId, reason);
+	}
+	
+	@RequestMapping(value="/getCollectionTaskCnt/{appId}",method=RequestMethod.GET)
+	public HashMap<String,Object> getCollectionTaskCnt(@PathVariable String appId)
+	{
+		return collectionService.getCollectionTaskCnt(appId);
 	}
 }

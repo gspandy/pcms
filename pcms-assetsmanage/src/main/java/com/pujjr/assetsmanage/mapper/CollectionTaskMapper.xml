@@ -224,4 +224,18 @@
   <select id="selectCollectionApplyTask" resultMap="BaseResultMap">
   	select * from t_collection_task where APP_ID = #{appId}
   </select>
+  <select id="selectHasCollectionTaskRunning" resultMap="BaseResultMap">
+  	select a.*
+  	from t_collection_task a 
+  	inner join act_ru_task b on a.PROC_INST_ID = b.PROC_INST_ID_
+  	where a.APP_ID = #{appId}
+  </select>
+  <select id="selectCollectionTaskCnt" resultType="HashMap">
+  	select 
+	b.task_type as taskType,count(*) as cnt
+	from t_collection_log a 
+	inner join t_collection_task b on a.APPLY_ID = b.id
+	where a.APP_ID = #{appId}
+	group by b.TASK_TYPE
+  </select>
 </mapper>

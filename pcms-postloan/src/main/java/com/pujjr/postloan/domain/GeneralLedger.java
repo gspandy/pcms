@@ -35,6 +35,10 @@ public class GeneralLedger {
 
 	private Boolean isOffering;
 
+	private Integer addupOverdueTime;
+
+	private Integer addupOverdueDay;
+
 	private String reserver1;
 
 	private String reserver2;
@@ -181,6 +185,22 @@ public class GeneralLedger {
 
 	public void setIsOffering(Boolean isOffering) {
 		this.isOffering = isOffering;
+	}
+
+	public Integer getAddupOverdueTime() {
+		return addupOverdueTime;
+	}
+
+	public void setAddupOverdueTime(Integer addupOverdueTime) {
+		this.addupOverdueTime = addupOverdueTime;
+	}
+
+	public Integer getAddupOverdueDay() {
+		return addupOverdueDay;
+	}
+
+	public void setAddupOverdueDay(Integer addupOverdueDay) {
+		this.addupOverdueDay = addupOverdueDay;
 	}
 
 	public String getReserver1() {

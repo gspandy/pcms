@@ -27,9 +27,20 @@ public interface WaitingChargeMapper {
      * @return
      */
     List<WaitingCharge> selectListOrderByGentimeAsc(@Param("appId")String appId,@Param("feeType")String feeType);
-    
+    /**
+     * 按照时间升序查询待扣款明细表计划还款记录
+     * @param appId
+     * @param isContainCurPeriod 是否包含当前
+     * @param curDate 当前日期
+     * @return
+     */
     List<WaitingCharge> selectListTypePlanOrderByGentimeAsc(@Param("appId")String appId,@Param("isContainCurPeriod")boolean isContainCurPeriod,@Param("curDate")Date curDate);
-    
+    /**
+     * 查询当前已逾期的申请单列表
+     * @param curDate 当前日期
+     * @return
+     */
+    List<String> selectHasOverdueAppIdList(@Param("curDate")Date curDate);
     /**
      * 查找待扣款明细表需要计算罚息的待扣款记录,当还款日小于当前日期并且明细状态不为报盘中
      * @param queryDate-查询日期

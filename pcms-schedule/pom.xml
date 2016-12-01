@@ -8,28 +8,23 @@
 		<artifactId>pcms</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>pcms-web</artifactId>
-	<packaging>war</packaging>
-	<name>pcms-web Maven Webapp</name>
+	<artifactId>pcms-schedule</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>pcms-schedule</name>
 	<url>http://maven.apache.org</url>
-	<dependencies> 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.pujjr</groupId>
-			<artifactId>pcms-jbpm</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.pujjr</groupId>
 			<artifactId>pcms-carcredit</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.pujjr</groupId>
-			<artifactId>pcms-file</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -47,13 +42,5 @@
 			<artifactId>pcms-assetsmanage</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>com.pujjr</groupId>
-			<artifactId>pcms-schedule</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
-	<build>
-		<finalName>pcms-web</finalName>
-	</build>
 </project>

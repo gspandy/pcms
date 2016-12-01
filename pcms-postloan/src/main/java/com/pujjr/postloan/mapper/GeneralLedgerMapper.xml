@@ -18,6 +18,8 @@
     <result column="SETTLE_DATE" jdbcType="DATE" property="settleDate" />
     <result column="PROCESS_STATUS" jdbcType="VARCHAR" property="processStatus" />
     <result column="IS_OFFERING" jdbcType="BIT" property="isOffering" />
+    <result column="ADDUP_OVERDUE_TIME" jdbcType="INTEGER" property="addupOverdueTime" />
+    <result column="ADDUP_OVERDUE_DAY" jdbcType="INTEGER" property="addupOverdueDay" />
     <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
     <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
     <result column="RESERVER3" jdbcType="DATE" property="reserver3" />
@@ -32,8 +34,8 @@
   <sql id="Base_Column_List">
     ID, APP_ID, PRODUCT_NAME, PRODUCT_CODE, PERIOD, FINANCE_AMT, YEAR_RATE, DAY_LATE_RATE, 
     DAY_EXTEND_RATE, REPAY_MODE, LOAN_DATE, REMAIN_CAPITAL, REPAY_STATUS, SETTLE_DATE, 
-    PROCESS_STATUS, IS_OFFERING, RESERVER1, RESERVER2, RESERVER3, RESERVER4, RESERVER5, 
-    RESERVER6, RESERVER7, RESERVER8, RESERVER9, RESERVER10
+    PROCESS_STATUS, IS_OFFERING, ADDUP_OVERDUE_TIME, ADDUP_OVERDUE_DAY, RESERVER1, RESERVER2, 
+    RESERVER3, RESERVER4, RESERVER5, RESERVER6, RESERVER7, RESERVER8, RESERVER9, RESERVER10
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -51,19 +53,21 @@
       YEAR_RATE, DAY_LATE_RATE, DAY_EXTEND_RATE, 
       REPAY_MODE, LOAN_DATE, REMAIN_CAPITAL, 
       REPAY_STATUS, SETTLE_DATE, PROCESS_STATUS, 
-      IS_OFFERING, RESERVER1, RESERVER2, 
-      RESERVER3, RESERVER4, RESERVER5, 
-      RESERVER6, RESERVER7, RESERVER8, 
-      RESERVER9, RESERVER10)
+      IS_OFFERING, ADDUP_OVERDUE_TIME, ADDUP_OVERDUE_DAY, 
+      RESERVER1, RESERVER2, RESERVER3, 
+      RESERVER4, RESERVER5, RESERVER6, 
+      RESERVER7, RESERVER8, RESERVER9, 
+      RESERVER10)
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
       #{productCode,jdbcType=VARCHAR}, #{period,jdbcType=INTEGER}, #{financeAmt,jdbcType=DOUBLE}, 
       #{yearRate,jdbcType=DOUBLE}, #{dayLateRate,jdbcType=DOUBLE}, #{dayExtendRate,jdbcType=DOUBLE}, 
       #{repayMode,jdbcType=VARCHAR}, #{loanDate,jdbcType=DATE}, #{remainCapital,jdbcType=DOUBLE}, 
       #{repayStatus,jdbcType=VARCHAR}, #{settleDate,jdbcType=DATE}, #{processStatus,jdbcType=VARCHAR}, 
-      #{isOffering,jdbcType=BIT}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
-      #{reserver3,jdbcType=DATE}, #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, 
-      #{reserver6,jdbcType=DOUBLE}, #{reserver7,jdbcType=VARCHAR}, #{reserver8,jdbcType=VARCHAR}, 
-      #{reserver9,jdbcType=VARCHAR}, #{reserver10,jdbcType=VARCHAR})
+      #{isOffering,jdbcType=BIT}, #{addupOverdueTime,jdbcType=INTEGER}, #{addupOverdueDay,jdbcType=INTEGER}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DATE}, 
+      #{reserver4,jdbcType=DATE}, #{reserver5,jdbcType=DOUBLE}, #{reserver6,jdbcType=DOUBLE}, 
+      #{reserver7,jdbcType=VARCHAR}, #{reserver8,jdbcType=VARCHAR}, #{reserver9,jdbcType=VARCHAR}, 
+      #{reserver10,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.GeneralLedger">
     insert into t_general_ledger
@@ -115,6 +119,12 @@
       </if>
       <if test="isOffering != null">
         IS_OFFERING,
+      </if>
+      <if test="addupOverdueTime != null">
+        ADDUP_OVERDUE_TIME,
+      </if>
+      <if test="addupOverdueDay != null">
+        ADDUP_OVERDUE_DAY,
       </if>
       <if test="reserver1 != null">
         RESERVER1,
@@ -196,6 +206,12 @@
       <if test="isOffering != null">
         #{isOffering,jdbcType=BIT},
       </if>
+      <if test="addupOverdueTime != null">
+        #{addupOverdueTime,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueDay != null">
+        #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
       <if test="reserver1 != null">
         #{reserver1,jdbcType=VARCHAR},
       </if>
@@ -276,6 +292,12 @@
       <if test="isOffering != null">
         IS_OFFERING = #{isOffering,jdbcType=BIT},
       </if>
+      <if test="addupOverdueTime != null">
+        ADDUP_OVERDUE_TIME = #{addupOverdueTime,jdbcType=INTEGER},
+      </if>
+      <if test="addupOverdueDay != null">
+        ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
+      </if>
       <if test="reserver1 != null">
         RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       </if>
@@ -326,6 +348,8 @@
       SETTLE_DATE = #{settleDate,jdbcType=DATE},
       PROCESS_STATUS = #{processStatus,jdbcType=VARCHAR},
       IS_OFFERING = #{isOffering,jdbcType=BIT},
+      ADDUP_OVERDUE_TIME = #{addupOverdueTime,jdbcType=INTEGER},
+      ADDUP_OVERDUE_DAY = #{addupOverdueDay,jdbcType=INTEGER},
       RESERVER1 = #{reserver1,jdbcType=VARCHAR},
       RESERVER2 = #{reserver2,jdbcType=VARCHAR},
       RESERVER3 = #{reserver3,jdbcType=DATE},
