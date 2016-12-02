@@ -222,7 +222,29 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectCollectionApplyTask" resultMap="BaseResultMap">
-  	select * from t_collection_task where APP_ID = #{appId}
+  	select 
+  	a.APP_ID as APP_ID,
+  	d1.DICT_DATA_NAME as TASK_TYPE,
+  	a.WORKFLOW_KEY,
+  	acc1.ACCOUNT_NAME as CREATE_ID,
+  	a.CREATE_TIME,
+  	d2.DICT_DATA_NAME as APPLY_STATUS,
+  	a.APPLY_COMMENT,
+  	acc2.ACCOUNT_NAME as APPROVE_ID,
+  	a.APPROVE_TIME,
+  	a.APPROVE_COMMENT,
+  	a.PROC_INST_ID,
+  	a.PARENT_ID,
+  	a.RESERVER1,
+  	a.RESERVER2,
+  	a.RESERVER3
+  	from t_collection_task a
+  	left join SYS_DICT_DATA d1 on a.TASK_TYPE = d1.DICT_DATA_CODE 
+  	left join SYS_DICT_DATA d2 on a.APPLY_STATUS = d2.DICT_DATA_CODE
+  	left join SYS_ACCOUNT acc1 on acc1.ACCOUNT_ID = a.CREATE_ID
+  	left join SYS_ACCOUNT acc2 on acc2.ACCOUNT_ID = a.APPROVE_ID
+  	where APP_ID = #{appId}
+  	order by a.CREATE_TIME
   </select>
   <select id="selectHasCollectionTaskRunning" resultMap="BaseResultMap">
   	select a.*

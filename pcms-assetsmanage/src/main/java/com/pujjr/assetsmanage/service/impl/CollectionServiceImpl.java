@@ -337,6 +337,8 @@ public class CollectionServiceImpl implements ICollectionService
 			
 		po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
 		po.setApproveId(task.getAssignee());
+		po.setApproveTime(new Date());
+		po.setApplyComment(vo.getApproveComment());
 		//启动新的任务
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("appId", po.getAppId());
@@ -530,6 +532,9 @@ public class CollectionServiceImpl implements ICollectionService
 		
 		//根据审批结果执行相关操作
 		po.setApplyStatus(vo.getApproveResult());
+		po.setApproveTime(new Date());
+		po.setApproveId(task.getAssignee());
+		po.setApplyComment(vo.getApproveComment());
 		collectionTaskDao.updateByPrimaryKey(po);
 		
 		//5、提交任务

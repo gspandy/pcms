@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.assetsmanage.domain.CollectionLog;
+import com.pujjr.assetsmanage.domain.CollectionTask;
 import com.pujjr.assetsmanage.enumeration.CollectionTaskType;
 import com.pujjr.assetsmanage.service.ICollectionService;
 import com.pujjr.assetsmanage.vo.CollectionApplyVo;
@@ -153,5 +154,11 @@ public class CollectionController extends BaseController
 	public HashMap<String,Object> getCollectionTaskCnt(@PathVariable String appId)
 	{
 		return collectionService.getCollectionTaskCnt(appId);
+	}
+	
+	@RequestMapping(value="/getCollectionApplyTask/{appId}",method=RequestMethod.GET)
+	public List<CollectionTask> getCollectionApplyTask(@PathVariable String appId)
+	{
+		return collectionService.getCollectionApplyTask(appId);
 	}
 }
