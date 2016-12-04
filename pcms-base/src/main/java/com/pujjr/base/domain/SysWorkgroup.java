@@ -5,71 +5,81 @@ import java.util.Date;
 public class SysWorkgroup {
     private String id;
 
-    private String workgroupName;
+	private Integer seq;
 
-    private String parentId;
+	private String workgroupName;
 
-    private Date createTime;
+	private String parentId;
 
-    private String createId;
+	private Date createTime;
 
-    private Date updateTime;
+	private String createId;
 
-    private String updateId;
+	private Date updateTime;
 
-    public String getId() {
-        return id;
-    }
+	private String updateId;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getWorkgroupName() {
-        return workgroupName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setWorkgroupName(String workgroupName) {
-        this.workgroupName = workgroupName;
-    }
+	public Integer getSeq() {
+		return seq;
+	}
 
-    public String getParentId() {
-        return parentId;
-    }
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
+	public String getWorkgroupName() {
+		return workgroupName;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setWorkgroupName(String workgroupName) {
+		this.workgroupName = workgroupName;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getParentId() {
+		return parentId;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getUpdateId() {
-        return updateId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
 }

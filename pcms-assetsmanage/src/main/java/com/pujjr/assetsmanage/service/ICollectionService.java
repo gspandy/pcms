@@ -129,5 +129,11 @@ public interface ICollectionService
 	 * @return
 	 */
 	HashMap<String,Object> getCollectionTaskCnt(String appId);
+	/**
+	 * 审批人收结案申请
+	 * @param taskId
+	 * @throws Exception 
+	 */
+	public void commitSettleApprove(String taskId) throws Exception;
 		
 }

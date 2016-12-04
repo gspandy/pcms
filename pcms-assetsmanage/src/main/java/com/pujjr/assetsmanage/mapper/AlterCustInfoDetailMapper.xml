@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.AlterCustInfoDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.AlterCustInfoDetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="LOG_ID" property="logId" jdbcType="VARCHAR" />
+    <result column="ALTER_FIELD" property="alterField" jdbcType="VARCHAR" />
+    <result column="ALTER_BEFORE_VALUE" property="alterBeforeValue" jdbcType="VARCHAR" />
+    <result column="ALTER_AFTER_VALUE" property="alterAfterValue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, LOG_ID, ALTER_FIELD, ALTER_BEFORE_VALUE, ALTER_AFTER_VALUE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_alter_custinfo_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_alter_custinfo_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoDetail" >
+    insert into t_alter_custinfo_detail (ID, LOG_ID, ALTER_FIELD, 
+      ALTER_BEFORE_VALUE, ALTER_AFTER_VALUE)
+    values (#{id,jdbcType=VARCHAR}, #{logId,jdbcType=VARCHAR}, #{alterField,jdbcType=VARCHAR}, 
+      #{alterBeforeValue,jdbcType=VARCHAR}, #{alterAfterValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoDetail" >
+    insert into t_alter_custinfo_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="logId != null" >
+        LOG_ID,
+      </if>
+      <if test="alterField != null" >
+        ALTER_FIELD,
+      </if>
+      <if test="alterBeforeValue != null" >
+        ALTER_BEFORE_VALUE,
+      </if>
+      <if test="alterAfterValue != null" >
+        ALTER_AFTER_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="logId != null" >
+        #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterField != null" >
+        #{alterField,jdbcType=VARCHAR},
+      </if>
+      <if test="alterBeforeValue != null" >
+        #{alterBeforeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="alterAfterValue != null" >
+        #{alterAfterValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoDetail" >
+    update t_alter_custinfo_detail
+    <set >
+      <if test="logId != null" >
+        LOG_ID = #{logId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterField != null" >
+        ALTER_FIELD = #{alterField,jdbcType=VARCHAR},
+      </if>
+      <if test="alterBeforeValue != null" >
+        ALTER_BEFORE_VALUE = #{alterBeforeValue,jdbcType=VARCHAR},
+      </if>
+      <if test="alterAfterValue != null" >
+        ALTER_AFTER_VALUE = #{alterAfterValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoDetail" >
+    update t_alter_custinfo_detail
+    set LOG_ID = #{logId,jdbcType=VARCHAR},
+      ALTER_FIELD = #{alterField,jdbcType=VARCHAR},
+      ALTER_BEFORE_VALUE = #{alterBeforeValue,jdbcType=VARCHAR},
+      ALTER_AFTER_VALUE = #{alterAfterValue,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

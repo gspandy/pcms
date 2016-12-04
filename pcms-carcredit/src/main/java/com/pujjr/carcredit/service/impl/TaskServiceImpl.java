@@ -276,7 +276,7 @@ public class TaskServiceImpl implements ITaskService
 		// TODO Auto-generated method stub
 		ProcessTaskUserBo bo = new ProcessTaskUserBo();
 		//1、获取工作组及其子工作组
-		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
+		List<SysWorkgroup> listGroup = workgroupService.getChildWorkgroup(workgroupId,true);
 		//2、获取满足任务的用户，如果有待选用户则从待选中过滤用户
 		List<HashMap> listMatch = workgroupService.getMatchRuleAccountList(productCode, financeAmount, dealerId, listGroup,candidateAccounts);
 		if(listMatch.size()==0)
@@ -319,31 +319,12 @@ public class TaskServiceImpl implements ITaskService
 			return bo;
 		}
 	}
-	
-	private List<SysWorkgroup> getChildWorkgroup(String workgroupId,boolean includeSelf )
-	{
-		List<SysWorkgroup>  list = new ArrayList<SysWorkgroup>();
-		SysWorkgroup parentgroup = workgroupService.getWorkgroupById(workgroupId);
-		if(includeSelf)
-		{
-			list.add(parentgroup);
-		}
-		List<SysWorkgroup> childGroups = workgroupService.getSysWorkgroupListByParentId(parentgroup.getId());
-		if(childGroups.size()>0)
-		{
-			for(SysWorkgroup childGroup : childGroups)
-			{
-				list.addAll(getChildWorkgroup(childGroup.getId(),true));
-			}
-		}
-		return list;
-	}
 
 	@Override
 	public List<OnlineAcctPo> getOnlineAcctInfo(String workgroupId,boolean checkOnline) {
 		// TODO Auto-generated method stub
 		List<OnlineAcctPo> poList = new ArrayList<OnlineAcctPo>();
-		List<SysWorkgroup> listGroup = getChildWorkgroup(workgroupId,true);
+		List<SysWorkgroup> listGroup = workgroupService.getChildWorkgroup(workgroupId,true);
 		List<HashMap> listMatch = workgroupService.getWorkgroupOnlineAccountList(listGroup,checkOnline);
 		if(listMatch.size()==0)
 		{

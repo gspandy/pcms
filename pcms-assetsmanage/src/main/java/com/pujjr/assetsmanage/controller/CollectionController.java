@@ -161,4 +161,10 @@ public class CollectionController extends BaseController
 	{
 		return collectionService.getCollectionApplyTask(appId);
 	}
+	
+	@RequestMapping(value="/commitSettleApprove/{taskId}",method=RequestMethod.POST)
+	public void commitSettleApprove(String taskId) throws Exception
+	{
+		collectionService.commitSettleApprove(taskId);
+	}
 }

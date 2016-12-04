@@ -6,15 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pujjr.base.domain.Product;
+import com.pujjr.base.domain.RuleCollectionTask;
 import com.pujjr.base.domain.SysBranch;
+import com.pujjr.base.dao.RuleCollectionTaskMapper;
 import com.pujjr.base.dao.RuleDealerMapper;
 import com.pujjr.base.dao.RuleFinanceAmountMapper;
 import com.pujjr.base.dao.RuleMemberTaskCntMapper;
+import com.pujjr.base.dao.RuleOverdueDayMapper;
 import com.pujjr.base.dao.RuleProductMapper;
 import com.pujjr.base.dao.RuleRemissionMapper;
 import com.pujjr.base.domain.RuleDealer;
 import com.pujjr.base.domain.RuleFinanceAmount;
 import com.pujjr.base.domain.RuleMemberTaskCnt;
+import com.pujjr.base.domain.RuleOverdueDay;
 import com.pujjr.base.domain.RuleProduct;
 import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.po.WorkgroupRulePo;
@@ -33,7 +37,10 @@ public class RuleServiceImpl implements IRuleService {
 	private RuleMemberTaskCntMapper ruleMemberTaskCntDao;
 	@Autowired
 	private RuleRemissionMapper ruleRemissionDao;
-	
+	@Autowired
+	private RuleOverdueDayMapper ruleOverdueDayDao;
+	@Autowired
+	private RuleCollectionTaskMapper ruleCollectionTaskDao;
 	@Override
 	public WorkgroupRulePo getWorkgroupRule(String workgroupId) {
 		// TODO Auto-generated method stub
@@ -41,11 +48,16 @@ public class RuleServiceImpl implements IRuleService {
 		List<SysBranch> ruleDealerList =  ruleDealerDao.selectListByWorkgroupId(workgroupId);
 		List<Product> ruleProductList = ruleProductDao.selectListByWorkgroupId(workgroupId);
 		RuleFinanceAmount ruleFinanceAmount = ruleFinanceAmountDao.selectByWorkgroupId(workgroupId);
+		RuleOverdueDay ruleOverdueDay  = ruleOverdueDayDao.selectByWorkgroupId(workgroupId);
+		List<RuleCollectionTask> ruleCollectionTaskList = ruleCollectionTaskDao.selectByWorkgroupId(workgroupId);
 		
 		WorkgroupRulePo po = new WorkgroupRulePo();
 		po.setRuleDealerList(ruleDealerList);
 		po.setRuleFinanceAmount(ruleFinanceAmount);
 		po.setRuleProductList(ruleProductList);
+		po.setRuleOverdueDay(ruleOverdueDay);
+		po.setRuleCollectioTaskList(ruleCollectionTaskList);
+		
 		return po;
 	}
 	@Override
@@ -93,6 +105,21 @@ public class RuleServiceImpl implements IRuleService {
 		ruleFinanceAmount.setId(Utils.get16UUID());
 		ruleFinanceAmount.setWorkgroupId(workgroupId);
 		ruleFinanceAmountDao.insert(ruleFinanceAmount);
+		
+		RuleOverdueDay ruleOverdueDay = po.getRuleOverdueDay();
+		ruleOverdueDayDao.deleteByWorkgrouId(workgroupId);
+		ruleOverdueDay.setId(Utils.get16UUID());
+		ruleOverdueDay.setWorkgroupId(workgroupId);
+		ruleOverdueDayDao.insert(ruleOverdueDay);
+		
+		List<RuleCollectionTask> ruleCollectionTaskList = po.getRuleCollectioTaskList();
+		ruleCollectionTaskDao.deleteByWorkgroupId(workgroupId);
+		for(RuleCollectionTask item : ruleCollectionTaskList)
+		{
+			item.setId(Utils.get16UUID());
+			item.setWorkgroupId(workgroupId);
+			ruleCollectionTaskDao.insert(item);
+		}
 	}
 	@Override
 	public void batchSetAssigneeTaskCnt(String workgroupId, int maxAssigneeTaskCnt, List<String> accountIds) {

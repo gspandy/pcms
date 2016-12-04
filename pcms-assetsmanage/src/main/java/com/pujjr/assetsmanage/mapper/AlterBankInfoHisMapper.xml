@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.AlterBankInfoHisMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.AlterBankInfoHis" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="REPAY_ACCT_NO" property="repayAcctNo" jdbcType="VARCHAR" />
+    <result column="REPAY_BANK_ID" property="repayBankId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, REPAY_ACCT_NO, REPAY_BANK_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_alter_bankinfo_his
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_alter_bankinfo_his
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.AlterBankInfoHis" >
+    insert into t_alter_bankinfo_his (ID, APP_ID, REPAY_ACCT_NO, 
+      REPAY_BANK_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{repayAcctNo,jdbcType=VARCHAR}, 
+      #{repayBankId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.AlterBankInfoHis" >
+    insert into t_alter_bankinfo_his
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="repayAcctNo != null" >
+        REPAY_ACCT_NO,
+      </if>
+      <if test="repayBankId != null" >
+        REPAY_BANK_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctNo != null" >
+        #{repayAcctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="repayBankId != null" >
+        #{repayBankId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.AlterBankInfoHis" >
+    update t_alter_bankinfo_his
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAcctNo != null" >
+        REPAY_ACCT_NO = #{repayAcctNo,jdbcType=VARCHAR},
+      </if>
+      <if test="repayBankId != null" >
+        REPAY_BANK_ID = #{repayBankId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.AlterBankInfoHis" >
+    update t_alter_bankinfo_his
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      REPAY_ACCT_NO = #{repayAcctNo,jdbcType=VARCHAR},
+      REPAY_BANK_ID = #{repayBankId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAlterBankInfoHisList" resultType="HashMap">
+  	select 
+  	a.ID as id,
+  	a.APP_ID as appId,
+  	a.REPAY_ACCT_NO as repayAcctNo,
+  	a.REPAY_BANK_ID as repayBankId,
+  	b.BANK_NAME as bankName
+  	from t_alter_bankinfo_his a 
+  	left join T_BANK_INFO b on a.REPAY_BANK_ID = b.id
+  	where a.APP_ID = #{appId}
+  </select>
+  <select id="selectByAppIdAndAcctNo" resultMap="BaseResultMap">
+  	select  * from t_alter_bankinfo_his
+  	where APP_ID = #{appId} and REPAY_ACCT_NO = #{repayAcctNo}
+  </select>
+</mapper>

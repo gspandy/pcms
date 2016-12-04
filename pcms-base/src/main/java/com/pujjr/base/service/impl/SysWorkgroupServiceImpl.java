@@ -114,4 +114,38 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 		return workgroupDao.selectByName(workgroupName);
 	}
 
+	@Override
+	public List<SysWorkgroup> getChildWorkgroup(String workgroupId,boolean includeSelf )
+	{
+		List<SysWorkgroup>  list = new ArrayList<SysWorkgroup>();
+		SysWorkgroup parentgroup = this.getWorkgroupById(workgroupId);
+		if(includeSelf)
+		{
+			list.add(parentgroup);
+		}
+		List<SysWorkgroup> childGroups = this.getSysWorkgroupListByParentId(parentgroup.getId());
+		if(childGroups.size()>0)
+		{
+			for(SysWorkgroup childGroup : childGroups)
+			{
+				list.addAll(getChildWorkgroup(childGroup.getId(),true));
+			}
+		}
+		return list;
+	}
+
+	@Override
+	public List<HashMap> getCollectionTaskMatchRuleAccountList(String productCode, String dealerId, int overdueDay,
+			List<SysWorkgroup> groups, List<String> candidateAccounts) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectCollectionTaskMatchRuleAccountList(productCode, dealerId, overdueDay, groups, candidateAccounts);
+	}
+
+	@Override
+	public List<HashMap> getCollectionDeployTaskMatchRuleAccountList(String productCode, String dealerId,
+			int overdueDay, String taskType, List<SysWorkgroup> groups, List<String> candidateAccounts) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectCollectionDeployTaskMatchRuleAccountList(productCode, dealerId, overdueDay, taskType, groups, candidateAccounts);
+	}
+
 }

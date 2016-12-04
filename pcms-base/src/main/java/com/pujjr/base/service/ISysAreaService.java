@@ -26,4 +26,12 @@ public interface ISysAreaService
 	public List<SysArea> getCountyByCityId(String cityId);
 	
 	public String getAreaNameById(String id);
+	/**
+	 * 获取地址全部信息
+	 * @param provinceId 省ID
+	 * @param cityId 市ID
+	 * @param countryId 区ID
+	 * @return
+	 */
+	public String getFullAddress(String provinceId,String cityId,String countryId);
 }

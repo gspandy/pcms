@@ -70,4 +70,23 @@ public class SysAreaServiceImpl implements ISysAreaService {
 		return sysAreaDao.selectByPrimaryKey(id).getAreaName();
 	}
 
+	@Override
+	public String getFullAddress(String provinceId, String cityId, String countryId) {
+		// TODO Auto-generated method stub
+		String fullStr="";
+		if(provinceId != null)
+		{
+			fullStr+= this.getAreaNameById(provinceId);
+		}
+		if(cityId != null)
+		{
+			fullStr+= this.getAreaNameById(cityId);
+		}
+		if(countryId != null)
+		{
+			fullStr+= this.getAreaNameById(countryId);
+		}
+		return fullStr;
+	}
+
 }

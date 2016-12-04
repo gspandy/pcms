@@ -1,112 +1,123 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.base.dao.SysWorkgroupMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysWorkgroup" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="WORKGROUP_NAME" property="workgroupName" jdbcType="VARCHAR" />
-    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
-    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.SysWorkgroupMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.SysWorkgroup">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="WORKGROUP_NAME" jdbcType="VARCHAR" property="workgroupName" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    ID, WORKGROUP_NAME, PARENT_ID, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
+  <sql id="Base_Column_List">
+    ID, SEQ, WORKGROUP_NAME, PARENT_ID, CREATE_TIME, CREATE_ID, UPDATE_TIME, UPDATE_ID
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from sys_workgroup
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from sys_workgroup
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.base.domain.SysWorkgroup" >
-    insert into sys_workgroup (ID, WORKGROUP_NAME, PARENT_ID, 
-      CREATE_TIME, CREATE_ID, UPDATE_TIME, 
-      UPDATE_ID)
-    values (#{id,jdbcType=VARCHAR}, #{workgroupName,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateId,jdbcType=VARCHAR})
+  <insert id="insert" parameterType="com.pujjr.base.domain.SysWorkgroup">
+    insert into sys_workgroup (ID, SEQ, WORKGROUP_NAME, 
+      PARENT_ID, CREATE_TIME, CREATE_ID, 
+      UPDATE_TIME, UPDATE_ID)
+    values (#{id,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, #{workgroupName,jdbcType=VARCHAR}, 
+      #{parentId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysWorkgroup" >
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.SysWorkgroup">
     insert into sys_workgroup
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="workgroupName != null" >
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="workgroupName != null">
         WORKGROUP_NAME,
       </if>
-      <if test="parentId != null" >
+      <if test="parentId != null">
         PARENT_ID,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME,
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME,
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="workgroupName != null" >
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="workgroupName != null">
         #{workgroupName,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null" >
+      <if test="parentId != null">
         #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         #{updateId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysWorkgroup" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.SysWorkgroup">
     update sys_workgroup
-    <set >
-      <if test="workgroupName != null" >
+    <set>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="workgroupName != null">
         WORKGROUP_NAME = #{workgroupName,jdbcType=VARCHAR},
       </if>
-      <if test="parentId != null" >
+      <if test="parentId != null">
         PARENT_ID = #{parentId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null" >
+      <if test="updateTime != null">
         UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updateId != null" >
+      <if test="updateId != null">
         UPDATE_ID = #{updateId,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysWorkgroup" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.SysWorkgroup">
     update sys_workgroup
-    set WORKGROUP_NAME = #{workgroupName,jdbcType=VARCHAR},
+    set SEQ = #{seq,jdbcType=INTEGER},
+      WORKGROUP_NAME = #{workgroupName,jdbcType=VARCHAR},
       PARENT_ID = #{parentId,jdbcType=VARCHAR},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       CREATE_ID = #{createId,jdbcType=VARCHAR},
@@ -116,6 +127,7 @@
   </update>
   <select id="selectAll" resultMap="BaseResultMap">
   	select * from sys_workgroup
+  	 order by seq ,parent_id
   </select>
   <delete id="deleteWorkgroupRelateSysAccounts">
   	delete from  sys_workgroup_account where workgroup_id = #{workgroupId}
@@ -140,15 +152,13 @@
 	and c.sys_branch_id = #{dealerId}
 	<if test="groups !=null and groups.size()!=0">
 		and a.id in 
-		<foreach item="item" index="index" collection="groups"
-			open="(" separator="," close=")">
+		<foreach close=")" collection="groups" index="index" item="item" open="(" separator=",">
 				#{item.id}
 		</foreach>
 	</if>
 	<if test="candidateAccounts !=null and candidateAccounts.size()!=0">
 		and f.account_id in 
-		<foreach item="item" index="index" collection="candidateAccounts"
-			open="(" separator="," close=")">
+		<foreach close=")" collection="candidateAccounts" index="index" item="item" open="(" separator=",">
 				#{item}
 		</foreach>
 		
@@ -161,8 +171,7 @@
 	inner join sys_account f on e.sysaccount_id = f.id
 	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
 	and a.id in 
-	<foreach item="item" index="index" collection="groups"
-			open="(" separator="," close=")">
+	<foreach close=")" collection="groups" index="index" item="item" open="(" separator=",">
 				#{item.id}
 	</foreach>
 	<if test="checkOnline == true">
@@ -171,5 +180,63 @@
   </select>
   <select id="selectByName" resultMap="BaseResultMap">
   	select * from sys_workgroup where workgroup_name =#{workgroupName}
+  </select>
+  <select id="selectCollectionTaskMatchRuleAccountList" resultType="HashMap">
+ 
+	select distinct g.id as taskCntRuleId
+	from 
+	sys_workgroup  a
+	inner join t_rule_product  b  on a.id = b.workgroup_id
+	inner join t_rule_dealer c on a.id = c.workgroup_id
+	inner join T_RULE_OVERDUEDAY d on a.id = d.workgroup_id
+	inner  join sys_workgroup_account e on a.id = e.workgroup_id
+	inner join sys_account f on e.sysaccount_id = f.id
+	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
+	where 
+	<![CDATA[d.BEGIN_DAY<=#{overdueDay} and d.END_DAY>#{overdueDay}]]>
+	and b.product_code = #{productCode}
+	and c.sys_branch_id = #{dealerId}
+	<if test="groups !=null and groups.size()!=0">
+		and a.id in 
+		<foreach close=")" collection="groups" index="index" item="item" open="(" separator=",">
+				#{item.id}
+		</foreach>
+	</if>
+	<if test="candidateAccounts !=null and candidateAccounts.size()!=0">
+		and f.account_id in 
+		<foreach close=")" collection="candidateAccounts" index="index" item="item" open="(" separator=",">
+				#{item}
+		</foreach>
+	</if>
+  </select>
+  <select id="selectCollectionDeployTaskMatchRuleAccountList" resultType="HashMap">
+ 
+	select distinct g.id as taskCntRuleId
+	from 
+	sys_workgroup  a
+	inner join t_rule_product  b  on a.id = b.workgroup_id
+	inner join t_rule_dealer c on a.id = c.workgroup_id
+	inner join T_RULE_OVERDUEDAY d on a.id = d.workgroup_id
+	inner join T_RULE_COLLECTION_TASK h on a.id = h.workgroup_id
+	inner  join sys_workgroup_account e on a.id = e.workgroup_id
+	inner join sys_account f on e.sysaccount_id = f.id
+	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
+	where 
+	<![CDATA[d.BEGIN_DAY<=#{overdueDay} and d.END_DAY>#{overdueDay}]]>
+	and h.TASK_TYPE = #{taskType}
+	and b.product_code = #{productCode}
+	and c.sys_branch_id = #{dealerId}
+	<if test="groups !=null and groups.size()!=0">
+		and a.id in 
+		<foreach close=")" collection="groups" index="index" item="item" open="(" separator=",">
+				#{item.id}
+		</foreach>
+	</if>
+	<if test="candidateAccounts !=null and candidateAccounts.size()!=0">
+		and f.account_id in 
+		<foreach close=")" collection="candidateAccounts" index="index" item="item" open="(" separator=",">
+				#{item}
+		</foreach>
+	</if>
   </select>
 </mapper>

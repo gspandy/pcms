@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.AlterCustInfoLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.AlterCustInfoLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="ALTER_TYPE" property="alterType" jdbcType="VARCHAR" />
+    <result column="ALTER_TIME" property="alterTime" jdbcType="TIMESTAMP" />
+    <result column="OPER_ID" property="operId" jdbcType="VARCHAR" />
+    <result column="ALTER_COMMENT" property="alterComment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, ALTER_TYPE, ALTER_TIME, OPER_ID, ALTER_COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_alter_custinfo_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_alter_custinfo_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoLog" >
+    insert into t_alter_custinfo_log (ID, APP_ID, ALTER_TYPE, 
+      ALTER_TIME, OPER_ID, ALTER_COMMENT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{alterType,jdbcType=VARCHAR}, 
+      #{alterTime,jdbcType=TIMESTAMP}, #{operId,jdbcType=VARCHAR}, #{alterComment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoLog" >
+    insert into t_alter_custinfo_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="alterType != null" >
+        ALTER_TYPE,
+      </if>
+      <if test="alterTime != null" >
+        ALTER_TIME,
+      </if>
+      <if test="operId != null" >
+        OPER_ID,
+      </if>
+      <if test="alterComment != null" >
+        ALTER_COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterType != null" >
+        #{alterType,jdbcType=VARCHAR},
+      </if>
+      <if test="alterTime != null" >
+        #{alterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operId != null" >
+        #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterComment != null" >
+        #{alterComment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoLog" >
+    update t_alter_custinfo_log
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterType != null" >
+        ALTER_TYPE = #{alterType,jdbcType=VARCHAR},
+      </if>
+      <if test="alterTime != null" >
+        ALTER_TIME = #{alterTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operId != null" >
+        OPER_ID = #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="alterComment != null" >
+        ALTER_COMMENT = #{alterComment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.AlterCustInfoLog" >
+    update t_alter_custinfo_log
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      ALTER_TYPE = #{alterType,jdbcType=VARCHAR},
+      ALTER_TIME = #{alterTime,jdbcType=TIMESTAMP},
+      OPER_ID = #{operId,jdbcType=VARCHAR},
+      ALTER_COMMENT = #{alterComment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

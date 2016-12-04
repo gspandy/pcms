@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.RuleCollectionTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.RuleCollectionTask" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="WORKGROUP_ID" property="workgroupId" jdbcType="VARCHAR" />
+    <result column="TASK_TYPE" property="taskType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, WORKGROUP_ID, TASK_TYPE
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_rule_collection_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_rule_collection_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.RuleCollectionTask" >
+    insert into t_rule_collection_task (ID, WORKGROUP_ID, TASK_TYPE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{workgroupId,jdbcType=VARCHAR}, #{taskType,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.RuleCollectionTask" >
+    insert into t_rule_collection_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="workgroupId != null" >
+        WORKGROUP_ID,
+      </if>
+      <if test="taskType != null" >
+        TASK_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupId != null" >
+        #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null" >
+        #{taskType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.RuleCollectionTask" >
+    update t_rule_collection_task
+    <set >
+      <if test="workgroupId != null" >
+        WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="taskType != null" >
+        TASK_TYPE = #{taskType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.RuleCollectionTask" >
+    update t_rule_collection_task
+    set WORKGROUP_ID = #{workgroupId,jdbcType=VARCHAR},
+      TASK_TYPE = #{taskType,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByWorkgroupId" resultMap="BaseResultMap">
+  	select * from t_rule_collection_task
+  	where WORKGROUP_ID = #{workgroupId}
+  </select>
+  <delete id="deleteByWorkgroupId">
+  	delete from t_rule_collection_task
+  	where WORKGROUP_ID = #{workgroupId}
+  </delete>
+</mapper>

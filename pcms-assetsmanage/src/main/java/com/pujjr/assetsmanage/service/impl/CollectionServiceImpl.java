@@ -583,4 +583,16 @@ public class CollectionServiceImpl implements ICollectionService
 		return map;
 	}
 
+	@Override
+	public void commitSettleApprove(String taskId) throws Exception {
+		// TODO Auto-generated method stub
+		//检查任务合法性
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		//提交任务
+		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
+	}
+
 }

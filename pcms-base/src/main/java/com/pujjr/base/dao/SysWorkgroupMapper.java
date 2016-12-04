@@ -10,15 +10,15 @@ import com.pujjr.base.domain.SysWorkgroup;
 public interface SysWorkgroupMapper {
     int deleteByPrimaryKey(String id);
 
-    int insert(SysWorkgroup record);
+	int insert(SysWorkgroup record);
 
-    int insertSelective(SysWorkgroup record);
+	int insertSelective(SysWorkgroup record);
 
-    SysWorkgroup selectByPrimaryKey(String id);
+	SysWorkgroup selectByPrimaryKey(String id);
 
-    int updateByPrimaryKeySelective(SysWorkgroup record);
+	int updateByPrimaryKeySelective(SysWorkgroup record);
 
-    int updateByPrimaryKey(SysWorkgroup record);
+	int updateByPrimaryKey(SysWorkgroup record);
     
     List<SysWorkgroup> selectAll();
     
@@ -34,4 +34,16 @@ public interface SysWorkgroupMapper {
     List<HashMap> selectWorkgroupOnlineAccountList(@Param("groups")List<SysWorkgroup> groups,@Param("checkOnline")boolean checkOnline);
     
     SysWorkgroup selectByName(@Param("workgroupName")String workgroupName);
+    
+    List<HashMap> selectCollectionTaskMatchRuleAccountList(@Param("productCode")String productCode,
+    													@Param("dealerId")String dealerId,
+    													@Param("overdueDay")int overdueDay,
+    													@Param("groups")List<SysWorkgroup> groups,
+    													@Param("candidateAccounts")List<String> candidateAccounts);
+    List<HashMap> selectCollectionDeployTaskMatchRuleAccountList(@Param("productCode")String productCode,
+																@Param("dealerId")String dealerId,
+																@Param("overdueDay")int overdueDay,
+																@Param("taskType")String taskType,
+																@Param("groups")List<SysWorkgroup> groups,
+																@Param("candidateAccounts")List<String> candidateAccounts);
 }
