@@ -14,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.dao.SysWorkgroupMapper;
+import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.constant.ApplyStatus;
+import com.pujjr.carcredit.constant.InsuranceType;
 import com.pujjr.carcredit.dao.AutoAssigneeConfigMapper;
 import com.pujjr.carcredit.dao.CallBackResultMapper;
 import com.pujjr.carcredit.dao.CancelApplyInfoMapper;
@@ -109,6 +112,8 @@ public class TaskServiceImpl implements ITaskService
 	private ISequenceService sequenceService;
 	@Autowired
 	private RuntimeService runtimeService;
+	@Autowired
+	private InsuranceHisMapper insuranceHisDao;
 	
 	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param)
 	{
@@ -427,6 +432,46 @@ public class TaskServiceImpl implements ITaskService
 	}
 
 
+	private void savelInsuranceHis(SignFinanceDetail detailPo,String operId)
+	{
+		//保险是在这个环节录入，配合资产管理保存保险信息至保险购买历史表
+		if(detailPo.getInsPolicyNo()!=null && detailPo.getInsPolicyNo()!="")
+		{
+			//保存交强险记录
+			InsuranceHis hisPo = new InsuranceHis();
+			hisPo.setId(Utils.get16UUID());
+			hisPo.setSignId(detailPo.getId());
+			hisPo.setInsType(InsuranceType.JQX.getName());
+			BeanUtils.copyProperties(detailPo, hisPo);
+			hisPo.setCreateId(operId);
+			hisPo.setCreateTime(new Date());
+			insuranceHisDao.insert(hisPo);
+		}
+		if(detailPo.getBusiPolicyNo()!=null && detailPo.getBusiPolicyNo()!="")
+		{
+			//保存商业险记录
+			InsuranceHis hisPo = new InsuranceHis();
+			hisPo.setId(Utils.get16UUID());
+			hisPo.setSignId(detailPo.getId());
+			hisPo.setInsType(InsuranceType.SYX.getName());
+			BeanUtils.copyProperties(detailPo, hisPo);
+			hisPo.setCreateId(operId);
+			hisPo.setCreateTime(new Date());
+			insuranceHisDao.insert(hisPo);
+		}
+		if(detailPo.getImpPolicyNo()!=null && detailPo.getImpPolicyNo()!="")
+		{
+			//保存履约线记录
+			InsuranceHis hisPo = new InsuranceHis();
+			hisPo.setId(Utils.get16UUID());
+			hisPo.setSignId(detailPo.getId());
+			hisPo.setInsType(InsuranceType.LYX.getName());
+			BeanUtils.copyProperties(detailPo, hisPo);
+			hisPo.setCreateId(operId);
+			hisPo.setCreateTime(new Date());
+			insuranceHisDao.insert(hisPo);
+		}
+	}
 	@Override
 	public void saveLoanCheckInfo(SignContractVo signContractVo,String operId) {
 		// TODO Auto-generated method stub
@@ -437,6 +482,8 @@ public class TaskServiceImpl implements ITaskService
 			BeanUtils.copyProperties(item.getSignFinanceDetail(), detailPo);
 			//这里只更新放款复核信息
 			signContractService.modifySignFinanceDetail(detailPo);
+			//保存保险购买历史记录
+			this.savelInsuranceHis(detailPo, operId);
 		}
 		//保存放款复核结果
 		if(loanCheckDao.selectByAppId(signContractVo.getAppId())==null)
@@ -480,6 +527,8 @@ public class TaskServiceImpl implements ITaskService
 				BeanUtils.copyProperties(item.getSignFinanceDetail(), detailPo);
 				//这里只更新放款复核信息
 				signContractService.modifySignFinanceDetail(detailPo);
+				//保存保险购买历史记录
+				this.savelInsuranceHis(detailPo, operId);
 			}
 		}
 		// 保存放款复核结果

@@ -59,5 +59,11 @@ public class SignContractServiceImpl implements ISignContractService {
 		signFinanceDetailDao.updateByPrimaryKey(record);
 	}
 
+	@Override
+	public List<SignFinanceDetail> getSignFinanceDetailByAppId(String appId) {
+		// TODO Auto-generated method stub
+		return signFinanceDetailDao.selectByAppId(appId);
+	}
+
 
 }

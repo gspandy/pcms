@@ -37,7 +37,6 @@ public class AlterCustInfoServiceImpl implements IAlterCustInfoService {
 
 	@Autowired
 	private IApplyService applyService;
-	
 	@Autowired
 	private AlterCustInfoDetailMapper alterDetailDao;
 	@Autowired

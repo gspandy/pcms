@@ -13,6 +13,8 @@ public interface ISignContractService
 	
 	public SignFinanceDetail getSignFinanceDetailByApplyFinanceId(String applyFinanceId);
 	
+	public List<SignFinanceDetail> getSignFinanceDetailByAppId(String appId);
+	
 	public void addSignContract(SignContract record);
 	
 	public void deleteSignFinanceDetailByAppId(String appId);

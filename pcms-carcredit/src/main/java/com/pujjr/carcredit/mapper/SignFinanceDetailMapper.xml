@@ -486,4 +486,7 @@
   <delete id="deleteByAppId">
   	delete from t_sign_finance_detail where APP_ID =#{appId}
   </delete>
+  <select id="selectByAppId" resultMap="BaseResultMap">
+  	select * from t_sign_finance_detail where APP_ID = #{appId}
+  </select>
 </mapper>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.InsuranceHisMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.InsuranceHis">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="SIGN_ID" jdbcType="VARCHAR" property="signId" />
+    <result column="INS_TYPE" jdbcType="VARCHAR" property="insType" />
+    <result column="INS_COMPANY_ID" jdbcType="VARCHAR" property="insCompanyId" />
+    <result column="INS_POLICY_NO" jdbcType="VARCHAR" property="insPolicyNo" />
+    <result column="INS_AMOUNT" jdbcType="DOUBLE" property="insAmount" />
+    <result column="INS_START_DATE" jdbcType="DATE" property="insStartDate" />
+    <result column="INS_END_DATE" jdbcType="DATE" property="insEndDate" />
+    <result column="IS_DAMAGE" jdbcType="BIT" property="isDamage" />
+    <result column="DAMAGE_AMOUNT" jdbcType="DOUBLE" property="damageAmount" />
+    <result column="IS_THIRD" jdbcType="BIT" property="isThird" />
+    <result column="THIRD_AMOUNT" jdbcType="DOUBLE" property="thirdAmount" />
+    <result column="IS_THEFT" jdbcType="BIT" property="isTheft" />
+    <result column="THEFT_AMOUNT" jdbcType="DOUBLE" property="theftAmount" />
+    <result column="IS_AVOID" jdbcType="BIT" property="isAvoid" />
+    <result column="AVOID_AMOUNT" jdbcType="DOUBLE" property="avoidAmount" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UPDATE_ID" jdbcType="VARCHAR" property="updateId" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="RESERVER1" jdbcType="VARCHAR" property="reserver1" />
+    <result column="RESERVER2" jdbcType="VARCHAR" property="reserver2" />
+    <result column="RESERVER3" jdbcType="DOUBLE" property="reserver3" />
+    <result column="RESERVER4" jdbcType="DOUBLE" property="reserver4" />
+    <result column="RESERVER5" jdbcType="DATE" property="reserver5" />
+    <result column="RESERVER6" jdbcType="DATE" property="reserver6" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, SIGN_ID, INS_TYPE, INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, INS_START_DATE, 
+    INS_END_DATE, IS_DAMAGE, DAMAGE_AMOUNT, IS_THIRD, THIRD_AMOUNT, IS_THEFT, THEFT_AMOUNT, 
+    IS_AVOID, AVOID_AMOUNT, CREATE_ID, CREATE_TIME, UPDATE_ID, UPDATE_TIME, RESERVER1, 
+    RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_insurance_his
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_insurance_his
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.InsuranceHis">
+    insert into t_insurance_his (ID, SIGN_ID, INS_TYPE, 
+      INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, 
+      INS_START_DATE, INS_END_DATE, IS_DAMAGE, 
+      DAMAGE_AMOUNT, IS_THIRD, THIRD_AMOUNT, 
+      IS_THEFT, THEFT_AMOUNT, IS_AVOID, 
+      AVOID_AMOUNT, CREATE_ID, CREATE_TIME, 
+      UPDATE_ID, UPDATE_TIME, RESERVER1, 
+      RESERVER2, RESERVER3, RESERVER4, 
+      RESERVER5, RESERVER6)
+    values (#{id,jdbcType=VARCHAR}, #{signId,jdbcType=VARCHAR}, #{insType,jdbcType=VARCHAR}, 
+      #{insCompanyId,jdbcType=VARCHAR}, #{insPolicyNo,jdbcType=VARCHAR}, #{insAmount,jdbcType=DOUBLE}, 
+      #{insStartDate,jdbcType=DATE}, #{insEndDate,jdbcType=DATE}, #{isDamage,jdbcType=BIT}, 
+      #{damageAmount,jdbcType=DOUBLE}, #{isThird,jdbcType=BIT}, #{thirdAmount,jdbcType=DOUBLE}, 
+      #{isTheft,jdbcType=BIT}, #{theftAmount,jdbcType=DOUBLE}, #{isAvoid,jdbcType=BIT}, 
+      #{avoidAmount,jdbcType=DOUBLE}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{reserver1,jdbcType=VARCHAR}, 
+      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DOUBLE}, #{reserver4,jdbcType=DOUBLE}, 
+      #{reserver5,jdbcType=DATE}, #{reserver6,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.InsuranceHis">
+    insert into t_insurance_his
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="signId != null">
+        SIGN_ID,
+      </if>
+      <if test="insType != null">
+        INS_TYPE,
+      </if>
+      <if test="insCompanyId != null">
+        INS_COMPANY_ID,
+      </if>
+      <if test="insPolicyNo != null">
+        INS_POLICY_NO,
+      </if>
+      <if test="insAmount != null">
+        INS_AMOUNT,
+      </if>
+      <if test="insStartDate != null">
+        INS_START_DATE,
+      </if>
+      <if test="insEndDate != null">
+        INS_END_DATE,
+      </if>
+      <if test="isDamage != null">
+        IS_DAMAGE,
+      </if>
+      <if test="damageAmount != null">
+        DAMAGE_AMOUNT,
+      </if>
+      <if test="isThird != null">
+        IS_THIRD,
+      </if>
+      <if test="thirdAmount != null">
+        THIRD_AMOUNT,
+      </if>
+      <if test="isTheft != null">
+        IS_THEFT,
+      </if>
+      <if test="theftAmount != null">
+        THEFT_AMOUNT,
+      </if>
+      <if test="isAvoid != null">
+        IS_AVOID,
+      </if>
+      <if test="avoidAmount != null">
+        AVOID_AMOUNT,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3,
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4,
+      </if>
+      <if test="reserver5 != null">
+        RESERVER5,
+      </if>
+      <if test="reserver6 != null">
+        RESERVER6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="signId != null">
+        #{signId,jdbcType=VARCHAR},
+      </if>
+      <if test="insType != null">
+        #{insType,jdbcType=VARCHAR},
+      </if>
+      <if test="insCompanyId != null">
+        #{insCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="insPolicyNo != null">
+        #{insPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insAmount != null">
+        #{insAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="insStartDate != null">
+        #{insStartDate,jdbcType=DATE},
+      </if>
+      <if test="insEndDate != null">
+        #{insEndDate,jdbcType=DATE},
+      </if>
+      <if test="isDamage != null">
+        #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="damageAmount != null">
+        #{damageAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isThird != null">
+        #{isThird,jdbcType=BIT},
+      </if>
+      <if test="thirdAmount != null">
+        #{thirdAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isTheft != null">
+        #{isTheft,jdbcType=BIT},
+      </if>
+      <if test="theftAmount != null">
+        #{theftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isAvoid != null">
+        #{isAvoid,jdbcType=BIT},
+      </if>
+      <if test="avoidAmount != null">
+        #{avoidAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        #{reserver3,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver4 != null">
+        #{reserver4,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver5 != null">
+        #{reserver5,jdbcType=DATE},
+      </if>
+      <if test="reserver6 != null">
+        #{reserver6,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.InsuranceHis">
+    update t_insurance_his
+    <set>
+      <if test="signId != null">
+        SIGN_ID = #{signId,jdbcType=VARCHAR},
+      </if>
+      <if test="insType != null">
+        INS_TYPE = #{insType,jdbcType=VARCHAR},
+      </if>
+      <if test="insCompanyId != null">
+        INS_COMPANY_ID = #{insCompanyId,jdbcType=VARCHAR},
+      </if>
+      <if test="insPolicyNo != null">
+        INS_POLICY_NO = #{insPolicyNo,jdbcType=VARCHAR},
+      </if>
+      <if test="insAmount != null">
+        INS_AMOUNT = #{insAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="insStartDate != null">
+        INS_START_DATE = #{insStartDate,jdbcType=DATE},
+      </if>
+      <if test="insEndDate != null">
+        INS_END_DATE = #{insEndDate,jdbcType=DATE},
+      </if>
+      <if test="isDamage != null">
+        IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      </if>
+      <if test="damageAmount != null">
+        DAMAGE_AMOUNT = #{damageAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isThird != null">
+        IS_THIRD = #{isThird,jdbcType=BIT},
+      </if>
+      <if test="thirdAmount != null">
+        THIRD_AMOUNT = #{thirdAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isTheft != null">
+        IS_THEFT = #{isTheft,jdbcType=BIT},
+      </if>
+      <if test="theftAmount != null">
+        THEFT_AMOUNT = #{theftAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="isAvoid != null">
+        IS_AVOID = #{isAvoid,jdbcType=BIT},
+      </if>
+      <if test="avoidAmount != null">
+        AVOID_AMOUNT = #{avoidAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateId != null">
+        UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null">
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null">
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null">
+        RESERVER3 = #{reserver3,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver4 != null">
+        RESERVER4 = #{reserver4,jdbcType=DOUBLE},
+      </if>
+      <if test="reserver5 != null">
+        RESERVER5 = #{reserver5,jdbcType=DATE},
+      </if>
+      <if test="reserver6 != null">
+        RESERVER6 = #{reserver6,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.InsuranceHis">
+    update t_insurance_his
+    set SIGN_ID = #{signId,jdbcType=VARCHAR},
+      INS_TYPE = #{insType,jdbcType=VARCHAR},
+      INS_COMPANY_ID = #{insCompanyId,jdbcType=VARCHAR},
+      INS_POLICY_NO = #{insPolicyNo,jdbcType=VARCHAR},
+      INS_AMOUNT = #{insAmount,jdbcType=DOUBLE},
+      INS_START_DATE = #{insStartDate,jdbcType=DATE},
+      INS_END_DATE = #{insEndDate,jdbcType=DATE},
+      IS_DAMAGE = #{isDamage,jdbcType=BIT},
+      DAMAGE_AMOUNT = #{damageAmount,jdbcType=DOUBLE},
+      IS_THIRD = #{isThird,jdbcType=BIT},
+      THIRD_AMOUNT = #{thirdAmount,jdbcType=DOUBLE},
+      IS_THEFT = #{isTheft,jdbcType=BIT},
+      THEFT_AMOUNT = #{theftAmount,jdbcType=DOUBLE},
+      IS_AVOID = #{isAvoid,jdbcType=BIT},
+      AVOID_AMOUNT = #{avoidAmount,jdbcType=DOUBLE},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      UPDATE_ID = #{updateId,jdbcType=VARCHAR},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=DOUBLE},
+      RESERVER4 = #{reserver4,jdbcType=DOUBLE},
+      RESERVER5 = #{reserver5,jdbcType=DATE},
+      RESERVER6 = #{reserver6,jdbcType=DATE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectBySignId" resultMap="BaseResultMap">
+  	select * from t_insurance_his
+  	where SIGN_ID = #{signId} 
+  	<if test="type != null and type!=''">
+  		and INS_TYPE = #{type}
+  	</if>
+  </select>
+</mapper>

@@ -1,5 +1,7 @@
 package com.pujjr.carcredit.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -20,4 +22,6 @@ public interface SignFinanceDetailMapper {
     SignFinanceDetail getByApplyFinanceId(@Param("applyFinanceId")String applyFinanceId);
     
     int deleteByAppId(@Param("appId")String appId);
+    
+    List<SignFinanceDetail> selectByAppId(@Param("appId")String appId);
 }
