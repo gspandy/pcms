@@ -5,6 +5,8 @@ import java.util.Date;
 public class InsuranceHis {
     private String id;
 
+	private String appId;
+
 	private String signId;
 
 	private String insType;
@@ -61,6 +63,14 @@ public class InsuranceHis {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
 	public String getSignId() {

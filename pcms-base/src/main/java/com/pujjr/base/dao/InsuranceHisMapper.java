@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.base.domain.InsuranceHis;
+import com.pujjr.base.po.InsuranceHisPo;
 
 public interface InsuranceHisMapper {
     int deleteByPrimaryKey(String id);
@@ -19,5 +20,7 @@ public interface InsuranceHisMapper {
 
 	int updateByPrimaryKey(InsuranceHis record);
 	
-	List<InsuranceHis> selectBySignId(@Param("signId")String signId,@Param("type")String type);
+	List<InsuranceHisPo> selectBySignId(@Param("signId")String signId,@Param("type")String type);
+	
+	int deleteByAppId(@Param("appId")String appId);
 }

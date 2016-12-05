@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.assetsmanage.domain.CollectionLog;
 import com.pujjr.assetsmanage.domain.CollectionTask;
@@ -19,6 +20,7 @@ import com.pujjr.postloan.vo.ApproveResultVo;
  *
  */
 @Service
+@Transactional
 public interface ICollectionService
 {
 	/**

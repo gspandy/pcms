@@ -1,16 +1,22 @@
 package com.pujjr.assetsmanage.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.pujjr.assetsmanage.service.IInsuranceManageService;
 import com.pujjr.base.controller.BaseController;
+import com.pujjr.base.domain.InsuranceHis;
+import com.pujjr.base.domain.SysAccount;
 
 @RestController
 @RequestMapping(value="/insmanage")
@@ -19,9 +25,30 @@ public class InsuranceManageController extends BaseController
 	@Autowired
 	private IInsuranceManageService insMngService;
 	
-	@RequestMapping(value="/getHisList/{appId}",method=RequestMethod.GET)
+	@RequestMapping(value="/getInsuranceHisList/{appId}",method=RequestMethod.GET)
 	public List<HashMap<String, Object>> getInsuranceHisList(@PathVariable String appId)
 	{
 		return insMngService.getInsuranceHisList(appId);
+	}
+	
+	@RequestMapping(value="/createInsuranceContinueTask/{appId}",method=RequestMethod.POST)
+	public void createInsuranceContinueTask(@PathVariable String appId)
+	{
+		insMngService.createInsuranceContinueTask(appId, "admin");
+	}
+	
+	@RequestMapping(value="/addInsurance/{appId}/{signId}/{insType}",method=RequestMethod.POST)
+	public void addInsurance(@PathVariable String appId,@PathVariable  String signId,@PathVariable String insType, @RequestBody InsuranceHis vo,HttpServletRequest request)
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		vo.setCreateId(account.getAccountId());
+		vo.setCreateTime(new Date());
+		insMngService.addInsurance(appId, signId, insType, vo);
+	}
+	
+	@RequestMapping(value="/commitInsuranceContinue/{taskId}",method=RequestMethod.POST)
+	public void commitInsuranceContinue(@PathVariable String taskId)
+	{
+		insMngService.commitInsuranceContinue(taskId);
 	}
 }

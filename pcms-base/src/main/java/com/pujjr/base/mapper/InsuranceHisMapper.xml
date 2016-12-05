@@ -3,6 +3,7 @@
 <mapper namespace="com.pujjr.base.dao.InsuranceHisMapper">
   <resultMap id="BaseResultMap" type="com.pujjr.base.domain.InsuranceHis">
     <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
     <result column="SIGN_ID" jdbcType="VARCHAR" property="signId" />
     <result column="INS_TYPE" jdbcType="VARCHAR" property="insType" />
     <result column="INS_COMPANY_ID" jdbcType="VARCHAR" property="insCompanyId" />
@@ -30,7 +31,7 @@
     <result column="RESERVER6" jdbcType="DATE" property="reserver6" />
   </resultMap>
   <sql id="Base_Column_List">
-    ID, SIGN_ID, INS_TYPE, INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, INS_START_DATE, 
+    ID, APP_ID, SIGN_ID, INS_TYPE, INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, INS_START_DATE, 
     INS_END_DATE, IS_DAMAGE, DAMAGE_AMOUNT, IS_THIRD, THIRD_AMOUNT, IS_THEFT, THEFT_AMOUNT, 
     IS_AVOID, AVOID_AMOUNT, CREATE_ID, CREATE_TIME, UPDATE_ID, UPDATE_TIME, RESERVER1, 
     RESERVER2, RESERVER3, RESERVER4, RESERVER5, RESERVER6
@@ -46,30 +47,35 @@
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.pujjr.base.domain.InsuranceHis">
-    insert into t_insurance_his (ID, SIGN_ID, INS_TYPE, 
-      INS_COMPANY_ID, INS_POLICY_NO, INS_AMOUNT, 
-      INS_START_DATE, INS_END_DATE, IS_DAMAGE, 
-      DAMAGE_AMOUNT, IS_THIRD, THIRD_AMOUNT, 
-      IS_THEFT, THEFT_AMOUNT, IS_AVOID, 
-      AVOID_AMOUNT, CREATE_ID, CREATE_TIME, 
-      UPDATE_ID, UPDATE_TIME, RESERVER1, 
-      RESERVER2, RESERVER3, RESERVER4, 
-      RESERVER5, RESERVER6)
-    values (#{id,jdbcType=VARCHAR}, #{signId,jdbcType=VARCHAR}, #{insType,jdbcType=VARCHAR}, 
-      #{insCompanyId,jdbcType=VARCHAR}, #{insPolicyNo,jdbcType=VARCHAR}, #{insAmount,jdbcType=DOUBLE}, 
-      #{insStartDate,jdbcType=DATE}, #{insEndDate,jdbcType=DATE}, #{isDamage,jdbcType=BIT}, 
-      #{damageAmount,jdbcType=DOUBLE}, #{isThird,jdbcType=BIT}, #{thirdAmount,jdbcType=DOUBLE}, 
-      #{isTheft,jdbcType=BIT}, #{theftAmount,jdbcType=DOUBLE}, #{isAvoid,jdbcType=BIT}, 
-      #{avoidAmount,jdbcType=DOUBLE}, #{createId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{reserver1,jdbcType=VARCHAR}, 
-      #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DOUBLE}, #{reserver4,jdbcType=DOUBLE}, 
-      #{reserver5,jdbcType=DATE}, #{reserver6,jdbcType=DATE})
+    insert into t_insurance_his (ID, APP_ID, SIGN_ID, 
+      INS_TYPE, INS_COMPANY_ID, INS_POLICY_NO, 
+      INS_AMOUNT, INS_START_DATE, INS_END_DATE, 
+      IS_DAMAGE, DAMAGE_AMOUNT, IS_THIRD, 
+      THIRD_AMOUNT, IS_THEFT, THEFT_AMOUNT, 
+      IS_AVOID, AVOID_AMOUNT, CREATE_ID, 
+      CREATE_TIME, UPDATE_ID, UPDATE_TIME, 
+      RESERVER1, RESERVER2, RESERVER3, 
+      RESERVER4, RESERVER5, RESERVER6
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{signId,jdbcType=VARCHAR}, 
+      #{insType,jdbcType=VARCHAR}, #{insCompanyId,jdbcType=VARCHAR}, #{insPolicyNo,jdbcType=VARCHAR}, 
+      #{insAmount,jdbcType=DOUBLE}, #{insStartDate,jdbcType=DATE}, #{insEndDate,jdbcType=DATE}, 
+      #{isDamage,jdbcType=BIT}, #{damageAmount,jdbcType=DOUBLE}, #{isThird,jdbcType=BIT}, 
+      #{thirdAmount,jdbcType=DOUBLE}, #{isTheft,jdbcType=BIT}, #{theftAmount,jdbcType=DOUBLE}, 
+      #{isAvoid,jdbcType=BIT}, #{avoidAmount,jdbcType=DOUBLE}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, #{reserver3,jdbcType=DOUBLE}, 
+      #{reserver4,jdbcType=DOUBLE}, #{reserver5,jdbcType=DATE}, #{reserver6,jdbcType=DATE}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.base.domain.InsuranceHis">
     insert into t_insurance_his
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
       </if>
       <if test="signId != null">
         SIGN_ID,
@@ -151,6 +157,9 @@
       <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
       <if test="signId != null">
         #{signId,jdbcType=VARCHAR},
       </if>
@@ -231,6 +240,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.InsuranceHis">
     update t_insurance_his
     <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
       <if test="signId != null">
         SIGN_ID = #{signId,jdbcType=VARCHAR},
       </if>
@@ -311,7 +323,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.InsuranceHis">
     update t_insurance_his
-    set SIGN_ID = #{signId,jdbcType=VARCHAR},
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      SIGN_ID = #{signId,jdbcType=VARCHAR},
       INS_TYPE = #{insType,jdbcType=VARCHAR},
       INS_COMPANY_ID = #{insCompanyId,jdbcType=VARCHAR},
       INS_POLICY_NO = #{insPolicyNo,jdbcType=VARCHAR},
@@ -338,11 +351,24 @@
       RESERVER6 = #{reserver6,jdbcType=DATE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <select id="selectBySignId" resultMap="BaseResultMap">
-  	select * from t_insurance_his
+  <resultMap type="com.pujjr.base.po.InsuranceHisPo" id="InsuranceHisResultMap" extends="BaseResultMap">
+  	<result column="insuranceCompanyName" jdbcType="VARCHAR" property="insuranceCompanyName" />
+  	<result column="insTypeDesc" jdbcType="VARCHAR" property="insTypeDesc" />
+  </resultMap>
+  <select id="selectBySignId" resultMap="InsuranceHisResultMap">
+  	select 
+  	a.*,
+  	b.NAME as insuranceCompanyName,
+  	c.DICT_DATA_NAME  as insTypeDesc
+  	from t_insurance_his a 
+  	left join T_INSURANCE_COMPANY b on a.INS_COMPANY_ID = b.id
+  	left join SYS_DICT_DATA c on a.INS_TYPE = c.DICT_DATA_CODE
   	where SIGN_ID = #{signId} 
   	<if test="type != null and type!=''">
   		and INS_TYPE = #{type}
   	</if>
   </select>
+  <delete id="deleteByAppId">
+  	delete from t_insurance_his where APP_ID = #{appId}
+  </delete>
 </mapper>

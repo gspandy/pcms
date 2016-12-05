@@ -435,38 +435,41 @@ public class TaskServiceImpl implements ITaskService
 	private void savelInsuranceHis(SignFinanceDetail detailPo,String operId)
 	{
 		//保险是在这个环节录入，配合资产管理保存保险信息至保险购买历史表
-		if(detailPo.getInsPolicyNo()!=null && detailPo.getInsPolicyNo()!="")
+		if(detailPo.getInsPolicyNo()!=null && detailPo.getInsPolicyNo()!="" && detailPo.getId()!=null)
 		{
 			//保存交强险记录
 			InsuranceHis hisPo = new InsuranceHis();
+			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setId(Utils.get16UUID());
+			hisPo.setAppId(detailPo.getAppId());
 			hisPo.setSignId(detailPo.getId());
 			hisPo.setInsType(InsuranceType.JQX.getName());
-			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setCreateId(operId);
 			hisPo.setCreateTime(new Date());
 			insuranceHisDao.insert(hisPo);
 		}
-		if(detailPo.getBusiPolicyNo()!=null && detailPo.getBusiPolicyNo()!="")
+		if(detailPo.getBusiPolicyNo()!=null && detailPo.getBusiPolicyNo()!="" && detailPo.getId()!=null)
 		{
 			//保存商业险记录
 			InsuranceHis hisPo = new InsuranceHis();
+			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setId(Utils.get16UUID());
+			hisPo.setAppId(detailPo.getAppId());
 			hisPo.setSignId(detailPo.getId());
 			hisPo.setInsType(InsuranceType.SYX.getName());
-			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setCreateId(operId);
 			hisPo.setCreateTime(new Date());
 			insuranceHisDao.insert(hisPo);
 		}
-		if(detailPo.getImpPolicyNo()!=null && detailPo.getImpPolicyNo()!="")
+		if(detailPo.getImpPolicyNo()!=null && detailPo.getImpPolicyNo()!="" && detailPo.getId()!=null)
 		{
 			//保存履约线记录
 			InsuranceHis hisPo = new InsuranceHis();
+			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setId(Utils.get16UUID());
+			hisPo.setAppId(detailPo.getAppId());
 			hisPo.setSignId(detailPo.getId());
 			hisPo.setInsType(InsuranceType.LYX.getName());
-			BeanUtils.copyProperties(detailPo, hisPo);
 			hisPo.setCreateId(operId);
 			hisPo.setCreateTime(new Date());
 			insuranceHisDao.insert(hisPo);
@@ -475,6 +478,8 @@ public class TaskServiceImpl implements ITaskService
 	@Override
 	public void saveLoanCheckInfo(SignContractVo signContractVo,String operId) {
 		// TODO Auto-generated method stub
+		//删除之前保存的保险信息
+		insuranceHisDao.deleteByAppId(signContractVo.getAppId());
 		//保存保险信息
 		for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
 		{
@@ -521,6 +526,8 @@ public class TaskServiceImpl implements ITaskService
 		{
 			ApplyVo applyVo = applyService.getApplyDetail(signContractVo.getAppId());
 			checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.LOANCHECK.getKey(), applyVo.getAppId());
+			//删除之前保存的保险信息
+			insuranceHisDao.deleteByAppId(signContractVo.getAppId());
 			for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())
 			{
 				SignFinanceDetail detailPo = new SignFinanceDetail();
