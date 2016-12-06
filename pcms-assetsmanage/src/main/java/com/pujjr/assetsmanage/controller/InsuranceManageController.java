@@ -6,14 +6,18 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.pujjr.assetsmanage.service.IInsuranceManageService;
+import com.pujjr.assetsmanage.vo.ApplyInsuranceVo;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.domain.SysAccount;
@@ -39,12 +43,13 @@ public class InsuranceManageController extends BaseController
 	}
 	
 	@RequestMapping(value="/addInsurance/{appId}/{signId}/{insType}",method=RequestMethod.POST)
-	public void addInsurance(@PathVariable String appId,@PathVariable  String signId,@PathVariable String insType, @RequestBody InsuranceHis vo,HttpServletRequest request)
+	public void addInsurance(@PathVariable String appId,@PathVariable  String signId,@PathVariable String insType,ApplyInsuranceVo vo,@RequestParam("file") MultipartFile[] file,HttpServletRequest request)
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
-		vo.setCreateId(account.getAccountId());
-		vo.setCreateTime(new Date());
-		insMngService.addInsurance(appId, signId, insType, vo);
+		System.out.println("111");
+		//vo.setCreateId(account.getAccountId());
+		//vo.setCreateTime(new Date());
+		//insMngService.addInsurance(appId, signId, insType, vo);
 	}
 	
 	@RequestMapping(value="/commitInsuranceContinue/{taskId}",method=RequestMethod.POST)
