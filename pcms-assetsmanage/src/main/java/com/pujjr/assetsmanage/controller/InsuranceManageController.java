@@ -32,9 +32,10 @@ public class InsuranceManageController extends BaseController
 	}
 	
 	@RequestMapping(value="/createInsuranceContinueTask/{appId}",method=RequestMethod.POST)
-	public void createInsuranceContinueTask(@PathVariable String appId)
+	public void createInsuranceContinueTask(@PathVariable String appId,HttpServletRequest request)
 	{
-		insMngService.createInsuranceContinueTask(appId, "admin");
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		insMngService.createInsuranceContinueTask(appId, account.getAccountId());
 	}
 	
 	@RequestMapping(value="/addInsurance/{appId}/{signId}/{insType}",method=RequestMethod.POST)
