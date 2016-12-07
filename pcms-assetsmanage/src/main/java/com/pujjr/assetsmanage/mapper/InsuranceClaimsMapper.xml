@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.InsuranceClaimsMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.InsuranceClaims" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="INSURANCE_ID" property="insuranceId" jdbcType="VARCHAR" />
+    <result column="ACCI_DATE" property="acciDate" jdbcType="DATE" />
+    <result column="ACCI_ADDR_PROVINCE" property="acciAddrProvince" jdbcType="VARCHAR" />
+    <result column="ACCI_ADDR_CITY" property="acciAddrCity" jdbcType="VARCHAR" />
+    <result column="ACCI_ADDR_COUNTY" property="acciAddrCounty" jdbcType="VARCHAR" />
+    <result column="ACCI_ADDR_EXT" property="acciAddrExt" jdbcType="VARCHAR" />
+    <result column="CAR_CERTAIN_AMT" property="carCertainAmt" jdbcType="DOUBLE" />
+    <result column="PEOPLE_CERTAIN_AMT" property="peopleCertainAmt" jdbcType="DOUBLE" />
+    <result column="IS_ENGINE_DAMAGE" property="isEngineDamage" jdbcType="BIT" />
+    <result column="OTHER_CAR_CERTAIN_AMT" property="otherCarCertainAmt" jdbcType="DOUBLE" />
+    <result column="OTHER_PEOPLE_CERTAIN_AMT" property="otherPeopleCertainAmt" jdbcType="DOUBLE" />
+    <result column="OTHER_OBJECT_CERTAIN_AMT" property="otherObjectCertainAmt" jdbcType="DOUBLE" />
+    <result column="TOTAL_CERTAIN_AMT" property="totalCertainAmt" jdbcType="DOUBLE" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, INSURANCE_ID, ACCI_DATE, ACCI_ADDR_PROVINCE, ACCI_ADDR_CITY, ACCI_ADDR_COUNTY, 
+    ACCI_ADDR_EXT, CAR_CERTAIN_AMT, PEOPLE_CERTAIN_AMT, IS_ENGINE_DAMAGE, OTHER_CAR_CERTAIN_AMT, 
+    OTHER_PEOPLE_CERTAIN_AMT, OTHER_OBJECT_CERTAIN_AMT, TOTAL_CERTAIN_AMT, COMMENT, CREATE_ID, 
+    CREATE_TIME, RESERVER1, RESERVER2, RESERVER3
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_insurance_claims
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_insurance_claims
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.InsuranceClaims" >
+    insert into t_insurance_claims (ID, APP_ID, INSURANCE_ID, 
+      ACCI_DATE, ACCI_ADDR_PROVINCE, ACCI_ADDR_CITY, 
+      ACCI_ADDR_COUNTY, ACCI_ADDR_EXT, CAR_CERTAIN_AMT, 
+      PEOPLE_CERTAIN_AMT, IS_ENGINE_DAMAGE, OTHER_CAR_CERTAIN_AMT, 
+      OTHER_PEOPLE_CERTAIN_AMT, OTHER_OBJECT_CERTAIN_AMT, 
+      TOTAL_CERTAIN_AMT, COMMENT, CREATE_ID, 
+      CREATE_TIME, RESERVER1, RESERVER2, 
+      RESERVER3)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{insuranceId,jdbcType=VARCHAR}, 
+      #{acciDate,jdbcType=DATE}, #{acciAddrProvince,jdbcType=VARCHAR}, #{acciAddrCity,jdbcType=VARCHAR}, 
+      #{acciAddrCounty,jdbcType=VARCHAR}, #{acciAddrExt,jdbcType=VARCHAR}, #{carCertainAmt,jdbcType=DOUBLE}, 
+      #{peopleCertainAmt,jdbcType=DOUBLE}, #{isEngineDamage,jdbcType=BIT}, #{otherCarCertainAmt,jdbcType=DOUBLE}, 
+      #{otherPeopleCertainAmt,jdbcType=DOUBLE}, #{otherObjectCertainAmt,jdbcType=DOUBLE}, 
+      #{totalCertainAmt,jdbcType=DOUBLE}, #{comment,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{reserver1,jdbcType=VARCHAR}, #{reserver2,jdbcType=VARCHAR}, 
+      #{reserver3,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.InsuranceClaims" >
+    insert into t_insurance_claims
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="insuranceId != null" >
+        INSURANCE_ID,
+      </if>
+      <if test="acciDate != null" >
+        ACCI_DATE,
+      </if>
+      <if test="acciAddrProvince != null" >
+        ACCI_ADDR_PROVINCE,
+      </if>
+      <if test="acciAddrCity != null" >
+        ACCI_ADDR_CITY,
+      </if>
+      <if test="acciAddrCounty != null" >
+        ACCI_ADDR_COUNTY,
+      </if>
+      <if test="acciAddrExt != null" >
+        ACCI_ADDR_EXT,
+      </if>
+      <if test="carCertainAmt != null" >
+        CAR_CERTAIN_AMT,
+      </if>
+      <if test="peopleCertainAmt != null" >
+        PEOPLE_CERTAIN_AMT,
+      </if>
+      <if test="isEngineDamage != null" >
+        IS_ENGINE_DAMAGE,
+      </if>
+      <if test="otherCarCertainAmt != null" >
+        OTHER_CAR_CERTAIN_AMT,
+      </if>
+      <if test="otherPeopleCertainAmt != null" >
+        OTHER_PEOPLE_CERTAIN_AMT,
+      </if>
+      <if test="otherObjectCertainAmt != null" >
+        OTHER_OBJECT_CERTAIN_AMT,
+      </if>
+      <if test="totalCertainAmt != null" >
+        TOTAL_CERTAIN_AMT,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1,
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2,
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceId != null" >
+        #{insuranceId,jdbcType=VARCHAR},
+      </if>
+      <if test="acciDate != null" >
+        #{acciDate,jdbcType=DATE},
+      </if>
+      <if test="acciAddrProvince != null" >
+        #{acciAddrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrCity != null" >
+        #{acciAddrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrCounty != null" >
+        #{acciAddrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrExt != null" >
+        #{acciAddrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="carCertainAmt != null" >
+        #{carCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="peopleCertainAmt != null" >
+        #{peopleCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="isEngineDamage != null" >
+        #{isEngineDamage,jdbcType=BIT},
+      </if>
+      <if test="otherCarCertainAmt != null" >
+        #{otherCarCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="otherPeopleCertainAmt != null" >
+        #{otherPeopleCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="otherObjectCertainAmt != null" >
+        #{otherObjectCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="totalCertainAmt != null" >
+        #{totalCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null" >
+        #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.InsuranceClaims" >
+    update t_insurance_claims
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="insuranceId != null" >
+        INSURANCE_ID = #{insuranceId,jdbcType=VARCHAR},
+      </if>
+      <if test="acciDate != null" >
+        ACCI_DATE = #{acciDate,jdbcType=DATE},
+      </if>
+      <if test="acciAddrProvince != null" >
+        ACCI_ADDR_PROVINCE = #{acciAddrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrCity != null" >
+        ACCI_ADDR_CITY = #{acciAddrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrCounty != null" >
+        ACCI_ADDR_COUNTY = #{acciAddrCounty,jdbcType=VARCHAR},
+      </if>
+      <if test="acciAddrExt != null" >
+        ACCI_ADDR_EXT = #{acciAddrExt,jdbcType=VARCHAR},
+      </if>
+      <if test="carCertainAmt != null" >
+        CAR_CERTAIN_AMT = #{carCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="peopleCertainAmt != null" >
+        PEOPLE_CERTAIN_AMT = #{peopleCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="isEngineDamage != null" >
+        IS_ENGINE_DAMAGE = #{isEngineDamage,jdbcType=BIT},
+      </if>
+      <if test="otherCarCertainAmt != null" >
+        OTHER_CAR_CERTAIN_AMT = #{otherCarCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="otherPeopleCertainAmt != null" >
+        OTHER_PEOPLE_CERTAIN_AMT = #{otherPeopleCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="otherObjectCertainAmt != null" >
+        OTHER_OBJECT_CERTAIN_AMT = #{otherObjectCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="totalCertainAmt != null" >
+        TOTAL_CERTAIN_AMT = #{totalCertainAmt,jdbcType=DOUBLE},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reserver1 != null" >
+        RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver2 != null" >
+        RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      </if>
+      <if test="reserver3 != null" >
+        RESERVER3 = #{reserver3,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.InsuranceClaims" >
+    update t_insurance_claims
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      INSURANCE_ID = #{insuranceId,jdbcType=VARCHAR},
+      ACCI_DATE = #{acciDate,jdbcType=DATE},
+      ACCI_ADDR_PROVINCE = #{acciAddrProvince,jdbcType=VARCHAR},
+      ACCI_ADDR_CITY = #{acciAddrCity,jdbcType=VARCHAR},
+      ACCI_ADDR_COUNTY = #{acciAddrCounty,jdbcType=VARCHAR},
+      ACCI_ADDR_EXT = #{acciAddrExt,jdbcType=VARCHAR},
+      CAR_CERTAIN_AMT = #{carCertainAmt,jdbcType=DOUBLE},
+      PEOPLE_CERTAIN_AMT = #{peopleCertainAmt,jdbcType=DOUBLE},
+      IS_ENGINE_DAMAGE = #{isEngineDamage,jdbcType=BIT},
+      OTHER_CAR_CERTAIN_AMT = #{otherCarCertainAmt,jdbcType=DOUBLE},
+      OTHER_PEOPLE_CERTAIN_AMT = #{otherPeopleCertainAmt,jdbcType=DOUBLE},
+      OTHER_OBJECT_CERTAIN_AMT = #{otherObjectCertainAmt,jdbcType=DOUBLE},
+      TOTAL_CERTAIN_AMT = #{totalCertainAmt,jdbcType=DOUBLE},
+      COMMENT = #{comment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      RESERVER1 = #{reserver1,jdbcType=VARCHAR},
+      RESERVER2 = #{reserver2,jdbcType=VARCHAR},
+      RESERVER3 = #{reserver3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -58,4 +58,10 @@ public class DirectoryServiceImpl implements IDirectoryService
 		return directoryDao.selectTemplateCategoryDirectory(templateId, categoryId, required);
 	}
 
+	@Override
+	public Directory getDirectoryByDirName(String dirName) {
+		// TODO Auto-generated method stub
+		return directoryDao.selectByDirName(dirName);
+	}
+
 }

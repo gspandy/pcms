@@ -13,9 +13,7 @@ public class ApplyInsuranceVo {
 	private String insPolicyNo;
 
 	private Double insAmount;
-	@DateTimeFormat(iso = ISO.DATE)
 	private Date insStartDate;
-	@DateTimeFormat(iso = ISO.DATE)
 	private Date insEndDate;
 
 	private Boolean isDamage;

@@ -371,4 +371,14 @@
   <delete id="deleteByAppId">
   	delete from t_insurance_his where APP_ID = #{appId}
   </delete>
+  <select id="selectByInsuranceId" resultMap="InsuranceHisResultMap">
+ 	select 
+  	a.*,
+  	b.NAME as insuranceCompanyName,
+  	c.DICT_DATA_NAME  as insTypeDesc
+  	from t_insurance_his a 
+  	left join T_INSURANCE_COMPANY b on a.INS_COMPANY_ID = b.id
+  	left join SYS_DICT_DATA c on a.INS_TYPE = c.DICT_DATA_CODE
+  	where a.ID = #{id}
+  </select>
 </mapper>

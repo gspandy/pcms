@@ -153,4 +153,7 @@
   		and b.REQUIRED = true
   	</if>
   </select>
+  <select id="selectByDirName" resultMap="BaseResultMap">
+  	select * from t_directory where DIR_NAME = #{dirName}
+  </select>
 </mapper>

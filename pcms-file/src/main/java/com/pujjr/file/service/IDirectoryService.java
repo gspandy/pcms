@@ -21,4 +21,6 @@ public interface IDirectoryService
 	List<Directory> getDirectoryByTemplateId(String templateId);
 	
 	List<Directory> getTemplateCategoryDirectory(String templateId,String categoryId,boolean required);
+	
+	Directory getDirectoryByDirName(String dirName);
 }

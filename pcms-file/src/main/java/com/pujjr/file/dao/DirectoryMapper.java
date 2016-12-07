@@ -28,6 +28,7 @@ public interface DirectoryMapper {
     List<Directory> selectTemplateCategoryDirectory(@Param("templateId")String templateId,
     												@Param("categoryId")String categoryId,
     												@Param("required")boolean required);
+    Directory selectByDirName(@Param("dirName")String dirName);
     
     
 }

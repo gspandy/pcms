@@ -23,4 +23,6 @@ public interface InsuranceHisMapper {
 	List<InsuranceHisPo> selectBySignId(@Param("signId")String signId,@Param("type")String type);
 	
 	int deleteByAppId(@Param("appId")String appId);
+	
+	InsuranceHisPo selectByInsuranceId(String id);
 }

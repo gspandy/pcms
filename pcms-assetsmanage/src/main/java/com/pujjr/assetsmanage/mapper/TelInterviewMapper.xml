@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.assetsmanage.dao.TelInterviewMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.TelInterview">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="ANSWER_STATUS" jdbcType="VARCHAR" property="answerStatus" />
+    <result column="ANSWER_COMMENT" jdbcType="VARCHAR" property="answerComment" />
+    <result column="OTHER_ANSWER" jdbcType="VARCHAR" property="otherAnswer" />
+    <result column="OTHER_COMMENT" jdbcType="VARCHAR" property="otherComment" />
+    <result column="IS_KNOW_CHARGED" jdbcType="BIT" property="isKnowCharged" />
+    <result column="IS_KNOW_CHARGED_COMMENT" jdbcType="VARCHAR" property="isKnowChargedComment" />
+    <result column="IS_KNOW_FINANCE_INFO" jdbcType="BIT" property="isKnowFinanceInfo" />
+    <result column="IS_KNOW_FINANCE_COMMENT" jdbcType="VARCHAR" property="isKnowFinanceComment" />
+    <result column="IS_CHECK_REPAY_ACCT" jdbcType="BIT" property="isCheckRepayAcct" />
+    <result column="IS_CHECK_REPAY_ACCT_COMMENT" jdbcType="VARCHAR" property="isCheckRepayAcctComment" />
+    <result column="IS_GET_CAR" jdbcType="BIT" property="isGetCar" />
+    <result column="IS_GET_CAR_COMMENT" jdbcType="VARCHAR" property="isGetCarComment" />
+    <result column="IS_SATIS" jdbcType="VARCHAR" property="isSatis" />
+    <result column="IS_SATIS_COMMENT" jdbcType="VARCHAR" property="isSatisComment" />
+    <result column="IS_SEND_ACCT_INFO" jdbcType="BIT" property="isSendAcctInfo" />
+    <result column="IS_SEND_ACCT_INFO_COMMENT" jdbcType="VARCHAR" property="isSendAcctInfoComment" />
+    <result column="IS_REPAY_ABNORMAL" jdbcType="BIT" property="isRepayAbnormal" />
+    <result column="IS_REPAY_ABNORMAL_COMMENT" jdbcType="VARCHAR" property="isRepayAbnormalComment" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, ANSWER_STATUS, ANSWER_COMMENT, OTHER_ANSWER, OTHER_COMMENT, IS_KNOW_CHARGED, 
+    IS_KNOW_CHARGED_COMMENT, IS_KNOW_FINANCE_INFO, IS_KNOW_FINANCE_COMMENT, IS_CHECK_REPAY_ACCT, 
+    IS_CHECK_REPAY_ACCT_COMMENT, IS_GET_CAR, IS_GET_CAR_COMMENT, IS_SATIS, IS_SATIS_COMMENT, 
+    IS_SEND_ACCT_INFO, IS_SEND_ACCT_INFO_COMMENT, IS_REPAY_ABNORMAL, IS_REPAY_ABNORMAL_COMMENT, 
+    CREATE_ID, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_tel_interview
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_tel_interview
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.TelInterview">
+    insert into t_tel_interview (ID, APP_ID, ANSWER_STATUS, 
+      ANSWER_COMMENT, OTHER_ANSWER, OTHER_COMMENT, 
+      IS_KNOW_CHARGED, IS_KNOW_CHARGED_COMMENT, IS_KNOW_FINANCE_INFO, 
+      IS_KNOW_FINANCE_COMMENT, IS_CHECK_REPAY_ACCT, IS_CHECK_REPAY_ACCT_COMMENT, 
+      IS_GET_CAR, IS_GET_CAR_COMMENT, IS_SATIS, 
+      IS_SATIS_COMMENT, IS_SEND_ACCT_INFO, IS_SEND_ACCT_INFO_COMMENT, 
+      IS_REPAY_ABNORMAL, IS_REPAY_ABNORMAL_COMMENT, CREATE_ID, 
+      CREATE_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{answerStatus,jdbcType=VARCHAR}, 
+      #{answerComment,jdbcType=VARCHAR}, #{otherAnswer,jdbcType=VARCHAR}, #{otherComment,jdbcType=VARCHAR}, 
+      #{isKnowCharged,jdbcType=BIT}, #{isKnowChargedComment,jdbcType=VARCHAR}, #{isKnowFinanceInfo,jdbcType=BIT}, 
+      #{isKnowFinanceComment,jdbcType=VARCHAR}, #{isCheckRepayAcct,jdbcType=BIT}, #{isCheckRepayAcctComment,jdbcType=VARCHAR}, 
+      #{isGetCar,jdbcType=BIT}, #{isGetCarComment,jdbcType=VARCHAR}, #{isSatis,jdbcType=VARCHAR}, 
+      #{isSatisComment,jdbcType=VARCHAR}, #{isSendAcctInfo,jdbcType=BIT}, #{isSendAcctInfoComment,jdbcType=VARCHAR}, 
+      #{isRepayAbnormal,jdbcType=BIT}, #{isRepayAbnormalComment,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.TelInterview">
+    insert into t_tel_interview
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="answerStatus != null">
+        ANSWER_STATUS,
+      </if>
+      <if test="answerComment != null">
+        ANSWER_COMMENT,
+      </if>
+      <if test="otherAnswer != null">
+        OTHER_ANSWER,
+      </if>
+      <if test="otherComment != null">
+        OTHER_COMMENT,
+      </if>
+      <if test="isKnowCharged != null">
+        IS_KNOW_CHARGED,
+      </if>
+      <if test="isKnowChargedComment != null">
+        IS_KNOW_CHARGED_COMMENT,
+      </if>
+      <if test="isKnowFinanceInfo != null">
+        IS_KNOW_FINANCE_INFO,
+      </if>
+      <if test="isKnowFinanceComment != null">
+        IS_KNOW_FINANCE_COMMENT,
+      </if>
+      <if test="isCheckRepayAcct != null">
+        IS_CHECK_REPAY_ACCT,
+      </if>
+      <if test="isCheckRepayAcctComment != null">
+        IS_CHECK_REPAY_ACCT_COMMENT,
+      </if>
+      <if test="isGetCar != null">
+        IS_GET_CAR,
+      </if>
+      <if test="isGetCarComment != null">
+        IS_GET_CAR_COMMENT,
+      </if>
+      <if test="isSatis != null">
+        IS_SATIS,
+      </if>
+      <if test="isSatisComment != null">
+        IS_SATIS_COMMENT,
+      </if>
+      <if test="isSendAcctInfo != null">
+        IS_SEND_ACCT_INFO,
+      </if>
+      <if test="isSendAcctInfoComment != null">
+        IS_SEND_ACCT_INFO_COMMENT,
+      </if>
+      <if test="isRepayAbnormal != null">
+        IS_REPAY_ABNORMAL,
+      </if>
+      <if test="isRepayAbnormalComment != null">
+        IS_REPAY_ABNORMAL_COMMENT,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="answerStatus != null">
+        #{answerStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="answerComment != null">
+        #{answerComment,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAnswer != null">
+        #{otherAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="otherComment != null">
+        #{otherComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnowCharged != null">
+        #{isKnowCharged,jdbcType=BIT},
+      </if>
+      <if test="isKnowChargedComment != null">
+        #{isKnowChargedComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnowFinanceInfo != null">
+        #{isKnowFinanceInfo,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceComment != null">
+        #{isKnowFinanceComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckRepayAcct != null">
+        #{isCheckRepayAcct,jdbcType=BIT},
+      </if>
+      <if test="isCheckRepayAcctComment != null">
+        #{isCheckRepayAcctComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isGetCar != null">
+        #{isGetCar,jdbcType=BIT},
+      </if>
+      <if test="isGetCarComment != null">
+        #{isGetCarComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatis != null">
+        #{isSatis,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatisComment != null">
+        #{isSatisComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isSendAcctInfo != null">
+        #{isSendAcctInfo,jdbcType=BIT},
+      </if>
+      <if test="isSendAcctInfoComment != null">
+        #{isSendAcctInfoComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepayAbnormal != null">
+        #{isRepayAbnormal,jdbcType=BIT},
+      </if>
+      <if test="isRepayAbnormalComment != null">
+        #{isRepayAbnormalComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.TelInterview">
+    update t_tel_interview
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="answerStatus != null">
+        ANSWER_STATUS = #{answerStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="answerComment != null">
+        ANSWER_COMMENT = #{answerComment,jdbcType=VARCHAR},
+      </if>
+      <if test="otherAnswer != null">
+        OTHER_ANSWER = #{otherAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="otherComment != null">
+        OTHER_COMMENT = #{otherComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnowCharged != null">
+        IS_KNOW_CHARGED = #{isKnowCharged,jdbcType=BIT},
+      </if>
+      <if test="isKnowChargedComment != null">
+        IS_KNOW_CHARGED_COMMENT = #{isKnowChargedComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isKnowFinanceInfo != null">
+        IS_KNOW_FINANCE_INFO = #{isKnowFinanceInfo,jdbcType=BIT},
+      </if>
+      <if test="isKnowFinanceComment != null">
+        IS_KNOW_FINANCE_COMMENT = #{isKnowFinanceComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isCheckRepayAcct != null">
+        IS_CHECK_REPAY_ACCT = #{isCheckRepayAcct,jdbcType=BIT},
+      </if>
+      <if test="isCheckRepayAcctComment != null">
+        IS_CHECK_REPAY_ACCT_COMMENT = #{isCheckRepayAcctComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isGetCar != null">
+        IS_GET_CAR = #{isGetCar,jdbcType=BIT},
+      </if>
+      <if test="isGetCarComment != null">
+        IS_GET_CAR_COMMENT = #{isGetCarComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatis != null">
+        IS_SATIS = #{isSatis,jdbcType=VARCHAR},
+      </if>
+      <if test="isSatisComment != null">
+        IS_SATIS_COMMENT = #{isSatisComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isSendAcctInfo != null">
+        IS_SEND_ACCT_INFO = #{isSendAcctInfo,jdbcType=BIT},
+      </if>
+      <if test="isSendAcctInfoComment != null">
+        IS_SEND_ACCT_INFO_COMMENT = #{isSendAcctInfoComment,jdbcType=VARCHAR},
+      </if>
+      <if test="isRepayAbnormal != null">
+        IS_REPAY_ABNORMAL = #{isRepayAbnormal,jdbcType=BIT},
+      </if>
+      <if test="isRepayAbnormalComment != null">
+        IS_REPAY_ABNORMAL_COMMENT = #{isRepayAbnormalComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.TelInterview">
+    update t_tel_interview
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      ANSWER_STATUS = #{answerStatus,jdbcType=VARCHAR},
+      ANSWER_COMMENT = #{answerComment,jdbcType=VARCHAR},
+      OTHER_ANSWER = #{otherAnswer,jdbcType=VARCHAR},
+      OTHER_COMMENT = #{otherComment,jdbcType=VARCHAR},
+      IS_KNOW_CHARGED = #{isKnowCharged,jdbcType=BIT},
+      IS_KNOW_CHARGED_COMMENT = #{isKnowChargedComment,jdbcType=VARCHAR},
+      IS_KNOW_FINANCE_INFO = #{isKnowFinanceInfo,jdbcType=BIT},
+      IS_KNOW_FINANCE_COMMENT = #{isKnowFinanceComment,jdbcType=VARCHAR},
+      IS_CHECK_REPAY_ACCT = #{isCheckRepayAcct,jdbcType=BIT},
+      IS_CHECK_REPAY_ACCT_COMMENT = #{isCheckRepayAcctComment,jdbcType=VARCHAR},
+      IS_GET_CAR = #{isGetCar,jdbcType=BIT},
+      IS_GET_CAR_COMMENT = #{isGetCarComment,jdbcType=VARCHAR},
+      IS_SATIS = #{isSatis,jdbcType=VARCHAR},
+      IS_SATIS_COMMENT = #{isSatisComment,jdbcType=VARCHAR},
+      IS_SEND_ACCT_INFO = #{isSendAcctInfo,jdbcType=BIT},
+      IS_SEND_ACCT_INFO_COMMENT = #{isSendAcctInfoComment,jdbcType=VARCHAR},
+      IS_REPAY_ABNORMAL = #{isRepayAbnormal,jdbcType=BIT},
+      IS_REPAY_ABNORMAL_COMMENT = #{isRepayAbnormalComment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>
