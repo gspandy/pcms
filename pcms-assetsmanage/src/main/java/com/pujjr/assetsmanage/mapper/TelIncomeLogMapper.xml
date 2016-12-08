@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.TelIncomeLogMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.assetsmanage.domain.TelIncomeLog" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="INCOME_TIME" property="incomeTime" jdbcType="TIMESTAMP" />
+    <result column="INCOME_TYPE" property="incomeType" jdbcType="VARCHAR" />
+    <result column="INCOME_COMMENT" property="incomeComment" jdbcType="VARCHAR" />
+    <result column="PROCESS_STATUS" property="processStatus" jdbcType="VARCHAR" />
+    <result column="PROCESS_TIME" property="processTime" jdbcType="TIMESTAMP" />
+    <result column="PROCESS_COMMENT" property="processComment" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="PROCESS_ID" property="processId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, INCOME_TIME, INCOME_TYPE, INCOME_COMMENT, PROCESS_STATUS, PROCESS_TIME, 
+    PROCESS_COMMENT, CREATE_ID, PROCESS_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_tel_income_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_tel_income_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.assetsmanage.domain.TelIncomeLog" >
+    insert into t_tel_income_log (ID, APP_ID, INCOME_TIME, 
+      INCOME_TYPE, INCOME_COMMENT, PROCESS_STATUS, 
+      PROCESS_TIME, PROCESS_COMMENT, CREATE_ID, 
+      PROCESS_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{incomeTime,jdbcType=TIMESTAMP}, 
+      #{incomeType,jdbcType=VARCHAR}, #{incomeComment,jdbcType=VARCHAR}, #{processStatus,jdbcType=VARCHAR}, 
+      #{processTime,jdbcType=TIMESTAMP}, #{processComment,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{processId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.assetsmanage.domain.TelIncomeLog" >
+    insert into t_tel_income_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="incomeTime != null" >
+        INCOME_TIME,
+      </if>
+      <if test="incomeType != null" >
+        INCOME_TYPE,
+      </if>
+      <if test="incomeComment != null" >
+        INCOME_COMMENT,
+      </if>
+      <if test="processStatus != null" >
+        PROCESS_STATUS,
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME,
+      </if>
+      <if test="processComment != null" >
+        PROCESS_COMMENT,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeTime != null" >
+        #{incomeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incomeType != null" >
+        #{incomeType,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeComment != null" >
+        #{incomeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null" >
+        #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processComment != null" >
+        #{processComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.assetsmanage.domain.TelIncomeLog" >
+    update t_tel_income_log
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeTime != null" >
+        INCOME_TIME = #{incomeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="incomeType != null" >
+        INCOME_TYPE = #{incomeType,jdbcType=VARCHAR},
+      </if>
+      <if test="incomeComment != null" >
+        INCOME_COMMENT = #{incomeComment,jdbcType=VARCHAR},
+      </if>
+      <if test="processStatus != null" >
+        PROCESS_STATUS = #{processStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processComment != null" >
+        PROCESS_COMMENT = #{processComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID = #{processId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.assetsmanage.domain.TelIncomeLog" >
+    update t_tel_income_log
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      INCOME_TIME = #{incomeTime,jdbcType=TIMESTAMP},
+      INCOME_TYPE = #{incomeType,jdbcType=VARCHAR},
+      INCOME_COMMENT = #{incomeComment,jdbcType=VARCHAR},
+      PROCESS_STATUS = #{processStatus,jdbcType=VARCHAR},
+      PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      PROCESS_COMMENT = #{processComment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      PROCESS_ID = #{processId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectTelIncomeLogList" resultType="HashMap">
+  	select 
+  	a.ID as id,
+  	a.APP_ID as appId,
+  	a.INCOME_TIME as incomeTime,
+  	a.INCOME_TYPE as incomeType,
+  	b1.DICT_DATA_NAME as incomeTypeDesc,
+  	a.INCOME_COMMENT as incomeComment,
+  	a.PROCESS_STATUS as processStatus,
+  	b2.DICT_DATA_NAME as processStatusDesc,
+  	a.PROCESS_TIME as processTime,
+  	a.PROCESS_COMMENT as processComment,
+  	a.CREATE_ID as createId,
+  	c1.ACCOUNT_NAME as createName,
+  	a.PROCESS_ID as processId,
+  	c2.ACCOUNT_NAME as processName
+  	from 
+  	t_tel_income_log a 
+  	left join SYS_DICT_DATA b1 on a.INCOME_TYPE = b1.dict_data_code
+  	left join SYS_DICT_DATA b2 on a.PROCESS_STATUS = b2.dict_data_code
+  	left join SYS_ACCOUNT c1 on a.CREATE_ID = c1.ACCOUNT_ID
+  	left join SYS_ACCOUNT c2 on a.PROCESS_ID = c2.ACCOUNT_ID
+  	where a.APP_ID = #{appId}
+  	order by a.INCOME_TIME
+  </select>
+</mapper>

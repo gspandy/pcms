@@ -12,8 +12,8 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt5?characterEncoding=UTF-8" userId="test"
-			password="test" />
+			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdbtest?characterEncoding=UTF-8" userId="xdxt"
+			password="xdxt" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.assetsmanage.domain"
 			targetProject="pcms-assetsmanage/src/main/java" />
@@ -73,8 +73,14 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		 -->	
+		
 		 <table tableName="T_TEL_INTERVIEW" domainObjectName="TelInterview" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		 -->	
+		 
+		 <table tableName="T_TEL_INCOME_LOG" domainObjectName="TelIncomeLog" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

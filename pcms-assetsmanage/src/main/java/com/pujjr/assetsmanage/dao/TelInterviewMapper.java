@@ -1,5 +1,10 @@
 package com.pujjr.assetsmanage.dao;
 
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.assetsmanage.domain.TelInterview;
 
 public interface TelInterviewMapper {
@@ -14,4 +19,6 @@ public interface TelInterviewMapper {
 	int updateByPrimaryKeySelective(TelInterview record);
 
 	int updateByPrimaryKey(TelInterview record);
+	
+	List<TelInterview> selectTelInterviewHisList(@Param("appId") String appId);
 }

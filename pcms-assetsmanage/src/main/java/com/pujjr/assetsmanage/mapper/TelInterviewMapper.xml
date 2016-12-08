@@ -293,4 +293,34 @@
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectTelInterviewHisList" resultMap="BaseResultMap">
+  	select 
+  	a.ID, 
+  	a.APP_ID, 
+  	a.ANSWER_STATUS, 
+  	a.ANSWER_COMMENT, 
+  	a.OTHER_ANSWER, 
+  	a.OTHER_COMMENT, 
+  	a.IS_KNOW_CHARGED, 
+    a.IS_KNOW_CHARGED_COMMENT, 
+    a.IS_KNOW_FINANCE_INFO, 
+    a.IS_KNOW_FINANCE_COMMENT, 
+    a.IS_CHECK_REPAY_ACCT, 
+    a.IS_CHECK_REPAY_ACCT_COMMENT, 
+    a.IS_GET_CAR, 
+    a.IS_GET_CAR_COMMENT, 
+    a.IS_SATIS, 
+    a.IS_SATIS_COMMENT, 
+    a.IS_SEND_ACCT_INFO, 
+    a.IS_SEND_ACCT_INFO_COMMENT, 
+    a.IS_REPAY_ABNORMAL, 
+    a.IS_REPAY_ABNORMAL_COMMENT, 
+    b.ACCOUNT_NAME as CREATE_ID, 
+    a.CREATE_TIME
+  	from 
+  	t_tel_interview a 
+  	left join SYS_ACCOUNT b on a.CREATE_ID = b.ACCOUNT_ID
+  	where a.APP_ID = #{appId}
+  	order by a.CREATE_TIME DESC
+  </select>
 </mapper>
