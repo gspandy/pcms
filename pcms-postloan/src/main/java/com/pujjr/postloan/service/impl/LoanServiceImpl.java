@@ -1,20 +1,30 @@
 package com.pujjr.postloan.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.base.dao.ArchiveTaskMapper;
+import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.SysParam;
+import com.pujjr.base.service.ISequenceService;
+import com.pujjr.base.service.ISysParamService;
 import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.service.IRunWorkflowService;
+import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.domain.GeneralLedger;
+import com.pujjr.postloan.enumeration.ArchiveStatus;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.ILoanService;
@@ -22,6 +32,7 @@ import com.pujjr.postloan.service.IPlanService;
 import com.pujjr.utils.Utils;
 
 @Service
+@Transactional
 public class LoanServiceImpl implements ILoanService {
 	
 	@Autowired
@@ -34,6 +45,12 @@ public class LoanServiceImpl implements ILoanService {
 	private IPlanService planService;
 	@Autowired
 	private IRunWorkflowService  runWorkflowService;
+	@Autowired
+	private ISequenceService seqService;
+	@Autowired
+	private ISysParamService sysParamService;
+	@Autowired
+	private ArchiveTaskMapper archiveTaskDao;
 	
 	@Override
 	public void commitLoanTask(String taskId, String appId) throws Exception {
@@ -98,7 +115,25 @@ public class LoanServiceImpl implements ILoanService {
 			planService.generateRepayPlan(appId, applyVo.getTotalFinanceAmt(), applyVo.getProduct().getYearRate()/12, applyVo.getPeriod(), new Date(), EInterestMode.ONETIME);
 		}	
 		
-		//提交任务
+		//生产档案整理任务
+		ArchiveTask archiveTask = new ArchiveTask();
+		String archiveKey = Utils.get16UUID();
+		archiveTask.setId(archiveKey);
+		archiveTask.setArchiveType(ArchiveType.LoanComplete.getName());
+		archiveTask.setArchiveNo(String.valueOf(seqService.getNextVal("archiveNo")));
+		SysParam sysParam = sysParamService.getSysParamByParamName("archiveMaxDays");
+		archiveTask.setAppId(appId);
+		Date archiveEndDate = Utils.getDateAfterDay(new Date(), Integer.valueOf(sysParam.getParamValue()));
+		archiveTask.setArchiveStatus(ArchiveStatus.WaitingPrint.getName());
+		archiveTask.setIsDelay(false);
+		archiveTask.setArchiveEndDate(archiveEndDate);
+		archiveTaskDao.insert(archiveTask);
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, apply.getCreateAccountId());
+		vars.put("appId", appId);
+		runWorkflowService.startProcess("YFKDAZL", archiveKey, vars);
+		
+		//提交放款完成任务
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);
 	}
 

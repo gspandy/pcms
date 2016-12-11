@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.ArchiveDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveDetail">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ARCHIVE_TASK_ID" jdbcType="VARCHAR" property="archiveTaskId" />
+    <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
+    <result column="FILE_CNT" jdbcType="INTEGER" property="fileCnt" />
+    <result column="CHECK_RESULT" jdbcType="BIT" property="checkResult" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ARCHIVE_TASK_ID, FILE_NAME, FILE_CNT, CHECK_RESULT, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_archive_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveDetail">
+    insert into t_archive_detail (ID, ARCHIVE_TASK_ID, FILE_NAME, 
+      FILE_CNT, CHECK_RESULT, COMMENT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{archiveTaskId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{fileCnt,jdbcType=INTEGER}, #{checkResult,jdbcType=BIT}, #{comment,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveDetail">
+    insert into t_archive_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="archiveTaskId != null">
+        ARCHIVE_TASK_ID,
+      </if>
+      <if test="fileName != null">
+        FILE_NAME,
+      </if>
+      <if test="fileCnt != null">
+        FILE_CNT,
+      </if>
+      <if test="checkResult != null">
+        CHECK_RESULT,
+      </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveTaskId != null">
+        #{archiveTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCnt != null">
+        #{fileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="checkResult != null">
+        #{checkResult,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveDetail">
+    update t_archive_detail
+    <set>
+      <if test="archiveTaskId != null">
+        ARCHIVE_TASK_ID = #{archiveTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileCnt != null">
+        FILE_CNT = #{fileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="checkResult != null">
+        CHECK_RESULT = #{checkResult,jdbcType=BIT},
+      </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveDetail">
+    update t_archive_detail
+    set ARCHIVE_TASK_ID = #{archiveTaskId,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      FILE_CNT = #{fileCnt,jdbcType=INTEGER},
+      CHECK_RESULT = #{checkResult,jdbcType=BIT},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByArchiveTaskId">
+  	delete from t_archive_detail where ARCHIVE_TASK_ID = #{archiveTaskId}
+  </delete>
+</mapper>

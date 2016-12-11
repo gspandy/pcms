@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ArchiveTaskMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveTask" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_TYPE" property="archiveType" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_NO" property="archiveNo" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_STATUS" property="archiveStatus" jdbcType="VARCHAR" />
+    <result column="CHECK_ID" property="checkId" jdbcType="VARCHAR" />
+    <result column="CHECK_TIME" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="POST_ID" property="postId" jdbcType="VARCHAR" />
+    <result column="POST_TIME" property="postTime" jdbcType="TIMESTAMP" />
+    <result column="COMMIT_ID" property="commitId" jdbcType="VARCHAR" />
+    <result column="COMMIT_TIME" property="commitTime" jdbcType="TIMESTAMP" />
+    <result column="PROCESS_ID" property="processId" jdbcType="VARCHAR" />
+    <result column="PROCESS_TIME" property="processTime" jdbcType="TIMESTAMP" />
+    <result column="ARCHIVE_END_DATE" property="archiveEndDate" jdbcType="DATE" />
+    <result column="IS_DELAY" property="isDelay" jdbcType="BIT" />
+    <result column="DELAY_END_DATE" property="delayEndDate" jdbcType="DATE" />
+    <result column="EXPRESS_COMPANY" property="expressCompany" jdbcType="VARCHAR" />
+    <result column="EXPRESS_NO" property="expressNo" jdbcType="VARCHAR" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="PROC_INST_ID" property="procInstId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ARCHIVE_TYPE, ARCHIVE_NO, APP_ID, ARCHIVE_STATUS, CHECK_ID, CHECK_TIME, POST_ID, 
+    POST_TIME, COMMIT_ID, COMMIT_TIME, PROCESS_ID, PROCESS_TIME, ARCHIVE_END_DATE, IS_DELAY, 
+    DELAY_END_DATE, EXPRESS_COMPANY, EXPRESS_NO, COMMENT, PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_archive_task
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveTask" >
+    insert into t_archive_task (ID, ARCHIVE_TYPE, ARCHIVE_NO, 
+      APP_ID, ARCHIVE_STATUS, CHECK_ID, 
+      CHECK_TIME, POST_ID, POST_TIME, 
+      COMMIT_ID, COMMIT_TIME, PROCESS_ID, 
+      PROCESS_TIME, ARCHIVE_END_DATE, IS_DELAY, 
+      DELAY_END_DATE, EXPRESS_COMPANY, EXPRESS_NO, 
+      COMMENT, PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{archiveType,jdbcType=VARCHAR}, #{archiveNo,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{archiveStatus,jdbcType=VARCHAR}, #{checkId,jdbcType=VARCHAR}, 
+      #{checkTime,jdbcType=TIMESTAMP}, #{postId,jdbcType=VARCHAR}, #{postTime,jdbcType=TIMESTAMP}, 
+      #{commitId,jdbcType=VARCHAR}, #{commitTime,jdbcType=TIMESTAMP}, #{processId,jdbcType=VARCHAR}, 
+      #{processTime,jdbcType=TIMESTAMP}, #{archiveEndDate,jdbcType=DATE}, #{isDelay,jdbcType=BIT}, 
+      #{delayEndDate,jdbcType=DATE}, #{expressCompany,jdbcType=VARCHAR}, #{expressNo,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR}, #{procInstId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveTask" >
+    insert into t_archive_task
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="archiveType != null" >
+        ARCHIVE_TYPE,
+      </if>
+      <if test="archiveNo != null" >
+        ARCHIVE_NO,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="archiveStatus != null" >
+        ARCHIVE_STATUS,
+      </if>
+      <if test="checkId != null" >
+        CHECK_ID,
+      </if>
+      <if test="checkTime != null" >
+        CHECK_TIME,
+      </if>
+      <if test="postId != null" >
+        POST_ID,
+      </if>
+      <if test="postTime != null" >
+        POST_TIME,
+      </if>
+      <if test="commitId != null" >
+        COMMIT_ID,
+      </if>
+      <if test="commitTime != null" >
+        COMMIT_TIME,
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID,
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME,
+      </if>
+      <if test="archiveEndDate != null" >
+        ARCHIVE_END_DATE,
+      </if>
+      <if test="isDelay != null" >
+        IS_DELAY,
+      </if>
+      <if test="delayEndDate != null" >
+        DELAY_END_DATE,
+      </if>
+      <if test="expressCompany != null" >
+        EXPRESS_COMPANY,
+      </if>
+      <if test="expressNo != null" >
+        EXPRESS_NO,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveType != null" >
+        #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveNo != null" >
+        #{archiveNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        #{archiveStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null" >
+        #{checkId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postId != null" >
+        #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="postTime != null" >
+        #{postTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitId != null" >
+        #{commitId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTime != null" >
+        #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archiveEndDate != null" >
+        #{archiveEndDate,jdbcType=DATE},
+      </if>
+      <if test="isDelay != null" >
+        #{isDelay,jdbcType=BIT},
+      </if>
+      <if test="delayEndDate != null" >
+        #{delayEndDate,jdbcType=DATE},
+      </if>
+      <if test="expressCompany != null" >
+        #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null" >
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveTask" >
+    update t_archive_task
+    <set >
+      <if test="archiveType != null" >
+        ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveNo != null" >
+        ARCHIVE_NO = #{archiveNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveStatus != null" >
+        ARCHIVE_STATUS = #{archiveStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkId != null" >
+        CHECK_ID = #{checkId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="postId != null" >
+        POST_ID = #{postId,jdbcType=VARCHAR},
+      </if>
+      <if test="postTime != null" >
+        POST_TIME = #{postTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="commitId != null" >
+        COMMIT_ID = #{commitId,jdbcType=VARCHAR},
+      </if>
+      <if test="commitTime != null" >
+        COMMIT_TIME = #{commitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID = #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="archiveEndDate != null" >
+        ARCHIVE_END_DATE = #{archiveEndDate,jdbcType=DATE},
+      </if>
+      <if test="isDelay != null" >
+        IS_DELAY = #{isDelay,jdbcType=BIT},
+      </if>
+      <if test="delayEndDate != null" >
+        DELAY_END_DATE = #{delayEndDate,jdbcType=DATE},
+      </if>
+      <if test="expressCompany != null" >
+        EXPRESS_COMPANY = #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        EXPRESS_NO = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="procInstId != null" >
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveTask" >
+    update t_archive_task
+    set ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      ARCHIVE_NO = #{archiveNo,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      ARCHIVE_STATUS = #{archiveStatus,jdbcType=VARCHAR},
+      CHECK_ID = #{checkId,jdbcType=VARCHAR},
+      CHECK_TIME = #{checkTime,jdbcType=TIMESTAMP},
+      POST_ID = #{postId,jdbcType=VARCHAR},
+      POST_TIME = #{postTime,jdbcType=TIMESTAMP},
+      COMMIT_ID = #{commitId,jdbcType=VARCHAR},
+      COMMIT_TIME = #{commitTime,jdbcType=TIMESTAMP},
+      PROCESS_ID = #{processId,jdbcType=VARCHAR},
+      PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      ARCHIVE_END_DATE = #{archiveEndDate,jdbcType=DATE},
+      IS_DELAY = #{isDelay,jdbcType=BIT},
+      DELAY_END_DATE = #{delayEndDate,jdbcType=DATE},
+      EXPRESS_COMPANY = #{expressCompany,jdbcType=VARCHAR},
+      EXPRESS_NO = #{expressNo,jdbcType=VARCHAR},
+      COMMENT = #{comment,jdbcType=VARCHAR},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

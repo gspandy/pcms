@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.assetsmanage.dao.ArchiveMapper" >
+ 	<select id="selectArchiveToDoTaskList" resultType="HashMap">
+  	select * from
+  	(
+  		select 
+		a.ID_ as taskId,
+		a.name_ as taskName,
+		a.PROC_INST_ID_ as procInstId,
+		a.TASK_DEF_KEY_ as taskDefKey,
+		b.BUSINESS_KEY_ as businessKey,
+		c.KEY_ as workflowKey,
+		d.TEXT_ as appId,
+		e.NAME as custName,
+		f.TOTAL_FINANCE_AMT as totalFinanceAmount,
+		f.PERIOD as period,
+		sign.CONTRACT_NO as contractNo,
+		archive.ID as archiveTaskId,
+		archive.ARCHIVE_NO as archiveNo,
+		archive.ARCHIVE_STATUS as archiveStatus,
+		dict.DICT_DATA_NAME as archiveStatusDesc,
+		archive.ARCHIVE_END_DATE as archiveEndDate,
+		archive.IS_DELAY as isDelay,
+		archive.DELAY_END_DATE as delayEndDate,
+		archive.EXPRESS_COMPANY as expressCompany,
+		dict2.DICT_DATA_NAME as expressCompanyDesc,
+		archive.EXPRESS_NO as expressNo
+		from act_ru_task a 
+		left join act_ru_execution b on a.PROC_INST_ID_  = b. PROC_INST_ID_
+		left join act_re_procdef c on b.PROC_DEF_ID_ = c.ID_
+		inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
+		left join t_apply_tenant e on d.TEXT_ = e.APP_ID 
+		left join t_apply f on e.APP_ID = f.APP_ID
+		left join T_ARCHIVE_TASK archive on archive.APP_ID  = d.TEXT_
+		left join T_SIGN_CONTRACT sign on sign.APP_ID = d.TEXT_
+		left join SYS_DICT_DATA dict on dict.DICT_DATA_CODE = archive.ARCHIVE_STATUS
+		left join SYS_DICT_DATA dict2 on dict2.DICT_DATA_CODE = archive.EXPRESS_COMPANY
+		where 
+		a.ASSIGNEE_ = #{assignee} 
+		and c.KEY_ = 'YFKDAZL' 
+  	)
+  	tmp group by taskId	
+  	</select>
+  	
+  <resultMap id="ArchiveDetailResultMap" type="com.pujjr.assetsmanage.po.ArchiveDetailPo" >
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ARCHIVE_TASK_ID" jdbcType="VARCHAR" property="archiveTaskId" />
+    <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
+    <result column="FILE_CNT" jdbcType="INTEGER" property="fileCnt" />
+    <result column="CHECK_RESULT" jdbcType="BIT" property="checkResult" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+    <result column="FILE_NAME_DESC" property="fileNameDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectArchiveTaskDetail" resultMap="ArchiveDetailResultMap">
+  	
+  	select 
+  	b1.ID,
+  	b1.ARCHIVE_TASK_ID,
+  	a1.DICT_DATA_CODE as FILE_NAME,
+  	b1.FILE_CNT,
+  	b1.COMMENT,
+  	a1.DICT_DATA_NAME  as FILE_NAME_DESC,
+  	b1.CHECK_RESULT
+  	from 
+  	(
+  		select 
+		b.DICT_DATA_CODE ,
+		b.DICT_DATA_NAME
+  		from SYS_DICT_TYPE a 
+  		left join SYS_DICT_DATA b on a.ID = b.DICT_TYPE_ID
+  		where a.DICT_TYPE_CODE = #{archiveTaskType}
+  	) a1 
+  	
+  	left join 
+  	(
+  		select * from T_ARCHIVE_DETAIL c where c.ARCHIVE_TASK_ID = #{archiveTaskId}
+  	) b1
+  	 on a1.DICT_DATA_CODE = b1.FILE_NAME
+  </select>
+  <select id="selectArchiveTaskDetailNoNull" resultMap="ArchiveDetailResultMap">
+  	select 
+  	b1.ID,
+  	b1.ARCHIVE_TASK_ID,
+  	a1.DICT_DATA_CODE as FILE_NAME,
+  	b1.FILE_CNT,
+  	b1.COMMENT,
+  	a1.DICT_DATA_NAME  as FILE_NAME_DESC,
+  	b1.CHECK_RESULT
+  	from
+  	(
+  		select * from T_ARCHIVE_DETAIL c where c.ARCHIVE_TASK_ID = #{archiveTaskId}
+  	) b1
+  	left join SYS_DICT_DATA a1 on a1.DICT_DATA_CODE = b1.FILE_NAME
+  </select>
+  <select id="selectArchiveList" resultType="HashMap">
+  	select
+  		e.NAME as custName,
+  		archive.APP_ID as appId,
+  		sign.CONTRACT_NO as contractNo,
+  		archive.ID as archiveTaskId,
+		archive.ARCHIVE_NO as archiveNo,
+		archive.ARCHIVE_STATUS as archiveStatus,
+		dict.DICT_DATA_NAME as archiveStatusDesc,
+		archive.ARCHIVE_END_DATE as archiveEndDate,
+		archive.IS_DELAY as isDelay,
+		archive.DELAY_END_DATE as delayEndDate,
+		archive.EXPRESS_COMPANY as expressCompany,
+		dict2.DICT_DATA_NAME as expressCompanyDesc,
+		archive.EXPRESS_NO as expressNo
+  	from T_ARCHIVE_TASK archive 
+  	left join t_apply_tenant e on archive.APP_ID = e.APP_ID 
+  	left join T_SIGN_CONTRACT sign on sign.APP_ID = archive.APP_ID
+  	left join SYS_DICT_DATA dict on dict.DICT_DATA_CODE = archive.ARCHIVE_STATUS
+  	left join SYS_DICT_DATA dict2 on dict2.DICT_DATA_CODE = archive.EXPRESS_COMPANY
+  	left join SYS_DICT_DATA dict3 on dict3.DICT_DATA_CODE = archive.ARCHIVE_TYPE
+  </select>
+</mapper>
