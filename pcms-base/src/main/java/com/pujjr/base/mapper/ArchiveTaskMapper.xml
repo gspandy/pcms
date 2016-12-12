@@ -267,4 +267,8 @@
       PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectArchiveTaskOverdueList" resultMap="BaseResultMap">
+  	select * from t_archive_task
+  	where ARCHIVE_TYPE = #{archiveType} and ARCHIVE_END_DATE = #{endDate}
+  </select>
 </mapper>

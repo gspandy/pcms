@@ -1,13 +1,22 @@
 package com.pujjr.schedule.service;
 
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pujjr.assetsmanage.service.ICollectionService;
+import com.pujjr.assetsmanage.service.IInsuranceManageService;
+import com.pujjr.assetsmanage.service.ITelInterviewService;
+import com.pujjr.base.dao.ArchiveTaskMapper;
+import com.pujjr.base.dao.InsuranceHisMapper;
+import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.Sequence;
 import com.pujjr.base.service.IHolidayService;
+import com.pujjr.base.service.ISequenceService;
+import com.pujjr.carcredit.constant.InsuranceType;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.OverdueLogMapper;
@@ -20,6 +29,8 @@ import com.pujjr.postloan.domain.OverdueLog;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingCharge;
+import com.pujjr.postloan.enumeration.ArchiveStatus;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayMode;
@@ -47,6 +58,16 @@ public class CutOffService
 	private OverdueLogMapper overdueLogDao;
 	@Autowired
 	private ICollectionService collectionService;
+	@Autowired
+	private ISequenceService  seqService;
+	@Autowired
+	private ArchiveTaskMapper archiveTaskDao;
+	@Autowired
+	private ITelInterviewService telInterviewService;
+	@Autowired
+	private InsuranceHisMapper insHisDao;
+	@Autowired
+	private IInsuranceManageService insManageService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
@@ -208,11 +229,88 @@ public class CutOffService
 		}
 		System.out.println("结束日切处理");
 	}
-
+	/**
+	 * 初始化序列号
+	 */
+	private void resetSequence()
+	{
+		List<Sequence> seqList = seqService.getAll();
+		Calendar cal = Calendar.getInstance();
+	    int day = cal.get(Calendar.DATE);
+	    int month = cal.get(Calendar.MONTH) + 1;
+		for(Sequence item : seqList)
+		{
+			switch(item.getResetTime())
+			{
+				case "day" :
+					//每天充值
+					item.setCurval(1);
+					seqService.modify(item);
+					break;
+				case "month":
+				    //每月1号重置
+				    if(day==1)
+				    {
+				    	item.setCurval(1);
+				    	seqService.modify(item);
+				    }
+				    break;
+				case "year":
+				    if(month == 1 && day == 1)
+				    {
+				    	item.setCurval(1);
+				    	seqService.modify(item);
+				    }
+					break;
+				default:
+					break;
+			}
+		}
+	}
+	//计算归档任务逾期
+	private void checkArchiveTaskOverdue()
+	{
+		Date beforeDay = Utils.getDateAfterDay(new Date(), -1);
+		List<ArchiveTask> overdueTasks = archiveTaskDao.selectArchiveTaskOverdueList(ArchiveType.LoanComplete.getName(), beforeDay);
+		for(ArchiveTask item : overdueTasks)
+		{
+			item.setArchiveStatus(ArchiveStatus.ArchiveOverdue.getName());
+			archiveTaskDao.updateByPrimaryKey(item);
+		}
+	}
+	//放款完成后15天自动生成电话回访任务
+	private  void generateTelInterviewTask()
+	{
+		Date beforeDay = Utils.getDateAfterDay(new Date(), -15);
+		List<GeneralLedger> list = ledgerDao.selectByLoanDate(beforeDay);
+		for(GeneralLedger item : list)
+		{
+			telInterviewService.createTelInterviewTask(item.getAppId(), "admin");
+		}
+	}
+	//商业保险到期前30天生成保险续保任务
+	private void checkNeedInsuranceContinue()
+	{
+		Date afterDay = Utils.getDateAfterDay(new Date(), 30);
+		List<String> list = insHisDao.selectNeedContinueInsuranceList(InsuranceType.SYX.getName(), afterDay);
+		for(String appId : list)
+		{
+			insManageService.createInsuranceContinueTask(appId, "admin");
+		}
+	}
+	
 	public void run() throws ParseException {
 		// TODO Auto-generated method stub
 		//日切账务处理
 		handleAccounting();
+		//重置序列号
+		resetSequence();
+		//计算归档任务逾期
+		checkArchiveTaskOverdue();
+		//创建放款电话回访任务
+		generateTelInterviewTask();
+		//创建商业保险续保任务
+		checkNeedInsuranceContinue();
 	}
 
 }

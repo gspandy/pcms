@@ -365,4 +365,7 @@
   <select id="selectByAppId" resultMap="BaseResultMap">
   	select * from t_general_ledger where APP_ID = #{appId}
   </select>
+  <select id="selectByLoanDate" resultMap="BaseResultMap">
+  	select * from t-general_ledger where LOAN_DATE = #{loanDate}
+  </select>
 </mapper>

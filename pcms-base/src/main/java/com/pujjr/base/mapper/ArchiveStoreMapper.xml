@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ArchiveStoreMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveStore" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_TYPE" property="archiveType" jdbcType="VARCHAR" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="TOTAL_FILE_CNT" property="totalFileCnt" jdbcType="INTEGER" />
+    <result column="REMAIN_FILE_CNT" property="remainFileCnt" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, APP_ID, ARCHIVE_TYPE, FILE_NAME, TOTAL_FILE_CNT, REMAIN_FILE_CNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_store
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_archive_store
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveStore" >
+    insert into t_archive_store (ID, APP_ID, ARCHIVE_TYPE, 
+      FILE_NAME, TOTAL_FILE_CNT, REMAIN_FILE_CNT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{archiveType,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=VARCHAR}, #{totalFileCnt,jdbcType=INTEGER}, #{remainFileCnt,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveStore" >
+    insert into t_archive_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="archiveType != null" >
+        ARCHIVE_TYPE,
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME,
+      </if>
+      <if test="totalFileCnt != null" >
+        TOTAL_FILE_CNT,
+      </if>
+      <if test="remainFileCnt != null" >
+        REMAIN_FILE_CNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveType != null" >
+        #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFileCnt != null" >
+        #{totalFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remainFileCnt != null" >
+        #{remainFileCnt,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveStore" >
+    update t_archive_store
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveType != null" >
+        ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="totalFileCnt != null" >
+        TOTAL_FILE_CNT = #{totalFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="remainFileCnt != null" >
+        REMAIN_FILE_CNT = #{remainFileCnt,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveStore" >
+    update t_archive_store
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      TOTAL_FILE_CNT = #{totalFileCnt,jdbcType=INTEGER},
+      REMAIN_FILE_CNT = #{remainFileCnt,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

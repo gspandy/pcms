@@ -21,6 +21,7 @@ import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.assetsmanage.vo.ArchiveDelayVo;
 import com.pujjr.assetsmanage.vo.ArchiveLogVo;
 import com.pujjr.assetsmanage.vo.ArchivePostVo;
+import com.pujjr.assetsmanage.vo.ArchiveSupplyVo;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
@@ -107,5 +108,12 @@ public class ArchiveController extends BaseController
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		archiveService.createCollectionArchiveTask(appId, archiveType, records, account.getAccountId());
+	}
+	
+	@RequestMapping(value="/applyArchiveSupply/{taskId}",method=RequestMethod.POST)
+	public void applyArchiveSupply(@RequestBody ArchiveSupplyVo vo, @PathVariable String taskId,HttpServletRequest request) throws Exception
+	{
+		SysAccount account = (SysAccount)request.getAttribute("account");
+		archiveService.applyArchiveSupply(vo, taskId, account.getAccountId());
 	}
 }

@@ -1,5 +1,8 @@
 package com.pujjr.postloan.dao;
 
+import java.util.Date;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.postloan.domain.GeneralLedger;
@@ -19,5 +22,7 @@ public interface GeneralLedgerMapper {
 	int updateByPrimaryKey(GeneralLedger record);
 	
 	GeneralLedger selectByAppId(@Param("appId")String appId);
+	
+	List<GeneralLedger> selectByLoanDate(@Param("loanDate")Date loanDate);
 	
 }

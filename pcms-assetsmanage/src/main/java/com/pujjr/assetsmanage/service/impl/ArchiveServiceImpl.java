@@ -21,15 +21,23 @@ import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.assetsmanage.vo.ArchiveDelayVo;
 import com.pujjr.assetsmanage.vo.ArchiveLogVo;
 import com.pujjr.assetsmanage.vo.ArchivePostVo;
+import com.pujjr.assetsmanage.vo.ArchiveSupplyVo;
 import com.pujjr.base.dao.ArchiveDetailMapper;
+import com.pujjr.base.dao.ArchiveSupplyDetailMapper;
+import com.pujjr.base.dao.ArchiveSupplyMapper;
 import com.pujjr.base.dao.ArchiveTaskMapper;
 import com.pujjr.base.domain.ArchiveDetail;
+import com.pujjr.base.domain.ArchiveSupply;
+import com.pujjr.base.domain.ArchiveSupplyDetail;
 import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.SysDictData;
 import com.pujjr.base.service.ISequenceService;
+import com.pujjr.base.service.ISysDictService;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.enumeration.ArchiveStatus;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.utils.Utils;
 
 @Service
@@ -48,6 +56,12 @@ public class ArchiveServiceImpl implements IArchiveService {
 	private IRunWorkflowService runWorkflowService;
 	@Autowired
 	private ISequenceService seqService;
+	@Autowired
+	private ISysDictService dictService;
+	@Autowired
+	private ArchiveSupplyMapper archiveSupplyDao;
+	@Autowired
+	private ArchiveSupplyDetailMapper archiveSupplyDetailDao;
 	
 	@Override
 	public List<HashMap<String, Object>> getArchiveToDoTaskList(String assignee) {
@@ -68,7 +82,7 @@ public class ArchiveServiceImpl implements IArchiveService {
 		archiveDetailDao.deleteByArchiveTaskId(archiveTaskId);
 		for(ArchiveDetailPo item : records)
 		{
-			if(item.getFileCnt()==null || item.getFileCnt().equals("0"))
+			if(item.getPostFileCnt()==null || item.getPostFileCnt().equals("0"))
 			{
 				continue;
 			}
@@ -76,7 +90,7 @@ public class ArchiveServiceImpl implements IArchiveService {
 			dtlPo.setId(Utils.get16UUID());
 			dtlPo.setArchiveTaskId(archiveTaskId);
 			dtlPo.setFileName(item.getFileName());
-			dtlPo.setFileCnt(item.getFileCnt());
+			dtlPo.setPostFileCnt(item.getPostFileCnt());
 			dtlPo.setComment(item.getComment());
 			archiveDetailDao.insert(dtlPo);
 		}
@@ -210,7 +224,7 @@ public class ArchiveServiceImpl implements IArchiveService {
 		archiveTask.setCommitTime(new Date());
 		for(ArchiveDetailPo item : records)
 		{
-			if(item.getFileCnt()==null || item.getFileCnt().equals("0"))
+			if(item.getPostFileCnt()==null || item.getPostFileCnt().equals("0"))
 			{
 				continue;
 			}
@@ -218,7 +232,7 @@ public class ArchiveServiceImpl implements IArchiveService {
 			dtlPo.setId(Utils.get16UUID());
 			dtlPo.setArchiveTaskId(businessKey);
 			dtlPo.setFileName(item.getFileName());
-			dtlPo.setFileCnt(item.getFileCnt());
+			dtlPo.setPostFileCnt(item.getPostFileCnt());
 			dtlPo.setComment(item.getComment());
 			archiveDetailDao.insert(dtlPo);
 		}
@@ -230,6 +244,97 @@ public class ArchiveServiceImpl implements IArchiveService {
 		
 		archiveTask.setProcInstId(instance.getProcessInstanceId());
 		archiveTaskDao.insert(archiveTask);
+	}
+
+	@Override
+	public void createAutoArchiveTask(String appId, String archiveType, String operId) {
+		// TODO Auto-generated method stub
+		ArchiveTask archiveTask =  new ArchiveTask();
+		String businessKey = Utils.get16UUID();
+		archiveTask.setId(businessKey);
+		archiveTask.setArchiveType(archiveType);
+		archiveTask.setAppId(appId);
+		archiveTask.setArchiveNo(String.valueOf(seqService.getNextVal("archiveNo")));
+		archiveTask.setArchiveStatus(ArchiveStatus.WaitingProcess.getName());
+		archiveTask.setCommitId(operId);
+		archiveTask.setCommitTime(new Date());
+		for(ArchiveType type : ArchiveType.values())
+		{
+			if(type.getName().equals(archiveType))
+			{
+				//生成明细项
+				List<SysDictData> items = dictService.getDictDataListByDictTypeCode(type.getType());
+				for(SysDictData item : items)
+				{
+					ArchiveDetail dtl = new ArchiveDetail();
+					dtl.setId(Utils.get16UUID());
+					dtl.setArchiveTaskId(businessKey);
+					dtl.setFileName(item.getDictDataCode());
+					dtl.setPostFileCnt(0);
+					dtl.setRecvFileCnt(0);
+					archiveDetailDao.insert(dtl);
+				}
+			}
+		}
+		
+		//启动任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("appId", appId);
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
+		ProcessInstance instance = runWorkflowService.startProcess("ZDFQDAGD", archiveTask.getId(), vars);
+		
+		archiveTask.setProcInstId(instance.getProcessInstanceId());
+		archiveTaskDao.insert(archiveTask);
+	}
+
+	@Override
+	public void applyArchiveSupply(ArchiveSupplyVo vo, String taskId,String operId) throws Exception {
+		// TODO Auto-generated method stub
+		//检查任务合法性
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) 
+		{
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}		
+		
+		//更新归档信息
+		for(ArchiveDetailPo item : vo.getArchiveTask().getDetailList())
+		{
+			archiveDetailDao.updateByPrimaryKey(item);
+		}
+		
+		//创建补充资料信息
+		ArchiveSupply supplyPo = new ArchiveSupply();
+		String supplyId = Utils.get16UUID();
+		supplyPo.setId(supplyId);
+		supplyPo.setArchiveTaskId(vo.getArchiveTask().getId());
+		supplyPo.setCreateId(operId);
+		supplyPo.setCreateTime(new Date());
+		supplyPo.setIsProcessed(false);
+		supplyPo.setComment(vo.getComment());
+		archiveSupplyDao.insert(supplyPo);
+		
+		//插入补充明细信息
+		for(ArchiveSupplyDetail item : vo.getSupplyDetailList())
+		{
+			if(item.getSupplyFileCnt()==null || item.getSupplyFileCnt().equals("0"))
+			{
+				continue;
+			}
+			ArchiveSupplyDetail supplyDetailPo = new ArchiveSupplyDetail();
+			supplyDetailPo.setId(Utils.get16UUID());
+			supplyDetailPo.setSupplyId(supplyId);
+			supplyDetailPo.setFileName(item.getFileName());
+			supplyDetailPo.setSupplyFileCnt(item.getSupplyFileCnt());
+			supplyDetailPo.setPostFileCnt(0);
+			supplyDetailPo.setRecvFileCnt(0);
+			archiveSupplyDetailDao.insert(supplyDetailPo);
+		}
+		
+		//提交任务
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("isArchiveSupply", true);
+		//runWorkflowService.completeTask(taskId,"",vars,CommandType.COMMIT);
 	}
 
 }

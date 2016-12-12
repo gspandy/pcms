@@ -1,5 +1,10 @@
 package com.pujjr.base.dao;
 
+import java.util.Date;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.base.domain.ArchiveTask;
 
 public interface ArchiveTaskMapper {
@@ -14,4 +19,6 @@ public interface ArchiveTaskMapper {
     int updateByPrimaryKeySelective(ArchiveTask record);
 
     int updateByPrimaryKey(ArchiveTask record);
+    
+    List<ArchiveTask> selectArchiveTaskOverdueList(@Param("archiveType")String archiveType,@Param("endDate")Date endDate);
 }

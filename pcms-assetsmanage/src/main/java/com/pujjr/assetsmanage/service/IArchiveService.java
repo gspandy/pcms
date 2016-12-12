@@ -13,6 +13,7 @@ import com.pujjr.assetsmanage.po.ArchiveTaskPo;
 import com.pujjr.assetsmanage.vo.ArchiveDelayVo;
 import com.pujjr.assetsmanage.vo.ArchiveLogVo;
 import com.pujjr.assetsmanage.vo.ArchivePostVo;
+import com.pujjr.assetsmanage.vo.ArchiveSupplyVo;
 
 @Service
 @Transactional
@@ -84,5 +85,19 @@ public interface IArchiveService
 	 * @param operId
 	 */
 	public void createCollectionArchiveTask(String appId,String archiveType,List<ArchiveDetailPo> records,String operId);
+	/**
+	 * 创建自动归档任务
+	 * @param appId
+	 * @param archiveType
+	 * @param operId
+	 */
+	public void createAutoArchiveTask(String appId,String archiveType,String operId);
+	/**
+	 * 申请补充归档资料
+	 * @param vo 补充信息
+	 * @param operId 执行人
+	 * @throws Exception 
+	 */
+	public void applyArchiveSupply(ArchiveSupplyVo vo,String taskId,String operId) throws Exception;
 	
 }

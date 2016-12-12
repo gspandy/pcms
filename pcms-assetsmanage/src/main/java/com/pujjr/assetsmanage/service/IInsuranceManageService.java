@@ -52,4 +52,5 @@ public interface IInsuranceManageService
 	 * @return
 	 */
 	public void addInsuranceClaims(InsuranceClaims po);
+	
 }

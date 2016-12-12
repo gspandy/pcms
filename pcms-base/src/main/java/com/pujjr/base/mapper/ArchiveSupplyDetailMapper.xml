@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ArchiveSupplyDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveSupplyDetail" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="SUPPLY_ID" property="supplyId" jdbcType="VARCHAR" />
+    <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+    <result column="SUPPLY_FILE_CNT" property="supplyFileCnt" jdbcType="INTEGER" />
+    <result column="POST_FILE_CNT" property="postFileCnt" jdbcType="INTEGER" />
+    <result column="RECV_FILE_CNT" property="recvFileCnt" jdbcType="INTEGER" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, SUPPLY_ID, FILE_NAME, SUPPLY_FILE_CNT, POST_FILE_CNT, RECV_FILE_CNT, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_supply_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_archive_supply_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveSupplyDetail" >
+    insert into t_archive_supply_detail (ID, SUPPLY_ID, FILE_NAME, 
+      SUPPLY_FILE_CNT, POST_FILE_CNT, RECV_FILE_CNT, 
+      COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{supplyId,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, 
+      #{supplyFileCnt,jdbcType=INTEGER}, #{postFileCnt,jdbcType=INTEGER}, #{recvFileCnt,jdbcType=INTEGER}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveSupplyDetail" >
+    insert into t_archive_supply_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="supplyId != null" >
+        SUPPLY_ID,
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME,
+      </if>
+      <if test="supplyFileCnt != null" >
+        SUPPLY_FILE_CNT,
+      </if>
+      <if test="postFileCnt != null" >
+        POST_FILE_CNT,
+      </if>
+      <if test="recvFileCnt != null" >
+        RECV_FILE_CNT,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyId != null" >
+        #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyFileCnt != null" >
+        #{supplyFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="postFileCnt != null" >
+        #{postFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="recvFileCnt != null" >
+        #{recvFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveSupplyDetail" >
+    update t_archive_supply_detail
+    <set >
+      <if test="supplyId != null" >
+        SUPPLY_ID = #{supplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplyFileCnt != null" >
+        SUPPLY_FILE_CNT = #{supplyFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="postFileCnt != null" >
+        POST_FILE_CNT = #{postFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="recvFileCnt != null" >
+        RECV_FILE_CNT = #{recvFileCnt,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveSupplyDetail" >
+    update t_archive_supply_detail
+    set SUPPLY_ID = #{supplyId,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      SUPPLY_FILE_CNT = #{supplyFileCnt,jdbcType=INTEGER},
+      POST_FILE_CNT = #{postFileCnt,jdbcType=INTEGER},
+      RECV_FILE_CNT = #{recvFileCnt,jdbcType=INTEGER},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -7,9 +7,9 @@ public class ArchiveDetail {
 
 	private String fileName;
 
-	private Integer fileCnt;
+	private Integer postFileCnt;
 
-	private Boolean checkResult;
+	private Integer recvFileCnt;
 
 	private String comment;
 
@@ -37,20 +37,20 @@ public class ArchiveDetail {
 		this.fileName = fileName;
 	}
 
-	public Integer getFileCnt() {
-		return fileCnt;
+	public Integer getPostFileCnt() {
+		return postFileCnt;
 	}
 
-	public void setFileCnt(Integer fileCnt) {
-		this.fileCnt = fileCnt;
+	public void setPostFileCnt(Integer postFileCnt) {
+		this.postFileCnt = postFileCnt;
 	}
 
-	public Boolean getCheckResult() {
-		return checkResult;
+	public Integer getRecvFileCnt() {
+		return recvFileCnt;
 	}
 
-	public void setCheckResult(Boolean checkResult) {
-		this.checkResult = checkResult;
+	public void setRecvFileCnt(Integer recvFileCnt) {
+		this.recvFileCnt = recvFileCnt;
 	}
 
 	public String getComment() {

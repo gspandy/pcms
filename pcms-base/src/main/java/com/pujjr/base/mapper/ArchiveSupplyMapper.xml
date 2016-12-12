@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.base.dao.ArchiveSupplyMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveSupply" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ARCHIVE_TASK_ID" property="archiveTaskId" jdbcType="VARCHAR" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="PROCESS_ID" property="processId" jdbcType="VARCHAR" />
+    <result column="PROCESS_TIME" property="processTime" jdbcType="TIMESTAMP" />
+    <result column="IS_PROCESSED" property="isProcessed" jdbcType="BIT" />
+    <result column="EXPRESS_COMPANY" property="expressCompany" jdbcType="VARCHAR" />
+    <result column="EXPRESS_NO" property="expressNo" jdbcType="VARCHAR" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, ARCHIVE_TASK_ID, CREATE_ID, CREATE_TIME, PROCESS_ID, PROCESS_TIME, IS_PROCESSED, 
+    EXPRESS_COMPANY, EXPRESS_NO, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_supply
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_archive_supply
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveSupply" >
+    insert into t_archive_supply (ID, ARCHIVE_TASK_ID, CREATE_ID, 
+      CREATE_TIME, PROCESS_ID, PROCESS_TIME, 
+      IS_PROCESSED, EXPRESS_COMPANY, EXPRESS_NO, 
+      COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{archiveTaskId,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{processId,jdbcType=VARCHAR}, #{processTime,jdbcType=TIMESTAMP}, 
+      #{isProcessed,jdbcType=BIT}, #{expressCompany,jdbcType=VARCHAR}, #{expressNo,jdbcType=VARCHAR}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveSupply" >
+    insert into t_archive_supply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="archiveTaskId != null" >
+        ARCHIVE_TASK_ID,
+      </if>
+      <if test="createId != null" >
+        CREATE_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID,
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME,
+      </if>
+      <if test="isProcessed != null" >
+        IS_PROCESSED,
+      </if>
+      <if test="expressCompany != null" >
+        EXPRESS_COMPANY,
+      </if>
+      <if test="expressNo != null" >
+        EXPRESS_NO,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveTaskId != null" >
+        #{archiveTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processId != null" >
+        #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isProcessed != null" >
+        #{isProcessed,jdbcType=BIT},
+      </if>
+      <if test="expressCompany != null" >
+        #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveSupply" >
+    update t_archive_supply
+    <set >
+      <if test="archiveTaskId != null" >
+        ARCHIVE_TASK_ID = #{archiveTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null" >
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processId != null" >
+        PROCESS_ID = #{processId,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null" >
+        PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isProcessed != null" >
+        IS_PROCESSED = #{isProcessed,jdbcType=BIT},
+      </if>
+      <if test="expressCompany != null" >
+        EXPRESS_COMPANY = #{expressCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="expressNo != null" >
+        EXPRESS_NO = #{expressNo,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveSupply" >
+    update t_archive_supply
+    set ARCHIVE_TASK_ID = #{archiveTaskId,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      PROCESS_ID = #{processId,jdbcType=VARCHAR},
+      PROCESS_TIME = #{processTime,jdbcType=TIMESTAMP},
+      IS_PROCESSED = #{isProcessed,jdbcType=BIT},
+      EXPRESS_COMPANY = #{expressCompany,jdbcType=VARCHAR},
+      EXPRESS_NO = #{expressNo,jdbcType=VARCHAR},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

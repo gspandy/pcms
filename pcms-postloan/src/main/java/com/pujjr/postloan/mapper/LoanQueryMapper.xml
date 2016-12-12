@@ -127,7 +127,7 @@
 		left join SYS_DICT_DATA h on g.REPAY_STATUS = h.DICT_DATA_CODE
 		left join SYS_ACCOUNT account on account.ACCOUNT_ID = prunpath.ASSIGNEE
 		where a.ASSIGNEE_ = #{assignee} 
-		and c.KEY_ != 'PPCA' 
+		and c.KEY_ != 'PPCA'  and c.KEY_ !='YFKDAZL'
 		order by runpath.START_TIME desc 
   	)
   	tmp group by taskId	

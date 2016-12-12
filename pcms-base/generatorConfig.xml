@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<classPathEntry
-		location="C:\Users\dengpan\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
 		
 	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
@@ -12,8 +12,8 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt5?characterEncoding=UTF-8" userId="test"
-			password="test" />
+			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdbtest?characterEncoding=UTF-8" userId="xdxt"
+			password="xdxt" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.base.domain"
 			targetProject="pcms-base/src/main/java" />
@@ -91,10 +91,7 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		
-		<table tableName="SYS_SEQUENCE" domainObjectName="Sequence" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		<table tableName="T_RULE_FINANCE_AMOUNT" domainObjectName="RuleFinanceAmount" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -249,9 +246,26 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
+		
+		<table tableName="SYS_SEQUENCE" domainObjectName="Sequence" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
 		-->
 		
 		<table tableName="T_ARCHIVE_DETAIL" domainObjectName="ArchiveDetail" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_ARCHIVE_SUPPLY" domainObjectName="ArchiveSupply" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_ARCHIVE_SUPPLY_DETAIL" domainObjectName="ArchiveSupplyDetail" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_ARCHIVE_STORE" domainObjectName="ArchiveStore" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

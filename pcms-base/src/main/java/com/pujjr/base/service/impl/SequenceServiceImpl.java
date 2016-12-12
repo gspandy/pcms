@@ -1,5 +1,7 @@
 package com.pujjr.base.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,5 +24,17 @@ public class SequenceServiceImpl implements ISequenceService
 		seq.setCurval(curVal+increment);
 		seqDao.updateByPrimaryKey(seq);
 		return curVal;
+	}
+
+	@Override
+	public List<Sequence> getAll() {
+		// TODO Auto-generated method stub
+		return seqDao.selectAll();
+	}
+
+	@Override
+	public void modify(Sequence record) {
+		// TODO Auto-generated method stub
+		seqDao.updateByPrimaryKey(record);
 	}
 }

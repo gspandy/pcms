@@ -1,5 +1,6 @@
 package com.pujjr.base.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +26,6 @@ public interface InsuranceHisMapper {
 	int deleteByAppId(@Param("appId")String appId);
 	
 	InsuranceHisPo selectByInsuranceId(String id);
+	
+	List<String> selectNeedContinueInsuranceList(@Param("insType")String insType,@Param("insEndDate")Date insEndDate);
 }
