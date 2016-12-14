@@ -251,7 +251,6 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		
 		<table tableName="T_ARCHIVE_DETAIL" domainObjectName="ArchiveDetail" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -266,6 +265,18 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		<table tableName="T_ARCHIVE_STORE" domainObjectName="ArchiveStore" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		
+		
+		<table tableName="T_ARCHIVE_BORROW" domainObjectName="ArchiveBorrow" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		<table tableName="T_ARCHIVE_BORROW_DETAIL" domainObjectName="ArchiveBorrowDetail" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

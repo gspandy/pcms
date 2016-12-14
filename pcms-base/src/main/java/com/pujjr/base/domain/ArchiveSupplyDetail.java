@@ -70,4 +70,15 @@ public class ArchiveSupplyDetail {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    //文件名中文描述
+    private String fileNameDesc;
+
+	public String getFileNameDesc() {
+		return fileNameDesc;
+	}
+
+	public void setFileNameDesc(String fileNameDesc) {
+		this.fileNameDesc = fileNameDesc;
+	}
+    
 }

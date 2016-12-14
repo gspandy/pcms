@@ -10,7 +10,8 @@ public enum ArchiveStatus
 	WaitingProcess("dazt04","待归档"),
 	ArchiveOverdue("dazt05","归档逾期"),
 	ArchiveBack("dazt06","归档退回"),
-	Archived("dazt07","已归档");
+	Archived("dazt07","已归档"),
+	ArchiveSupply("dazt08","待补充资料");
 	
 	private String name;
 	private String text;

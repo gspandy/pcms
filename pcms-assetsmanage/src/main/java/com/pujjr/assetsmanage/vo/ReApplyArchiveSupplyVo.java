@@ -2,29 +2,24 @@ package com.pujjr.assetsmanage.vo;
 
 import java.util.List;
 
-import com.pujjr.assetsmanage.po.ArchiveTaskPo;
+import com.pujjr.base.domain.ArchiveSupply;
 import com.pujjr.base.domain.ArchiveSupplyDetail;
 
-/**
- * 归档补充资料信息
- * @author 150032
- *
- */
-public class ApplyArchiveSupplyVo 
+public class ReApplyArchiveSupplyVo 
 {
-	private ArchiveTaskPo archiveTask;
-	
+	//原补充资料信息
+	private ArchiveSupplyVo oldSupplyVo;
+	//新补充资料项信息
 	private List<ArchiveSupplyDetail> supplyDetailList;
-	
+	//新补充资料备注
 	private String comment;
 	
-	public ArchiveTaskPo getArchiveTask() {
-		return archiveTask;
+	public ArchiveSupplyVo getOldSupplyVo() {
+		return oldSupplyVo;
 	}
-	public void setArchiveTask(ArchiveTaskPo archiveTask) {
-		this.archiveTask = archiveTask;
+	public void setOldSupplyVo(ArchiveSupplyVo oldSupplyVo) {
+		this.oldSupplyVo = oldSupplyVo;
 	}
-	
 	public List<ArchiveSupplyDetail> getSupplyDetailList() {
 		return supplyDetailList;
 	}
@@ -37,5 +32,7 @@ public class ApplyArchiveSupplyVo
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	
 	
 }

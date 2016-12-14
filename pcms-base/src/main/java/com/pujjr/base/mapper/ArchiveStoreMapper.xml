@@ -8,6 +8,8 @@
     <result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
     <result column="TOTAL_FILE_CNT" property="totalFileCnt" jdbcType="INTEGER" />
     <result column="REMAIN_FILE_CNT" property="remainFileCnt" jdbcType="INTEGER" />
+    <result column="ARCHIVE_TYPE_DESC" property="archiveTypeDesc" jdbcType="VARCHAR" />
+    <result column="FILE_NAME_DESC" property="fileNameDesc" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     ID, APP_ID, ARCHIVE_TYPE, FILE_NAME, TOTAL_FILE_CNT, REMAIN_FILE_CNT
@@ -103,4 +105,21 @@
       REMAIN_FILE_CNT = #{remainFileCnt,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectOne" resultMap="BaseResultMap">
+  	select * from t_archive_store
+  	where APP_ID = #{appId}
+  	and ARCHIVE_TYPE = #{archiveType}
+  	and FILE_NAME = #{fileName}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+  	a.*,
+  	b1.DICT_DATA_NAME as ARCHIVE_TYPE_DESC,
+  	b2.DICT_DATA_NAME as FILE_NAME_DESC
+  	from t_archive_store a
+  	left join SYS_DICT_DATA b1 on b1.DICT_DATA_CODE = a.ARCHIVE_TYPE
+  	left join SYS_DICT_DATA b2 on b2.DICT_DATA_CODE = a.FILE_NAME
+  	where a.APP_ID = #{appId}
+  	order by b1.SHOW_SEQ,b2.SHOW_SEQ
+  </select>
 </mapper>

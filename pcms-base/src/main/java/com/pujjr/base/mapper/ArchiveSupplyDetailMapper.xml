@@ -9,6 +9,7 @@
     <result column="POST_FILE_CNT" property="postFileCnt" jdbcType="INTEGER" />
     <result column="RECV_FILE_CNT" property="recvFileCnt" jdbcType="INTEGER" />
     <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="FILE_NAME_DESC" property="fileNameDesc" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     ID, SUPPLY_ID, FILE_NAME, SUPPLY_FILE_CNT, POST_FILE_CNT, RECV_FILE_CNT, COMMENT
@@ -114,4 +115,14 @@
       COMMENT = #{comment,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+  	a.*,
+  	b.DICT_DATA_NAME as FILE_NAME_DESC
+  	from 
+  	t_archive_supply_detail a 
+  	left join SYS_DICT_DATA b on a.FILE_NAME = b.DICT_DATA_CODE
+  	where a.SUPPLY_ID = #{supplyId}
+  </select>
 </mapper>

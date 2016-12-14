@@ -1,5 +1,9 @@
 package com.pujjr.base.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.base.domain.ArchiveSupplyDetail;
 
 public interface ArchiveSupplyDetailMapper {
@@ -14,4 +18,6 @@ public interface ArchiveSupplyDetailMapper {
     int updateByPrimaryKeySelective(ArchiveSupplyDetail record);
 
     int updateByPrimaryKey(ArchiveSupplyDetail record);
+    
+    List<ArchiveSupplyDetail> selectAll(@Param("supplyId")String supplyId);
 }

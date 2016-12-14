@@ -60,4 +60,25 @@ public class ArchiveStore {
     public void setRemainFileCnt(Integer remainFileCnt) {
         this.remainFileCnt = remainFileCnt;
     }
+    
+    //档案类型中文描述
+    private String archiveTypeDesc;
+    //文件名称中文描述
+    private String fileNameDesc;
+
+	public String getArchiveTypeDesc() {
+		return archiveTypeDesc;
+	}
+
+	public void setArchiveTypeDesc(String archiveTypeDesc) {
+		this.archiveTypeDesc = archiveTypeDesc;
+	}
+
+	public String getFileNameDesc() {
+		return fileNameDesc;
+	}
+
+	public void setFileNameDesc(String fileNameDesc) {
+		this.fileNameDesc = fileNameDesc;
+	}
 }

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.ArchiveBorrowMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveBorrow">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="BORROW_ID" jdbcType="VARCHAR" property="borrowId" />
+    <result column="BORROW_DEPT" jdbcType="VARCHAR" property="borrowDept" />
+    <result column="BORROW_REASON" jdbcType="VARCHAR" property="borrowReason" />
+    <result column="BORROW_START_DATE" jdbcType="DATE" property="borrowStartDate" />
+    <result column="BORROW_END_DATE" jdbcType="DATE" property="borrowEndDate" />
+    <result column="BORROW_COMMENT" jdbcType="VARCHAR" property="borrowComment" />
+    <result column="RETURN_DATE" jdbcType="DATE" property="returnDate" />
+    <result column="IS_TIMEOUT" jdbcType="BIT" property="isTimeout" />
+    <result column="TIMEOUT_REASON" jdbcType="VARCHAR" property="timeoutReason" />
+    <result column="RETURN_COMMENT" jdbcType="VARCHAR" property="returnComment" />
+    <result column="APPROVE_RESULT" jdbcType="VARCHAR" property="approveResult" />
+    <result column="APPROVE_COMMENT" jdbcType="VARCHAR" property="approveComment" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="PROC_INST_ID" jdbcType="VARCHAR" property="procInstId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, BORROW_ID, BORROW_DEPT, BORROW_REASON, BORROW_START_DATE, BORROW_END_DATE, 
+    BORROW_COMMENT, RETURN_DATE, IS_TIMEOUT, TIMEOUT_REASON, RETURN_COMMENT, APPROVE_RESULT, 
+    APPROVE_COMMENT, CREATE_ID, CREATE_TIME, PROC_INST_ID
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_borrow
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_archive_borrow
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveBorrow">
+    insert into t_archive_borrow (ID, APP_ID, BORROW_ID, 
+      BORROW_DEPT, BORROW_REASON, BORROW_START_DATE, 
+      BORROW_END_DATE, BORROW_COMMENT, RETURN_DATE, 
+      IS_TIMEOUT, TIMEOUT_REASON, RETURN_COMMENT, 
+      APPROVE_RESULT, APPROVE_COMMENT, CREATE_ID, 
+      CREATE_TIME, PROC_INST_ID)
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{borrowId,jdbcType=VARCHAR}, 
+      #{borrowDept,jdbcType=VARCHAR}, #{borrowReason,jdbcType=VARCHAR}, #{borrowStartDate,jdbcType=DATE}, 
+      #{borrowEndDate,jdbcType=DATE}, #{borrowComment,jdbcType=VARCHAR}, #{returnDate,jdbcType=DATE}, 
+      #{isTimeout,jdbcType=BIT}, #{timeoutReason,jdbcType=VARCHAR}, #{returnComment,jdbcType=VARCHAR}, 
+      #{approveResult,jdbcType=VARCHAR}, #{approveComment,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{procInstId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveBorrow">
+    insert into t_archive_borrow
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="borrowId != null">
+        BORROW_ID,
+      </if>
+      <if test="borrowDept != null">
+        BORROW_DEPT,
+      </if>
+      <if test="borrowReason != null">
+        BORROW_REASON,
+      </if>
+      <if test="borrowStartDate != null">
+        BORROW_START_DATE,
+      </if>
+      <if test="borrowEndDate != null">
+        BORROW_END_DATE,
+      </if>
+      <if test="borrowComment != null">
+        BORROW_COMMENT,
+      </if>
+      <if test="returnDate != null">
+        RETURN_DATE,
+      </if>
+      <if test="isTimeout != null">
+        IS_TIMEOUT,
+      </if>
+      <if test="timeoutReason != null">
+        TIMEOUT_REASON,
+      </if>
+      <if test="returnComment != null">
+        RETURN_COMMENT,
+      </if>
+      <if test="approveResult != null">
+        APPROVE_RESULT,
+      </if>
+      <if test="approveComment != null">
+        APPROVE_COMMENT,
+      </if>
+      <if test="createId != null">
+        CREATE_ID,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null">
+        #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowDept != null">
+        #{borrowDept,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowReason != null">
+        #{borrowReason,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowStartDate != null">
+        #{borrowStartDate,jdbcType=DATE},
+      </if>
+      <if test="borrowEndDate != null">
+        #{borrowEndDate,jdbcType=DATE},
+      </if>
+      <if test="borrowComment != null">
+        #{borrowComment,jdbcType=VARCHAR},
+      </if>
+      <if test="returnDate != null">
+        #{returnDate,jdbcType=DATE},
+      </if>
+      <if test="isTimeout != null">
+        #{isTimeout,jdbcType=BIT},
+      </if>
+      <if test="timeoutReason != null">
+        #{timeoutReason,jdbcType=VARCHAR},
+      </if>
+      <if test="returnComment != null">
+        #{returnComment,jdbcType=VARCHAR},
+      </if>
+      <if test="approveResult != null">
+        #{approveResult,jdbcType=VARCHAR},
+      </if>
+      <if test="approveComment != null">
+        #{approveComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="procInstId != null">
+        #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveBorrow">
+    update t_archive_borrow
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowId != null">
+        BORROW_ID = #{borrowId,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowDept != null">
+        BORROW_DEPT = #{borrowDept,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowReason != null">
+        BORROW_REASON = #{borrowReason,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowStartDate != null">
+        BORROW_START_DATE = #{borrowStartDate,jdbcType=DATE},
+      </if>
+      <if test="borrowEndDate != null">
+        BORROW_END_DATE = #{borrowEndDate,jdbcType=DATE},
+      </if>
+      <if test="borrowComment != null">
+        BORROW_COMMENT = #{borrowComment,jdbcType=VARCHAR},
+      </if>
+      <if test="returnDate != null">
+        RETURN_DATE = #{returnDate,jdbcType=DATE},
+      </if>
+      <if test="isTimeout != null">
+        IS_TIMEOUT = #{isTimeout,jdbcType=BIT},
+      </if>
+      <if test="timeoutReason != null">
+        TIMEOUT_REASON = #{timeoutReason,jdbcType=VARCHAR},
+      </if>
+      <if test="returnComment != null">
+        RETURN_COMMENT = #{returnComment,jdbcType=VARCHAR},
+      </if>
+      <if test="approveResult != null">
+        APPROVE_RESULT = #{approveResult,jdbcType=VARCHAR},
+      </if>
+      <if test="approveComment != null">
+        APPROVE_COMMENT = #{approveComment,jdbcType=VARCHAR},
+      </if>
+      <if test="createId != null">
+        CREATE_ID = #{createId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="procInstId != null">
+        PROC_INST_ID = #{procInstId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveBorrow">
+    update t_archive_borrow
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      BORROW_ID = #{borrowId,jdbcType=VARCHAR},
+      BORROW_DEPT = #{borrowDept,jdbcType=VARCHAR},
+      BORROW_REASON = #{borrowReason,jdbcType=VARCHAR},
+      BORROW_START_DATE = #{borrowStartDate,jdbcType=DATE},
+      BORROW_END_DATE = #{borrowEndDate,jdbcType=DATE},
+      BORROW_COMMENT = #{borrowComment,jdbcType=VARCHAR},
+      RETURN_DATE = #{returnDate,jdbcType=DATE},
+      IS_TIMEOUT = #{isTimeout,jdbcType=BIT},
+      TIMEOUT_REASON = #{timeoutReason,jdbcType=VARCHAR},
+      RETURN_COMMENT = #{returnComment,jdbcType=VARCHAR},
+      APPROVE_RESULT = #{approveResult,jdbcType=VARCHAR},
+      APPROVE_COMMENT = #{approveComment,jdbcType=VARCHAR},
+      CREATE_ID = #{createId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      PROC_INST_ID = #{procInstId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

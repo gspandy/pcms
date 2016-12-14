@@ -14,6 +14,11 @@ import com.pujjr.assetsmanage.vo.ArchiveDelayVo;
 import com.pujjr.assetsmanage.vo.ArchiveLogVo;
 import com.pujjr.assetsmanage.vo.ArchivePostVo;
 import com.pujjr.assetsmanage.vo.ArchiveSupplyVo;
+import com.pujjr.assetsmanage.vo.ReApplyArchiveSupplyVo;
+import com.pujjr.base.domain.ArchiveStore;
+import com.pujjr.postloan.vo.ApproveResultVo;
+import com.pujjr.assetsmanage.vo.ApplyArchiveBorrowVo;
+import com.pujjr.assetsmanage.vo.ApplyArchiveSupplyVo;
 
 @Service
 @Transactional
@@ -98,6 +103,85 @@ public interface IArchiveService
 	 * @param operId 执行人
 	 * @throws Exception 
 	 */
-	public void applyArchiveSupply(ArchiveSupplyVo vo,String taskId,String operId) throws Exception;
+	public void applyArchiveSupply(ApplyArchiveSupplyVo vo,String taskId,String operId) throws Exception;
+	/**
+	 * 获取补充归档资料信息
+	 * @param taskId
+	 * @return
+	 * @throws Exception 
+	 */
+	public ArchiveSupplyVo getArchiveSupplyInfo(String taskId) throws Exception;
+	/**
+	 * 提交补充资料任务
+	 * @param vo
+	 * @param taskId
+	 * @param operId
+	 * @throws Exception 
+	 */
+	public void commitArchiveSupplyTask(ArchiveSupplyVo vo,String taskId,String operId) throws Exception;
+	/**
+	 * 用于提交补充资料的归档任务
+	 * @param vo
+	 * @param taskId
+	 * @param operId
+	 * @throws Exception 
+	 */
+	public void commitArchiveLogSupplyTask(ArchiveSupplyVo vo ,String taskId,String operId) throws Exception;
+	/**
+	 * 再次申请补充归档资料
+	 * @param vo
+	 * @param taskId
+	 * @param operId
+	 * @throws Exception 
+	 */
+	public void reApplyArchiveSupply(ReApplyArchiveSupplyVo vo ,String taskId,String operId) throws Exception;
 	
+	/**
+	 * 查询申请单档案库存信息
+	 * @param appId
+	 * @return
+	 */
+	public List<ArchiveStore> getArchiveStoreList(String appId);
+	/**
+	 * 申请档案借阅
+	 * @param vo
+	 * @param appId
+	 * @param operId
+	 */
+	public void applyArchiveBorrow(ApplyArchiveBorrowVo vo ,String appId, String operId);
+	/**
+	 * 根据借阅ID查询借阅信息
+	 * @param borrowId
+	 * @return
+	 */
+	public ApplyArchiveBorrowVo getArchiveBorrowInfo(String borrowId);
+	/**
+	 * 提交借阅审批
+	 * @param taskId
+	 * @param vo
+	 * @throws Exception 
+	 */
+	public void commitApproveArchiveBorrowTask(String taskId,ApproveResultVo vo) throws Exception;
+	/**
+	 * 档案归还
+	 * @param vo
+	 * @param taskId
+	 * @throws Exception 
+	 */
+	public void commitArchiveBorrowReturnTask(ApplyArchiveBorrowVo vo , String taskId) throws Exception;
+	
+	/**
+	 * 档案借阅退回
+	 * @param taskId
+	 * @param message
+	 * @throws Exception 
+	 */
+	public void backArchiveBorrowTask(String taskId,String message) throws Exception;
+	/**
+	 * 重新提交借阅申请
+	 * @param taskId
+	 * @param vo
+	 * @throws Exception 
+	 */
+	public void reApplyArchiveBorrow(String taskId,ApplyArchiveBorrowVo vo) throws Exception;
 }

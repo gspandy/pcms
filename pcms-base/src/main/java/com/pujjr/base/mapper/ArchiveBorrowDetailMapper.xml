@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.base.dao.ArchiveBorrowDetailMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.base.domain.ArchiveBorrowDetail">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="BORROW_TASK_ID" jdbcType="VARCHAR" property="borrowTaskId" />
+    <result column="ARCHIVE_TYPE" jdbcType="VARCHAR" property="archiveType" />
+    <result column="FILE_NAME" jdbcType="VARCHAR" property="fileName" />
+    <result column="FILE_TYPE" jdbcType="VARCHAR" property="fileType" />
+    <result column="BORROW_CNT" jdbcType="INTEGER" property="borrowCnt" />
+    <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+    <result column="FILE_NAME_DESC" jdbcType="VARCHAR" property="fileNameDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, BORROW_TASK_ID, ARCHIVE_TYPE, FILE_NAME, FILE_TYPE, BORROW_CNT, COMMENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_archive_borrow_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_archive_borrow_detail
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.base.domain.ArchiveBorrowDetail">
+    insert into t_archive_borrow_detail (ID, BORROW_TASK_ID, ARCHIVE_TYPE, 
+      FILE_NAME, FILE_TYPE, BORROW_CNT, 
+      COMMENT)
+    values (#{id,jdbcType=VARCHAR}, #{borrowTaskId,jdbcType=VARCHAR}, #{archiveType,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, #{borrowCnt,jdbcType=INTEGER}, 
+      #{comment,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.base.domain.ArchiveBorrowDetail">
+    insert into t_archive_borrow_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="borrowTaskId != null">
+        BORROW_TASK_ID,
+      </if>
+      <if test="archiveType != null">
+        ARCHIVE_TYPE,
+      </if>
+      <if test="fileName != null">
+        FILE_NAME,
+      </if>
+      <if test="fileType != null">
+        FILE_TYPE,
+      </if>
+      <if test="borrowCnt != null">
+        BORROW_CNT,
+      </if>
+      <if test="comment != null">
+        COMMENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowTaskId != null">
+        #{borrowTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveType != null">
+        #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowCnt != null">
+        #{borrowCnt,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        #{comment,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.base.domain.ArchiveBorrowDetail">
+    update t_archive_borrow_detail
+    <set>
+      <if test="borrowTaskId != null">
+        BORROW_TASK_ID = #{borrowTaskId,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveType != null">
+        ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowCnt != null">
+        BORROW_CNT = #{borrowCnt,jdbcType=INTEGER},
+      </if>
+      <if test="comment != null">
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.base.domain.ArchiveBorrowDetail">
+    update t_archive_borrow_detail
+    set BORROW_TASK_ID = #{borrowTaskId,jdbcType=VARCHAR},
+      ARCHIVE_TYPE = #{archiveType,jdbcType=VARCHAR},
+      FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      BORROW_CNT = #{borrowCnt,jdbcType=INTEGER},
+      COMMENT = #{comment,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectAllByBorrowId" resultMap="BaseResultMap">
+  	select 
+  	a.*,
+  	b.DICT_DATA_NAME as FILE_NAME_DESC
+  	from t_archive_borrow_detail a 
+  	left join SYS_DICT_DATA b on a.FILE_NAME = b.DICT_DATA_CODE
+  	where BORROW_TASK_ID = #{borrowId}
+  </select>
+  <delete id="deleteByBorrowId">
+  	delete from t_archive_borrow_detail where BORROW_TASK_ID = #{borrowId}
+  </delete>
+</mapper>
