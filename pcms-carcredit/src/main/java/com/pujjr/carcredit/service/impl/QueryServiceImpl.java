@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.pujjr.carcredit.dao.FraudInnerResultMapper;
 import com.pujjr.carcredit.dao.HisOperMapper;
 import com.pujjr.carcredit.dao.QueryMapper;
+import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.po.HisOperPo;
 import com.pujjr.carcredit.service.IQueryService;
 import com.pujjr.carcredit.vo.HisOperVo;
@@ -26,6 +28,8 @@ public class QueryServiceImpl implements IQueryService
 	private QueryMapper queryDao;
 	@Autowired
 	private HisOperMapper hisOperMapper;
+	@Autowired
+	private FraudInnerResultMapper fraudInnerResultDao;
 	
 	@Override
 	public List<HashMap<String, Object>> queryApplyList(QueryParamApplyVo param) {
@@ -65,5 +69,11 @@ public class QueryServiceImpl implements IQueryService
 		}
 		logger.debug("JSONObject.toJSONString(hisOperVoList):"+JSONObject.toJSONString(hisOperVoList));
 		return hisOperVoList;
+	}
+
+	@Override
+	public List<FraudInnerResult> queryFraudInnerResult(String appId) {
+		// TODO Auto-generated method stub
+		return fraudInnerResultDao.selectByAppId(appId);
 	}
 }

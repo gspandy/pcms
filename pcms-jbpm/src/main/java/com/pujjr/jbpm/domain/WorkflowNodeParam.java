@@ -35,6 +35,8 @@ public class WorkflowNodeParam {
 
 	private String backNodeId;
 
+	private Boolean isMulti;
+
 	private Date createTime;
 
 	private String createId;
@@ -165,6 +167,14 @@ public class WorkflowNodeParam {
 
 	public void setBackNodeId(String backNodeId) {
 		this.backNodeId = backNodeId;
+	}
+
+	public Boolean getIsMulti() {
+		return isMulti;
+	}
+
+	public void setIsMulti(Boolean isMulti) {
+		this.isMulti = isMulti;
 	}
 
 	public Date getCreateTime() {

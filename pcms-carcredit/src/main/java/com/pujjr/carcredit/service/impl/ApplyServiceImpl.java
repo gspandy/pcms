@@ -530,4 +530,16 @@ public class ApplyServiceImpl implements IApplyService {
 		// TODO Auto-generated method stub
 		return applyTenantMapper.selectByAppId(appId);
 	}
+
+	@Override
+	public List<ApplyTenantHouse> getApplyTenantHouseList(String appId) {
+		// TODO Auto-generated method stub
+		return applyTenantHouseMapper.selectByAppId(appId);
+	}
+
+	@Override
+	public List<ApplyTenantCar> getApplyTenantCarList(String appId) {
+		// TODO Auto-generated method stub
+		return applyTenantCarMapper.selectByAppId(appId);
+	}
 }

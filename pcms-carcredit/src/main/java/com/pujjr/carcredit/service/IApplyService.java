@@ -84,4 +84,16 @@ public interface IApplyService {
 	 * @return
 	 */
 	public ApplyTenant getApplyTenant(String appId);
+	/**
+	 * 根据申请单号查询承租人房产信息
+	 * @param appId
+	 * @return
+	 */
+	public List<ApplyTenantHouse> getApplyTenantHouseList(String appId);
+	/**
+	 * 根据申请单好查询承租人车产信息
+	 * @param appId
+	 * @return
+	 */
+	public List<ApplyTenantCar> getApplyTenantCarList(String appId);
 }

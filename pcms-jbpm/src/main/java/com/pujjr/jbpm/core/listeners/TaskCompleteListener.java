@@ -9,6 +9,7 @@ import org.activiti.engine.delegate.event.impl.ActivitiEntityWithVariablesEventI
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mysql.fabric.xmlrpc.base.Array;
 import com.pujjr.jbpm.core.handle.ITaskAssigneeHandle;
 import com.pujjr.jbpm.core.handle.ITaskCompleteHandle;
 import com.pujjr.jbpm.core.script.GroovyEngine;
@@ -40,8 +41,14 @@ public class TaskCompleteListener implements EventHandler {
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
 		if(nodeParam!=null && nodeParam.getTaskCompleteHandle()!=null && !nodeParam.getTaskCompleteHandle().equals(""))
 		{
-			ITaskCompleteHandle handle = (ITaskCompleteHandle)SpringBeanUtils.getBean(nodeParam.getTaskCompleteHandle());
-			handle.handle(taskEntity);
+			//支持多处理方法
+			String[] clsList = nodeParam.getTaskCompleteHandle().split(",");
+			for(int i = 0 ;i<clsList.length;i++)
+			{
+				ITaskCompleteHandle handle = (ITaskCompleteHandle)SpringBeanUtils.getBean(clsList[i]);
+				handle.handle(taskEntity);
+			}
+			
 		}
 		if (nodeParam!= null && nodeParam.getTaskCompleteScript() != null && !nodeParam.getTaskCompleteScript().equals("")) 
 		{

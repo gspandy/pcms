@@ -166,6 +166,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		vo.setOnMsgNotice(po.containsKey("onMsgNotice")?(Boolean)po.get("onMsgNotice"):false);
 		vo.setOnMailNotice(po.containsKey("onMailNotice")?(Boolean)po.get("onMailNotice"):false);
 		vo.setOnWeixinNotice(po.containsKey("onWeixinNotice")?(Boolean)po.get("onWeixinNotice"):false);
+		vo.setMulti(po.containsKey("isMulti")?(Boolean)po.get("isMulti"):false);
 		return vo;
 	}
 	
@@ -190,6 +191,7 @@ public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 		po.setOnWeixinNotice(vo.getOnWeixinNotice());
 		po.setRecommitMode(vo.getRecommitMode());
 		po.setBackNodeId(vo.getBackNodeId());
+		po.setIsMulti(vo.isMulti());
 		po.setCreateId("admin");
 		po.setCreateTime(new Date());
 		workflowNodeParamDao.insert(po);

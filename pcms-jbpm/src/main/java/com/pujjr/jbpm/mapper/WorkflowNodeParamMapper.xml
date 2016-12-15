@@ -18,6 +18,7 @@
     <result column="ON_WEIXIN_NOTICE" jdbcType="BIT" property="onWeixinNotice" />
     <result column="RECOMMIT_MODE" jdbcType="VARCHAR" property="recommitMode" />
     <result column="BACK_NODE_ID" jdbcType="VARCHAR" property="backNodeId" />
+    <result column="IS_MULTI" jdbcType="BIT" property="isMulti" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
   </resultMap>
@@ -25,7 +26,7 @@
     ID, WORKFLOW_VERSION_ID, NODE_ID, ACT_START_SCRIPT, ACT_END_SCRIPT, TASK_CREATE_PREHANDLE, 
     TASK_CREATE_AFTERHANDLE, TASK_COMPLETE_HANDLE, TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, 
     ON_SITE_NOTICE, ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, RECOMMIT_MODE, BACK_NODE_ID, 
-    CREATE_TIME, CREATE_ID
+    IS_MULTI, CREATE_TIME, CREATE_ID
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -43,15 +44,15 @@
       TASK_CREATE_AFTERHANDLE, TASK_COMPLETE_HANDLE, 
       TASK_CREATE_SCRIPT, TASK_COMPLETE_SCRIPT, ON_SITE_NOTICE, 
       ON_MAIL_NOTICE, ON_MSG_NOTICE, ON_WEIXIN_NOTICE, 
-      RECOMMIT_MODE, BACK_NODE_ID, CREATE_TIME, 
-      CREATE_ID)
+      RECOMMIT_MODE, BACK_NODE_ID, IS_MULTI, 
+      CREATE_TIME, CREATE_ID)
     values (#{id,jdbcType=VARCHAR}, #{workflowVersionId,jdbcType=VARCHAR}, #{nodeId,jdbcType=VARCHAR}, 
       #{actStartScript,jdbcType=VARCHAR}, #{actEndScript,jdbcType=VARCHAR}, #{taskCreatePrehandle,jdbcType=VARCHAR}, 
       #{taskCreateAfterhandle,jdbcType=VARCHAR}, #{taskCompleteHandle,jdbcType=VARCHAR}, 
       #{taskCreateScript,jdbcType=VARCHAR}, #{taskCompleteScript,jdbcType=VARCHAR}, #{onSiteNotice,jdbcType=BIT}, 
       #{onMailNotice,jdbcType=BIT}, #{onMsgNotice,jdbcType=BIT}, #{onWeixinNotice,jdbcType=BIT}, 
-      #{recommitMode,jdbcType=VARCHAR}, #{backNodeId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createId,jdbcType=VARCHAR})
+      #{recommitMode,jdbcType=VARCHAR}, #{backNodeId,jdbcType=VARCHAR}, #{isMulti,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.jbpm.domain.WorkflowNodeParam">
     insert into t_workflow_node_param
@@ -103,6 +104,9 @@
       </if>
       <if test="backNodeId != null">
         BACK_NODE_ID,
+      </if>
+      <if test="isMulti != null">
+        IS_MULTI,
       </if>
       <if test="createTime != null">
         CREATE_TIME,
@@ -160,6 +164,9 @@
       <if test="backNodeId != null">
         #{backNodeId,jdbcType=VARCHAR},
       </if>
+      <if test="isMulti != null">
+        #{isMulti,jdbcType=BIT},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -216,6 +223,9 @@
       <if test="backNodeId != null">
         BACK_NODE_ID = #{backNodeId,jdbcType=VARCHAR},
       </if>
+      <if test="isMulti != null">
+        IS_MULTI = #{isMulti,jdbcType=BIT},
+      </if>
       <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -242,6 +252,7 @@
       ON_WEIXIN_NOTICE = #{onWeixinNotice,jdbcType=BIT},
       RECOMMIT_MODE = #{recommitMode,jdbcType=VARCHAR},
       BACK_NODE_ID = #{backNodeId,jdbcType=VARCHAR},
+      IS_MULTI = #{isMulti,jdbcType=BIT},
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       CREATE_ID = #{createId,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}

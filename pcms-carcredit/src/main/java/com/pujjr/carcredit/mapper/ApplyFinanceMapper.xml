@@ -34,13 +34,15 @@
     <result column="FINANCE_AMOUNT" jdbcType="DOUBLE" property="financeAmount" />
     <result column="FINANCE_FEE" jdbcType="DOUBLE" property="financeFee" />
     <result column="COMMENT" jdbcType="VARCHAR" property="comment" />
+    <result column="CAR_TYPE" jdbcType="VARCHAR" property="carType" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, APP_ID, SEQ, CAR_STYLE_ID, SALE_PRICE, INIT_PAY_PERCENT, IS_FINANCE_GPS, GPS_LVL_ID, 
     GPS_FEE, IS_PURCHASE_TAX, PURCHASE_TAX, IS_SERVICE_FEE, SERVICE_FEE, IS_INSURANCE_FEE, 
     INSURANCE_FEE, IS_DELAY_INSURANCE_FEE, DELAY_INSURANCE_FEE, IS_TRANSFER_FEE, TRANSFER_FEE, 
     IS_ADDON_FEE, ADDON_FEE, ASSESS_FEE, CAR_COLOR, CAR_MANU, CAR_VIN, CAR_ENGINE_NO, 
-    ASSESS_PRICE, COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, FINANCE_FEE, COMMENT
+    ASSESS_PRICE, COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, FINANCE_FEE, COMMENT, 
+    CAR_TYPE
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -63,7 +65,8 @@
       ASSESS_FEE, CAR_COLOR, CAR_MANU, 
       CAR_VIN, CAR_ENGINE_NO, ASSESS_PRICE, 
       COLLATERAL, INIT_PAY_AMOUNT, FINANCE_AMOUNT, 
-      FINANCE_FEE, COMMENT)
+      FINANCE_FEE, COMMENT, CAR_TYPE
+      )
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
       #{carStyleId,jdbcType=VARCHAR}, #{salePrice,jdbcType=DOUBLE}, #{initPayPercent,jdbcType=DOUBLE}, 
       #{isFinanceGps,jdbcType=BIT}, #{gpsLvlId,jdbcType=VARCHAR}, #{gpsFee,jdbcType=DOUBLE}, 
@@ -74,7 +77,8 @@
       #{assessFee,jdbcType=DOUBLE}, #{carColor,jdbcType=VARCHAR}, #{carManu,jdbcType=VARCHAR}, 
       #{carVin,jdbcType=VARCHAR}, #{carEngineNo,jdbcType=VARCHAR}, #{assessPrice,jdbcType=DOUBLE}, 
       #{collateral,jdbcType=DOUBLE}, #{initPayAmount,jdbcType=DOUBLE}, #{financeAmount,jdbcType=DOUBLE}, 
-      #{financeFee,jdbcType=DOUBLE}, #{comment,jdbcType=VARCHAR})
+      #{financeFee,jdbcType=DOUBLE}, #{comment,jdbcType=VARCHAR}, #{carType,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.ApplyFinance">
     insert into t_apply_finance
@@ -175,6 +179,9 @@
       <if test="comment != null">
         COMMENT,
       </if>
+      <if test="carType != null">
+        CAR_TYPE,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -272,6 +279,9 @@
       </if>
       <if test="comment != null">
         #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="carType != null">
+        #{carType,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -371,6 +381,9 @@
       <if test="comment != null">
         COMMENT = #{comment,jdbcType=VARCHAR},
       </if>
+      <if test="carType != null">
+        CAR_TYPE = #{carType,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -406,7 +419,8 @@
       INIT_PAY_AMOUNT = #{initPayAmount,jdbcType=DOUBLE},
       FINANCE_AMOUNT = #{financeAmount,jdbcType=DOUBLE},
       FINANCE_FEE = #{financeFee,jdbcType=DOUBLE},
-      COMMENT = #{comment,jdbcType=VARCHAR}
+      COMMENT = #{comment,jdbcType=VARCHAR},
+      CAR_TYPE = #{carType,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   

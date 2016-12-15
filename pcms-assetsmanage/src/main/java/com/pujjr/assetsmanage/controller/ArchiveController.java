@@ -180,7 +180,7 @@ public class ArchiveController extends BaseController
 		archiveService.commitArchiveBorrowReturnTask(vo, taskId);
 	}
 	
-	@RequestMapping(value="/backArchiveBorrowTask/{taskId}",method=RequestMethod.POST)
+	@RequestMapping(value="/backArchiveBorroswTask/{taskId}",method=RequestMethod.POST)
 	public void backArchiveBorrowTask(@PathVariable String taskId,@RequestBody String message) throws Exception
 	{
 		archiveService.backArchiveBorrowTask(taskId, message);

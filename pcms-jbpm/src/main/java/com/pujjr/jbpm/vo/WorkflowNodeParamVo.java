@@ -30,6 +30,8 @@ public class WorkflowNodeParamVo extends WorkflowNodeVo
 	private String recommitMode;
 	
 	private String backNodeId;
+	
+	private boolean isMulti;
 
 	private Date createTime;
 
@@ -154,4 +156,13 @@ public class WorkflowNodeParamVo extends WorkflowNodeVo
 	public void setTaskCompleteHandle(String taskCompleteHandle) {
 		this.taskCompleteHandle = taskCompleteHandle;
 	}
+
+	public boolean isMulti() {
+		return isMulti;
+	}
+
+	public void setMulti(boolean isMulti) {
+		this.isMulti = isMulti;
+	}
+	
 }

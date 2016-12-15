@@ -18,6 +18,7 @@ import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.domain.Apply;
+import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.IQueryService;
@@ -49,42 +50,6 @@ public class QueryController extends BaseController
 	@RequestMapping(value="/applyList",method=RequestMethod.GET)
 	public PageVo queryApplyList(QueryParamApplyVo param) throws ParseException
 	{
-		if(param.getApplyStartDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setApplyStartDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
-		if(param.getApplyEndDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setApplyEndDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
-		if(param.getApplyStartDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setApproveStartDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
-		if(param.getApproveEndDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setApproveEndDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
-		if(param.getLoanStartDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setLoanStartDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
-		if(param.getLoanEndDate()!=null)
-		{
-			String tmp = param.getApplyStartDate().replace("Z", " UTC");//注意是空格+UTC
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//注意格式化的表达式
-			param.setLoanEndDate(Utils.getFormatDate(format.parse(tmp), "yyyy-MM-dd"));
-		}
 		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
 		List<HashMap<String,Object>> list = queryService.queryApplyList(param);
 		PageVo page=new PageVo();
@@ -115,5 +80,11 @@ public class QueryController extends BaseController
 	public List<WorkflowProcessResultPo> getWorkflowProcessResultByProcInstId(@PathVariable String procInstId) throws Exception
 	{
 		return taskService.getWorkflowProcessResult(procInstId);
+	}
+	
+	@RequestMapping(value="/queryFraudInnerResult/{appId}",method=RequestMethod.GET)
+	public List<FraudInnerResult> queryFraudInnerResult(@PathVariable String appId)
+	{
+		return queryService.queryFraudInnerResult(appId);
 	}
 }

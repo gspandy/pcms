@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.domain.HisOper;
 import com.pujjr.carcredit.vo.HisOperVo;
 import com.pujjr.carcredit.vo.QueryParamApplyVo;
@@ -32,4 +33,11 @@ public interface IQueryService
 	 * @return
 	 */
 	public List<HisOperVo> querytHisOper(String appId,String accountId);
+	
+	/**
+	 * 根据申请单查询申请数据反欺诈结果
+	 * @param appId
+	 * @return
+	 */
+	public List<FraudInnerResult> queryFraudInnerResult(String appId);
 }

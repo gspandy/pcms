@@ -1,6 +1,8 @@
 package com.pujjr.jbpm.core.listeners;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
@@ -105,6 +107,17 @@ public class ActivitiStartedListener implements EventHandler
 		}
 		
 		runPathService.createWorkflowRunPath(path);
+		
+		//如果是多实例任务，则在创建活动是生成任务执行人列表
+
+		if(nodeParam.isMulti()==false)
+		{
+			List<String> assigneeList = new ArrayList<String>();
+			assigneeList.add("dengpan");
+			assigneeList.add("dengpan1");
+			assigneeList.add("dengpan2");
+			runtimeService.setVariable(executionEntity.getId(), "assigneeList", assigneeList);
+		}
 	}
 
 }

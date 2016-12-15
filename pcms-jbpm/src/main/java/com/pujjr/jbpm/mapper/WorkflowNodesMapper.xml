@@ -148,6 +148,7 @@
 	    param.ON_WEIXIN_NOTICE as onWeixinNotice,
 	    param.RECOMMIT_MODE as recommitMode,
 	    param.BACK_NODE_ID as backNodeId,
+	    param.IS_MULTI as isMulti,
 	    param.CREATE_TIME as createTime,
 	    param.CREATE_ID as createId
     from t_workflow_nodes nodes

@@ -1,5 +1,7 @@
 package com.pujjr.jbpm.core.listeners;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.RuntimeService;
@@ -48,8 +50,14 @@ public class TaskCreateListener implements EventHandler
 		WorkflowNodeParamVo nodeParam = configWorkflowService.getWorkflowNodeParam(workflowVersionId,taskEntity.getTaskDefinitionKey());
 		if(nodeParam!=null && nodeParam.getTaskCreatePrehandle()!=null && !nodeParam.getTaskCreatePrehandle().equals(""))
 		{
-			ITaskCreatePreHandle handle = (ITaskCreatePreHandle)SpringBeanUtils.getBean(nodeParam.getTaskCreatePrehandle());
-			handle.handle(taskEntity);
+			//支持多处理方法
+			String[] clsList = nodeParam.getTaskCreatePrehandle().split(",");
+			for(int i = 0 ;i<clsList.length;i++)
+			{
+				ITaskCreatePreHandle handle = (ITaskCreatePreHandle)SpringBeanUtils.getBean(clsList[i]);
+				handle.handle(taskEntity);
+			}
+			
 		}
 		if (nodeParam!= null && nodeParam.getTaskCreateScript()!= null && !nodeParam.getTaskCreateScript().equals(""))
 		{
@@ -82,11 +90,14 @@ public class TaskCreateListener implements EventHandler
 			}
 			else
 			{
-				//如果是流程往前走则获取节点审批人参数,根据参数获取节点审批人
-				String assignee = getTaskAssignee(workflowVersionId,taskEntity);
-				taskEntity.setAssignee(assignee);
-				publishAssignEvent(taskEntity);
-				runPath.setAssignee(assignee);
+				if(nodeParam.isMulti()==false)
+				{
+					//如果是流程往前走且为单实例则获取节点审批人参数,根据参数获取节点审批人
+					String assignee = getTaskAssignee(workflowVersionId,taskEntity);
+					taskEntity.setAssignee(assignee);
+					publishAssignEvent(taskEntity);
+					runPath.setAssignee(assignee);
+				}
 			}
 		}
 		else
@@ -116,7 +127,7 @@ public class TaskCreateListener implements EventHandler
 		{
 			assignee = nodeAssigneeParam.getAssigneeParam();
 		}
-		else if(assigneeType.equals(AssigneeType.ASSIGNEE_WORKGROUP))
+		else if(assigneeType.equals(AssigneeType.ASSIGNEE_WORKGROUP) )
 		{
 			ITaskAssigneeHandle handler = (ITaskAssigneeHandle)SpringBeanUtils.getBean(nodeAssigneeParam.getAssigneeHandle());
 			assignee = handler.handle(nodeAssigneeParam.getAssigneeParam(),taskEntity);

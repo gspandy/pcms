@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.FraudInnerResultMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.FraudInnerResult">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="RESULT" jdbcType="VARCHAR" property="result" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APP_ID, RESULT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_fraud_inner_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_fraud_inner_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.FraudInnerResult">
+    insert into t_fraud_inner_result (ID, APP_ID, RESULT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.FraudInnerResult">
+    insert into t_fraud_inner_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="result != null">
+        RESULT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.FraudInnerResult">
+    update t_fraud_inner_result
+    <set>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        RESULT = #{result,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.FraudInnerResult">
+    update t_fraud_inner_result
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      RESULT = #{result,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByAppId" resultMap="BaseResultMap">
+  	select * from t_fraud_inner_result where APP_ID = #{appId}
+  </select>
+  <delete id="deleteByAppId">
+  	delete from t_fraud_inner_result where APP_ID = #{appId}
+  </delete>
+</mapper>

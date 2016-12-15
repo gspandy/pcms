@@ -65,6 +65,8 @@ public class ApplyFinance {
 
 	private String comment;
 
+	private String carType;
+
 	public String getId() {
 		return id;
 	}
@@ -319,5 +321,13 @@ public class ApplyFinance {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public String getCarType() {
+		return carType;
+	}
+
+	public void setCarType(String carType) {
+		this.carType = carType;
 	}
 }
