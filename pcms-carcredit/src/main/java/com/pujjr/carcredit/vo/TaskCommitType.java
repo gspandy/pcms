@@ -30,4 +30,8 @@ public class TaskCommitType
 	public static String CHECK_SUPPLY_INFO = "shbczl";
 	//补充放款资料
 	public static String LOANCHECK_SUPPLY_INFO = "bcfkzl";
+	//审贷会同意
+	public static String COUNTER_SIGN_AGREE = "tjlx501";
+	//审贷会反对
+	public static String COUNTER_SIGN_OPPOSE ="tjlx502";
 }

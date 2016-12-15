@@ -55,6 +55,7 @@ import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
+import com.pujjr.carcredit.vo.CounterSignApproveVo;
 import com.pujjr.carcredit.vo.DirectoryCategoryEnum;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
@@ -889,6 +890,35 @@ public class TaskServiceImpl implements ITaskService
 			apply.setStatus(ApplyStatus.LOANING);
 			applyService.updateApply(apply);
 		}
+	}
+
+	@Override
+	public void commitCounterSignApprove(CounterSignApproveVo vo, String taskId, String operId) throws Exception {
+		// TODO Auto-generated method stub
+		//检查任务合法性
+		Task task = actTaskService.createTaskQuery().taskId(taskId).singleResult();
+		if (task == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应任务不存在 ");
+		}
+		WorkflowRunPath runpath = runPathService.getFarestRunPathByActId(task.getProcessInstanceId(),
+				task.getTaskDefinitionKey());
+		if (runpath == null) {
+			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
+		}
+
+		//保存任务处理结果信息
+		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		taskProcessResult.setId(Utils.get16UUID());
+		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessResult(vo.getApproveResult());
+		
+		taskProcessResult.setComment(vo.getApproveComment());
+		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
+		taskProcessResultDao.insert(taskProcessResult);
+
+				
+		//处理结果放入流程变量,完成任务
+		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
 	}
 
 

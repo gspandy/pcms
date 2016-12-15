@@ -66,6 +66,7 @@ import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.AutoAssigneeConfigVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
+import com.pujjr.carcredit.vo.CounterSignApproveVo;
 import com.pujjr.carcredit.vo.OnlineAcctVo;
 import com.pujjr.carcredit.vo.QueryParamToDoTaskVo;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
@@ -601,6 +602,13 @@ public class TaskController extends BaseController
 	public void batchDoLoanTask(@RequestBody List<ToDoTaskVo> list)
 	{
 		taskService.batchDoLoanTask(list);
+	}
+	
+	@RequestMapping(value="/commitCounterSignApprove/{taskId}",method=RequestMethod.POST)
+	public void commitCounterSignApprove(@RequestBody CounterSignApproveVo vo, @PathVariable String taskId,HttpServletRequest request) throws Exception
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		taskService.commitCounterSignApprove(vo, taskId, sysAccount.getAccountId());
 	}
 
 }

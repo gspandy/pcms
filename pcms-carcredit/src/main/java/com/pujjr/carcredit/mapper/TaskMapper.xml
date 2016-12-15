@@ -54,12 +54,12 @@
 		apply.TOTAL_FINANCE_AMT as totalFinanceAmount,
 		apply.PERIOD as period
 		from act_ru_task task
-		left join act_ru_execution exec on task.EXECUTION_ID_ = exec.ID_
+		left join act_ru_execution exec on task.PROC_INST_ID_ = exec.ID_
 		left join act_re_procdef def on task.PROC_DEF_ID_ = def.ID_
 		left join t_workflow_runpath runpath on runpath.PROC_INST_ID =
-		task.PROC_INST_ID_ and runpath.ACT_ID = task.TASK_DEF_KEY_
+		task.PROC_INST_ID_ and runpath.ACT_ID = task.TASK_DEF_KEY_ and  task.EXECUTION_ID_ = runpath.EXECUTION_ID
 		left join t_workflow_runpath prunpath on runpath.PARENT_USERTASK_PATH_ID =prunpath.ID
-		left join t_workflow_version flowversion on flowversion.activiti_procdef_id = task.PROC_DEF_ID_
+		left join t_workflow_version flowversion on flowversion.activiti_procdef_id = task.PROC_DEF_ID_ 
 		left join t_workflow_node_form form on form.workflow_version_id = flowversion.id and task.TASK_DEF_KEY_ = form.node_id
 		left join T_APPLY apply on exec.BUSINESS_KEY_ = apply.APP_ID
 		left join T_APPLY_TENANT applyTenant on exec.BUSINESS_KEY_ = applyTenant.APP_ID

@@ -18,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.pujjr.jbpm.core.command.AbstractExecutionCommand;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
+import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.jbpm.core.ProcessHandleHelper;
+import com.pujjr.jbpm.domain.WorkflowNodeAssignee;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.core.script.GroovyEngine;
 import com.pujjr.jbpm.service.IConfigWorkflowService;
@@ -35,6 +38,8 @@ public class ActivitiStartedListener implements EventHandler
 	private RuntimeService runtimeService;
 	@Autowired
 	private IConfigWorkflowService configWorkflowService;
+	@Autowired
+	private ISysWorkgroupService workgroupService;
 	
 	public void handle(ActivitiEvent event) 
 	{
@@ -108,14 +113,17 @@ public class ActivitiStartedListener implements EventHandler
 		
 		runPathService.createWorkflowRunPath(path);
 		
-		//如果是多实例任务，则在创建活动是生成任务执行人列表
+		//如果是多实例任务，则在创建活动时生成任务执行人列表
 
-		if(nodeParam.isMulti()==false)
+		if(nodeParam.isMulti()==true)
 		{
+			WorkflowNodeAssignee nodeAssigneeParam = configWorkflowService.getNodeAssignee(workflowVersionId, eventImpl.getActivityId());
+			List<SysAccount> list = workgroupService.getWorkgroupSysAccounts(nodeAssigneeParam.getAssigneeParam());
 			List<String> assigneeList = new ArrayList<String>();
-			assigneeList.add("dengpan");
-			assigneeList.add("dengpan1");
-			assigneeList.add("dengpan2");
+			for(SysAccount item : list)
+			{
+				assigneeList.add(item.getAccountId());
+			}
 			runtimeService.setVariable(executionEntity.getId(), "assigneeList", assigneeList);
 		}
 	}

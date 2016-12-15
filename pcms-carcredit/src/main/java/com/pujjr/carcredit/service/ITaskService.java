@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.activiti.engine.task.Task;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
@@ -27,12 +28,14 @@ import com.pujjr.carcredit.vo.ApplyCheckVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
+import com.pujjr.carcredit.vo.CounterSignApproveVo;
 import com.pujjr.carcredit.vo.ReconsiderApplyVo;
 import com.pujjr.carcredit.vo.ReconsiderApproveVo;
 import com.pujjr.carcredit.vo.SignContractVo;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
 @Service
+@Transactional
 public interface ITaskService 
 {
 	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param);
@@ -106,5 +109,13 @@ public interface ITaskService
 	public List<HashMap<String,Object>> getUserTaskDefineGroupInfo(QueryParamToDoTaskPo param);
 	//将待放款任务加入放款中
 	public void batchDoLoanTask(List<ToDoTaskVo> list);
+	/**
+	 * 提交审贷会结果
+	 * @param vo
+	 * @param taskId
+	 * @param operId
+	 * @throws Exception 
+	 */
+	public void commitCounterSignApprove(CounterSignApproveVo vo,String taskId,String operId) throws Exception;
 	
 }
