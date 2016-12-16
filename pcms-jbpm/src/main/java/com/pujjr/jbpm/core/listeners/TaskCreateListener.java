@@ -101,10 +101,7 @@ public class TaskCreateListener implements EventHandler
 				else
 				{
 					//从流程变量获取任务执行人
-					runPath.setExecutionId(taskEntity.getExecutionId());
-					String assignee = runtimeService.getVariable(taskEntity.getExecutionId(), "assignee").toString();
 					publishAssignEvent(taskEntity);
-					runPath.setAssignee(assignee);
 				}
 			}
 		}

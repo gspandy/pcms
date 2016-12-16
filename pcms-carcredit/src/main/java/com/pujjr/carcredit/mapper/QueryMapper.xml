@@ -12,7 +12,7 @@
 		dict.DICT_DATA_NAME  as status ,
 		branch.BRANCH_NAME as branchName,
 		task.NAME_ as taskName,
-		account.ACCOUNT_NAME  as assignee,
+		task.ACCOUNT_NAME  as assignee,
 		apply.APPROVE_DATE as approveDate,
 		apply.TOTAL_FINANCE_AMT as totalFinanceAmt,
 		apply.PERIOD as period
@@ -22,8 +22,13 @@
 		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
 		left join SYS_BRANCH branch on apply.CREATE_BRANCH_CODE = branch.BRANCH_CODE
 		left join T_SIGN_CONTRACT sign on apply.APP_ID = sign.APP_ID
-		left join act_ru_task task on apply.PROC_INST_ID = task.PROC_INST_ID_
-		left join SYS_ACCOUNT account on task.ASSIGNEE_ = account.ACCOUNT_ID 
+		left join 
+		(	
+			SELECT task.PROC_INST_ID_, task.NAME_ ,GROUP_CONCAT(account.ACCOUNT_NAME  separator ',') AS ACCOUNT_NAME  from act_ru_task  task 
+			left join SYS_ACCOUNT account on account.ACCOUNT_ID = task.ASSIGNEE_
+			where task.PROC_INST_ID_ = apply.PROC_INST_ID
+		) task on apply.PROC_INST_ID = task.PROC_INST_ID_
+
 		left join SYS_DICT_DATA dict on apply.status = dict.DICT_DATA_CODE
 		where 1=1 
 		<if test="param.appId!=null and param.appId!=''">

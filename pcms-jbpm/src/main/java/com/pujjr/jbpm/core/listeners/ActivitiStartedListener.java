@@ -59,6 +59,26 @@ public class ActivitiStartedListener implements EventHandler
 		}
 		
 		ActivityImpl curAct = executionEntity.getActivity();
+		if(nodeParam.isMulti())
+		{
+			WorkflowRunPath runPath = runPathService.getFarestRunPathByActId(eventImpl.getProcessInstanceId(), eventImpl.getActivityId());
+			if(runPath != null)
+			{
+				List<String> list =(List<String>) runtimeService.getVariable(executionEntity.getId(), "assigneeList");
+				String userIds = "";
+				for(String item : list)
+				{
+					userIds+= item +",";
+				}
+				if(userIds.length()>0)
+				{
+					userIds = userIds.substring(0, userIds.length()-1);
+				}
+				runPath.setAssignee(userIds);
+				runPathService.updateWorkflowRunPath(runPath);
+				return;
+			}
+		}
 		
 		//设置路径信息
 		WorkflowRunPath path = new WorkflowRunPath();
@@ -67,6 +87,7 @@ public class ActivitiStartedListener implements EventHandler
 		path.setProcInstId(eventImpl.getProcessInstanceId());
 		path.setExecutionId(eventImpl.getExecutionId());
 		path.setActId(eventImpl.getActivityId());
+		path.setIsMultiAct(nodeParam.isMulti());
 		String actName = eventImpl.getActivityName();
 		String actType = eventImpl.getActivityType();
 		if(actName == null)
