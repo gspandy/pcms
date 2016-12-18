@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.carcredit.dao.TaskMultiProcessResultMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.TaskMultiProcessResult" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="RUN_PATH_ID" property="runPathId" jdbcType="VARCHAR" />
+    <result column="PROCESS_USERID" property="processUserid" jdbcType="VARCHAR" />
+    <result column="PROCESS_RESULT" property="processResult" jdbcType="VARCHAR" />
+    <result column="PROCESS_RESULT_DESC" property="processResultDesc" jdbcType="VARCHAR" />
+    <result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="TASK_BUSINESS_ID" property="taskBusinessId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, RUN_PATH_ID, PROCESS_USERID, PROCESS_RESULT, PROCESS_RESULT_DESC, COMMENT, TASK_BUSINESS_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_task_multi_process_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_task_multi_process_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.TaskMultiProcessResult" >
+    insert into t_task_multi_process_result (ID, RUN_PATH_ID, PROCESS_USERID, 
+      PROCESS_RESULT, PROCESS_RESULT_DESC, COMMENT, 
+      TASK_BUSINESS_ID)
+    values (#{id,jdbcType=VARCHAR}, #{runPathId,jdbcType=VARCHAR}, #{processUserid,jdbcType=VARCHAR}, 
+      #{processResult,jdbcType=VARCHAR}, #{processResultDesc,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{taskBusinessId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.TaskMultiProcessResult" >
+    insert into t_task_multi_process_result
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="runPathId != null" >
+        RUN_PATH_ID,
+      </if>
+      <if test="processUserid != null" >
+        PROCESS_USERID,
+      </if>
+      <if test="processResult != null" >
+        PROCESS_RESULT,
+      </if>
+      <if test="processResultDesc != null" >
+        PROCESS_RESULT_DESC,
+      </if>
+      <if test="comment != null" >
+        COMMENT,
+      </if>
+      <if test="taskBusinessId != null" >
+        TASK_BUSINESS_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="runPathId != null" >
+        #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="processUserid != null" >
+        #{processUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="processResult != null" >
+        #{processResult,jdbcType=VARCHAR},
+      </if>
+      <if test="processResultDesc != null" >
+        #{processResultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null" >
+        #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.TaskMultiProcessResult" >
+    update t_task_multi_process_result
+    <set >
+      <if test="runPathId != null" >
+        RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      </if>
+      <if test="processUserid != null" >
+        PROCESS_USERID = #{processUserid,jdbcType=VARCHAR},
+      </if>
+      <if test="processResult != null" >
+        PROCESS_RESULT = #{processResult,jdbcType=VARCHAR},
+      </if>
+      <if test="processResultDesc != null" >
+        PROCESS_RESULT_DESC = #{processResultDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        COMMENT = #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="taskBusinessId != null" >
+        TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.TaskMultiProcessResult" >
+    update t_task_multi_process_result
+    set RUN_PATH_ID = #{runPathId,jdbcType=VARCHAR},
+      PROCESS_USERID = #{processUserid,jdbcType=VARCHAR},
+      PROCESS_RESULT = #{processResult,jdbcType=VARCHAR},
+      PROCESS_RESULT_DESC = #{processResultDesc,jdbcType=VARCHAR},
+      COMMENT = #{comment,jdbcType=VARCHAR},
+      TASK_BUSINESS_ID = #{taskBusinessId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByRunPathId" resultMap="BaseResultMap">
+  	select * from t_task_multi_process_result where RUN_PATH_ID = #{runPathId}
+  </select>
+</mapper>

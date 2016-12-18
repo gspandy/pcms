@@ -1,6 +1,9 @@
 package com.pujjr.carcredit.po;
 
 import java.util.Date;
+import java.util.List;
+
+import com.pujjr.carcredit.domain.TaskMultiProcessResult;
 
 //流程处理实体
 public class WorkflowProcessResultPo 
@@ -17,6 +20,8 @@ public class WorkflowProcessResultPo
 	private String inJumpType;
 	//跳转任务方式
 	private String outJumpType;
+	//是否多实例活动
+	private boolean isMultiAct;
 	//任务分配时间
 	private Date startTime;
 	//开始处理时间
@@ -31,7 +36,15 @@ public class WorkflowProcessResultPo
 	private String processDesc;
 	//备注
 	private String comment;
+	//多实例任务处理结果
+	private List<TaskMultiProcessResult> multiTask;
 	
+	public List<TaskMultiProcessResult> getMultiTask() {
+		return multiTask;
+	}
+	public void setMultiTask(List<TaskMultiProcessResult> multiTask) {
+		this.multiTask = multiTask;
+	}
 	public String getPathId() {
 		return pathId;
 	}
@@ -55,6 +68,12 @@ public class WorkflowProcessResultPo
 	}
 	public void setAssigneeName(String assigneeName) {
 		this.assigneeName = assigneeName;
+	}
+	public boolean isMultiAct() {
+		return isMultiAct;
+	}
+	public void setMultiAct(boolean isMultiAct) {
+		this.isMultiAct = isMultiAct;
 	}
 	public String getInJumpType() {
 		return inJumpType;

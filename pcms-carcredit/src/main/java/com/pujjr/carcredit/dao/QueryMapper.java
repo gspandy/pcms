@@ -14,4 +14,10 @@ public interface QueryMapper
 	List<HashMap<String,Object>> selectApplyConditionLoanCommentList(@Param("appId")String appId);
 	
 	List<String> selectApplyRunPathNodeList(@Param("appId")String appId);
+	/**
+	 * 根据流程实例ID查询任务信息
+	 * @param procInstId 流程实例ID
+	 * @return
+	 */
+	HashMap<String,Object> selectTaskInfoByProcInstId(@Param("procInstId")String procInstId);
 }

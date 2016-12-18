@@ -37,6 +37,10 @@ public class WorkflowNodeParam {
 
 	private Boolean isMulti;
 
+	private String multiPassMode;
+
+	private String multiPassCond;
+
 	private Date createTime;
 
 	private String createId;
@@ -175,6 +179,22 @@ public class WorkflowNodeParam {
 
 	public void setIsMulti(Boolean isMulti) {
 		this.isMulti = isMulti;
+	}
+
+	public String getMultiPassMode() {
+		return multiPassMode;
+	}
+
+	public void setMultiPassMode(String multiPassMode) {
+		this.multiPassMode = multiPassMode;
+	}
+
+	public String getMultiPassCond() {
+		return multiPassCond;
+	}
+
+	public void setMultiPassCond(String multiPassCond) {
+		this.multiPassCond = multiPassCond;
 	}
 
 	public Date getCreateTime() {

@@ -131,6 +131,8 @@
 		<result column="assigneeName" property="assigneeName" jdbcType="VARCHAR" />
 		<result column="inJumpType" property="inJumpType" jdbcType="VARCHAR" />
 		<result column="outJumpType" property="outJumpType" jdbcType="VARCHAR" />
+		<result column="outJumpType" property="outJumpType" jdbcType="VARCHAR" />
+		<result column="isMultiAct" jdbcType="BIT" property="isMultiAct" />
 		<result column="startTime" property="startTime" jdbcType="TIMESTAMP" />
 		<result column="processTime" property="processTime" jdbcType="TIMESTAMP" />
 		<result column="endTime" property="endTime" jdbcType="TIMESTAMP" />
@@ -146,24 +148,18 @@
 		runpath.ID as pathId,
 		runpath.ACT_ID as actId,
 		runpath.ACT_NAME as actName,
-		account.ACCOUNT_NAME as assigneeName,
 		runpath.IN_JUMP_TYPE as inJumpType,
 		runpath.OUT_JUMP_TYPE as outJumpType,
 		runpath.START_TIME as startTime,  
 		runPath.PROCESS_TIME as processTime,
 		runpath.END_TIME as endTime,
 		runpath.MESSAGE as message,
-		dict.DICT_DATA_NAME as processResult ,
-		process.PROCESS_RESULT_DESC as processDesc,
-		process.COMMENT as comment
+		runpath.IS_MULTI_ACT as isMultiAct,
+		runpath.ASSIGNEE as assigneeName
 		from t_workflow_runpath  runpath
-		left join t_task_process_result process on runpath.ID = process.RUN_PATH_ID
-		left join sys_dict_data dict on process.PROCESS_RESULT = dict.DICT_DATA_CODE
-		left join sys_account account on runpath.ASSIGNEE = account.ACCOUNT_ID
 		where runpath.ACT_TYPE ='userTask'   and runpath.PROC_INST_ID = #{procInstId}
 		order by runpath.PROC_INST_ID,runpath.NODE_LEVEL desc	    
 	</select>
-	
 	<select id="selectUserTaskDefineGroupInfo" resultType="HashMap">
 		select  
 		NAME_ as taskName,

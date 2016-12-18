@@ -149,6 +149,8 @@
 	    param.RECOMMIT_MODE as recommitMode,
 	    param.BACK_NODE_ID as backNodeId,
 	    param.IS_MULTI as isMulti,
+	    param.MULTI_PASS_MODE as multiPassMode ,
+	    param.MULTI_PASS_COND as multiPassCond ,
 	    param.CREATE_TIME as createTime,
 	    param.CREATE_ID as createId
     from t_workflow_nodes nodes

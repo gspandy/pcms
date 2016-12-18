@@ -96,7 +96,6 @@ public class ActivitiStartedListener implements EventHandler
 		}
 		path.setActName(actName);
 		path.setActType(eventImpl.getActivityType());
-		path.setIsMultiAct(false);
 		path.setStartTime(new Date());
 		path.setInJumpType(cmd.getCommandType().toString());
 		

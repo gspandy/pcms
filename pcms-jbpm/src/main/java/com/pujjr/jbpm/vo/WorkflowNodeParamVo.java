@@ -32,10 +32,30 @@ public class WorkflowNodeParamVo extends WorkflowNodeVo
 	private String backNodeId;
 	
 	private boolean isMulti;
+	
+	private String multiPassMode;
+
+	private String multiPassCond;
 
 	private Date createTime;
 
 	private String createId;
+
+	public String getMultiPassMode() {
+		return multiPassMode;
+	}
+
+	public void setMultiPassMode(String multiPassMode) {
+		this.multiPassMode = multiPassMode;
+	}
+
+	public String getMultiPassCond() {
+		return multiPassCond;
+	}
+
+	public void setMultiPassCond(String multiPassCond) {
+		this.multiPassCond = multiPassCond;
+	}
 
 	public String getActStartScript() {
 		return actStartScript;

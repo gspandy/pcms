@@ -17,8 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.InsuranceHis;
+import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysDictData;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISequenceService;
+import com.pujjr.base.service.ISysAccountService;
+import com.pujjr.base.service.ISysDictService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.constant.ApplyStatus;
@@ -31,6 +35,7 @@ import com.pujjr.carcredit.dao.CheckResultMapper;
 import com.pujjr.carcredit.dao.LoanCheckMapper;
 import com.pujjr.carcredit.dao.ReconsiderMapper;
 import com.pujjr.carcredit.dao.TaskMapper;
+import com.pujjr.carcredit.dao.TaskMultiProcessResultMapper;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
@@ -42,6 +47,7 @@ import com.pujjr.carcredit.domain.LoanCheck;
 import com.pujjr.carcredit.domain.Reconsider;
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
+import com.pujjr.carcredit.domain.TaskMultiProcessResult;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.po.OnlineAcctPo;
 import com.pujjr.carcredit.po.QueryParamToDoTaskPo;
@@ -92,6 +98,8 @@ public class TaskServiceImpl implements ITaskService
 	@Autowired
 	private TaskProcessResultMapper taskProcessResultDao;
 	@Autowired
+	private TaskMultiProcessResultMapper taskMultiProcessResultDao;
+	@Autowired
 	private ISysWorkgroupService workgroupService;
 	@Autowired
 	private ISignContractService signContractService;
@@ -115,6 +123,10 @@ public class TaskServiceImpl implements ITaskService
 	private RuntimeService runtimeService;
 	@Autowired
 	private InsuranceHisMapper insuranceHisDao;
+	@Autowired
+	private ISysAccountService sysAccountService;
+	@Autowired
+	private ISysDictService sysDictService;
 	
 	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param)
 	{
@@ -666,7 +678,61 @@ public class TaskServiceImpl implements ITaskService
 	public List<WorkflowProcessResultPo> getWorkflowProcessResult(
 			String procInstId) {
 		// TODO Auto-generated method stub
-		return taskDao.selectWorkflowProcessResult(procInstId);
+		List<WorkflowProcessResultPo> list =  taskDao.selectWorkflowProcessResult(procInstId);
+		for(int i = 0 ; i<list.size() ; i++)
+		{
+			WorkflowProcessResultPo item = list.get(i);
+			if(item.isMultiAct())
+			{
+				//获取任务执行人
+				String[] userIds = item.getAssigneeName().split(",");
+				String assigneeName = "";
+				for(String userId : userIds)
+				{
+					SysAccount account = sysAccountService.getSysAccountByAccountId(userId);
+					assigneeName += account.getAccountName()+",";
+				}
+				if(assigneeName.length()>0)
+				{
+					assigneeName = assigneeName.substring(0,assigneeName.length()-1);
+				}
+				item.setAssigneeName(assigneeName);
+				//获取多实例任务信息
+				List<TaskMultiProcessResult> listTaskMulti = taskMultiProcessResultDao.selectByRunPathId(item.getPathId());
+				for(int j=0 ; j<listTaskMulti.size();j++)
+				{
+					TaskMultiProcessResult itemTaskMulti = listTaskMulti.get(j);
+					SysAccount account = sysAccountService.getSysAccountByAccountId(itemTaskMulti.getProcessUserid());
+					itemTaskMulti.setProcessUserid(account.getAccountName());
+					if(itemTaskMulti.getProcessResult()!=null)
+					{
+						SysDictData dictData = sysDictService.getDictDataByDictDateCode(itemTaskMulti.getProcessResult());
+						itemTaskMulti.setProcessResult(dictData.getDictDataName());
+					}
+					listTaskMulti.set(j, itemTaskMulti);
+				}
+				item.setMultiTask(listTaskMulti);
+			}
+			else
+			{
+				SysAccount account = sysAccountService.getSysAccountByAccountId(item.getAssigneeName());
+				item.setAssigneeName(account.getAccountName());
+				//获取单实例任务信息
+				TaskProcessResult result = taskProcessResultDao.selectByRunPathId(item.getPathId());
+				if(result!=null)
+				{
+					if(result.getProcessResult()!=null)
+					{
+						SysDictData dictData = sysDictService.getDictDataByDictDateCode(result.getProcessResult());
+						item.setProcessResult(dictData.getDictDataName());
+					}
+					item.setProcessDesc(result.getProcessResultDesc());
+					item.setComment(result.getComment());
+				}
+			}
+			list.set(i, item);
+		}
+		return list;
 	}
 
 	@Override
@@ -906,15 +972,15 @@ public class TaskServiceImpl implements ITaskService
 			throw new Exception("提交任务失败,任务ID" + taskId + "对应路径不存在 ");
 		}
 
-		//保存任务处理结果信息
-		TaskProcessResult taskProcessResult = new TaskProcessResult();
+		//保存多实例任务处理结果信息
+		TaskMultiProcessResult taskProcessResult = new TaskMultiProcessResult();
 		taskProcessResult.setId(Utils.get16UUID());
 		taskProcessResult.setRunPathId(runpath.getId());
+		taskProcessResult.setProcessUserid(operId);
 		taskProcessResult.setProcessResult(vo.getApproveResult());
-		
 		taskProcessResult.setComment(vo.getApproveComment());
 		taskProcessResult.setTaskBusinessId(Utils.get16UUID());
-		taskProcessResultDao.insert(taskProcessResult);
+		taskMultiProcessResultDao.insert(taskProcessResult);
 
 				
 		//处理结果放入流程变量,完成任务
