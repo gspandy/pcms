@@ -22,6 +22,16 @@ public class RemissionFeeItemVo
 	//减免日期
 	private Date remissionDate;
 	
+	public RemissionFeeItemVo()
+	{
+		this.capital=0.00;
+		this.interest=0.00;
+		this.overdueAmount = 0.00;
+		this.otherFee=0.00;
+		this.otherOverdueAmount=0.00;
+		this.lateFee=0.00;
+	}
+	
 	public Date getRemissionDate() {
 		return remissionDate;
 	}

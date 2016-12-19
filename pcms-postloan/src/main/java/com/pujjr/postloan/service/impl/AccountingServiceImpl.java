@@ -41,6 +41,7 @@ import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.enumeration.SettleMode;
 import com.pujjr.postloan.enumeration.SettleType;
 import com.pujjr.postloan.service.IAccountingService;
+import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
@@ -350,12 +351,13 @@ public class AccountingServiceImpl implements IAccountingService {
 		repayLogDao.insert(repayLog);
 	}
 	@Override
-	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,RepayMode repayMode,ChargeItem chargeItem) 
+	public void repayReverseAccounting(String appId, double repayAmount, Date repayDate,RepayMode repayMode,RemissionFeeItemVo refundItem) 
 	{
 		/**
 		 * 冲其他费用
 		 */
 		List<WaitingCharge> otherFeeList = waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Other.getName());
+		//
 		for(WaitingCharge otherFeeItem : otherFeeList)
 		{
 			if(repayAmount<=0)
