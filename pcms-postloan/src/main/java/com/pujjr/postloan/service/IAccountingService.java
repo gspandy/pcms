@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
-import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.vo.RemissionFeeItemVo;

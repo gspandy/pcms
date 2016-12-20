@@ -2,7 +2,7 @@ package com.pujjr.postloan.enumeration;
 /**
  * 还款项目
  * **/
-public enum ChargeItem 
+public enum RepayItem 
 {
 	CAPITAL("hkxm01","本金"),
 	INTEREST("hkxm02","利息"),
@@ -23,7 +23,7 @@ public enum ChargeItem
 		return text;
 	}
 
-	private ChargeItem(String name,String text)
+	private RepayItem(String name,String text)
 	{
 		this.name = name;
 		this.text = text;

@@ -7,17 +7,37 @@ public class RepayLog {
 
 	private String appId;
 
-	private String feeType;
+	private Integer seq;
 
-	private String feeRefId;
+	private String repayMode;
 
-	private String chargeItem;
+	private Double repayAmount;
 
-	private Double chargeAmount;
+	private Date repayTime;
 
-	private Date chargeTime;
+	private String logStatus;
 
-	private String chargeMode;
+	private Double capital;
+
+	private Double interest;
+
+	private Double overdueAmount;
+
+	private Double otherFee;
+
+	private Double otherOverdueAmount;
+
+	private Double extendFee;
+
+	private Double lateFee;
+
+	private Double stageAmount;
+
+	private Double reserver1;
+
+	private Double reserver2;
+
+	private Double reserver3;
 
 	public String getId() {
 		return id;
@@ -35,51 +55,131 @@ public class RepayLog {
 		this.appId = appId;
 	}
 
-	public String getFeeType() {
-		return feeType;
+	public Integer getSeq() {
+		return seq;
 	}
 
-	public void setFeeType(String feeType) {
-		this.feeType = feeType;
+	public void setSeq(Integer seq) {
+		this.seq = seq;
 	}
 
-	public String getFeeRefId() {
-		return feeRefId;
+	public String getRepayMode() {
+		return repayMode;
 	}
 
-	public void setFeeRefId(String feeRefId) {
-		this.feeRefId = feeRefId;
+	public void setRepayMode(String repayMode) {
+		this.repayMode = repayMode;
 	}
 
-	public String getChargeItem() {
-		return chargeItem;
+	public Double getRepayAmount() {
+		return repayAmount;
 	}
 
-	public void setChargeItem(String chargeItem) {
-		this.chargeItem = chargeItem;
+	public void setRepayAmount(Double repayAmount) {
+		this.repayAmount = repayAmount;
 	}
 
-	public Double getChargeAmount() {
-		return chargeAmount;
+	public Date getRepayTime() {
+		return repayTime;
 	}
 
-	public void setChargeAmount(Double chargeAmount) {
-		this.chargeAmount = chargeAmount;
+	public void setRepayTime(Date repayTime) {
+		this.repayTime = repayTime;
 	}
 
-	public Date getChargeTime() {
-		return chargeTime;
+	public String getLogStatus() {
+		return logStatus;
 	}
 
-	public void setChargeTime(Date chargeTime) {
-		this.chargeTime = chargeTime;
+	public void setLogStatus(String logStatus) {
+		this.logStatus = logStatus;
 	}
 
-	public String getChargeMode() {
-		return chargeMode;
+	public Double getCapital() {
+		return capital;
 	}
 
-	public void setChargeMode(String chargeMode) {
-		this.chargeMode = chargeMode;
+	public void setCapital(Double capital) {
+		this.capital = capital;
+	}
+
+	public Double getInterest() {
+		return interest;
+	}
+
+	public void setInterest(Double interest) {
+		this.interest = interest;
+	}
+
+	public Double getOverdueAmount() {
+		return overdueAmount;
+	}
+
+	public void setOverdueAmount(Double overdueAmount) {
+		this.overdueAmount = overdueAmount;
+	}
+
+	public Double getOtherFee() {
+		return otherFee;
+	}
+
+	public void setOtherFee(Double otherFee) {
+		this.otherFee = otherFee;
+	}
+
+	public Double getOtherOverdueAmount() {
+		return otherOverdueAmount;
+	}
+
+	public void setOtherOverdueAmount(Double otherOverdueAmount) {
+		this.otherOverdueAmount = otherOverdueAmount;
+	}
+
+	public Double getExtendFee() {
+		return extendFee;
+	}
+
+	public void setExtendFee(Double extendFee) {
+		this.extendFee = extendFee;
+	}
+
+	public Double getLateFee() {
+		return lateFee;
+	}
+
+	public void setLateFee(Double lateFee) {
+		this.lateFee = lateFee;
+	}
+
+	public Double getStageAmount() {
+		return stageAmount;
+	}
+
+	public void setStageAmount(Double stageAmount) {
+		this.stageAmount = stageAmount;
+	}
+
+	public Double getReserver1() {
+		return reserver1;
+	}
+
+	public void setReserver1(Double reserver1) {
+		this.reserver1 = reserver1;
+	}
+
+	public Double getReserver2() {
+		return reserver2;
+	}
+
+	public void setReserver2(Double reserver2) {
+		this.reserver2 = reserver2;
+	}
+
+	public Double getReserver3() {
+		return reserver3;
+	}
+
+	public void setReserver3(Double reserver3) {
+		this.reserver3 = reserver3;
 	}
 }

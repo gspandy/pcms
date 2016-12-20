@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.postloan.dao.ServiceFeeMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.ServiceFee">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APPLY_ID" jdbcType="VARCHAR" property="applyId" />
+    <result column="FEE_TYPE" jdbcType="VARCHAR" property="feeType" />
+    <result column="AMOUNT" jdbcType="DOUBLE" property="amount" />
+    <result column="REPAY_STATUS" jdbcType="VARCHAR" property="repayStatus" />
+    <result column="SETTLE_DATE" jdbcType="DATE" property="settleDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, APPLY_ID, FEE_TYPE, AMOUNT, REPAY_STATUS, SETTLE_DATE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_service_fee
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_service_fee
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.ServiceFee">
+    insert into t_service_fee (ID, APPLY_ID, FEE_TYPE, 
+      AMOUNT, REPAY_STATUS, SETTLE_DATE
+      )
+    values (#{id,jdbcType=VARCHAR}, #{applyId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DOUBLE}, #{repayStatus,jdbcType=VARCHAR}, #{settleDate,jdbcType=DATE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.ServiceFee">
+    insert into t_service_fee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="applyId != null">
+        APPLY_ID,
+      </if>
+      <if test="feeType != null">
+        FEE_TYPE,
+      </if>
+      <if test="amount != null">
+        AMOUNT,
+      </if>
+      <if test="repayStatus != null">
+        REPAY_STATUS,
+      </if>
+      <if test="settleDate != null">
+        SETTLE_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="applyId != null">
+        #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null">
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="repayStatus != null">
+        #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null">
+        #{settleDate,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.ServiceFee">
+    update t_service_fee
+    <set>
+      <if test="applyId != null">
+        APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null">
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        AMOUNT = #{amount,jdbcType=DOUBLE},
+      </if>
+      <if test="repayStatus != null">
+        REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="settleDate != null">
+        SETTLE_DATE = #{settleDate,jdbcType=DATE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.ServiceFee">
+    update t_service_fee
+    set APPLY_ID = #{applyId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      AMOUNT = #{amount,jdbcType=DOUBLE},
+      REPAY_STATUS = #{repayStatus,jdbcType=VARCHAR},
+      SETTLE_DATE = #{settleDate,jdbcType=DATE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByApplyId" resultMap="BaseResultMap">
+  	select * from t_service_fee where APPLY_ID = #{applyId}
+  </select>
+</mapper>

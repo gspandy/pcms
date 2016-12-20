@@ -31,7 +31,6 @@ import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingChargeNew;
-import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
@@ -42,6 +41,7 @@ import com.pujjr.postloan.service.IRemissionService;
 import com.pujjr.postloan.vo.ApplyRemissionVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.postloan.vo.NewRepayPlanVo;
+import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.RemissionTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
@@ -174,26 +174,34 @@ public class RemissionServiceImpl implements IRemissionService
 			}
 			else
 			{
+				RemissionFeeItemVo remissionItem = new RemissionFeeItemVo();
+				double totalRemissionAmt = 0.00;
 				if(Double.compare(otherOverdueAmt, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), otherOverdueAmt, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OTHEROVERDUEAMT);
+					remissionItem.setOtherOverdueAmount(otherOverdueAmt);
+					totalRemissionAmt += otherOverdueAmt;
 				}
 				if(Double.compare(otherFee, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), otherFee, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OTHERFEE);
+					remissionItem.setOtherFee(otherFee);
+					totalRemissionAmt+=otherFee;
 				}
 				if(Double.compare(overdueAmt, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), overdueAmt, po.getRemissionDate(), RepayMode.Remission, ChargeItem.OVERDUEAMT);
+					remissionItem.setOverdueAmount(overdueAmt);
+					totalRemissionAmt+=overdueAmt;
 				}
 				if(Double.compare(interest, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), interest, po.getRemissionDate(), RepayMode.Remission, ChargeItem.INTEREST);
+					remissionItem.setInterest(interest);
+					totalRemissionAmt+=interest;
 				}
 				if(Double.compare(capital, 0.00)>0)
 				{
-					accountingService.repayReverseAccounting(po.getAppId(), capital, po.getRemissionDate(), RepayMode.Remission, ChargeItem.CAPITAL);
+					remissionItem.setCapital(capital);
+					totalRemissionAmt+=capital;
 				}
+				accountingService.repayReverseAccounting(po.getAppId(), totalRemissionAmt, po.getRemissionDate(), RepayMode.Remission, remissionItem);
 				runtimeService.setVariable(task.getExecutionId(), "needUpgradeApprove", false);
 				po.setApplyStatus(LoanApplyStatus.ApprovePass.getName());
 				//最终审批通过则释放总账状态

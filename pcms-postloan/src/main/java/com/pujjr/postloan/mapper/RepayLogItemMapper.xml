@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pujjr.postloan.dao.RepayLogItemMapper" >
+  <resultMap id="BaseResultMap" type="com.pujjr.postloan.domain.RepayLogItem" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="REPAY_LOG_ID" property="repayLogId" jdbcType="VARCHAR" />
+    <result column="FEE_TYPE" property="feeType" jdbcType="VARCHAR" />
+    <result column="FEE_REF_ID" property="feeRefId" jdbcType="VARCHAR" />
+    <result column="REPAY_ITEM" property="repayItem" jdbcType="VARCHAR" />
+    <result column="REPAY_AMOUNT" property="repayAmount" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, REPAY_LOG_ID, FEE_TYPE, FEE_REF_ID, REPAY_ITEM, REPAY_AMOUNT
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_repay_log_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from t_repay_log_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.postloan.domain.RepayLogItem" >
+    insert into t_repay_log_item (ID, REPAY_LOG_ID, FEE_TYPE, 
+      FEE_REF_ID, REPAY_ITEM, REPAY_AMOUNT
+      )
+    values (#{id,jdbcType=VARCHAR}, #{repayLogId,jdbcType=VARCHAR}, #{feeType,jdbcType=VARCHAR}, 
+      #{feeRefId,jdbcType=VARCHAR}, #{repayItem,jdbcType=VARCHAR}, #{repayAmount,jdbcType=DOUBLE}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RepayLogItem" >
+    insert into t_repay_log_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="repayLogId != null" >
+        REPAY_LOG_ID,
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE,
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID,
+      </if>
+      <if test="repayItem != null" >
+        REPAY_ITEM,
+      </if>
+      <if test="repayAmount != null" >
+        REPAY_AMOUNT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="repayLogId != null" >
+        #{repayLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayItem != null" >
+        #{repayItem,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAmount != null" >
+        #{repayAmount,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.postloan.domain.RepayLogItem" >
+    update t_repay_log_item
+    <set >
+      <if test="repayLogId != null" >
+        REPAY_LOG_ID = #{repayLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="feeType != null" >
+        FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      </if>
+      <if test="feeRefId != null" >
+        FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      </if>
+      <if test="repayItem != null" >
+        REPAY_ITEM = #{repayItem,jdbcType=VARCHAR},
+      </if>
+      <if test="repayAmount != null" >
+        REPAY_AMOUNT = #{repayAmount,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.postloan.domain.RepayLogItem" >
+    update t_repay_log_item
+    set REPAY_LOG_ID = #{repayLogId,jdbcType=VARCHAR},
+      FEE_TYPE = #{feeType,jdbcType=VARCHAR},
+      FEE_REF_ID = #{feeRefId,jdbcType=VARCHAR},
+      REPAY_ITEM = #{repayItem,jdbcType=VARCHAR},
+      REPAY_AMOUNT = #{repayAmount,jdbcType=DOUBLE}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * 
+  	from t_repay_log_item
+  	where FEE_TYPE = #{feeType}
+  	and FEE_REF_ID = #{feeId}
+  	and REPAY_ITEM = #{repayItem}
+  	
+  </select>
+</mapper>

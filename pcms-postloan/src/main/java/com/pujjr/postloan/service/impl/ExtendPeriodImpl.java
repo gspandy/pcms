@@ -46,7 +46,6 @@ import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
-import com.pujjr.postloan.enumeration.ChargeItem;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.ETaskTag;

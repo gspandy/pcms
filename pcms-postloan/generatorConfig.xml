@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 	<classPathEntry
-		location="C:\Users\dengpan\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
+		location="C:\Users\150032\.m2\repository\mysql\mysql-connector-java\5.1.35\mysql-connector-java-5.1.35.jar" />
 		
 	
 	<context id="mysqlMybatis"  defaultModelType="conditional" >
@@ -12,8 +12,8 @@
 			<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://192.168.0.101:3306/xdxt5?characterEncoding=UTF-8" userId="test"
-			password="test" />
+			connectionURL="jdbc:mysql://172.18.10.73:3306/pcmsdbtest?characterEncoding=UTF-8" userId="xdxt"
+			password="xdxt" />
 		
 		<javaModelGenerator targetPackage="com.pujjr.postloan.domain"
 			targetProject="pcms-postloan/src/main/java" />
@@ -101,10 +101,7 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		
-		<table tableName="T_REPAY_LOG" domainObjectName="RepayLog" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-		</table>
+		
 		
 		<table tableName="T_APPLY_PUBLIC_REPAY" domainObjectName="ApplyPublicRepay" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
@@ -134,12 +131,26 @@
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
-		-->
 		<table tableName="T_GENERAL_LEDGER" domainObjectName="GeneralLedger" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>
 		<table tableName="T_OVERDUE_LOG" domainObjectName="OverdueLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		
+		<table tableName="T_REPAY_LOG" domainObjectName="RepayLog" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table tableName="T_REPAY_LOG_ITEM" domainObjectName="RepayLogItem" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		-->
+		
+		<table tableName="T_SERVICE_FEE" domainObjectName="ServiceFee" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 		</table>

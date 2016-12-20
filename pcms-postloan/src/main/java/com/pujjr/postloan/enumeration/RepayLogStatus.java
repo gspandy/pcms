@@ -1,13 +1,11 @@
 package com.pujjr.postloan.enumeration;
 /**
- * 费用类型
+ * 还款记录状态
  * **/
-public enum FeeType 
+public enum RepayLogStatus 
 {
-	Plan("fylx01","计划还款"),
-	Other("fylx02","其他费用"),
-	ExtendFee("fylx03","展期费"),
-	LateFee("fylx04","提前结清违约金");
+	Normal("hkjlzt01","正常"),
+	Canceled("hkjlzt02","已取消");
 	
 	private String name;
 	private String text;
@@ -22,7 +20,7 @@ public enum FeeType
 		return text;
 	}
 
-	private FeeType(String name,String text)
+	private RepayLogStatus(String name,String text)
 	{
 		this.name = name;
 		this.text = text;
