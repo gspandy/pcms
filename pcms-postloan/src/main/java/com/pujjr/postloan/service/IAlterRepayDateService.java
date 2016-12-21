@@ -33,8 +33,9 @@ public interface IAlterRepayDateService
 	 * 	appId-变更申请单编号
 	 * 	vo-变更申请要素
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplyAlterRepayDateTask(String appId,ApplyAlterRepayDateVo vo,String operId);
+	public void commitApplyAlterRepayDateTask(String appId,ApplyAlterRepayDateVo vo,String operId) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：

@@ -220,6 +220,7 @@ public class SettleServiceImpl implements ISettleService{
 	@Override
 	public void commitApplySettleTask(String operId,String appId,String settleType,ApplySettleVo vo) throws Exception 
 	{
+		accountingServiceImpl.checkCandoSettle(appId);
 		//修改总账处理状态为申请提前结清,避免其他交易操作
 		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(appId);
 		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplySettle.getName());

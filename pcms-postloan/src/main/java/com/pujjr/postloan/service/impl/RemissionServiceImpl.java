@@ -79,8 +79,9 @@ public class RemissionServiceImpl implements IRemissionService
 	}
 
 	@Override
-	public void commitApplyRemissionTask(String appId, ApplyRemissionVo vo,String operId) {
+	public void commitApplyRemissionTask(String appId, ApplyRemissionVo vo,String operId) throws Exception {
 		// TODO Auto-generated method stub
+		accountingService.checkCandoRemission(appId);
 		//修改总账处理状态为申请减免,避免其他交易操作
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyRemission.getName());

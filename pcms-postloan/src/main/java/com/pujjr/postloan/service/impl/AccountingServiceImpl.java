@@ -12,6 +12,8 @@ import com.pujjr.postloan.dao.ApplyAlterRepayDateMapper;
 import com.pujjr.postloan.dao.ApplyExtendPeriodMapper;
 import com.pujjr.postloan.dao.ApplySettleMapper;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.dao.LoanQueryMapper;
+import com.pujjr.postloan.dao.OfferSummaryMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.RemissionItemMapper;
 import com.pujjr.postloan.dao.RepayLogItemMapper;
@@ -81,6 +83,10 @@ public class AccountingServiceImpl implements IAccountingService {
 	private ApplyAlterRepayDateMapper applyAlterRepayDateDao;
 	@Autowired
 	private ServiceFeeMapper serviceFeeDao;
+	@Autowired
+	private LoanQueryMapper loanQueryDao;
+	@Autowired
+	private OfferSummaryMapper offerSummaryDao;
 	
 	@Override
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
@@ -687,11 +693,6 @@ public class AccountingServiceImpl implements IAccountingService {
 		
 	}
 
-	@Override
-	public boolean checkCandoPublicRepay(String appId) {
-		// TODO Auto-generated method stub
-		return true;
-	}
 
 	@Override
 	public void repayReverseAccountingUserNewWaitingChargeTable(String applyId, LoanApplyTaskType applyType,String appId) 
@@ -1350,5 +1351,224 @@ public class AccountingServiceImpl implements IAccountingService {
 		}
 		ledgerDao.updateByPrimaryKey(ledgerPo);
 	}
+
+	@Override
+	public void checkCandoPublicRepay(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		/**
+		 * 在对公还款时涉及到对应还项进行操作的交易情况下都不能执行
+		 */
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行对公还款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行对公还款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行对公还款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行对公还款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行对公还款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行对公还款");
+		}
+	}
+
+	@Override
+	public void checkCandoSettle(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		/**
+		 * 结清时不能有任何对账务有影响的交易
+		 */
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行结清");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行结清");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行结清");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行结清");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行结清");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行结清");
+		}
+		if(offerSummaryDao.selectOfferingCnt(appId)>0)
+		{
+			throw new Exception("正在报盘中，不能执行结清");
+		}
+	}
+
+	@Override
+	public void checkCandoRefund(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行退款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行退款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行退款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行退款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行退款");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行退款");
+		}
+		if(offerSummaryDao.selectOfferingCnt(appId)>0)
+		{
+			throw new Exception("正在报盘中，不能执行退款");
+		}
+	}
+
+	@Override
+	public void checkCandoExtendPeriod(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行展期");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行展期");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行展期");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行展期");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行展期");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行展期");
+		}
+		if(offerSummaryDao.selectOfferingCnt(appId)>0)
+		{
+			throw new Exception("正在报盘中，不能执行展期");
+		}
+	}
+
+	@Override
+	public void checkCandoAlterRepayDate(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行变更还款日");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行变更还款日");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行变更还款日");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行变更还款日");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行变更还款日");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行变更还款日");
+		}
+		if(offerSummaryDao.selectOfferingCnt(appId)>0)
+		{
+			throw new Exception("正在报盘中，不能执行变更还款日");
+		}
+	}
+
+	@Override
+	public void checkCandoRemission(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Remission.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请减免，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Refund.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请退款，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.PublicRepay.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请对公还款，不能执行减免");
+		}
+		if(offerSummaryDao.selectOfferingCnt(appId)>0)
+		{
+			throw new Exception("正在报盘中，不能执行减免");
+		}
+	}
+
+	@Override
+	public void checkCandoOtherFee(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请结清，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.ExtendPeriod.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请展期，不能执行减免");
+		}
+		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.AlterRepayDate.getWorkflowKey())>0)
+		{
+			throw new Exception("正在申请变更还款日，不能执行减免");
+		}
+	}
+
+	
 
 }

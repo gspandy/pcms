@@ -44,7 +44,7 @@ public class ExtendPeriodController
 	}
 
 	@RequestMapping(value="/commitApplyExtendPeriodTask/{appId}",method=RequestMethod.POST)
-	public void commitApplyExtendPeriodTask(@PathVariable String appId,@RequestBody ApplyExtendPeriodVo vo,HttpServletRequest request)
+	public void commitApplyExtendPeriodTask(@PathVariable String appId,@RequestBody ApplyExtendPeriodVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		extendPeriodImpl.commitApplyExtendPeriodTask(account.getAccountId(), appId, vo);

@@ -37,6 +37,7 @@ import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayStatus;
+import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IOtherFeeService;
 import com.pujjr.postloan.vo.ApplyOtherFeeVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -64,11 +65,14 @@ public class OtherFeeServiceImpl implements IOtherFeeService
 	private IRunWorkflowService runWorkflowService;
 	@Autowired
 	private WaitingChargeMapper waitingchargeDao;
+	@Autowired
+	private IAccountingService accountingService;
 	
 	@Override
-	public void commitApplyOtherFeeTask(String appId,ApplyOtherFeeVo vo, String operId) 
+	public void commitApplyOtherFeeTask(String appId,ApplyOtherFeeVo vo, String operId) throws Exception 
 	{
 		// TODO Auto-generated method stub
+		accountingService.checkCandoOtherFee(appId);
 		//创建申请信息
 		OtherFee po = new OtherFee();
 		String businessKey = Utils.get16UUID();

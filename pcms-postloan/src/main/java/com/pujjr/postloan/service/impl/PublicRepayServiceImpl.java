@@ -63,47 +63,40 @@ public class PublicRepayServiceImpl implements IPublicRepayService {
 	@Override
 	public void commitApplyPublicRepayTask(String appId, ApplyPublicRepayVo vo) throws Exception {
 		// TODO Auto-generated method stub
-		if(accountingService.checkCandoPublicRepay(appId))
-		{
-
-			/**
-			 * 修改总账处理状态为申请对公还款,避免其他交易操作
-			 * **/
-			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
-			ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyPublicRepay.getName());
-			ledgerDao.updateByPrimaryKey(ledgerPo);
-			/**
-			 * 创建申请信息
-			 */
-			ApplyPublicRepay po = new ApplyPublicRepay();
-			String businessKey = Utils.get16UUID();
-			po.setId(businessKey);
-			po.setAppId(appId);
-			po.setRepayCapital(vo.getFeeItem().getRepayCapital());
-			po.setRepayInterest(vo.getFeeItem().getRepayInterest());
-			po.setRepayOverdueAmount(vo.getFeeItem().getRepayOverdueAmount());
-			po.setOtherFee(vo.getFeeItem().getOtherAmount());
-			po.setOtherOverdueAmount(vo.getFeeItem().getOtherOverdueAmount());
-			po.setChargeAmount(vo.getChargeAmount());
-			po.setChargeDate(vo.getChargeDate());
-			po.setApplyComment(vo.getApplyComment());
-			po.setApplyStatus(LoanApplyStatus.WaitingApprove.getName());
-			po.setCreateId(vo.getCreateId());
-			po.setCreateDate(new Date());
-			/**
-			 * 启动流程
-			 */
-			HashMap<String,Object> vars = new HashMap<String,Object>();
-			vars.put("appId", appId);
-			vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, vo.getCreateId());
-			ProcessInstance instance = runWorkflowService.startProcess("DGHK", businessKey, vars);
-			po.setProcInstId(instance.getProcessInstanceId());
-			publicRepayDao.insert(po);
-		}
-		else
-		{
-			throw new Exception("当前不能操作对公还款");
-		}
+		accountingService.checkCandoPublicRepay(appId);
+		/**
+		 * 修改总账处理状态为申请对公还款,避免其他交易操作
+		 * **/
+		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyPublicRepay.getName());
+		ledgerDao.updateByPrimaryKey(ledgerPo);
+		/**
+		 * 创建申请信息
+		 */
+		ApplyPublicRepay po = new ApplyPublicRepay();
+		String businessKey = Utils.get16UUID();
+		po.setId(businessKey);
+		po.setAppId(appId);
+		po.setRepayCapital(vo.getFeeItem().getRepayCapital());
+		po.setRepayInterest(vo.getFeeItem().getRepayInterest());
+		po.setRepayOverdueAmount(vo.getFeeItem().getRepayOverdueAmount());
+		po.setOtherFee(vo.getFeeItem().getOtherAmount());
+		po.setOtherOverdueAmount(vo.getFeeItem().getOtherOverdueAmount());
+		po.setChargeAmount(vo.getChargeAmount());
+		po.setChargeDate(vo.getChargeDate());
+		po.setApplyComment(vo.getApplyComment());
+		po.setApplyStatus(LoanApplyStatus.WaitingApprove.getName());
+		po.setCreateId(vo.getCreateId());
+		po.setCreateDate(new Date());
+		/**
+		 * 启动流程
+		 */
+		HashMap<String,Object> vars = new HashMap<String,Object>();
+		vars.put("appId", appId);
+		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, vo.getCreateId());
+		ProcessInstance instance = runWorkflowService.startProcess("DGHK", businessKey, vars);
+		po.setProcInstId(instance.getProcessInstanceId());
+		publicRepayDao.insert(po);
 	}
 
 	@Override

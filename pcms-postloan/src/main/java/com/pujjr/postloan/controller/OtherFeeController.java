@@ -31,7 +31,7 @@ public class OtherFeeController extends BaseController
 	private IOtherFeeService otherFeeService;
 	
 	@RequestMapping(value="/commitApplyOtherFeeTask/{appId}",method=RequestMethod.POST)
-	public void commitApplyOtherFeeTask(@PathVariable String appId,@RequestBody ApplyOtherFeeVo vo,HttpServletRequest request)
+	public void commitApplyOtherFeeTask(@PathVariable String appId,@RequestBody ApplyOtherFeeVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		otherFeeService.commitApplyOtherFeeTask(appId, vo, account.getAccountId());

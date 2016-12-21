@@ -49,4 +49,11 @@ public interface LoanQueryMapper
 	 * @return
 	 */
 	public List<HashMap<String,Object>> selectOtherFeeList(@Param("appId")String appId);
+	/**
+	 * 查询正在执行的贷后任务笔数
+	 * @param appId
+	 * @param taskType
+	 * @return
+	 */
+	public int selectProcessingLoanTaskCnt(@Param("appId")String appId,@Param("taskKey")String taskKey);
 }

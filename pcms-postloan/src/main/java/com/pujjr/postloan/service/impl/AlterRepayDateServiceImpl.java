@@ -126,9 +126,9 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 	}
 
 	@Override
-	public void commitApplyAlterRepayDateTask(String appId, ApplyAlterRepayDateVo vo,String opreId) {
+	public void commitApplyAlterRepayDateTask(String appId, ApplyAlterRepayDateVo vo,String opreId) throws Exception {
 		// TODO Auto-generated method stub
-		
+		accountingService.checkCandoAlterRepayDate(appId);
 		//修改总账处理状态为申请还款日变更,避免其他交易操作
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyAlterRepayDate.getName());

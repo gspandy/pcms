@@ -160,4 +160,11 @@
   		left join SYS_DICT_DATA d on a.REPAY_STATUS  = d.DICT_DATA_CODE
   		where a.APP_ID  = #{appId} and a.APPLY_STATUS = 'dhsqzt03'
   	</select>
+  	<select id="selectProcessingLoanTaskCnt" resultType="Integer">
+  		select count(*) 
+  		from act_ru_task a 
+		left join act_re_procdef c on a.PROC_DEF_ID_ = c.ID_
+		inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
+		where c.KEY_ = #{taskKey}  and d.TEXT_ = #{appId}
+  	</select>
 </mapper>

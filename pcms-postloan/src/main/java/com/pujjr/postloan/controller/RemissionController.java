@@ -38,7 +38,7 @@ public class RemissionController
 	private RemissionItemMapper remissionItemDao;
 	
 	@RequestMapping(value="/commitApplyRemissionTask/{appId}",method=RequestMethod.POST)
-	public void commitApplyRemissionTask(@PathVariable String appId,@RequestBody ApplyRemissionVo vo,HttpServletRequest request)
+	public void commitApplyRemissionTask(@PathVariable String appId,@RequestBody ApplyRemissionVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		remissionService.commitApplyRemissionTask(appId, vo, account.getAccountId());

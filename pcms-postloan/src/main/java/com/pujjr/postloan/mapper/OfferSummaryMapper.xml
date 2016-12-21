@@ -256,4 +256,7 @@
       RESERVER6 = #{reserver6,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectOfferingCnt" resultType="Integer">
+  	select count(*) from t_offer_summary where APP_ID = #{appId}
+  </select>
 </mapper>

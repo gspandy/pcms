@@ -33,8 +33,9 @@ public interface IExtendPeriodService
 	 * 	appId-展期申请单编号
 	 * 	vo-展期申请要素
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplyExtendPeriodTask(String operId,String appId,ApplyExtendPeriodVo vo);
+	public void commitApplyExtendPeriodTask(String operId,String appId,ApplyExtendPeriodVo vo) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：

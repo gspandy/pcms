@@ -22,8 +22,9 @@ public interface IOtherFeeService
 	 * @param appId
 	 * @param vo
 	 * @param operId
+	 * @throws Exception 
 	 */
-	public void commitApplyOtherFeeTask(String appId,ApplyOtherFeeVo vo ,String operId);
+	public void commitApplyOtherFeeTask(String appId,ApplyOtherFeeVo vo ,String operId) throws Exception;
 	/**
 	 * 提交审批其他费用申请
 	 * @param taskId

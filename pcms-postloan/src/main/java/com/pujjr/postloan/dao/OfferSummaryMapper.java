@@ -1,5 +1,7 @@
 package com.pujjr.postloan.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.postloan.domain.OfferSummary;
 
 public interface OfferSummaryMapper {
@@ -14,4 +16,6 @@ public interface OfferSummaryMapper {
 	int updateByPrimaryKeySelective(OfferSummary record);
 
 	int updateByPrimaryKey(OfferSummary record);
+	
+	int selectOfferingCnt(@Param("appId")String appId);
 }

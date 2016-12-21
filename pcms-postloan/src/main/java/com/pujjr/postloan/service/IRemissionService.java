@@ -32,8 +32,9 @@ public interface IRemissionService
 	 * 	vo-减免申请要素
 	 * operId - 申请人
 	 * 返回：无
+	 * @throws Exception 
 	 * **/
-	public void commitApplyRemissionTask(String appId,ApplyRemissionVo vo,String operId);
+	public void commitApplyRemissionTask(String appId,ApplyRemissionVo vo,String operId) throws Exception;
 	/**
 	 * 功能：提交审批
 	 * 参数：

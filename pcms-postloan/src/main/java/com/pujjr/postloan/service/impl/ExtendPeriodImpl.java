@@ -196,8 +196,9 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	}
 
 	@Override
-	public void commitApplyExtendPeriodTask(String operId,String appId, ApplyExtendPeriodVo vo) {
+	public void commitApplyExtendPeriodTask(String operId,String appId, ApplyExtendPeriodVo vo) throws Exception {
 		
+		accountingServiceImpl.checkCandoExtendPeriod(appId);
 		//修改总账处理状态为申请展期,避免其他交易操作
 		GeneralLedger ledgerPo = generalLedgerMapper.selectByAppId(appId);
 		ledgerPo.setProcessStatus(LedgerProcessStatus.ApplyExtendPeriod.getName());

@@ -50,7 +50,7 @@ public class AlterRepayDateController extends BaseController
 		return alterRepayDateService.getAlterRepayDateFeeItem(appId, Utils.htmlTime2Date(oldClosingDate, "yyyyMMdd"), Utils.htmlTime2Date(newClosingDate, "yyyyMMdd"));
 	}
 	@RequestMapping(value="/commitApplyAlterRepayDateTask/{appId}",method=RequestMethod.POST)
-	public void commitApplyAlterRepayDateTask(@PathVariable String appId,@RequestBody ApplyAlterRepayDateVo vo,HttpServletRequest request)
+	public void commitApplyAlterRepayDateTask(@PathVariable String appId,@RequestBody ApplyAlterRepayDateVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		alterRepayDateService.commitApplyAlterRepayDateTask(appId, vo, account.getAccountId());

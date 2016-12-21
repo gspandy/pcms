@@ -73,6 +73,7 @@ public class RefundServiceImpl implements IRefundService {
 	@Override
 	public void commitApplyRefundTask(String appId, ApplyRefundVo vo ,String operId) throws Exception {
 		// TODO Auto-generated method stub
+		accountingService.checkCandoRefund(appId);
 		//申请信息的验证
 		double stayAmount = accountingService.getStayAmount(appId);
 		if(Double.compare(stayAmount, vo.getRefundAmount())<0)

@@ -121,6 +121,48 @@ public interface IAccountingService
 	 * 检查是否可执行对公还款
 	 * @param appId
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean checkCandoPublicRepay(String appId);
+	public void checkCandoPublicRepay(String appId) throws Exception;
+	/**
+	 * 检查是否可以执行提前结清
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkCandoSettle(String appId) throws Exception;
+	/**
+	 * 检查是否可以执行退款
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkCandoRefund(String appId) throws Exception;
+	/**
+	 * 检查是否可以执行展期
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkCandoExtendPeriod(String appId) throws Exception;
+	/**
+	 * 检查是否可以执行变更还款日
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkCandoAlterRepayDate(String appId) throws Exception;
+	/**
+	 * 检查是否可以执行减免
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkCandoRemission(String appId) throws Exception;
+	/**
+	 * 检查是否可执行新增其他费用
+	 * @param appId
+	 * @throws Exception 
+	 */
+	public void checkCandoOtherFee(String appId) throws Exception;
 }
