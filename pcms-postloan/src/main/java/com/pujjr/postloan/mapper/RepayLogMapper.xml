@@ -246,7 +246,7 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectRepayLogCntByAppId" resultType="Integer">
-  	select count(*) form t_repay_log
+  	select count(*) from t_repay_log
   	where APP_ID = #{appId}
   </select>
 </mapper>

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.postloan.enumeration.ChargeMode;
 import com.pujjr.postloan.po.OfferInfoPo;
@@ -14,6 +15,7 @@ import com.pujjr.utils.Utils;
  * 扣款服务
  * **/
 @Service
+@Transactional
 public interface IChargeService 
 {
 	/**

@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.web.ServletTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.pujjr.base.domain.RuleRemission;
@@ -65,6 +66,7 @@ import com.pujjr.utils.Utils;
  *
  */
 @Service
+@Transactional
 public class SettleServiceImpl implements ISettleService{
 	@Autowired
 	private IAccountingService accountingServiceImpl;
@@ -143,7 +145,7 @@ public class SettleServiceImpl implements ISettleService{
 		settleFeeItemVo.setRepayInterest(repayInterest);
 		settleFeeItemVo.setRepayOverdueAmount(repayOverdueAmount);
 		settleFeeItemVo.setOtherAmount(otherAmount);
-		settleFeeItemVo.setOtherOverdueAmount(overdueFine);
+		settleFeeItemVo.setOtherOverdueAmount(otherAmountFine);
 		settleFeeItemVo.setStayAmount(stayAmount);
 		//double数据格式化
 		
@@ -208,7 +210,7 @@ public class SettleServiceImpl implements ISettleService{
 		settleFeeItemVo.setRepayInterest(repayInterest);
 		settleFeeItemVo.setRepayOverdueAmount(repayOverdueAmount);
 		settleFeeItemVo.setOtherAmount(otherAmount);
-		settleFeeItemVo.setOtherOverdueAmount(overdueFine);
+		settleFeeItemVo.setOtherOverdueAmount(otherAmountFine);
 		settleFeeItemVo.setStayAmount(stayAmount);
 		//double数据格式化
 		Utils.formateDoubleOfObject(settleFeeItemVo, 2);

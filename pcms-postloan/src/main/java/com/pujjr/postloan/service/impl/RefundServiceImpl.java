@@ -10,6 +10,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.TaskProcessResult;
@@ -41,6 +42,7 @@ import com.pujjr.postloan.vo.RefundTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional
 public class RefundServiceImpl implements IRefundService {
 
 	@Autowired

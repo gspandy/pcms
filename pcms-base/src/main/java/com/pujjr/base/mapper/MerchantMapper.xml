@@ -206,10 +206,10 @@
   	left join SYS_DICT_DATA b on a.RESERVER1 = b.DICT_DATA_CODE
   	where 1=1
   	<if test="enabled==true">
-  		and ENABLED = true
+  		and a.ENABLED = true
   	</if>
   	<if test="chnlType!=null and chnlType !=''">
-  		and RESERVER1 = #{chnlType}
+  		and a.RESERVER1 = #{chnlType}
   	</if>
   </select>
   <select id="selectByMerchantNo" resultMap="BaseResultMap">

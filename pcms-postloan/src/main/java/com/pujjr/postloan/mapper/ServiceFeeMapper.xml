@@ -106,4 +106,7 @@
   <select id="selectByApplyId" resultMap="BaseResultMap">
   	select * from t_service_fee where APPLY_ID = #{applyId}
   </select>
+  <delete id="deleteByApplyId">
+  	delete from t_service_fee where APPLY_ID = #{applyId}
+  </delete>
 </mapper>

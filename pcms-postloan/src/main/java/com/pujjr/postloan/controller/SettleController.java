@@ -253,7 +253,7 @@ public class SettleController extends BaseController {
 			newPlanVo.setRepayCapital(item.getRepayCapital());
 			newPlanVo.setRepayCnterest(item.getRepayInterest());
 			newPlanVo.setRemainCapital(item.getRemainCapitao());
-			newPlanVo.setRepayTotalAmount(item.getRepayCapital()+item.getRepayInterest());
+			newPlanVo.setRepayTotalAmount(Utils.formateDouble2Double(item.getRepayCapital()+item.getRepayInterest(),2));
 			newPlanVo.setValueDate(item.getValueDate());
 			newPlanVo.setClosingDate(item.getClosingDate());
 			newRepayPlanList.add(newPlanVo);

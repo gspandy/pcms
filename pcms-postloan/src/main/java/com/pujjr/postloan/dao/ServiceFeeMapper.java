@@ -18,4 +18,6 @@ public interface ServiceFeeMapper {
 	int updateByPrimaryKey(ServiceFee record);
 	
 	ServiceFee selectByApplyId(@Param("applyId")String applyId);
+	
+	int deleteByApplyId(@Param("applyId")String applyId);
 }

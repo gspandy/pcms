@@ -66,7 +66,7 @@
 		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
 		left join SYS_BRANCH branch on branch.BRANCH_CODE = apply.CREATE_BRANCH_CODE
 		where 
-		task.ASSIGNEE_ = #{param.assignee}
+		task.ASSIGNEE_ = #{param.assignee} and def.KEY_ = 'PPCA'
 		<if test="param.appId!=null and param.appId!=''">
 			and apply.APP_ID like CONCAT("%",CONCAT(#{param.appId},'%'))
 		</if>
@@ -162,25 +162,28 @@
 	</select>
 	<select id="selectUserTaskDefineGroupInfo" resultType="HashMap">
 		select  
-		NAME_ as taskName,
-		TASK_DEF_KEY_ as taskDefKey,
+		task.NAME_ as taskName,
+		task.TASK_DEF_KEY_ as taskDefKey,
 		count(*) as count  
-		from act_ru_task where 
-		assignee_ = #{param.assignee}
+		from 
+		act_ru_task task 
+		left join act_re_procdef def on task.PROC_DEF_ID_ = def.ID_
+		where 
+		task.assignee_ = #{param.assignee} and def.KEY_ = 'PPCA'
 		<if test="param.inTaskDefKeyList.size()>0">
-			and TASK_DEF_KEY_ in 
+			and task.TASK_DEF_KEY_ in 
 			<foreach item="item" index="index" collection="param.inTaskDefKeyList"
 			open="(" separator="," close=")">
 				#{item}
 			</foreach>	
 		</if>
 		<if test="param.outTaskDefKeyList.size()>0">
-			and TASK_DEF_KEY_ not in 
+			and task.TASK_DEF_KEY_ not in 
 			<foreach item="item" index="index" collection="param.outTaskDefKeyList"
 			open="(" separator="," close=")">
 				#{item}
 			</foreach>
 		</if>
-		group by NAME_,TASK_DEF_KEY_
+		group by task.NAME_,task.TASK_DEF_KEY_
 	</select>
 </mapper>

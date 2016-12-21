@@ -157,16 +157,36 @@ public class CutOffService
 			if(item.getFeeType().equals(FeeType.Plan.getName()))
 			{
 				RepayPlan planPo = repayPlanDao.selectByPrimaryKey(item.getFeeRefId());
-				planPo.setAddupOverdueDay(planPo.getAddupOverdueDay()+1);
-				planPo.setAddupOverdueAmount(planPo.getAddupOverdueAmount()+genOverdueAmount);
+				int tmpAddupOverdueDay = 0;
+				if(planPo.getAddupOverdueDay()!=null)
+				{
+					tmpAddupOverdueDay=planPo.getAddupOverdueDay();
+				}
+				planPo.setAddupOverdueDay(tmpAddupOverdueDay+1);
+				double tmpAddupOverdueAmount = 0.00;
+				if(planPo.getAddupOverdueAmount()!=null)
+				{
+					tmpAddupOverdueAmount = planPo.getAddupOverdueAmount();
+				}
+				planPo.setAddupOverdueAmount(tmpAddupOverdueAmount+genOverdueAmount);
 				planPo.setRepayStatus(RepayStatus.Overdue.getName());
 				repayPlanDao.updateByPrimaryKey(planPo);
 			}
 			if(item.getFeeType().equals(FeeType.Other.getName()))
 			{
 				OtherFee otherFeePo = otherFeeDao.selectByPrimaryKey(item.getFeeRefId());
-				otherFeePo.setAddupOverdueDay(otherFeePo.getAddupOverdueDay()+1);
-				otherFeePo.setAddupOverdueAmount(otherFeePo.getAddupOverdueAmount()+genOverdueAmount);
+				int tmpAddupOverdueDay = 0;
+				if(otherFeePo.getAddupOverdueDay()!=null)
+				{
+					tmpAddupOverdueDay=otherFeePo.getAddupOverdueDay();
+				}
+				double tmpAddupOverdueAmount = 0.00;
+				if(otherFeePo.getAddupOverdueAmount()!=null)
+				{
+					tmpAddupOverdueAmount = otherFeePo.getAddupOverdueAmount();
+				}
+				otherFeePo.setAddupOverdueDay(tmpAddupOverdueDay+1);
+				otherFeePo.setAddupOverdueAmount(tmpAddupOverdueAmount+genOverdueAmount);
 				otherFeePo.setRepayStatus(RepayStatus.Overdue.getName());
 				otherFeeDao.updateByPrimaryKey(otherFeePo);
 			}
@@ -200,6 +220,7 @@ public class CutOffService
 					//逾期记录不是第一次则新的序号为最近一次+1
 					OverdueLog newOverdueLog = new OverdueLog();
 					newOverdueLog.setId(Utils.get16UUID());
+					newOverdueLog.setAppId(appId);
 					newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
 					newOverdueLog.setStartDate(curDate);
 					newOverdueLog.setEndDate(curDate);
@@ -212,6 +233,7 @@ public class CutOffService
 					OverdueLog newOverdueLog = new OverdueLog();
 					newOverdueLog.setId(Utils.get16UUID());
 					newOverdueLog.setSeq(1);
+					newOverdueLog.setAppId(appId);
 					newOverdueLog.setStartDate(curDate);
 					newOverdueLog.setEndDate(curDate);
 					newOverdueLog.setAddupOverdueDay(1);

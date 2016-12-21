@@ -3,6 +3,7 @@ package com.pujjr.postloan.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.postloan.vo.ApplyOtherFeeVo;
 import com.pujjr.postloan.vo.ApproveResultVo;
@@ -13,6 +14,7 @@ import com.pujjr.postloan.vo.OtherFeeTaskVo;
  *
  */
 @Service
+@Transactional
 public interface IOtherFeeService 
 {
 	/**

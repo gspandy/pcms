@@ -39,7 +39,7 @@ public class LoanRemissionAssigneeWithPA implements ITaskAssigneeHandle {
 		Apply apply = applyService.getApply(appId);
 		SysBranch sysBranch = sysBranchService.getSysBranch(null, apply.getCreateBranchCode());
 		//这里不需要融资金额，为沿用以前接口设置一个最小值为0
-		ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), 0.00, sysBranch.getId(), assigneeParam, null);
+		ProcessTaskUserBo assignee = taskService.getProcessTaskAccount(apply.getProductCode(), apply.getTotalFinanceAmt(), sysBranch.getId(), assigneeParam, null);
 		//如果未找到任务执行者，则分配给系统默认的执行
 		if(assignee != null)
 		{

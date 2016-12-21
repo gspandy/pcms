@@ -59,16 +59,26 @@
   	
   	<select id="selectLoanCustRepayLog" resultType="HashMap">
   		select 
-  		b1.DICT_DATA_NAME as feeType,
-  		b2.DICT_DATA_NAME as chargeItem,
-  		a.CHARGE_AMOUNT as chargeAmount,
-  		a.CHARGE_TIME as chargeTime,
-  		b3.DICT_DATA_NAME as chargeMode
+  		a.SEQ as seq,
+  		b1.DICT_DATA_NAME as repayMode,
+  		a.REPAY_AMOUNT as repayAmount,
+  		a.REPAY_TIME as repayTime,
+  		a.LOG_STATUS as logStatus,
+  		a.CAPITAL as capital,
+  		a.INTEREST as interest,
+  		a.OVERDUE_AMOUNT as overdueAmount,
+  		a.OTHER_FEE as otherFee ,
+  		a.OTHER_OVERDUE_AMOUNT as otherOverdueAmount ,
+  		a.EXTEND_FEE as extendFee , 
+  		a.LATE_FEE as lateFee,
+  		a.STAGE_AMOUNT as stageAmount,
+  		a.RESERVER1 as reserver1,
+  		a.RESERVER2 as reserver2,
+  		a.RESERVER3 as reserver3
   		from T_REPAY_LOG a 
-  		left join SYS_DICT_DATA b1 on a.FEE_TYPE = b1.DICT_DATA_CODE
-  		left join SYS_DICT_DATA b2 on a.CHARGE_ITEM = b2.DICT_DATA_CODE
-  		left join SYS_DICT_DATA b3 on a.CHARGE_MODE = b3.DICT_DATA_CODE
-  		order by a.CHARGE_TIME desc
+  		left join SYS_DICT_DATA b1 on a.REPAY_MODE = b1.DICT_DATA_CODE
+  		where a.APP_ID = #{appId}
+  		order by a.SEQ desc
   	</select>
   	
   	<select id="selectLoanCustChargeLog" resultType="HashMap">

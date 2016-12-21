@@ -11,6 +11,10 @@
     <!-- 单例json对象 -->
     <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     
+    
+    <!-- UUID序列号 -->
+	<bean id="uuidGenerator" class="org.activiti.engine.impl.persistence.StrongUuidGenerator"/>
+	
 	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration"> 
       <property name="dataSource" ref="dataSource"/> 
       <property name="transactionManager" ref="transactionManager"/> 
@@ -22,6 +26,7 @@
       -->
       <property name="activityFontName" value="宋体"/>  
       <property name="labelFontName" value="宋体"/> 
+      <property name="idGenerator" ref="uuidGenerator"></property>
       <property name="eventListeners">
       	<list>
       		<ref bean="globalEventListener"></ref>
@@ -30,7 +35,6 @@
       <!-- 用于更改流程节点的执行行为 -->  
       <property name="activityBehaviorFactory"  ref="activityBehaviorFactoryExt"/>
     </bean> 
-
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean"> 
       <property name="processEngineConfiguration" ref="processEngineConfiguration" /> 
     </bean> 

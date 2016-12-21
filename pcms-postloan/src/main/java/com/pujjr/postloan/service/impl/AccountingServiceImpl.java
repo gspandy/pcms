@@ -566,7 +566,7 @@ public class AccountingServiceImpl implements IAccountingService {
 					capital=0.00;
 				}
 			}
-			planItem.setRepayInterest(capital);
+			planItem.setRepayCapital(capital);
 			planRepayList.set(i, planItem);
 		}
 		/**
@@ -639,7 +639,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		repayLog.setId(repayLogId);
 		repayLog.setAppId(appId);
 		int cnt = repayLogDao.selectRepayLogCntByAppId(appId);
-		repayLog.setSeq(cnt++);
+		repayLog.setSeq(++cnt);
 		repayLog.setRepayMode(repayMode.getName());
 		repayLog.setRepayAmount(repayAmount);
 		repayLog.setRepayTime(repayDate);
@@ -663,6 +663,10 @@ public class AccountingServiceImpl implements IAccountingService {
 		if(waitingChargeList.size()==0 && repayPlanList.size()==0)
 		{
 			ledgerPo.setRepayStatus(RepayStatus.Settled.getName());
+		}
+		if(waitingChargeList.size()==0 && repayPlanList.size()>0)
+		{
+			ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
 		}
 		ledgerDao.updateByPrimaryKey(ledgerPo);
 	}
@@ -700,6 +704,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		ApplyExtendPeriod extendPeriodPo = new ApplyExtendPeriod();
 		ApplyAlterRepayDate alterRepayDatePo = new ApplyAlterRepayDate();
 		Date chargeDate = new Date();
+		//先删除手续费信息，再创建
+		serviceFeeDao.deleteByApplyId(applyId);
 		if(applyType.equals(LoanApplyTaskType.Settle))
 		{
 			settlePo = applySettleDao.selectByPrimaryKey(applyId);
@@ -772,13 +778,25 @@ public class AccountingServiceImpl implements IAccountingService {
 		StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
 		double stayAmount = stayAccount!=null ? stayAccount.getStayAmount():0.00;
 		
+		//保存还款的各项总金额
+		double totalRepayCapital = 0.00;
+		double totalRepayInterest = 0.00;
+		double totalRepayOverdueAmt = 0.00;
+		double totalRepayOtherOverdueAmt = 0.00;
+		double totalRepayOtherFee = 0.00;
+		double totalRepayLateFee = 0.00;
+		boolean isDoRepay = false;
+	
 		/*********************************************开始减免和挂账处理其他费用罚息*************************************************/
 		String remissionRepayLogId = Utils.get16UUID();
 		String stayRepayLogId = Utils.get16UUID();
+		String repayLogId = Utils.get16UUID();
 		for(int i =0 ;i <settleOtherNewWaitingChargeList.size();i++)
 		{
 			WaitingChargeNew item = settleOtherNewWaitingChargeList.get(i);
+			//其他费用罚息
 			double otherFeeOverdueAmt = item.getRepayOverdueAmount();
+			//减免其他费用罚息
 			if(Double.compare(remissionOtherOverdueAmt, 0.00)>0 && Double.compare(otherFeeOverdueAmt, 0.00)>0)
 			{
 				if(Double.compare(otherFeeOverdueAmt, remissionOtherOverdueAmt)>=0)
@@ -795,6 +813,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoRemission = true;
 			}
+			//挂账冲账剩余的其他费用罚息
 			if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(otherFeeOverdueAmt, 0.00)>0)
 			{
 				if(Double.compare(otherFeeOverdueAmt, stayAmount)>=0)
@@ -813,6 +832,13 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoStay = true;
 			}
+			//对公还款冲账
+			if(Double.compare(otherFeeOverdueAmt, 0.00)>0)
+			{
+				totalRepayOtherOverdueAmt += otherFeeOverdueAmt;
+				this.saveRepayLogItem(repayLogId,FeeType.Other,item.getFeeRefId(),RepayItem.OTHEROVERDUEAMT,otherFeeOverdueAmt);
+				isDoRepay=true;
+			}
 			item.setRepayOverdueAmount(otherFeeOverdueAmt);
 			settleOtherNewWaitingChargeList.set(i, item);
 		}
@@ -820,7 +846,9 @@ public class AccountingServiceImpl implements IAccountingService {
 		for(int i =0 ;i <settleOtherNewWaitingChargeList.size();i++)
 		{
 			WaitingChargeNew item = settleOtherNewWaitingChargeList.get(i);
+			//其他费用
 			double otherFee = item.getRepayCapital();
+			//减免其他费用
 			if(Double.compare(remissionOtherFee, 0.00)>0 && Double.compare(otherFee, 0.00)>0)
 			{
 				if(Double.compare(otherFee, remissionOtherFee)>=0)
@@ -837,6 +865,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoRemission = true;
 			}
+			//挂账冲账其他费用
 			if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(otherFee, 0.00)>0)
 			{
 				if(Double.compare(otherFee, stayAmount)>=0)
@@ -855,6 +884,13 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoStay = true;
 			}
+			//对公还款冲账
+			if(Double.compare(otherFee, 0.00)>0)
+			{
+				totalRepayOtherFee += otherFee;
+				this.saveRepayLogItem(repayLogId,FeeType.Other,item.getFeeRefId(),RepayItem.OTHERFEE,otherFee);
+				isDoRepay=true;
+			}
 			item.setRepayCapital(otherFee);
 			settleOtherNewWaitingChargeList.set(i, item);
 		}
@@ -862,7 +898,9 @@ public class AccountingServiceImpl implements IAccountingService {
 		for(int i =0 ;i <settlePlanNewWatingChargeList.size();i++)
 		{
 			WaitingChargeNew item = settlePlanNewWatingChargeList.get(i);
+			//罚息
 			double overdueAmt = item.getRepayOverdueAmount();
+			//减免罚息
 			if(Double.compare(remissionOverdueAmt, 0.00)>0 && Double.compare(overdueAmt, 0.00)>0)
 			{
 				if(Double.compare(overdueAmt, remissionOverdueAmt)>=0)
@@ -879,6 +917,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoRemission = true;
 			}
+			//挂账冲账罚息
 			if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(overdueAmt, 0.00)>0)
 			{
 				if(Double.compare(overdueAmt, stayAmount)>=0)
@@ -897,15 +936,23 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoStay = true;
 			}
-			
+			//对公还款冲账
+			if(Double.compare(overdueAmt, 0.00)>0)
+			{
+				totalRepayOverdueAmt += overdueAmt;
+				this.saveRepayLogItem(repayLogId,FeeType.Plan,item.getFeeRefId(),RepayItem.OVERDUEAMT,overdueAmt);
+				isDoRepay=true;
+			}
 			item.setRepayOverdueAmount(overdueAmt);
-			settleOtherNewWaitingChargeList.set(i, item);
+			settlePlanNewWatingChargeList.set(i, item);
 		}
 		/*********************************************开始减免和挂账计划还款利息*************************************************/
 		for(int i =0 ;i <settlePlanNewWatingChargeList.size();i++)
 		{
 			WaitingChargeNew item = settlePlanNewWatingChargeList.get(i);
+			//利息
 			double interest = item.getRepayInterest();
+			 //减免利息
 			if(Double.compare(remissionInterest, 0.00)>0 && Double.compare(interest, 0.00)>0)
 			{
 				if(Double.compare(interest, remissionInterest)>=0)
@@ -922,6 +969,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoRemission = true;
 			}
+			//挂账冲账利息
 			if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(interest, 0.00)>0)
 			{
 				if(Double.compare(interest, stayAmount)>=0)
@@ -940,14 +988,23 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoStay = true;
 			}
+			//对公还款冲账
+			if(Double.compare(interest, 0.00)>0)
+			{
+				totalRepayInterest += interest;
+				this.saveRepayLogItem(repayLogId,FeeType.Plan,item.getFeeRefId(),RepayItem.INTEREST,interest);
+				isDoRepay = true;
+			}
 			item.setRepayInterest(interest);
-			settleOtherNewWaitingChargeList.set(i, item);
+			settlePlanNewWatingChargeList.set(i, item);
 		}
 		/*********************************************开始减免和挂账计划还款本金*************************************************/
 		for(int i =0 ;i <settlePlanNewWatingChargeList.size();i++)
 		{
 			WaitingChargeNew item = settlePlanNewWatingChargeList.get(i);
+			//本金
 			double capital = item.getRepayCapital();
+			//减免本金
 			if(Double.compare(remissionCapital, 0.00)>0 && Double.compare(capital, 0.00)>0)
 			{
 				if(Double.compare(capital, remissionCapital)>=0)
@@ -964,6 +1021,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoRemission = true;
 			}
+			//挂账冲账本金
 			if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(capital, 0.00)>0)
 			{
 				if(Double.compare(capital, stayAmount)>=0)
@@ -982,11 +1040,19 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 				isDoStay = true;
 			}
-			item.setRepayInterest(capital);
-			settleOtherNewWaitingChargeList.set(i, item);
+			if(Double.compare(capital, 0.00)>0)
+			{
+				totalRepayCapital += capital;
+				this.saveRepayLogItem(repayLogId,FeeType.Plan,item.getFeeRefId(),RepayItem.CAPITAL,capital);
+				isDoRepay = true;
+			}
+			item.setRepayCapital(capital);
+			settlePlanNewWatingChargeList.set(i, item);
 		}
 		/*********************************************开始减免和挂账展期费用或结清违约金*************************************************/
+		//展期费或提前结清违约金
 		double sf = serviceFee.getAmount();
+		 //减免
 		if(Double.compare(remissionLateFee, 0.00)>0 && Double.compare(sf, 0.00)>0)
 		{
 			if(Double.compare(sf, remissionLateFee)>0)
@@ -1004,6 +1070,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			isDoRemission = true;
 			serviceFee.setAmount(sf);
 		}
+		//挂账冲账
 		if(Double.compare(stayAmount, 0.00)>0 && applyType.equals(LoanApplyTaskType.Settle) && Double.compare(sf, 0.00)>0)
 		{
 			if(Double.compare(sf, stayAmount)>=0)
@@ -1023,7 +1090,13 @@ public class AccountingServiceImpl implements IAccountingService {
 			isDoStay = true;
 			serviceFee.setAmount(sf);
 		}
-
+		//对公还款
+		if(Double.compare(sf, 0.00)>0)
+		{
+			totalRepayLateFee += sf;
+			this.saveRepayLogItem(repayLogId,serviceFee.getFeeType().equals("fylx03")?FeeType.ExtendFee:FeeType.LateFee, serviceFee.getId(),RepayItem.CAPITAL,sf);
+			isDoRepay = true;
+		}
 		//记录减免还款记录
 		if(isDoRemission)
 		{
@@ -1044,14 +1117,17 @@ public class AccountingServiceImpl implements IAccountingService {
 			if(applyType.equals(LoanApplyTaskType.Settle))
 			{
 				repayLog.setLateFee(remissionLateFee);
+				repayLog.setExtendFee(0.00);
 			}
 			else
 			{
 				repayLog.setExtendFee(remissionLateFee);
+				repayLog.setLateFee(0.00);
 			}
 			repayLog.setStageAmount(0.00);
 			repayLogDao.insert(repayLog);
 		}
+		//记录挂账冲账记录
 		if(isDoStay)
 		{
 			RepayLog repayLog = new RepayLog();
@@ -1072,15 +1148,49 @@ public class AccountingServiceImpl implements IAccountingService {
 			if(applyType.equals(LoanApplyTaskType.Settle))
 			{
 				repayLog.setLateFee(totalStayLateFee);
+				repayLog.setExtendFee(0.00);
 			}
 			else
 			{
 				repayLog.setExtendFee(totalStayLateFee);
+				repayLog.setLateFee(0.00);
 			}
 			repayLog.setStageAmount(0.00);
 			repayLogDao.insert(repayLog);
 		}
-		if(Double.compare(stayAmount, 0.00)>0 && stayAccount!=null)
+		//记录对公还款记录
+		if(isDoRepay)
+		{
+			RepayLog repayLog = new RepayLog();
+			repayLog.setId(repayLogId);
+			repayLog.setAppId(appId);
+			int cnt = repayLogDao.selectRepayLogCntByAppId(appId);
+			repayLog.setSeq(cnt++);
+			repayLog.setRepayMode(RepayMode.PublicRepay.getName());
+			double totalRepayAmt = totalRepayCapital + totalRepayInterest+totalRepayOverdueAmt+totalRepayOtherOverdueAmt+totalRepayOtherFee+totalRepayLateFee;
+			repayLog.setRepayAmount(totalRepayAmt);
+			repayLog.setRepayTime(chargeDate);
+			repayLog.setLogStatus(RepayLogStatus.Normal.getName());
+			repayLog.setCapital(totalRepayCapital);
+			repayLog.setInterest(totalRepayInterest);
+			repayLog.setOverdueAmount(totalRepayOverdueAmt);
+			repayLog.setOtherFee(totalRepayOtherFee);
+			repayLog.setOtherOverdueAmount(totalRepayOtherOverdueAmt);
+			if(applyType.equals(LoanApplyTaskType.Settle))
+			{
+				repayLog.setLateFee(totalRepayLateFee);
+				repayLog.setExtendFee(0.00);
+			}
+			else
+			{
+				repayLog.setExtendFee(totalRepayLateFee);
+				repayLog.setLateFee(0.00);
+			}
+			repayLog.setStageAmount(0.00);
+			repayLogDao.insert(repayLog);
+		}
+		//如果之前有挂账，则挂账冲账后更新挂账信息
+		if(stayAccount!=null)
 		{
 			stayAccount.setStayAmount(stayAmount);
 			stayAccountDao.updateByPrimaryKey(stayAccount);
@@ -1145,25 +1255,26 @@ public class AccountingServiceImpl implements IAccountingService {
 				oldPlan.setAddupOverdueDay(item.getAddupOverdueDay());
 				oldPlan.setValueDate(item.getValueDate());
 				oldPlan.setClosingDate(item.getClosingDate());
-				double tempOverdueAmount = item.getRepayOverdueAmount();
+				double tempOverdueAmount = 0.00;
 				for(RepayLogItem log: planOverdueList)
 				{
 					tempOverdueAmount += log.getRepayAmount();
 				}
 				oldPlan.setAddupOverdueAmount(tempOverdueAmount);
-				double tempInterestAmount = item.getRepayInterest();
+				double tempInterestAmount = 0.00;
 				for(RepayLogItem log : planInterestList)
 				{
 					tempInterestAmount += log.getRepayAmount();
 				}
 				oldPlan.setRepayInterest(tempInterestAmount);
-				double tempCapitalAmount = item.getRepayCapital();
+				double tempCapitalAmount = 0.00;
 				for(RepayLogItem log : planCapitalList)
 				{
 					tempCapitalAmount += log.getRepayAmount();
 				}
 				oldPlan.setRepayCapital(tempCapitalAmount);
 				oldPlan.setRepayStatus(RepayStatus.Settled.getName());
+				oldPlan.setRepayTotalAmount(tempOverdueAmount+tempInterestAmount+tempCapitalAmount);
 				oldPlan.setSettleDate(chargeDate);
 				repayPlanDao.updateByPrimaryKey(oldPlan);
 				/******************************************************删除对应待扣款明细**********************************/
@@ -1182,6 +1293,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				{
 					oldPlan.setRepayCapital(item.getRepayCapital());
 					oldPlan.setRepayInterest(item.getRepayInterest());
+					oldPlan.setRepayTotalAmount(item.getRepayCapital()+item.getRepayInterest());
 					oldPlan.setAddupOverdueAmount(item.getAddupOverdueAmount());
 					oldPlan.setAddupOverdueDay(item.getAddupOverdueDay());
 					oldPlan.setValueDate(item.getValueDate());

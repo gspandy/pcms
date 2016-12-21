@@ -105,7 +105,7 @@
   </update>
   <select id="selectList" resultMap="BaseResultMap">
   	select * 
-  	from t_repay_log_item
+  	from t_repay_log_item a 
   	where FEE_TYPE = #{feeType}
   	and FEE_REF_ID = #{feeId}
   	and REPAY_ITEM = #{repayItem}

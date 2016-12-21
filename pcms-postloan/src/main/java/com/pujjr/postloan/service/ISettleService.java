@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.RepayPlan;
@@ -20,6 +21,7 @@ import com.pujjr.utils.Utils;
  * 结清处理服务
  * **/
 @Service
+@Transactional
 public interface ISettleService 
 {
 	

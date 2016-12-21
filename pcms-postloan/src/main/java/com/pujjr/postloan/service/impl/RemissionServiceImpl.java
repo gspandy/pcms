@@ -10,6 +10,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.service.IRuleService;
@@ -46,6 +47,7 @@ import com.pujjr.postloan.vo.RemissionTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional
 public class RemissionServiceImpl implements IRemissionService 
 {
 

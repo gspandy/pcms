@@ -87,14 +87,17 @@ public class ApplyController extends BaseController {
 	@RequestMapping(value="/apply",method=RequestMethod.POST)
 	@ResponseBody
 	public HashMap<String,Object> applySave(@RequestBody ApplyVo applyVo,HttpServletRequest request) throws Exception{
+		double minLoanAmt = applyVo.getProduct().getMinLoanAmount();
+		double maxLoanAmt = applyVo.getProduct().getMaxLoanAmount();
+		double totalFinanceAmt = applyVo.getTotalFinanceAmt();
+		if(Double.compare(totalFinanceAmt, minLoanAmt)<0 || Double.compare(totalFinanceAmt, maxLoanAmt)>0)
+		{
+			throw new Exception("融资金额错误："+minLoanAmt+"=<融资金额<="+maxLoanAmt);
+		}
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		String appId = "";
 		HashMap<String,Object> map = new HashMap<String,Object>();
-		//这个地方调试请不要提交，每次更新后都发觉数据不对
-		//if("debug".equals(sysMode))
-			//appId = applyService.saveApply(applyVo,"333");
-		//else
-			appId = applyService.saveApply(applyVo,sysAccount.getAccountId());
+		appId = applyService.saveApply(applyVo,sysAccount.getAccountId());
 		map.put("appId", appId);
 		return map;
 		
