@@ -1,5 +1,7 @@
 package com.pujjr.sms.dao;
 
+import java.util.List;
+
 import com.pujjr.sms.domain.SmsHis;
 
 public interface SmsHisMapper {
@@ -14,4 +16,6 @@ public interface SmsHisMapper {
     int updateByPrimaryKeySelective(SmsHis record);
 
     int updateByPrimaryKey(SmsHis record);
+    
+    List<SmsHis> selectList();
 }

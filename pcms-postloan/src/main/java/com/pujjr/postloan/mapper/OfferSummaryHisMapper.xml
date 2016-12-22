@@ -256,4 +256,7 @@
       RESERVER6 = #{reserver6,jdbcType=DOUBLE}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectByFeeId" resultMap="BaseResultMap">
+  	select * from t_offer_summary_his where FEE_REF_ID = #{feeId}
+  </select>
 </mapper>

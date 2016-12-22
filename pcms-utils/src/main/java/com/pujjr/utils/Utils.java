@@ -766,4 +766,11 @@ public class Utils {
 		tmp = Utils.getFormatDate(sd.parse(tmp), format);
 		return Utils.formateString2Date(tmp, format);
 	}
+	
+	public static int getDateDay(Date date)
+	{
+		Calendar a = Calendar.getInstance();  
+		a.setTime(date);
+		return a.get(Calendar.DATE);
+	}
 }

@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.ArchiveTaskMapper;
 import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.SysParam;
+import com.pujjr.base.service.IBankService;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysParamService;
 import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
+import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.service.IApplyService;
+import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.service.IRunWorkflowService;
@@ -27,8 +31,11 @@ import com.pujjr.postloan.enumeration.ArchiveStatus;
 import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
+import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.ILoanService;
 import com.pujjr.postloan.service.IPlanService;
+import com.pujjr.postloan.vo.RepayPlanVo;
+import com.pujjr.sms.service.ISmsService;
 import com.pujjr.utils.Utils;
 
 @Service
@@ -51,6 +58,14 @@ public class LoanServiceImpl implements ILoanService {
 	private ISysParamService sysParamService;
 	@Autowired
 	private ArchiveTaskMapper archiveTaskDao;
+	@Autowired
+	private ISmsService smsService;
+	@Autowired
+	private IAccountingService accountingService;
+	@Autowired
+	private ISignContractService signService;
+	@Autowired
+	private IBankService bankService;
 	
 	@Override
 	public void commitLoanTask(String taskId, String appId) throws Exception {
@@ -132,6 +147,13 @@ public class LoanServiceImpl implements ILoanService {
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, apply.getCreateAccountId());
 		vars.put("appId", appId);
 		runWorkflowService.startProcess("YFKDAZL", archiveKey, vars);
+		
+		//发送放款完成短信
+		RepayPlanVo repayPlan = planService.selectRepayPlay(appId, 1);
+		Date repayDate = repayPlan.getClosingDate();
+		SignContract signInfo = signService.getSignContractByAppId(appId);
+		BankInfo bankInfo = bankService.getBankInfoById(signInfo.getRepayBankId());
+		smsService.sendWelcomNotice(appId, "admin", applyVo.getTenant().getMobile(), applyVo.getTenant().getName(), String.valueOf(Utils.getDateDay(repayDate)), repayPlan.getRepayTotalAmount(), signInfo.getRepayAcctNo(), bankInfo.getBankName());
 		
 		//提交放款完成任务
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);

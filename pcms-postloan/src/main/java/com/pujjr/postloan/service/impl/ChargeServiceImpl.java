@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoader;
 
 import com.aliyun.oss.model.ObjectMetadata;
+import com.pujjr.assetsmanage.service.ICollectionService;
 import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.Merchant;
 import com.pujjr.base.service.IBankService;
@@ -30,11 +31,14 @@ import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.postloan.dao.ChargeLogMapper;
 import com.pujjr.postloan.dao.ChargeMapper;
+import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.dao.LoanQueryMapper;
 import com.pujjr.postloan.dao.OfferBatchInfoMapper;
 import com.pujjr.postloan.dao.OfferSummaryHisMapper;
 import com.pujjr.postloan.dao.OfferSummaryMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.ChargeLog;
+import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OfferBatchInfo;
 import com.pujjr.postloan.domain.OfferSummary;
 import com.pujjr.postloan.domain.OfferSummaryHis;
@@ -44,9 +48,11 @@ import com.pujjr.postloan.enumeration.ChargeStatus;
 import com.pujjr.postloan.enumeration.OfferSource;
 import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayMode;
+import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.po.OfferInfoPo;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IChargeService;
+import com.pujjr.sms.service.ISmsService;
 import com.pujjr.utils.Utils;
 
 @Service
@@ -79,6 +85,12 @@ public class ChargeServiceImpl implements IChargeService {
 	private OfferSummaryHisMapper offerSummaryHisDao;
 	@Autowired
 	private IAccountingService accountingService;
+	@Autowired
+	private ICollectionService collectionService;
+	@Autowired
+	private GeneralLedgerMapper ledgerDao;
+	@Autowired
+	private ISmsService smsService;
 	@Override
 	public List<HashMap<String, Object>> getEnableChargeList() {
 		// TODO Auto-generated method stub
@@ -289,6 +301,36 @@ public class ChargeServiceImpl implements IChargeService {
 		return chargeDao.selectManualOfferHisList(operId);
 	}
 
+	/**
+	 * 处理回盘失败
+	 * @param appId  申请单号
+	 * @param offerId 报盘ID
+	 * @throws Exception 
+	 */
+	private void  processChargeFailed(String appId,String feeId) throws Exception
+	{
+		//检查是否逾期
+		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+		//如果是逾期的客户，理论上已经发起了催收任务，则不需要再判断了
+		if(!ledgerPo.getRepayStatus().equals(RepayStatus.Overdue.getName()))
+		{
+			//判断是否已经发起催收任务，如果没有则发起电话催收任务
+			if(collectionService.checkHasCollectionTask(appId)==false)
+			{
+				collectionService.createPhoneCollectionTask("admin", appId, "系统提示：当日扣款失败，请进行电话催收");
+			}
+			//如果只报了一次盘，则认为是首次扣款
+			List<OfferSummaryHis> listOffer = offerSummaryHisDao.selectByFeeId(feeId);
+			if(listOffer.size()==1)
+			{
+				OfferSummaryHis item = listOffer.get(0);
+				ApplyTenant tenant = applyService.getApplyTenant(appId);
+				smsService.sendRepayDayFailNotice(appId, "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(new Date(), "yyyy年MM月dd日"), item.getOfferAmount());
+			}
+		}
+		
+		
+	}
 	@Override
 	public void retOfferProcess(String offerBatchId,List<String> resultList,String operId) throws Exception {
 		// TODO Auto-generated method stub
@@ -352,6 +394,9 @@ public class ChargeServiceImpl implements IChargeService {
 				chargeLog.setThirdPartyTime(new Date());
 				chargeLog.setThirdPartyResult(tranResult);
 				chargeLogDao.updateByPrimaryKey(chargeLog);
+
+				OfferSummary offerSummary = offerSummaryDao.selectByPrimaryKey(chargeLog.getOfferId());
+				OfferSummaryHis offerSummaryHis = offerSummaryHisDao.selectByPrimaryKey(chargeLog.getOfferId());
 				
 				/**
 				 * 交易成功处理
@@ -367,13 +412,15 @@ public class ChargeServiceImpl implements IChargeService {
 					//冲账处理
 					accountingService.repayReverseAccounting(chargeLog.getAppId(), tranAmt, chargeLog.getTranDate(), RepayMode.UnionFile,null);
 				}
-				
+				else
+				{
+					//处理扣款失败情况
+					this.processChargeFailed(chargeLog.getAppId(), offerSummary.getFeeRefId());
+				}
 				/**获取扣款对应的报盘信息，完成如下信息更新
 				 * 1、T_OFFER_SUMMARY及T_OFFER_SUMMARY_HIS的回盘笔数减一，如果结果为0则此笔报盘记录为回盘完成，删除报盘汇总表，更新历史报盘汇总表
 				 * 2、修改对应的待扣款明细记录为待报盘状态
 				 */
-				OfferSummary offerSummary = offerSummaryDao.selectByPrimaryKey(chargeLog.getOfferId());
-				OfferSummaryHis offerSummaryHis = offerSummaryHisDao.selectByPrimaryKey(chargeLog.getOfferId());
 				if(offerSummary.getRetCnt()+1==offerSummary.getSplitCnt())
 				{
 					offerSummaryDao.deleteByPrimaryKey(offerSummary.getId());
@@ -401,7 +448,6 @@ public class ChargeServiceImpl implements IChargeService {
 					offerSummaryHis.setRetCnt(offerSummaryHis.getRetCnt()+1);
 					offerSummaryHisDao.updateByPrimaryKey(offerSummaryHis);
 				}
-				
 			}
 		}
 		/**

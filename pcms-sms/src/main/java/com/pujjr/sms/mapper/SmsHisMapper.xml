@@ -161,4 +161,7 @@
       RESEND_CNT = #{resendCnt,jdbcType=INTEGER}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * from t_sms_his
+  </select>
 </mapper>

@@ -138,4 +138,10 @@
       UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * from t_sms_template order by SEQ
+  </select>
+  <select id="selectByTplKey" resultMap="BaseResultMap">
+  	select * from t_sms_template where TPL_KEY = #{tplKey}
+  </select>
 </mapper>

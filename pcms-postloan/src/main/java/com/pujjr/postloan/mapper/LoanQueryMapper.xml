@@ -167,4 +167,5 @@
 		inner join act_hi_varinst d on a.PROC_INST_ID_ = d.PROC_INST_ID_  and  d.NAME_ ='appId'
 		where c.KEY_ = #{taskKey}  and d.TEXT_ = #{appId}
   	</select>
+  	
 </mapper>

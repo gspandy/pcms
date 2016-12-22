@@ -17,6 +17,8 @@ import com.pujjr.base.domain.Sequence;
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.carcredit.constant.InsuranceType;
+import com.pujjr.carcredit.domain.ApplyTenant;
+import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.OverdueLogMapper;
@@ -36,6 +38,7 @@ import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.IAccountingService;
+import com.pujjr.sms.service.ISmsService;
 import com.pujjr.utils.Utils;
 
 public class CutOffService
@@ -68,6 +71,10 @@ public class CutOffService
 	private InsuranceHisMapper insHisDao;
 	@Autowired
 	private IInsuranceManageService insManageService;
+	@Autowired
+	private ISmsService smsService;
+	@Autowired
+	private IApplyService applyService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
@@ -320,7 +327,53 @@ public class CutOffService
 			insManageService.createInsuranceContinueTask(appId, "admin");
 		}
 	}
-	
+	//还款日前短信通知
+	private void repayDayNotice()
+	{
+		Date before1day = Utils.getDateAfterDay(new Date(), 1);
+		List<RepayPlan> next1DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before1day);
+		for(RepayPlan item : next1DayPlanList)
+		{
+			try
+			{
+				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+		Date before7day = Utils.getDateAfterDay(new Date(), 7);
+		List<RepayPlan> next7DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before7day);
+		for(RepayPlan item : next7DayPlanList)
+		{
+			try
+			{
+				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+			
+		}
+		Date before10day = Utils.getDateAfterDay(new Date(), 10);
+		List<RepayPlan> next10DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before10day);
+		for(RepayPlan item : next10DayPlanList)
+		{
+			try
+			{
+				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+	}
 	public void run() throws ParseException {
 		// TODO Auto-generated method stub
 		//日切账务处理
@@ -333,6 +386,8 @@ public class CutOffService
 		generateTelInterviewTask();
 		//创建商业保险续保任务
 		checkNeedInsuranceContinue();
+		//还款日前短信提醒
+		repayDayNotice();
 	}
 
 }
