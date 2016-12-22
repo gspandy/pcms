@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,7 @@ import com.pujjr.base.vo.QueryParamPageVo;
 import com.pujjr.sms.domain.SmsHis;
 import com.pujjr.sms.domain.SmsTemplate;
 import com.pujjr.sms.service.ISmsService;
+import com.pujjr.sms.vo.SmsMessageVo;
 import com.pujjr.utils.Utils;
 
 @RestController
@@ -64,6 +66,20 @@ public class SmsController extends BaseController
 		page.setTotalItem(((Page)list).getTotal());
 		page.setData(list);
 		return page;
+	}
+	
+	@RequestMapping(value="/sendMessage/{appId}/{type}",method=RequestMethod.POST)
+	public void sendMessage(@PathVariable String appId,@PathVariable String type,@RequestBody SmsMessageVo vo,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		smsService.sendMessage(appId, sysAccount.getAccountId(), vo.getMobile(), type, vo.getMessage());
+	}
+	
+	@RequestMapping(value="/resend/{hisId}",method=RequestMethod.POST)
+	public void resend(@PathVariable String hisId,HttpServletRequest request)
+	{
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		smsService.resend(hisId, sysAccount.getAccountId());
 	}
 	
 }

@@ -162,6 +162,6 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectList" resultMap="BaseResultMap">
-  	select * from t_sms_his
+  	select * from t_sms_his order by CREATE_TIME desc
   </select>
 </mapper>

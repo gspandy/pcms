@@ -28,9 +28,6 @@
         <dependent-module archiveName="pcms-schedule-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pcms-schedule/pcms-schedule">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="pcms-assetsmanage-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pcms-assetsmanage/pcms-assetsmanage">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="pcms-sms-0.0.1-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pcms-sms/pcms-sms">
             <dependency-type>uses</dependency-type>
         </dependent-module>

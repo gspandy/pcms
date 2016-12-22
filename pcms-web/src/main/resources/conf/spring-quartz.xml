@@ -46,9 +46,19 @@
 	<!-- 定时任务-日切任务 -->
 	<bean id="cutOffService" class="com.pujjr.schedule.service.CutOffService"></bean>
 	
+	<!-- 定时任务-短信发送 -->
+	<bean id ="sendSmsService" class="com.pujjr.schedule.service.SendSmsService"></bean>
+	
 	<task:scheduled-tasks>
+	  <!-- 消息推送 -->	
 	  <task:scheduled ref="pushScanSchedulerImpl" method="pushScan" cron="${messagepush_scan_scheduler.timeCronExpression}" />
+	  <!-- 审核自动分单 -->
 	  <task:scheduled ref="autoAssigneeService" method="autoAssigneeCheckTask" cron="${checktask_assignee_scheduler.timeCronExpression}"/>
-	  <task:scheduled ref="cutOffService" method="run" cron="${dayJob.timeCronExpression}"/>
+	  <!-- 账务日切 -->
+	  <task:scheduled ref="cutOffService" method="accountingCutOff" cron="${accountingCutOff.timeCronExpression}"/>
+	  <!-- 其他日切 -->
+	  <task:scheduled ref="cutOffService" method="otherCutOff" cron="${otherCutOff.timeCronExpression}"/>
+	  <!-- 短信发送 -->
+	  <task:scheduled ref="sendSmsService" method="send" cron="${smsSend.timeCronExpression}"/>
 	</task:scheduled-tasks>
 </beans>

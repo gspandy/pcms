@@ -114,4 +114,7 @@
       CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectList" resultMap="BaseResultMap">
+  	select * from t_sms_waitsend
+  </select>
 </mapper>

@@ -382,10 +382,14 @@
   	where a.ID = #{id}
   </select>
   
-  <select id="selectNeedContinueInsuranceList" resultType="String">
+  <select id="selectNeedContinueAppList" resultType="String">
   	select APP_ID
   	from t_insurance_his
   	where INS_TYPE = #{insType} and INS_END_DATE = #{insEndDate}
   	group by APP_ID
+  </select>
+  <select id="selectNeedContinueInsuranceList" resultMap="BaseResultMap">
+  	select * from t_insurance_his
+  	where INS_END_DATE = #{insEndDate}
   </select>
 </mapper>

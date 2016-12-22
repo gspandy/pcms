@@ -27,5 +27,7 @@ public interface InsuranceHisMapper {
 	
 	InsuranceHisPo selectByInsuranceId(String id);
 	
-	List<String> selectNeedContinueInsuranceList(@Param("insType")String insType,@Param("insEndDate")Date insEndDate);
+	List<String> selectNeedContinueAppList(@Param("insType")String insType,@Param("insEndDate")Date insEndDate);
+	
+	List<InsuranceHis> selectNeedContinueInsuranceList(@Param("insEndDate")Date insEndDate);
 }

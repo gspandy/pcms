@@ -420,7 +420,6 @@
     <module>pcms-push</module>
     <module>pcms-file</module>
     <module>pcms-postloan</module>
-    <module>pcms-assetsmanage</module>
     <module>pcms-schedule</module>
     <module>pcms-sms</module>
   </modules>

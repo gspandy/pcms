@@ -24,4 +24,6 @@ public interface ISignContractService
 	public void addSignFinanceDetail(SignFinanceDetail record);
 	
 	public void modifySignFinanceDetail(SignFinanceDetail record);
+	
+	public SignFinanceDetail getSignFinanceDetailById(String id);
 }

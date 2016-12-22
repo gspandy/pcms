@@ -3,6 +3,7 @@ package com.pujjr.sms.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -141,6 +142,92 @@ public class SmsServiceImpl implements ISmsService {
 		waitSendPo.setType("repayDayFailNotice");
 		waitSendPo.setMobile(mobile);
 		waitSendPo.setContent(msg);
+		waitSendPo.setCreateId(sendUserId);
+		waitSendPo.setCreateTime(new Date());
+		smsWaitSendDao.insert(waitSendPo);
+	}
+
+	@Override
+	public SmsTemplate getTemplateByTplKey(String tplKey) {
+		// TODO Auto-generated method stub
+		return smsTemplateDao.selectByTplKey(tplKey);
+	}
+
+	@Override
+	public void sendMessage(String appId, String sendUserId, String mobile, String type, String message) {
+		// TODO Auto-generated method stub
+		SmsWaitSend waitSendPo = new SmsWaitSend();
+		waitSendPo.setId(Utils.get16UUID());
+		waitSendPo.setAppId(appId);
+		waitSendPo.setType(type);
+		waitSendPo.setMobile(mobile);
+		waitSendPo.setContent(message);
+		waitSendPo.setCreateId(sendUserId);
+		waitSendPo.setCreateTime(new Date());
+		smsWaitSendDao.insert(waitSendPo);
+	}
+
+	@Override
+	public List<SmsWaitSend> getSmsWaitSendList() {
+		// TODO Auto-generated method stub
+		return smsWaitSendDao.selectList();
+	}
+
+	@Override
+	public void deleteSmsWaitSendById(String id) {
+		// TODO Auto-generated method stub
+		smsWaitSendDao.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public void saveSendedToSmsHis(SmsWaitSend record) {
+		// TODO Auto-generated method stub
+		SmsHis his = new SmsHis();
+		BeanUtils.copyProperties(record, his);
+		his.setSendTime(new Date());
+		his.setSendStatus("已发送");
+		his.setResendCnt(0);
+		smsHisDao.insert(his);
+		smsWaitSendDao.deleteByPrimaryKey(record.getId());
+	}
+
+	@Override
+	public void resend(String hisId,String operId) {
+		// TODO Auto-generated method stub
+		SmsHis his = smsHisDao.selectByPrimaryKey(hisId);
+		SmsWaitSend waitSendPo = new SmsWaitSend();
+		waitSendPo.setId(Utils.get16UUID());
+		waitSendPo.setAppId(his.getAppId());
+		waitSendPo.setType(his.getType());
+		waitSendPo.setMobile(his.getMobile());
+		waitSendPo.setContent(his.getContent());
+		waitSendPo.setCreateId(operId);
+		waitSendPo.setCreateTime(new Date());
+		smsWaitSendDao.insert(waitSendPo);
+		his.setResendCnt(his.getResendCnt()+1);
+		smsHisDao.updateByPrimaryKey(his);
+		
+	}
+
+	@Override
+	public void sendInsuranceContinueNotice(String appId, String sendUserId, String mobile, String custName,
+			String carNo, String endDate) throws Exception {
+		// TODO Auto-generated method stub
+		SmsTemplate tpl = smsTemplateDao.selectByPrimaryKey("insuranceContinue");
+		if(tpl == null)
+		{
+			throw new Exception("未定义保险续保提醒短信模板");
+		}
+		String tplContent = tpl.getTplContent();
+		tplContent=tplContent.replaceAll("#\\{custName\\}", custName);
+		tplContent=tplContent.replaceAll("#\\{carNo\\}", carNo);
+		tplContent=tplContent.replaceAll("#\\{endDate\\}",endDate);
+		SmsWaitSend waitSendPo = new SmsWaitSend();
+		waitSendPo.setId(Utils.get16UUID());
+		waitSendPo.setAppId(appId);
+		waitSendPo.setType("insuranceContinue");
+		waitSendPo.setMobile(mobile);
+		waitSendPo.setContent(tplContent);
 		waitSendPo.setCreateId(sendUserId);
 		waitSendPo.setCreateTime(new Date());
 		smsWaitSendDao.insert(waitSendPo);

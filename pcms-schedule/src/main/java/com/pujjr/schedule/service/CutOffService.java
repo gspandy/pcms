@@ -13,12 +13,15 @@ import com.pujjr.assetsmanage.service.ITelInterviewService;
 import com.pujjr.base.dao.ArchiveTaskMapper;
 import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.domain.Sequence;
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.carcredit.constant.InsuranceType;
 import com.pujjr.carcredit.domain.ApplyTenant;
+import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.service.IApplyService;
+import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.OverdueLogMapper;
@@ -75,6 +78,8 @@ public class CutOffService
 	private ISmsService smsService;
 	@Autowired
 	private IApplyService applyService;
+	@Autowired
+	private ISignContractService signService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
@@ -321,11 +326,26 @@ public class CutOffService
 	private void checkNeedInsuranceContinue()
 	{
 		Date afterDay = Utils.getDateAfterDay(new Date(), 30);
-		List<String> list = insHisDao.selectNeedContinueInsuranceList(InsuranceType.SYX.getName(), afterDay);
+		List<String> list = insHisDao.selectNeedContinueAppList(InsuranceType.SYX.getName(), afterDay);
 		for(String appId : list)
 		{
+			//创建保险续保任务
 			insManageService.createInsuranceContinueTask(appId, "admin");
 		}
+		List<InsuranceHis> listIns = insHisDao.selectNeedContinueInsuranceList(afterDay);
+		for(InsuranceHis item : listIns)
+		{
+			//短信通知
+			SignFinanceDetail signDetail = signService.getSignFinanceDetailById(item.getSignId());
+			ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
+			try {
+				smsService.sendInsuranceContinueNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), signDetail.getPlateNo(), Utils.formateDate2String(item.getInsEndDate(), "yyyy年MM月dd日"));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	//还款日前短信通知
 	private void repayDayNotice()
@@ -374,10 +394,14 @@ public class CutOffService
 			}
 		}
 	}
-	public void run() throws ParseException {
+	public void accountingCutOff() throws ParseException {
 		// TODO Auto-generated method stub
 		//日切账务处理
 		handleAccounting();
+	}
+	
+	public void otherCutOff()
+	{
 		//重置序列号
 		resetSequence();
 		//计算归档任务逾期

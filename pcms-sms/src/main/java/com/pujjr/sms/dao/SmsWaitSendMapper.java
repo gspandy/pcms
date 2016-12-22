@@ -1,5 +1,7 @@
 package com.pujjr.sms.dao;
 
+import java.util.List;
+
 import com.pujjr.sms.domain.SmsWaitSend;
 
 public interface SmsWaitSendMapper {
@@ -14,4 +16,6 @@ public interface SmsWaitSendMapper {
     int updateByPrimaryKeySelective(SmsWaitSend record);
 
     int updateByPrimaryKey(SmsWaitSend record);
+    
+    List<SmsWaitSend> selectList();
 }

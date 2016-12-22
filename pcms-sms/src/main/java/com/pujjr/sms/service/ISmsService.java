@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.sms.domain.SmsHis;
 import com.pujjr.sms.domain.SmsTemplate;
+import com.pujjr.sms.domain.SmsWaitSend;
 @Service
 @Transactional
 public interface ISmsService 
@@ -26,10 +27,37 @@ public interface ISmsService
 	 */
 	public void modifySmsTemplate(SmsTemplate record);
 	/**
+	 * 根据模板标识查询短信模板
+	 * @param tplKey
+	 * @return
+	 */
+	public SmsTemplate getTemplateByTplKey(String tplKey);
+	/**
 	 * 查询短信发送历史信息
 	 * @return
 	 */
 	public List<SmsHis> getSmsHisList(); 
+	/**
+	 * 查询短信待发送列表
+	 * @return
+	 */
+	public List<SmsWaitSend> getSmsWaitSendList();
+	/**
+	 * 通过ID删除待发送表短信
+	 * @param id
+	 */
+	public void deleteSmsWaitSendById(String id);
+	/**
+	 * 保存已发送短信至历史表
+	 * @param record
+	 */
+	public void saveSendedToSmsHis(SmsWaitSend record);
+	/**
+	 * 通过历史记录重新发送短信
+	 * @param hisId 历史记录ID
+	 * @param operId 重发操作者
+	 */
+	public void resend(String hisId,String operId);
 	/**
 	 * 生成欢迎提醒短信
 	 * @param custName 客户姓名
@@ -92,7 +120,27 @@ public interface ISmsService
 	 * @throws Exception 
 	 */
 	public void sendRepayDayFailNotice(String appId, String sendUserId,String mobile,String custName,String repayDate,double repayAmt) throws Exception;
+	/**
+	 * 发送短信
+	 * @param appId 申请单号
+	 * @param sendUserId 发送人
+	 * @param mobile 手机号码
+	 * @param type 类型
+	 * @param message 短信内容
+	 */
+	public void sendMessage(String appId,String sendUserId,String mobile,String type,String message);
 	
+	/**
+	 * 保险续保通知短信
+	 * @param appId
+	 * @param sendUserId
+	 * @param mobile
+	 * @param custName
+	 * @param carNo
+	 * @param endDate
+	 * @throws Exception 
+	 */
+	public void sendInsuranceContinueNotice(String appId,String sendUserId,String mobile,String custName,String carNo,String endDate) throws Exception;
 	
 	
 	
