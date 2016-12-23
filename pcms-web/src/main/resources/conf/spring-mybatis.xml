@@ -114,5 +114,4 @@
 	<aop:aspectj-autoproxy proxy-target-class="true"  expose-proxy="true"/>
 	<bean class="com.pujjr.carcredit.aspect.ApplyOperHisAspect"/>
 	<bean class="com.pujjr.push.aspect.PushAspect"/>
-	
 </beans>

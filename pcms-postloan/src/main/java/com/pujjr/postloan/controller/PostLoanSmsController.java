@@ -20,7 +20,7 @@ public class PostLoanSmsController extends BaseController
 	private IPostLoanSmsService postLoanSmsService;
 	
 	@RequestMapping(value="/genPostLoanSms/{appId}/{tplKey}",method=RequestMethod.GET)
-	public SmsMessageVo genPostLoanSms(@PathVariable String tplKey, @PathVariable String appId)
+	public SmsMessageVo genPostLoanSms(@PathVariable String tplKey, @PathVariable String appId) throws Exception
 	{
 		return   postLoanSmsService.genPostLoanSms(tplKey, appId);
 	}

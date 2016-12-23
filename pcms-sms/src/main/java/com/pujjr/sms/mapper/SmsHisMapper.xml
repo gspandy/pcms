@@ -1,153 +1,165 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.pujjr.sms.dao.SmsHisMapper" >
-  <resultMap id="BaseResultMap" type="com.pujjr.sms.domain.SmsHis" >
-    <id column="ID" property="id" jdbcType="VARCHAR" />
-    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
-    <result column="TYPE" property="type" jdbcType="VARCHAR" />
-    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
-    <result column="CONTENT" property="content" jdbcType="VARCHAR" />
-    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
-    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
-    <result column="SEND_TIME" property="sendTime" jdbcType="TIMESTAMP" />
-    <result column="RET_TIME" property="retTime" jdbcType="TIMESTAMP" />
-    <result column="SEND_STATUS" property="sendStatus" jdbcType="VARCHAR" />
-    <result column="RESEND_CNT" property="resendCnt" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.sms.dao.SmsHisMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.sms.domain.SmsHis">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="TYPE" jdbcType="VARCHAR" property="type" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="CREATE_ID" jdbcType="VARCHAR" property="createId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="SEND_TIME" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="RET_TIME" jdbcType="TIMESTAMP" property="retTime" />
+    <result column="SEND_STATUS" jdbcType="VARCHAR" property="sendStatus" />
+    <result column="RESEND_CNT" jdbcType="INTEGER" property="resendCnt" />
+    <result column="SUPPLY_NAME" jdbcType="VARCHAR" property="supplyName" />
   </resultMap>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     ID, APP_ID, TYPE, MOBILE, CONTENT, CREATE_ID, CREATE_TIME, SEND_TIME, RET_TIME, SEND_STATUS, 
-    RESEND_CNT
+    RESEND_CNT, SUPPLY_NAME
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from t_sms_his
     where ID = #{id,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from t_sms_his
     where ID = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.pujjr.sms.domain.SmsHis" >
+  <insert id="insert" parameterType="com.pujjr.sms.domain.SmsHis">
     insert into t_sms_his (ID, APP_ID, TYPE, 
       MOBILE, CONTENT, CREATE_ID, 
       CREATE_TIME, SEND_TIME, RET_TIME, 
-      SEND_STATUS, RESEND_CNT)
+      SEND_STATUS, RESEND_CNT, SUPPLY_NAME
+      )
     values (#{id,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, 
       #{mobile,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, #{retTime,jdbcType=TIMESTAMP}, 
-      #{sendStatus,jdbcType=VARCHAR}, #{resendCnt,jdbcType=INTEGER})
+      #{sendStatus,jdbcType=VARCHAR}, #{resendCnt,jdbcType=INTEGER}, #{supplyName,jdbcType=VARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.pujjr.sms.domain.SmsHis" >
+  <insert id="insertSelective" parameterType="com.pujjr.sms.domain.SmsHis">
     insert into t_sms_his
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         ID,
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         APP_ID,
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         TYPE,
       </if>
-      <if test="mobile != null" >
+      <if test="mobile != null">
         MOBILE,
       </if>
-      <if test="content != null" >
+      <if test="content != null">
         CONTENT,
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID,
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME,
       </if>
-      <if test="sendTime != null" >
+      <if test="sendTime != null">
         SEND_TIME,
       </if>
-      <if test="retTime != null" >
+      <if test="retTime != null">
         RET_TIME,
       </if>
-      <if test="sendStatus != null" >
+      <if test="sendStatus != null">
         SEND_STATUS,
       </if>
-      <if test="resendCnt != null" >
+      <if test="resendCnt != null">
         RESEND_CNT,
       </if>
+      <if test="supplyName != null">
+        SUPPLY_NAME,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=VARCHAR},
       </if>
-      <if test="appId != null" >
+      <if test="appId != null">
         #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         #{type,jdbcType=VARCHAR},
       </if>
-      <if test="mobile != null" >
+      <if test="mobile != null">
         #{mobile,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
+      <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendTime != null" >
+      <if test="sendTime != null">
         #{sendTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="retTime != null" >
+      <if test="retTime != null">
         #{retTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendStatus != null" >
+      <if test="sendStatus != null">
         #{sendStatus,jdbcType=VARCHAR},
       </if>
-      <if test="resendCnt != null" >
+      <if test="resendCnt != null">
         #{resendCnt,jdbcType=INTEGER},
+      </if>
+      <if test="supplyName != null">
+        #{supplyName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.sms.domain.SmsHis" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.sms.domain.SmsHis">
     update t_sms_his
-    <set >
-      <if test="appId != null" >
+    <set>
+      <if test="appId != null">
         APP_ID = #{appId,jdbcType=VARCHAR},
       </if>
-      <if test="type != null" >
+      <if test="type != null">
         TYPE = #{type,jdbcType=VARCHAR},
       </if>
-      <if test="mobile != null" >
+      <if test="mobile != null">
         MOBILE = #{mobile,jdbcType=VARCHAR},
       </if>
-      <if test="content != null" >
+      <if test="content != null">
         CONTENT = #{content,jdbcType=VARCHAR},
       </if>
-      <if test="createId != null" >
+      <if test="createId != null">
         CREATE_ID = #{createId,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null" >
+      <if test="createTime != null">
         CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendTime != null" >
+      <if test="sendTime != null">
         SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="retTime != null" >
+      <if test="retTime != null">
         RET_TIME = #{retTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="sendStatus != null" >
+      <if test="sendStatus != null">
         SEND_STATUS = #{sendStatus,jdbcType=VARCHAR},
       </if>
-      <if test="resendCnt != null" >
+      <if test="resendCnt != null">
         RESEND_CNT = #{resendCnt,jdbcType=INTEGER},
+      </if>
+      <if test="supplyName != null">
+        SUPPLY_NAME = #{supplyName,jdbcType=VARCHAR},
       </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.pujjr.sms.domain.SmsHis" >
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.sms.domain.SmsHis">
     update t_sms_his
     set APP_ID = #{appId,jdbcType=VARCHAR},
       TYPE = #{type,jdbcType=VARCHAR},
@@ -158,7 +170,8 @@
       SEND_TIME = #{sendTime,jdbcType=TIMESTAMP},
       RET_TIME = #{retTime,jdbcType=TIMESTAMP},
       SEND_STATUS = #{sendStatus,jdbcType=VARCHAR},
-      RESEND_CNT = #{resendCnt,jdbcType=INTEGER}
+      RESEND_CNT = #{resendCnt,jdbcType=INTEGER},
+      SUPPLY_NAME = #{supplyName,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectList" resultMap="BaseResultMap">

@@ -51,7 +51,7 @@ public interface ISmsService
 	 * 保存已发送短信至历史表
 	 * @param record
 	 */
-	public void saveSendedToSmsHis(SmsWaitSend record);
+	public void saveSendedToSmsHis(SmsWaitSend record,String supplyName);
 	/**
 	 * 通过历史记录重新发送短信
 	 * @param hisId 历史记录ID

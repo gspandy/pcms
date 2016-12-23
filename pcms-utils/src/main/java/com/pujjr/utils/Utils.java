@@ -30,11 +30,11 @@ public class Utils {
 	
 	public static int seq=0;
 	
-	/**¸ñÊ½»¯¶ÔÏóÖĞµÄDouble¶ÔÏó
-	 * tom 2016Äê11ÔÂ23ÈÕ
-	 * @param obj ´ı×ª»»Double³ÉÔ±ÊôĞÔ¶ÔÏó
-	 * @param scale ×ª»»ºóDouble³ÉÔ±ÊôĞÔĞ¡ÊıÎ»Êı
-	 * @return ×ª»»ºó¶ÔÏó£¨µ±Ç°¶ÔÏó£©
+	/**æ ¼å¼åŒ–å¯¹è±¡ä¸­çš„Doubleå¯¹è±¡
+	 * tom 2016å¹´11æœˆ23æ—¥
+	 * @param obj å¾…è½¬æ¢Doubleæˆå‘˜å±æ€§å¯¹è±¡
+	 * @param scale è½¬æ¢åDoubleæˆå‘˜å±æ€§å°æ•°ä½æ•°
+	 * @return è½¬æ¢åå¯¹è±¡ï¼ˆå½“å‰å¯¹è±¡ï¼‰
 	 */
 	public static Object formateDoubleOfObject(Object obj,int scale){
 		Class objClass = obj.getClass();
@@ -42,7 +42,7 @@ public class Utils {
 		Method[] methods = objClass.getMethods();
 		List<Field> fieldList = Utils.getFieldList(objClass);
 		for (Field field : fieldList) {
-			if(field.getType().getName().equals("double") || field.getType().getName().equals("java.lang.Double")){//Ä¿Ç°½öÖ§³Ö×ªdouble¡¢Double¶ÔÏóÊı¾İ
+			if(field.getType().getName().equals("double") || field.getType().getName().equals("java.lang.Double")){//ç›®å‰ä»…æ”¯æŒè½¬doubleã€Doubleå¯¹è±¡æ•°æ®
 				try {
 //					System.out.println(field.getName());
 					String getMethodStr = Utils.field2GetMethod(field.getName());
@@ -66,9 +66,9 @@ public class Utils {
 	}
 	
 	/**
-	 * »ñÈ¡µ±Ç°ÈÕÆÚ
-	 * tom 2016Äê11ÔÂ14ÈÕ
-	 * @return µ±Ç°ÈÕÆÚ
+	 * è·å–å½“å‰æ—¥æœŸ
+	 * tom 2016å¹´11æœˆ14æ—¥
+	 * @return å½“å‰æ—¥æœŸ
 	 */
 	public static Date getDate(){
 		Calendar calendar = Calendar.getInstance();
@@ -76,10 +76,10 @@ public class Utils {
 	}
 	
 	/**
-	 * ÊôĞÔ¿½±´(¿½±´list³ÉÔ±±äÁ¿)
-	 * tom 2016Äê11ÔÂ7ÈÕ
-	 * @param source Ô´¶ÔÏó
-	 * @param dest Ä¿±ê¶ÔÏó
+	 * å±æ€§æ‹·è´(æ‹·è´listæˆå‘˜å˜é‡)
+	 * tom 2016å¹´11æœˆ7æ—¥
+	 * @param source æºå¯¹è±¡
+	 * @param dest ç›®æ ‡å¯¹è±¡
 	 */
 	/*public static void copyPropertiesDeep(Object source,Object dest){
 		Class srcCls = source.getClass();
@@ -95,14 +95,14 @@ public class Utils {
 			Class srcFieldType = srcField.getType();
 			String srcFieldTypeName = srcFieldType.getName();
 			Object srcFieldValue = null;
-			try {//´¦ÀísourceÖĞlist³ÉÔ±±äÁ¿
+			try {//å¤„ç†sourceä¸­listæˆå‘˜å˜é‡
 				srcFieldValue = srcField.get(source);
 //				System.out.println(srcFieldType.getName().equals(double.class.getName())+"*********|"+srcFieldValue);
 				for (Field destField : destFieldList) {
 					String destFieldName = destField.getName();
 					Class destFieldType = destField.getType();
 					if(srcFieldName.equals(destFieldName)){
-						if(srcFieldTypeName.equals(List.class.getName())){//ÅĞ¶Ïlist±äÁ¿
+						if(srcFieldTypeName.equals(List.class.getName())){//åˆ¤æ–­listå˜é‡
 //							System.out.println(srcFieldType+"|"+srcFieldName+"|"+srcField.getGenericType());
 							List tempSrcFieldValue = (List) srcField.get(source);
 							Type gType  = destField.getGenericType();
@@ -111,7 +111,7 @@ public class Utils {
 //							System.out.println("****types[0]:"+types[0]+"|"+"types[0].getTypeName():"+types[0].getTypeName()+"|"+types[0].getTypeName().equals(RepayScheduleDetailPo.class.getTypeName())+"|"+types[0].getClass());
 //							System.out.println("ttt:"+srcField.get(source));
 							for (Object object : tempSrcFieldValue) {
-//								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//Ä¿Ç°½ö½ö¿½±´list·ºĞÍÖĞº¬ÓĞÒ»¸ö²ÎÊıµÄÇé¿ö£¬Èç£ºList<String>
+//								Object rsdv = Class.forName(types[0].getTypeName()).newInstance();//ç›®å‰ä»…ä»…æ‹·è´listæ³›å‹ä¸­å«æœ‰ä¸€ä¸ªå‚æ•°çš„æƒ…å†µï¼Œå¦‚ï¼šList<String>
 								Object rsdv = Class.forName(types[0].toString().split(" ")[1]).newInstance();
 								Utils.copyProperties(object, rsdv);
 								destList.add(rsdv);
@@ -122,7 +122,7 @@ public class Utils {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//´¦ÀíresourceÖĞÆÕÍ¨³ÉÔ±±äÁ¿
+			//å¤„ç†resourceä¸­æ™®é€šæˆå‘˜å˜é‡
 			for (Field destField : destFieldList) {
 				String destFieldName = destField.getName();
 				Class destFieldType = destField.getType();
@@ -162,11 +162,11 @@ public class Utils {
 	}*/
 	
 	/**
-	 * Ë«¾«¶È¸¡µãÊı×ªÖÆ¶¨¸ñÊ½×Ö·û´®
-	 * tom 2016Äê11ÔÂ2ÈÕ
-	 * @param number Êı¾İÔ´
-	 * @param scale Ğ¡ÊıÎ»Êı
-	 * @return ¸ñÊ½»¯ºóË«¾«¶È¸¡µãÊı£¨ÊäÈë£ºnumber=123.1 scale=3 Êä³ö£º"123.100"£©
+	 * åŒç²¾åº¦æµ®ç‚¹æ•°è½¬åˆ¶å®šæ ¼å¼å­—ç¬¦ä¸²
+	 * tom 2016å¹´11æœˆ2æ—¥
+	 * @param number æ•°æ®æº
+	 * @param scale å°æ•°ä½æ•°
+	 * @return æ ¼å¼åŒ–ååŒç²¾åº¦æµ®ç‚¹æ•°ï¼ˆè¾“å…¥ï¼šnumber=123.1 scale=3 è¾“å‡ºï¼š"123.100"ï¼‰
 	 */
 	public static String formateDouble2String(double number,int scale){
 		String formateDouble = "";
@@ -177,22 +177,22 @@ public class Utils {
 	}
 	
 	/**
-	 * Ë«¾«¶È¸¡µãÊı×ªÖ¸¶¨¸ñÊ½Ë«½ø¶È¸¡µãÊı
-	 * tom 2016Äê11ÔÂ2ÈÕ
-	 * @param number Êı¾İÔ´
-	 * @param scale Ğ¡ÊıÎ»Êı
-	 * @return ¸ñÊ½»¯ºóË«¾«¶È¸¡µãÊı£¨ÊäÈë£ºnumber=123.1¶ÔÓ¦BigDecimal¶ÔÏó scale=3 Êä³ö£º123.1£©
+	 * åŒç²¾åº¦æµ®ç‚¹æ•°è½¬æŒ‡å®šæ ¼å¼åŒè¿›åº¦æµ®ç‚¹æ•°
+	 * tom 2016å¹´11æœˆ2æ—¥
+	 * @param number æ•°æ®æº
+	 * @param scale å°æ•°ä½æ•°
+	 * @return æ ¼å¼åŒ–ååŒç²¾åº¦æµ®ç‚¹æ•°ï¼ˆè¾“å…¥ï¼šnumber=123.1å¯¹åº”BigDecimalå¯¹è±¡ scale=3 è¾“å‡ºï¼š123.1ï¼‰
 	 */
 	public static Double formateDouble2Double(BigDecimal bigDecimal,int scale){
 		return bigDecimal.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
 	}
 	
 	/**
-	 * Ë«¾«¶È¸¡µãÊı×ªÖ¸¶¨¸ñÊ½Ë«¾«¶È¸¡µãÊı
-	 * tom 2016Äê11ÔÂ2ÈÕ
-	 * @param number Êı¾İÔ´
-	 * @param scale Ğ¡ÊıÎ»Êı
-	 * @return ¸ñÊ½»¯ºóË«¾«¶È¸¡µãÊı£¨ÊäÈë£ºnumber=123.1 scale=3 Êä³ö£º123.1£©
+	 * åŒç²¾åº¦æµ®ç‚¹æ•°è½¬æŒ‡å®šæ ¼å¼åŒç²¾åº¦æµ®ç‚¹æ•°
+	 * tom 2016å¹´11æœˆ2æ—¥
+	 * @param number æ•°æ®æº
+	 * @param scale å°æ•°ä½æ•°
+	 * @return æ ¼å¼åŒ–ååŒç²¾åº¦æµ®ç‚¹æ•°ï¼ˆè¾“å…¥ï¼šnumber=123.1 scale=3 è¾“å‡ºï¼š123.1ï¼‰
 	 */
 	public static Double formateDouble2Double(double number,int scale){
 		Double formateDouble = null;
@@ -202,12 +202,12 @@ public class Utils {
 	}
 	
 	/**
-	 * »ñÈ¡Ê±¼ä¼ä¸ô
-	 * tom 2016Äê11ÔÂ8ÈÕ
-	 * @param beginDate ¿ªÊ¼ÈÕÆÚ
-	 * @param endDate ½ØÖ¹ÈÕÆÚ
-	 * @param intervalMode ¼ä¸ôÄ£Ê½
-	 * @return Ê±¼ä¼ä¸ô
+	 * è·å–æ—¶é—´é—´éš”
+	 * tom 2016å¹´11æœˆ8æ—¥
+	 * @param beginDate å¼€å§‹æ—¥æœŸ
+	 * @param endDate æˆªæ­¢æ—¥æœŸ
+	 * @param intervalMode é—´éš”æ¨¡å¼
+	 * @return æ—¶é—´é—´éš”
 	 */
 	public static long getTimeInterval(Date beginDate,Date endDate,EIntervalMode intervalMode){
 		long interval = 0;
@@ -241,8 +241,8 @@ public class Utils {
 	}
 	
 	/**
-	 * ÈÕÆÚ¸ñÊ½»¯
-	 * tom 2016Äê11ÔÂ7ÈÕ
+	 * æ—¥æœŸæ ¼å¼åŒ–
+	 * tom 2016å¹´11æœˆ7æ—¥
 	 * @param date
 	 * @param formateStr
 	 * @return
@@ -259,8 +259,8 @@ public class Utils {
 	}
 	
 	/**
-	 * ×Ö·û´®×ªÈÕÆÚ
-	 * tom 2016Äê11ÔÂ7ÈÕ
+	 * å­—ç¬¦ä¸²è½¬æ—¥æœŸ
+	 * tom 2016å¹´11æœˆ7æ—¥
 	 * @param date
 	 * @param formateStr
 	 * @return
@@ -277,8 +277,8 @@ public class Utils {
 	}
 	
 	/**
-	 * ÈÕÆÚ×ª×Ö·û´®
-	 * tom 2016Äê11ÔÂ7ÈÕ
+	 * æ—¥æœŸè½¬å­—ç¬¦ä¸²
+	 * tom 2016å¹´11æœˆ7æ—¥
 	 * @param date
 	 * @param formateStr
 	 * @return
@@ -296,8 +296,8 @@ public class Utils {
 	
 
 	/**
-	 * @param fieldName ÊôĞÔÃû
-	 * @return ÊôĞÔ¶ÔÓ¦get·½·¨
+	 * @param fieldName å±æ€§å
+	 * @return å±æ€§å¯¹åº”getæ–¹æ³•
 	 */
 	public static String field2GetMethod(String fieldName){
 		StringBuffer buffer = new StringBuffer();
@@ -308,8 +308,8 @@ public class Utils {
 	}
 	
 	/**
-	 * @param fieldName ÊôĞÔÃû
-	 * @return ÊôĞÔ¶ÔÓ¦set·½·¨
+	 * @param fieldName å±æ€§å
+	 * @return å±æ€§å¯¹åº”setæ–¹æ³•
 	 */
 	public static String field2SetMethod(String fieldName){
 		StringBuffer buffer = new StringBuffer();
@@ -320,8 +320,8 @@ public class Utils {
 	}
 	
 	/**
-	 * »ñÈ¡Ö¸¶¨ÈÕÆÚËùÔÚµ±ÔÂÌì
-	 * tom 2016Äê10ÔÂ28ÈÕ
+	 * è·å–æŒ‡å®šæ—¥æœŸæ‰€åœ¨å½“æœˆå¤©
+	 * tom 2016å¹´10æœˆ28æ—¥
 	 */
 	public static String getDayOfMonth(Date date){
 		Calendar calendar = Calendar.getInstance();
@@ -329,57 +329,57 @@ public class Utils {
 	}
 	
 	/**
-    * Êı×Ö½ğ¶î×ªÖĞÎÄ´óĞ´
-    * @param money Êı×Ö½ğ¶î
-    * @return ÖĞÎÄ´óĞ´½ğ¶î
+    * æ•°å­—é‡‘é¢è½¬ä¸­æ–‡å¤§å†™
+    * @param money æ•°å­—é‡‘é¢
+    * @return ä¸­æ–‡å¤§å†™é‡‘é¢
     */
     public static String number2Chn(double money) {
     	/**
-	     * ººÓïÖĞÊı×Ö´óĞ´
+	     * æ±‰è¯­ä¸­æ•°å­—å¤§å†™
 	     */
-	    final String[] CN_UPPER_NUMBER = { "Áã", "Ò¼", "·¡", "Èş", "ËÁ",
-	            "Îé", "Â½", "Æâ", "°Æ", "¾Á" };
+	    final String[] CN_UPPER_NUMBER = { "é›¶", "å£¹", "è´°", "å", "è‚†",
+	            "ä¼", "é™†", "æŸ’", "æŒ", "ç–" };
 	    /**
-	     * ººÓïÖĞ»õ±Òµ¥Î»´óĞ´£¬ÕâÑùµÄÉè¼ÆÀàËÆÓÚÕ¼Î»·û
+	     * æ±‰è¯­ä¸­è´§å¸å•ä½å¤§å†™ï¼Œè¿™æ ·çš„è®¾è®¡ç±»ä¼¼äºå ä½ç¬¦
 	     */
-	    final String[] CN_UPPER_MONETRAY_UNIT = { "·Ö", "½Ç", "Ôª",
-	            "Ê°", "°Û", "Çª", "Íò", "Ê°", "°Û", "Çª", "ÒÚ", "Ê°", "°Û", "Çª", "Õ×", "Ê°",
-	            "°Û", "Çª" };
+	    final String[] CN_UPPER_MONETRAY_UNIT = { "åˆ†", "è§’", "å…ƒ",
+	            "æ‹¾", "ä½°", "ä»Ÿ", "ä¸‡", "æ‹¾", "ä½°", "ä»Ÿ", "äº¿", "æ‹¾", "ä½°", "ä»Ÿ", "å…†", "æ‹¾",
+	            "ä½°", "ä»Ÿ" };
 	    /**
-	     * ÌØÊâ×Ö·û£ºÕû
+	     * ç‰¹æ®Šå­—ç¬¦ï¼šæ•´
 	     */
-	    final String CN_FULL = "Õû";
+	    final String CN_FULL = "æ•´";
 	    /**
-	     * ÌØÊâ×Ö·û£º¸º
+	     * ç‰¹æ®Šå­—ç¬¦ï¼šè´Ÿ
 	     */
-	    final String CN_NEGATIVE = "¸º";
+	    final String CN_NEGATIVE = "è´Ÿ";
 	    /**
-	     * ½ğ¶îµÄ¾«¶È£¬Ä¬ÈÏÖµÎª2
+	     * é‡‘é¢çš„ç²¾åº¦ï¼Œé»˜è®¤å€¼ä¸º2
 	     */
 	    final int MONEY_PRECISION = 2;
         /**
-        * ÌØÊâ×Ö·û£ºÁãÔªÕû
+        * ç‰¹æ®Šå­—ç¬¦ï¼šé›¶å…ƒæ•´
         */
-        final String CN_ZEOR_FULL = "ÁãÔª" + CN_FULL;
+        final String CN_ZEOR_FULL = "é›¶å…ƒ" + CN_FULL;
     	
     	BigDecimal numberOfMoney = new BigDecimal(money);
         StringBuffer sb = new StringBuffer();
         // -1, 0, or 1 as the value of this BigDecimal is negative, zero, or
         // positive.
         int signum = numberOfMoney.signum();
-        // ÁãÔªÕûµÄÇé¿ö
+        // é›¶å…ƒæ•´çš„æƒ…å†µ
         if (signum == 0) {
             return CN_ZEOR_FULL;
         }
-        //ÕâÀï»á½øĞĞ½ğ¶îµÄËÄÉáÎåÈë
+        //è¿™é‡Œä¼šè¿›è¡Œé‡‘é¢çš„å››èˆäº”å…¥
         long number = numberOfMoney.movePointRight(MONEY_PRECISION)
                 .setScale(0, 4).abs().longValue();
-        // µÃµ½Ğ¡ÊıµãºóÁ½Î»Öµ
+        // å¾—åˆ°å°æ•°ç‚¹åä¸¤ä½å€¼
         long scale = number % 100;
         int numUnit = 0;
         int numIndex = 0;
         boolean getZero = false;
-        // ÅĞ¶Ï×îºóÁ½Î»Êı£¬Ò»¹²ÓĞËÄÖĞÇé¿ö£º00 = 0, 01 = 1, 10, 11
+        // åˆ¤æ–­æœ€åä¸¤ä½æ•°ï¼Œä¸€å…±æœ‰å››ä¸­æƒ…å†µï¼š00 = 0, 01 = 1, 10, 11
         if (!(scale > 0)) {
             numIndex = 2;
             number = number / 100;
@@ -395,7 +395,7 @@ public class Utils {
             if (number <= 0) {
                 break;
             }
-            // Ã¿´Î»ñÈ¡µ½×îºóÒ»¸öÊı
+            // æ¯æ¬¡è·å–åˆ°æœ€åä¸€ä¸ªæ•°
             numUnit = (int) (number % 10);
             if (numUnit > 0) {
                 if ((numIndex == 9) && (zeroSize >= 3)) {
@@ -422,15 +422,15 @@ public class Utils {
                 }
                 getZero = true;
             }
-            // ÈÃnumberÃ¿´Î¶¼È¥µô×îºóÒ»¸öÊı
+            // è®©numberæ¯æ¬¡éƒ½å»æ‰æœ€åä¸€ä¸ªæ•°
             number = number / 10;
             ++numIndex;
         }
-        // Èç¹ûsignum == -1£¬ÔòËµÃ÷ÊäÈëµÄÊı×ÖÎª¸ºÊı£¬¾ÍÔÚ×îÇ°Ãæ×·¼ÓÌØÊâ×Ö·û£º¸º
+        // å¦‚æœsignum == -1ï¼Œåˆ™è¯´æ˜è¾“å…¥çš„æ•°å­—ä¸ºè´Ÿæ•°ï¼Œå°±åœ¨æœ€å‰é¢è¿½åŠ ç‰¹æ®Šå­—ç¬¦ï¼šè´Ÿ
         if (signum == -1) {
             sb.insert(0, CN_NEGATIVE);
         }
-        // ÊäÈëµÄÊı×ÖĞ¡ÊıµãºóÁ½Î»Îª"00"µÄÇé¿ö£¬ÔòÒªÔÚ×îºó×·¼ÓÌØÊâ×Ö·û£ºÕû
+        // è¾“å…¥çš„æ•°å­—å°æ•°ç‚¹åä¸¤ä½ä¸º"00"çš„æƒ…å†µï¼Œåˆ™è¦åœ¨æœ€åè¿½åŠ ç‰¹æ®Šå­—ç¬¦ï¼šæ•´
         if (!(scale > 0)) {
             sb.append(CN_FULL);
         }
@@ -439,9 +439,9 @@ public class Utils {
 	
 	
 	/**
-	 * µİ¹éËùÓĞ¸¸Ààfield
-	 * @param obj µ±Ç°µİ¹é¶ÔÏó
-	 * @param fieldList ËùÓĞfieldÁĞ±í
+	 * é€’å½’æ‰€æœ‰çˆ¶ç±»field
+	 * @param obj å½“å‰é€’å½’å¯¹è±¡
+	 * @param fieldList æ‰€æœ‰fieldåˆ—è¡¨
 	 */
 	public static void getField(Class obj,List<Field> fieldList){
 		Field[] fields = obj.getDeclaredFields();
@@ -454,7 +454,7 @@ public class Utils {
 		}
 	}
 	/**
-	 * »ñÈ¡¶ÔÏóËùÓĞfield
+	 * è·å–å¯¹è±¡æ‰€æœ‰field
 	 * @param obj
 	 * @return
 	 */
@@ -465,9 +465,9 @@ public class Utils {
 	}
 	
 	/**
-	 * @param date ¸ø¶¨ÈÕÆÚ
-	 * @param interval ¼ä¸ôÌìÊı£¬Ê¾Àı£º5£º5ÌìÒÔºó;-6:6ÌìÒÔÇ°
-	 * @return ¼ä¸ôºóÈÕÆÚ
+	 * @param date ç»™å®šæ—¥æœŸ
+	 * @param interval é—´éš”å¤©æ•°ï¼Œç¤ºä¾‹ï¼š5ï¼š5å¤©ä»¥å;-6:6å¤©ä»¥å‰
+	 * @return é—´éš”åæ—¥æœŸ
 	 */
 	public static Date getDateAfterDay(Date date,int interval){
 		String afterYear = "";
@@ -476,9 +476,9 @@ public class Utils {
 		return calender.getTime();
 	}
 	/**
-	 * @param date ¸ø¶¨ÈÕÆÚ
-	 * @param interval ¼ä¸ôÔÂ·İ£¬Ê¾Àı£º5£º5¸öÔÂÒÔºó;-6:6¸öÔÂÒÔÇ°
-	 * @return ¼ä¸ôºóÈÕÆÚ
+	 * @param date ç»™å®šæ—¥æœŸ
+	 * @param interval é—´éš”æœˆä»½ï¼Œç¤ºä¾‹ï¼š5ï¼š5ä¸ªæœˆä»¥å;-6:6ä¸ªæœˆä»¥å‰
+	 * @return é—´éš”åæ—¥æœŸ
 	 */
 	public static Date getDateAfterMonth(Date date,int interval){
 		String afterYear = "";
@@ -488,9 +488,9 @@ public class Utils {
 		return calendar.getTime();
 	}
 	/**
-	 * @param date ¸ø¶¨ÈÕÆÚ
-	 * @param interval ¼ä¸ôÄê·İ£¬Ê¾Àı£º5£º5ÄêÒÔºó;-6:6ÄêÒÔÇ°
-	 * @return ¼ä¸ôºóÈÕÆÚ
+	 * @param date ç»™å®šæ—¥æœŸ
+	 * @param interval é—´éš”å¹´ä»½ï¼Œç¤ºä¾‹ï¼š5ï¼š5å¹´ä»¥å;-6:6å¹´ä»¥å‰
+	 * @return é—´éš”åæ—¥æœŸ
 	 */
 	public static Date getDateAfterYear(Date date,int interval){
 		String afterYear = "";
@@ -500,9 +500,9 @@ public class Utils {
 	}
 	
 	/**
-	 * ¶ÔÏóÊôĞÔ¿½±´
-	 * @param source Êı¾İÔ´¶ÔÏó
-	 * @param target Ä¿±ê¶ÔÏó
+	 * å¯¹è±¡å±æ€§æ‹·è´
+	 * @param source æ•°æ®æºå¯¹è±¡
+	 * @param target ç›®æ ‡å¯¹è±¡
 	 * @author pujjr 2016-10-09
 	 */
 	public static void copyProperties(Object source, Object target){
@@ -522,7 +522,7 @@ public class Utils {
 	}
 	
 	/**
-	 * ¹ıÂËnull¶ÔÏó
+	 * è¿‡æ»¤nullå¯¹è±¡
 	 * @param obj
 	 * @return
 	 */
@@ -531,9 +531,9 @@ public class Utils {
 	}
 	
 	/**
-	 * ¶ÔÓ¦Êı¾İ±íÁĞÃû×ª¶ÔÏóÊôĞÔ
-	 * @param colName  ÊäÈë¸ñÊ½£º"my_col_name"
-	 * @return ·µ»Ø¸ñÊ½£º£ºmyColName
+	 * å¯¹åº”æ•°æ®è¡¨åˆ—åè½¬å¯¹è±¡å±æ€§
+	 * @param colName  è¾“å…¥æ ¼å¼ï¼š"my_col_name"
+	 * @return è¿”å›æ ¼å¼ï¼šï¼šmyColName
 	 */
 	public static String col2Field(String colName){
 		StringBuffer fieldNameBuf = new StringBuffer();
@@ -551,12 +551,12 @@ public class Utils {
 	}
 	
 	/**
-	 * ¶ÔÏóÊôĞÔ×ª»»Îª¶ÔÓ¦Êı¾İ±íÁĞÃû 
-	 * @param propName  ÊäÈë¸ñÊ½£º"myUserName"
-	 * @return ·µ»Ø¸ñÊ½£º£ºMY_USER_NAME
+	 * å¯¹è±¡å±æ€§è½¬æ¢ä¸ºå¯¹åº”æ•°æ®è¡¨åˆ—å 
+	 * @param propName  è¾“å…¥æ ¼å¼ï¼š"myUserName"
+	 * @return è¿”å›æ ¼å¼ï¼šï¼šMY_USER_NAME
 	 */
 	public static String field2Col(String propName){
-//		System.out.println("¶ÔÏóÊôĞÔ×ª»»Ç°£º"+propName);
+//		System.out.println("å¯¹è±¡å±æ€§è½¬æ¢å‰ï¼š"+propName);
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < propName.length(); i++) {
 			char c = propName.charAt(i);
@@ -570,7 +570,7 @@ public class Utils {
 	}
 	
 	/**
-	 * »ñÈ¡ÈÕÆÚÌìÊı
+	 * è·å–æ—¥æœŸå¤©æ•°
 	 * **/
 	public static int getSpaceDay(Date beginDate,Date endDate)
 	{
@@ -578,14 +578,14 @@ public class Utils {
 		Date fEndDate = Utils.formateDate(endDate, "yyyyMMdd");
 		return (int) ((fEndDate.getTime()-fBeginDate.getTime())/(24*60*60*1000));
 	}
-	/**±È½ÏÊ±¼ä´óĞ¡**/
+	/**æ¯”è¾ƒæ—¶é—´å¤§å°**/
 	public static long compareDateTime(Date beginDate,Date endDate)
 	{
 		Long space = (endDate.getTime()-beginDate.getTime());
 		return Long.compare(space, 0);
 	}
 	/**
-	 * °´ÕÕÖ¸¶¨¸ñÊ½»ñÈ¡µ±Ç°ÈÕÆÚ
+	 * æŒ‰ç…§æŒ‡å®šæ ¼å¼è·å–å½“å‰æ—¥æœŸ
 	 * **/
 	public static String getCurrentTime(String format)
 	{
@@ -593,35 +593,35 @@ public class Utils {
 		{
 			format="yyyyMMddHHmmss";
 		}
-		SimpleDateFormat df = new SimpleDateFormat(format);//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat(format);//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return df.format(new Date());
 	}
 	/**
-	 * ¸ù¾İÈÕÆÚ»ñÈ¡Äê·İ
+	 * æ ¹æ®æ—¥æœŸè·å–å¹´ä»½
 	 * **/
 	public static String getYear(Date date)
 	{
-		SimpleDateFormat df = new SimpleDateFormat("yyyy");//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat("yyyy");//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return df.format(date);
 	}
 	/**
-	 * ¸ù¾İÈÕÆÚ»ñÈ¡ÔÂ·İ
+	 * æ ¹æ®æ—¥æœŸè·å–æœˆä»½
 	 * **/
 	public static String getMonth(Date date)
 	{
-		SimpleDateFormat df = new SimpleDateFormat("MM");//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat("MM");//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return df.format(date);
 	}
 	/**
-	 * ÈÕÆÚ×ª×Ö·û´®
+	 * æ—¥æœŸè½¬å­—ç¬¦ä¸²
 	 * **/
 	public static String getFormatDate(Date date,String format)
 	{
-		SimpleDateFormat df = new SimpleDateFormat(format);//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat(format);//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return df.format(date);
 	}
 	/**
-	 * ¸ù¾İÄê·İ»ñÈ¡µ±ÄêÌìÊı
+	 * æ ¹æ®å¹´ä»½è·å–å½“å¹´å¤©æ•°
 	 * **/
 	public static int getYearDays(String year)
 	{
@@ -635,17 +635,17 @@ public class Utils {
 		}
 	}
 	/**
-	 * 8ÈÕÆÚ×Ö·û´®×ªÈÕÆÚ¸ñÊ½
+	 * 8æ—¥æœŸå­—ç¬¦ä¸²è½¬æ—¥æœŸæ ¼å¼
 	 * @throws ParseException 
 	 * **/
 	public static Date str82date(String date) throws ParseException
 	{
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return df.parse(date);
 	}
 	public static Timestamp str2time(String time) throws ParseException
 	{
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");//ÉèÖÃÈÕÆÚ¸ñÊ½
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");//è®¾ç½®æ—¥æœŸæ ¼å¼
 		return new Timestamp((df.parse(time)).getTime());
 	}
 	public static String get16UUID()
@@ -686,7 +686,7 @@ public class Utils {
 	}
 	
 	/** 
-	 * Convert byte[] to hex string.ÕâÀïÎÒÃÇ¿ÉÒÔ½«byte×ª»»³Éint£¬È»ºóÀûÓÃInteger.toHexString(int)À´×ª»»³É16½øÖÆ×Ö·û´®¡£ 
+	 * Convert byte[] to hex string.è¿™é‡Œæˆ‘ä»¬å¯ä»¥å°†byteè½¬æ¢æˆintï¼Œç„¶ååˆ©ç”¨Integer.toHexString(int)æ¥è½¬æ¢æˆ16è¿›åˆ¶å­—ç¬¦ä¸²ã€‚ 
 	 * @param src byte[] data 
 	 * @return hex string 
 	 */     
@@ -733,8 +733,8 @@ public class Utils {
 	    return (byte) "0123456789ABCDEF".indexOf(c);  
 	}  
 	/**
-	 * ¿ËÂ¡List
-	 * @param src  Ô´List
+	 * å…‹éš†List
+	 * @param src  æºList
 	 * **/
 	public static List<Object> cloneList(List<Object> src)
 	{
@@ -743,7 +743,7 @@ public class Utils {
 		return dest;
 	}
 	/**
-	 * ½ğ¶îÔª×ª·Ö
+	 * é‡‘é¢å…ƒè½¬åˆ†
 	 * @param amount
 	 * @return
 	 */
@@ -753,7 +753,7 @@ public class Utils {
 		return nf.format(amount*100);
 	}
 	/**
-	 * HTMLÊ±¼ä×ª»»ÎªJAVAÊ±¼ä
+	 * HTMLæ—¶é—´è½¬æ¢ä¸ºJAVAæ—¶é—´
 	 * @param time
 	 * @param format
 	 * @return
@@ -761,8 +761,8 @@ public class Utils {
 	 */
 	public static Date htmlTime2Date(String time,String format) throws ParseException
 	{
-		String tmp = time.replace("Z", " UTC");//×¢ÒâÊÇ¿Õ¸ñ+UTC
-		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//×¢Òâ¸ñÊ½»¯µÄ±í´ïÊ½
+		String tmp = time.replace("Z", " UTC");//æ³¨æ„æ˜¯ç©ºæ ¼+UTC
+		SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");//æ³¨æ„æ ¼å¼åŒ–çš„è¡¨è¾¾å¼
 		tmp = Utils.getFormatDate(sd.parse(tmp), format);
 		return Utils.formateString2Date(tmp, format);
 	}

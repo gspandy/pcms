@@ -5,111 +5,121 @@ import java.util.Date;
 public class SmsHis {
     private String id;
 
-    private String appId;
+	private String appId;
 
-    private String type;
+	private String type;
 
-    private String mobile;
+	private String mobile;
 
-    private String content;
+	private String content;
 
-    private String createId;
+	private String createId;
 
-    private Date createTime;
+	private Date createTime;
 
-    private Date sendTime;
+	private Date sendTime;
 
-    private Date retTime;
+	private Date retTime;
 
-    private String sendStatus;
+	private String sendStatus;
 
-    private Integer resendCnt;
+	private Integer resendCnt;
 
-    public String getId() {
-        return id;
-    }
+	private String supplyName;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getAppId() {
-        return appId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
+	public String getAppId() {
+		return appId;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public String getMobile() {
-        return mobile;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
+	public String getMobile() {
+		return mobile;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getSendTime() {
-        return sendTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setSendTime(Date sendTime) {
-        this.sendTime = sendTime;
-    }
+	public Date getSendTime() {
+		return sendTime;
+	}
 
-    public Date getRetTime() {
-        return retTime;
-    }
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
 
-    public void setRetTime(Date retTime) {
-        this.retTime = retTime;
-    }
+	public Date getRetTime() {
+		return retTime;
+	}
 
-    public String getSendStatus() {
-        return sendStatus;
-    }
+	public void setRetTime(Date retTime) {
+		this.retTime = retTime;
+	}
 
-    public void setSendStatus(String sendStatus) {
-        this.sendStatus = sendStatus;
-    }
+	public String getSendStatus() {
+		return sendStatus;
+	}
 
-    public Integer getResendCnt() {
-        return resendCnt;
-    }
+	public void setSendStatus(String sendStatus) {
+		this.sendStatus = sendStatus;
+	}
 
-    public void setResendCnt(Integer resendCnt) {
-        this.resendCnt = resendCnt;
-    }
+	public Integer getResendCnt() {
+		return resendCnt;
+	}
+
+	public void setResendCnt(Integer resendCnt) {
+		this.resendCnt = resendCnt;
+	}
+
+	public String getSupplyName() {
+		return supplyName;
+	}
+
+	public void setSupplyName(String supplyName) {
+		this.supplyName = supplyName;
+	}
 }

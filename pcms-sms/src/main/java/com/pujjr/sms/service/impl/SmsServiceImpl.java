@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.message_api.service.IMessageCallbackService;
 import com.pujjr.sms.dao.SmsHisMapper;
 import com.pujjr.sms.dao.SmsTemplateMapper;
 import com.pujjr.sms.dao.SmsWaitSendMapper;
@@ -19,7 +20,7 @@ import com.pujjr.utils.Utils;
 
 @Service
 @Transactional
-public class SmsServiceImpl implements ISmsService {
+public class SmsServiceImpl implements ISmsService{
 
 	@Autowired
 	private SmsTemplateMapper smsTemplateDao;
@@ -180,13 +181,14 @@ public class SmsServiceImpl implements ISmsService {
 	}
 
 	@Override
-	public void saveSendedToSmsHis(SmsWaitSend record) {
+	public void saveSendedToSmsHis(SmsWaitSend record,String supplyName) {
 		// TODO Auto-generated method stub
 		SmsHis his = new SmsHis();
 		BeanUtils.copyProperties(record, his);
 		his.setSendTime(new Date());
 		his.setSendStatus("已发送");
 		his.setResendCnt(0);
+		his.setSupplyName(supplyName);
 		smsHisDao.insert(his);
 		smsWaitSendDao.deleteByPrimaryKey(record.getId());
 	}
@@ -232,5 +234,6 @@ public class SmsServiceImpl implements ISmsService {
 		waitSendPo.setCreateTime(new Date());
 		smsWaitSendDao.insert(waitSendPo);
 	}
+
 
 }

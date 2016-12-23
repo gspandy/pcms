@@ -11,5 +11,5 @@ import com.pujjr.sms.vo.SmsMessageVo;
 @Transactional
 public interface IPostLoanSmsService 
 {
-	public SmsMessageVo genPostLoanSms(String tplKey,String appId);
+	public SmsMessageVo genPostLoanSms(String tplKey,String appId) throws Exception;
 }

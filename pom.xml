@@ -241,7 +241,6 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
-		
 		<!-- spring核心包 -->
 			<!-- springframe start -->
 			<dependency>
@@ -408,20 +407,39 @@
 			    <artifactId>itext-asian</artifactId>
 			    <version>5.2.0</version>
 			</dependency>
-			
-			
+			<dependency>
+	    		<groupId>com.alibaba</groupId>
+	    		<artifactId>dubbo</artifactId>
+	    		<version>2.5.3</version>
+	    		<exclusions>
+	    			<exclusion>
+	    				<artifactId>spring</artifactId>
+	    				<groupId>org.springframework</groupId>
+	    			</exclusion>
+	    		</exclusions>
+			</dependency>
+			<dependency>
+  				<groupId>com.101tec</groupId>
+  				<artifactId>zkclient</artifactId>
+  				<version>0.3</version>
+  			</dependency>		
+  			<dependency>
+				<groupId>com.pujjr</groupId>
+  				<artifactId>message-api</artifactId>
+  				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
 	</dependencies>
 	<modules>
 		<module>pcms-jbpm</module>
 		<module>pcms-base</module>
 		<module>pcms-utils</module>
 		<module>pcms-web</module>
-    <module>pcms-carcredit</module>
-    <module>pcms-push</module>
-    <module>pcms-file</module>
-    <module>pcms-postloan</module>
-    <module>pcms-schedule</module>
-    <module>pcms-sms</module>
+	    <module>pcms-carcredit</module>
+	    <module>pcms-push</module>
+	    <module>pcms-file</module>
+	    <module>pcms-postloan</module>
+	    <module>pcms-schedule</module>
+	    <module>pcms-sms</module>
   </modules>
   
  <build>

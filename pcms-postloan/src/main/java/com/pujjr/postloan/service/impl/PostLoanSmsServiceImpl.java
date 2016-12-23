@@ -30,7 +30,7 @@ public class PostLoanSmsServiceImpl implements IPostLoanSmsService {
 	@Autowired
 	private IAccountingService accountingService;
 	@Override
-	public SmsMessageVo genPostLoanSms(String tplKey, String appId) {
+	public SmsMessageVo genPostLoanSms(String tplKey, String appId) throws Exception {
 		// TODO Auto-generated method stub
 		
 		//获取客户姓名
@@ -52,6 +52,10 @@ public class PostLoanSmsServiceImpl implements IPostLoanSmsService {
 		else
 		{
 			SmsTemplate smsTpl = smsService.getTemplateByTplKey(tplKey);
+			if(smsTpl == null)
+			{
+				throw new Exception("未定义模板");
+			}
 			tplContent = smsTpl.getTplContent();
 			tplContent=tplContent.replaceAll("#\\{custName\\}", custName);
 			tplContent=tplContent.replaceAll("#\\{overdueDay\\}", String.valueOf(overdueDay));
