@@ -17,7 +17,10 @@
 		if(bb.filecnt is null,0,bb.filecnt) as fileCnt
 	from
 	(
-		select e.ID,e.PARENT_ID,d.REQUIRED,concat(e.DIR_NAME,if(d.REQUIRED,'(必传)','')) as DIR_NAME
+		<![CDATA[
+		select e.ID,e.PARENT_ID,d.REQUIRED,concat(e.DIR_NAME,if(d.REQUIRED,'<span class="text-danger">(必传)</span>','')) as DIR_NAME
+		 ]]>
+		
 		
 		from T_DIRECTORY_TEMPLATE a 
 		

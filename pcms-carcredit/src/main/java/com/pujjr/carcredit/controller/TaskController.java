@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.codehaus.groovy.runtime.dgmimpl.arrays.ArrayGetAtMetaMethod;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ import com.pujjr.carcredit.bo.ProcessTaskUserBo;
 import com.pujjr.carcredit.constant.ApplyStatus;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.ApplyFinance;
+import com.pujjr.carcredit.domain.ApplyTenant;
 import com.pujjr.carcredit.domain.AutoAssigneeConfig;
 import com.pujjr.carcredit.domain.CallBackResult;
 import com.pujjr.carcredit.domain.CancelApplyInfo;
@@ -79,10 +81,16 @@ import com.pujjr.carcredit.vo.TaskCheckCommitVo;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
 import com.pujjr.carcredit.vo.TaskVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
+import com.pujjr.common.result.ResultInfo;
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.jbpm.service.IRunWorkflowService;
+import com.pujjr.pcci.api.bean.request.CreditRequestData;
+import com.pujjr.pcci.api.bean.vo.CreditRequestVO;
+import com.pujjr.pcci.api.service.CreditApi;
+import com.pujjr.pcci.api.type.IdentityType;
+import com.pujjr.pcci.api.type.QueryReasonType;
 import com.pujjr.utils.Utils;
 
 @RestController
@@ -113,6 +121,8 @@ public class TaskController extends BaseController
 	private IContractService contractService;
 	@Autowired
 	private RuntimeService runtimeService;
+	@Autowired
+	private CreditApi creditApi;
 	
 	@RequestMapping(value="/todolist",method=RequestMethod.GET)
 	public PageVo getToDoTaskList(QueryParamToDoTaskVo param,HttpServletRequest request)
@@ -609,6 +619,41 @@ public class TaskController extends BaseController
 	{
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		taskService.commitCounterSignApprove(vo, taskId, sysAccount.getAccountId());
+	}
+	
+	@RequestMapping(value="/getCreditReport/{appId}" ,method=RequestMethod.GET)
+	public CreditRequestVO getCreditReport(@PathVariable String appId) throws Exception
+	{
+		CreditRequestData creditRequestData = new CreditRequestData();
+		ApplyTenant tenant = applyService.getApplyTenant(appId);
+		creditRequestData.setName(tenant.getName());// 姓名
+		creditRequestData.setMobileNo(tenant.getMobile());// 手机号
+		creditRequestData.setIdNo(tenant.getIdNo());// 证件号
+		creditRequestData.setEntityAuthCode("LEA0313XX");// 授权码
+		creditRequestData.setBusinessId(appId);
+		// 授权时间yyyy-MM-dd
+		// 没从Excel里获取的 自动填写的值
+		// creditRequestData.setCreditId(BaseUtils.newUUID());// 请求唯一标识流水
+		creditRequestData.setIdType(IdentityType.ID_CARD.getCode());// 证件类型
+		creditRequestData.setReasonCode(QueryReasonType.LOAN_APPROVAL.getCode());// 查询原因
+		creditRequestData.setRequestUserId("test");// 征信查询发起人
+		creditRequestData.setEntityAuthDate(Utils.getFormatDate(new Date(), "yyyy-MM-dd"));
+		ResultInfo<CreditRequestVO> creditRequest = creditApi.creditQueryAndStore(creditRequestData);
+		if(creditRequest.isSuccess())
+		{
+			if(creditRequest.getData().getErrStatus().equals(CreditRequestVO.ERROR_STATUS_SUCCESS))
+			{
+				return creditRequest.getData();
+			}
+			else
+			{
+				return creditRequest.getData();
+			}
+		}
+		else
+		{
+			throw new Exception("查询征信失败");
+		}
 	}
 
 }

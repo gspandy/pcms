@@ -38,17 +38,21 @@ public class QueryServiceImpl implements IQueryService
 		for(int i = 0;i<list.size();i++)
 		{
 			HashMap<String,Object> item = list.get(i);
-			String procInstId = item.get("procInstId").toString();
-			if(procInstId !=null)
+			if(item.containsKey("procInstId"))
 			{
-				HashMap<String,Object> taskInfo = queryDao.selectTaskInfoByProcInstId(procInstId);
-				if(taskInfo!=null)
+				String procInstId = item.get("procInstId").toString();
+				if(procInstId !=null)
 				{
-					item.put("taskName", taskInfo.containsKey("taskName")?taskInfo.get("taskName").toString():"");
-					item.put("assignee", taskInfo.containsKey("assignee")?taskInfo.get("assignee").toString():"");
-					list.set(i, item);
+					HashMap<String,Object> taskInfo = queryDao.selectTaskInfoByProcInstId(procInstId);
+					if(taskInfo!=null)
+					{
+						item.put("taskName", taskInfo.containsKey("taskName")?taskInfo.get("taskName").toString():"");
+						item.put("assignee", taskInfo.containsKey("assignee")?taskInfo.get("assignee").toString():"");
+						list.set(i, item);
+					}
 				}
 			}
+			
 		}
 		return list;
 	}
