@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.Holiday;
 /**
  * 节假日管理
  * **/
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IHolidayService 
 {
 	//查询节假日信息列表

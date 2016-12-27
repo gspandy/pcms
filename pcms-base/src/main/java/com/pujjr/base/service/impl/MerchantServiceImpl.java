@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.MerchantMapper;
 import com.pujjr.base.domain.Merchant;
 import com.pujjr.base.service.IMerchantService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class MerchantServiceImpl implements IMerchantService {
 
 	@Autowired

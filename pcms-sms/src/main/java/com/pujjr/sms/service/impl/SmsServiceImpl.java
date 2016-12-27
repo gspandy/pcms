@@ -16,10 +16,11 @@ import com.pujjr.sms.domain.SmsHis;
 import com.pujjr.sms.domain.SmsTemplate;
 import com.pujjr.sms.domain.SmsWaitSend;
 import com.pujjr.sms.service.ISmsService;
+import com.pujjr.sms.vo.SmsHisQueryParamVo;
 import com.pujjr.utils.Utils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class SmsServiceImpl implements ISmsService{
 
 	@Autowired
@@ -48,9 +49,9 @@ public class SmsServiceImpl implements ISmsService{
 	}
 
 	@Override
-	public List<SmsHis> getSmsHisList() {
+	public List<SmsHis> getSmsHisList(SmsHisQueryParamVo queryParam) {
 		// TODO Auto-generated method stub
-		return smsHisDao.selectList();
+		return smsHisDao.selectList(queryParam);
 	}
 
 	@Override

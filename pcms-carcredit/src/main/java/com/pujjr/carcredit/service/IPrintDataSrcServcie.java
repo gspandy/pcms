@@ -2,6 +2,9 @@ package com.pujjr.carcredit.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.itextpdf.text.pdf.AcroFields;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.LeaseCarVo;
@@ -13,7 +16,8 @@ import com.pujjr.carcredit.vo.PMortgageContractAVo;
 import com.pujjr.carcredit.vo.PMortgageContractBVo;
 import com.pujjr.carcredit.vo.PMortgageListVo;
 import com.pujjr.carcredit.vo.PRepayRemindVo;
-
+@Service
+@Transactional(rollbackFor=Exception.class)
 public interface IPrintDataSrcServcie {
 	/**
 	 * 获取融资车辆信息列表

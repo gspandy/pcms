@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 放款服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface ILoanService 
 {
 	public void commitLoanTask(String taskId,String appId) throws Exception;

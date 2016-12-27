@@ -43,7 +43,7 @@ import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
 import com.pujjr.utils.SpringBeanUtils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class RunWorkflowServiceImpl implements IRunWorkflowService
 {
 	@Autowired

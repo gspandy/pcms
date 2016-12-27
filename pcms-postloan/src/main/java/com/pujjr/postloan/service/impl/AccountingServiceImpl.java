@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.service.IProductService;
 import com.pujjr.postloan.dao.ApplyAlterRepayDateMapper;
@@ -51,6 +52,7 @@ import com.pujjr.postloan.vo.RemissionFeeItemVo;
 import com.pujjr.postloan.vo.RepayingFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class AccountingServiceImpl implements IAccountingService {
 
 	@Autowired

@@ -17,7 +17,7 @@ import com.pujjr.assetsmanage.vo.AlterTenantVo;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IAlterCustInfoService 
 {
 	/**

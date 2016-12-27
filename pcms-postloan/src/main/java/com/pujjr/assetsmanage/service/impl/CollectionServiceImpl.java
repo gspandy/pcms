@@ -57,7 +57,7 @@ import com.pujjr.postloan.vo.ApproveResultVo;
 import com.pujjr.utils.Utils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class CollectionServiceImpl implements ICollectionService 
 {
 	@Autowired

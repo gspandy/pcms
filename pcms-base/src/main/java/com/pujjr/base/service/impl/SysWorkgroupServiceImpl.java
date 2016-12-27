@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.RuleMemberTaskCntMapper;
 import com.pujjr.base.dao.SysAccountMapper;
@@ -18,6 +19,7 @@ import com.pujjr.base.domain.SysWorkgroupAccountKey;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 	
 	@Autowired

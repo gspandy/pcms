@@ -12,7 +12,7 @@ import com.pujjr.base.domain.UnitInfo;
 import com.pujjr.base.service.IUnitInfoService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class UnitInfoServiceImpl implements IUnitInfoService {
 
 	@Autowired

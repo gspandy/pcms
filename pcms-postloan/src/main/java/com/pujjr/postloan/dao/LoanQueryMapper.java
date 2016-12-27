@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.pujjr.postloan.po.OfferInfoPo;
+import com.pujjr.postloan.vo.QueryParamLoanVo;
 
 /**
  * 贷款查询Dao处理
@@ -18,7 +19,7 @@ public interface LoanQueryMapper
 	 * 查询贷款客户列表
 	 * @return
 	 */
-	public List<HashMap<String,Object>> selectLoanCustList();
+	public List<HashMap<String,Object>> selectLoanCustList(@Param("queryParam")QueryParamLoanVo queryParam,@Param("authFilter")String authFilter);
 	/**
 	 * 查询贷款客户申请基本信息
 	 * @param appId

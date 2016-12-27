@@ -23,9 +23,10 @@ import com.pujjr.carcredit.vo.ApplySpouseVo;
 import com.pujjr.carcredit.vo.ApplyTenantVo;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.QueryParamApplyVo;
 
-//@Service
-//@Transactional(rollbackFor=Exception.class) 
+@Service
+@Transactional(rollbackFor=Exception.class) 
 public interface IApplyService {
 	public void tempSaveApply();
 
@@ -56,7 +57,7 @@ public interface IApplyService {
 	public ApplyVo getApplyDetail(String appId);
 
 	// 查询指定用户未提交的申请单信息
-	List<ApplyInfoPo> getApplyInfoList(String accountId, String status);
+	List<ApplyInfoPo> getApplyInfoList(String accountId, String status,QueryParamApplyVo queryParam);
 
 	// public List<Apply> selectByMap(HashMap condition,List<Apply> applyList);
 	public void commitApplyTask(ApplyVo applyVo, SysAccount sysAccount);

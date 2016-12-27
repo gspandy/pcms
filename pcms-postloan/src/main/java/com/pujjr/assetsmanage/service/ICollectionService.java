@@ -20,7 +20,7 @@ import com.pujjr.postloan.vo.ApproveResultVo;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface ICollectionService
 {
 	/**

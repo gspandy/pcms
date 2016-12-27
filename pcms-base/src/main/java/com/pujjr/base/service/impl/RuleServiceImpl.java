@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.RuleCollectionTask;
@@ -25,6 +26,7 @@ import com.pujjr.base.po.WorkgroupRulePo;
 import com.pujjr.base.service.IRuleService;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class RuleServiceImpl implements IRuleService {
 
 	@Autowired

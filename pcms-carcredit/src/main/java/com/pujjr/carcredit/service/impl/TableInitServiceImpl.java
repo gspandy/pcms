@@ -22,7 +22,7 @@ import com.pujjr.carcredit.domain.HisFieldComment;
 import com.pujjr.carcredit.service.ITableInitService;
 import com.pujjr.utils.Utils;
 
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 @Service
 public class TableInitServiceImpl implements ITableInitService {
 	@Autowired

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysAccountRoleMapper;
 import com.pujjr.base.dao.SysMenuMapper;
@@ -15,6 +16,7 @@ import com.pujjr.base.domain.SysRole;
 import com.pujjr.base.domain.SysRoleMenuKey;
 import com.pujjr.base.service.ISysRoleService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SysRoleServiceImpl implements ISysRoleService {
 
 	@Autowired

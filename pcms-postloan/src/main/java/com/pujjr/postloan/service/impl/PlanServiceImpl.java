@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mchange.v2.beans.BeansUtils;
@@ -33,6 +34,7 @@ import com.pujjr.utils.Utils;
  *
  */
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class PlanServiceImpl implements IPlanService {
 	@Autowired
 	private IInterestAlgorithm interestAlgorithmImpl;

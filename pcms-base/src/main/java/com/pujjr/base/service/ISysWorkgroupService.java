@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.domain.SysWorkgroup;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface ISysWorkgroupService 
 {
 	public List<SysWorkgroup> getSysWorkgroupList();

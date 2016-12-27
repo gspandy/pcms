@@ -60,12 +60,13 @@ import com.pujjr.carcredit.vo.ApplySpouseVo;
 import com.pujjr.carcredit.vo.ApplyTenantVo;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.QueryParamApplyVo;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.utils.Utils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class ApplyServiceImpl implements IApplyService { 
 	@Value("${pcms.sys_mode}")  
 	private String sysMode;//develop\debug
@@ -203,9 +204,9 @@ public class ApplyServiceImpl implements IApplyService {
 		
 	}
 
-	public List<ApplyInfoPo> getApplyInfoList(String accountId,String status) {
+	public List<ApplyInfoPo> getApplyInfoList(String accountId,String status,QueryParamApplyVo queryParam) {
 		// TODO Auto-generated method stub
-		return applyMapper.selectApplyInfoList(accountId, status);
+		return applyMapper.selectApplyInfoList(accountId, status,queryParam);
 	}
 
 	public void commitApplyTask(ApplyVo applyVo,SysAccount sysAccount) {

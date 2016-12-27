@@ -6,12 +6,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysAccountMapper;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.service.ISysAccountService;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SysAccountServiceImpl implements ISysAccountService 
 {
 	@Autowired

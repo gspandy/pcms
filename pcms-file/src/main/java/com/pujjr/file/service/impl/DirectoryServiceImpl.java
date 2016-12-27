@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.file.dao.DirectoryMapper;
 import com.pujjr.file.domain.Directory;
 import com.pujjr.file.service.IDirectoryService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class DirectoryServiceImpl implements IDirectoryService 
 {
 	@Autowired

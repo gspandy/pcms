@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.carcredit.dao.SignContractMapper;
 import com.pujjr.carcredit.dao.SignFinanceDetailMapper;
@@ -11,6 +12,7 @@ import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.service.ISignContractService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SignContractServiceImpl implements ISignContractService {
 
 	@Autowired

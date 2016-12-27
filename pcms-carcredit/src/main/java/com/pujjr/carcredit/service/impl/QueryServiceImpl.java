@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.BeanUtil;
@@ -20,6 +21,7 @@ import com.pujjr.carcredit.vo.HisOperVo;
 import com.pujjr.carcredit.vo.QueryParamApplyVo;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class QueryServiceImpl implements IQueryService 
 {	
 	private Logger logger = Logger.getLogger(QueryServiceImpl.class);

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.BankInfoMapper;
 import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.service.IBankService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class BankServiceImpl implements IBankService {
 
 	@Autowired

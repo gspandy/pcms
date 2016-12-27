@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.jbpm.domain.WorkflowDefine;
 import com.pujjr.jbpm.domain.WorkflowGateWayParam;
@@ -21,6 +22,7 @@ import com.pujjr.jbpm.vo.WorkflowNodeFormVo;
 import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
 import com.pujjr.jbpm.vo.WorkflowNodeVo;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IConfigWorkflowService 
 {
 	/**

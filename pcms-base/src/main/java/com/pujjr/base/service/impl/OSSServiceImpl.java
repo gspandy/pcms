@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
@@ -12,6 +13,7 @@ import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.pujjr.base.service.IOSSService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class OSSServiceImpl implements IOSSService 
 {
 	@Value("${endpoint}")

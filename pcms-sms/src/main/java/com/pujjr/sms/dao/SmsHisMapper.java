@@ -2,7 +2,10 @@ package com.pujjr.sms.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.pujjr.sms.domain.SmsHis;
+import com.pujjr.sms.vo.SmsHisQueryParamVo;
 
 public interface SmsHisMapper {
     int deleteByPrimaryKey(String id);
@@ -17,5 +20,5 @@ public interface SmsHisMapper {
 
 	int updateByPrimaryKey(SmsHis record);
     
-    List<SmsHis> selectList();
+    List<SmsHis> selectList(@Param("queryParam")SmsHisQueryParamVo queryParam);
 }

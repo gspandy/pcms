@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mysql.fabric.xmlrpc.base.Array;
 import com.pujjr.base.dao.ProductMapper;
@@ -23,6 +24,7 @@ import com.pujjr.base.domain.ProductType;
 import com.pujjr.base.service.IFormFieldService;
 import com.pujjr.base.service.IProductService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class ProductServiceImpl implements IProductService 
 {
 	@Autowired

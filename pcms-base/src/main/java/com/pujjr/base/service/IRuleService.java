@@ -3,6 +3,7 @@ package com.pujjr.base.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.SysBranch;
@@ -12,6 +13,7 @@ import com.pujjr.base.domain.RuleProduct;
 import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.po.WorkgroupRulePo;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IRuleService 
 {
 	public WorkgroupRulePo getWorkgroupRule(String workgroupId);

@@ -13,7 +13,7 @@ import com.pujjr.assetsmanage.vo.ApplyInsuranceVo;
 import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.po.InsuranceHisPo;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IInsuranceManageService 
 {
 	public void createInsuranceContinueTask(String appId,String operId);

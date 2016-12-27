@@ -47,7 +47,7 @@ import com.pujjr.postloan.vo.RemissionTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class RemissionServiceImpl implements IRemissionService 
 {
 

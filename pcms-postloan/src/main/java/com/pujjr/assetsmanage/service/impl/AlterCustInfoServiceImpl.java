@@ -32,7 +32,7 @@ import com.pujjr.carcredit.vo.ApplyLinkmanVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class AlterCustInfoServiceImpl implements IAlterCustInfoService {
 
 	@Autowired

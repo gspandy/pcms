@@ -31,6 +31,7 @@ import com.pujjr.carcredit.po.ApplyInfoPo;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.vo.ApplyUncommitVo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.QueryParamApplyVo;
 import com.pujjr.utils.Utils;
 /**
  * 
@@ -111,13 +112,13 @@ public class ApplyController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/apply/unCommit/list",method=RequestMethod.GET)
-	public PageVo getUnCommitApplyList(String curPage,String pageSize,HttpServletRequest request) 
+	public PageVo getUnCommitApplyList(QueryParamApplyVo param,HttpServletRequest request) 
 	{
 		System.out.println("ApplyController->unCommit");
-		PageHelper.startPage(Integer.parseInt(curPage), Integer.parseInt(pageSize),true);
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
 		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
 		List<Apply> applyList = new ArrayList<Apply>();
-		List<ApplyInfoPo> poList = applyService.getApplyInfoList(sysAccount.getAccountId(),ApplyStatus.UNCOMMIT);
+		List<ApplyInfoPo> poList = applyService.getApplyInfoList(sysAccount.getAccountId(),ApplyStatus.UNCOMMIT,param);
 		List<ApplyUncommitVo> voList = new ArrayList<ApplyUncommitVo>();
 		for(ApplyInfoPo po : poList)
 		{

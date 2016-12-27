@@ -8,8 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pujjr.sms.domain.SmsHis;
 import com.pujjr.sms.domain.SmsTemplate;
 import com.pujjr.sms.domain.SmsWaitSend;
+import com.pujjr.sms.vo.SmsHisQueryParamVo;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface ISmsService 
 {
 	/**
@@ -36,7 +37,7 @@ public interface ISmsService
 	 * 查询短信发送历史信息
 	 * @return
 	 */
-	public List<SmsHis> getSmsHisList(); 
+	public List<SmsHis> getSmsHisList(SmsHisQueryParamVo queryParam); 
 	/**
 	 * 查询短信待发送列表
 	 * @return

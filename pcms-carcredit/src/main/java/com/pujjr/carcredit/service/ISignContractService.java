@@ -3,10 +3,12 @@ package com.pujjr.carcredit.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface ISignContractService 
 {
 	public SignContract getSignContractByAppId(String appId);

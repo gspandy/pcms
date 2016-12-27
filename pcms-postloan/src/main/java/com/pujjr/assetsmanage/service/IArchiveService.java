@@ -21,7 +21,7 @@ import com.pujjr.assetsmanage.vo.ApplyArchiveBorrowVo;
 import com.pujjr.assetsmanage.vo.ApplyArchiveSupplyVo;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IArchiveService 
 {
 	/**

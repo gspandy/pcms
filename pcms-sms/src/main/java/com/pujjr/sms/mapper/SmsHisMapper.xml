@@ -175,6 +175,29 @@
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectList" resultMap="BaseResultMap">
-  	select * from t_sms_his order by CREATE_TIME desc
+  	select * from t_sms_his 
+  	where 1=1 
+  	<if test="queryParam.mobile!=null and queryParam.mobile!=''">
+  		and mobile like  CONCAT('%',CONCAT(#{queryParam.mobile},'%'))
+  	</if>
+  	<if test="queryParam.sendStartDate!=null and queryParam.sendStartDate!=''">
+  		<![CDATA[
+				and date_format(SEND_TIME,'%Y-%m-%d') >= #{queryParam.sendStartDate}
+			]]>
+  	</if>
+  	<if test="queryParam.sendEndDate!=null and queryParam.sendEndDate!=''">
+  		<![CDATA[
+				and date_format(SEND_TIME,'%Y-%m-%d') <= #{queryParam.sendEndDate}
+			]]>
+  	</if>
+  	<if test="queryParam.sendResult!=null and queryParam.sendResult!=''">
+  		<if test="queryParam.sendResult == '发送失败'">
+  			and (SEND_STATUS != '已发送' and SEND_STATUS!='发送成功')
+  		</if>
+  		<if test="queryParam.sendResult !='发送失败'">
+  			and SEND_STATUS = #{queryParam.sendResult}
+  		</if>
+  	</if>
+  	order by CREATE_TIME desc
   </select>
 </mapper>

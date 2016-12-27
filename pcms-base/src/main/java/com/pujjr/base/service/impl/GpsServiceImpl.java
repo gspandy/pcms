@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.GpsLvlMapper;
 import com.pujjr.base.dao.GpsRuleMapper;
@@ -15,6 +16,7 @@ import com.pujjr.base.domain.GpsRule;
 import com.pujjr.base.domain.GpsSupplier;
 import com.pujjr.base.service.IGpsService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class GpsServiceImpl implements IGpsService {
 	
 	@Autowired

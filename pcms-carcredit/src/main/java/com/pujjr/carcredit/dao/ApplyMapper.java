@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.po.ApplyInfoPo;
 import com.pujjr.carcredit.vo.ApplyVo;
+import com.pujjr.carcredit.vo.QueryParamApplyVo;
 
 public interface ApplyMapper {
 	int deleteByPrimaryKey(String id);
@@ -30,5 +31,5 @@ public interface ApplyMapper {
 
 	ApplyVo selectApplyByMap(String id);
 	
-	List<ApplyInfoPo> selectApplyInfoList(@Param("accountId")String accountId,@Param("status")String status);
+	List<ApplyInfoPo> selectApplyInfoList(@Param("accountId")String accountId,@Param("status")String status,@Param("queryParam")QueryParamApplyVo queryParam);
 }

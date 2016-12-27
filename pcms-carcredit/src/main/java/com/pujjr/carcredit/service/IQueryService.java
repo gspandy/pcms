@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.domain.HisOper;
@@ -11,6 +12,7 @@ import com.pujjr.carcredit.vo.HisOperVo;
 import com.pujjr.carcredit.vo.QueryParamApplyVo;
 
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IQueryService 
 {
 	/**

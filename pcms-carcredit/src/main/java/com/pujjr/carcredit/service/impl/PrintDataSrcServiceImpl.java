@@ -63,7 +63,7 @@ import com.pujjr.utils.Utils;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PrintDataSrcServiceImpl implements IPrintDataSrcServcie {
 	private Logger logger = Logger.getLogger(PrintDataSrcServiceImpl.class);
 	@Autowired

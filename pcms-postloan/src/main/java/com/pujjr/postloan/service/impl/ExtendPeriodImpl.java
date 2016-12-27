@@ -73,7 +73,7 @@ import com.pujjr.utils.Utils;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class ExtendPeriodImpl implements IExtendPeriodService {
 	private Logger logger = Logger.getLogger(ExtendPeriodImpl.class);
 	@Autowired

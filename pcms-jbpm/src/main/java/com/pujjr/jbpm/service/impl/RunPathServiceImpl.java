@@ -15,7 +15,7 @@ import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class RunPathServiceImpl implements IRunPathService 
 {
 	@Autowired

@@ -60,7 +60,7 @@ import com.pujjr.carcredit.vo.LeaseCarVo;
  * @author tom 核准函测试（动态生成pdf）
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PrintCheckLetterImpl implements IPrintCheckLetter {
 	public static String classPath = PrintServiceImpl.class.getClassLoader().getResource("").toString();
 	public static final String DEST = "8-核准函.pdf";

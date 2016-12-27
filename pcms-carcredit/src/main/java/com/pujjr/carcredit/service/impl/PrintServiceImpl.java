@@ -44,7 +44,7 @@ import com.pujjr.file.service.IFileService;
 import com.pujjr.utils.Utils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PrintServiceImpl implements IPrintService {
 	
 	private Logger logger = Logger.getLogger(PrintServiceImpl.class);

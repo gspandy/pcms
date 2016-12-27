@@ -16,7 +16,7 @@ import com.pujjr.postloan.vo.RepayFeeItemVo;
  * 退款处理服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IRefundService 
 {
 	/**

@@ -35,7 +35,7 @@ import com.pujjr.postloan.vo.PublicRepayTaskVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PublicRepayServiceImpl implements IPublicRepayService {
 
 	@Autowired

@@ -11,7 +11,7 @@ import com.pujjr.assetsmanage.domain.TelIncomeLog;
 import com.pujjr.assetsmanage.domain.TelInterview;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface ITelInterviewService 
 {
 	/**

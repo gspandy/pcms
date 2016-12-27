@@ -56,7 +56,7 @@ import com.pujjr.sms.service.ISmsService;
 import com.pujjr.utils.Utils;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class ChargeServiceImpl implements IChargeService {
 
 	@Autowired

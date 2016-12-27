@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.file.dao.DirectoryMapper;
 import com.pujjr.file.dao.DirectoryTemplateCategoryMapper;
@@ -23,6 +24,7 @@ import com.pujjr.file.service.ITemplateService;
 import com.pujjr.file.vo.TemplateCategoryVo;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class TemplateServiceImpl implements ITemplateService {
 
 	@Autowired

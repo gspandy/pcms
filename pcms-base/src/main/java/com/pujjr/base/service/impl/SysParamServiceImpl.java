@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysParamMapper;
 import com.pujjr.base.domain.SysParam;
 import com.pujjr.base.service.ISysParamService;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SysParamServiceImpl implements ISysParamService {
 
 	@Autowired

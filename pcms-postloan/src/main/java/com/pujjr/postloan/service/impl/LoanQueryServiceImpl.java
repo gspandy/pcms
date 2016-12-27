@@ -10,6 +10,7 @@ import com.pujjr.postloan.dao.LoanQueryMapper;
 import com.pujjr.postloan.dao.WaitingChargeNewMapper;
 import com.pujjr.postloan.domain.WaitingChargeNew;
 import com.pujjr.postloan.service.ILoanQueryService;
+import com.pujjr.postloan.vo.QueryParamLoanVo;
 
 @Service
 public class LoanQueryServiceImpl implements ILoanQueryService {
@@ -19,9 +20,9 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 	@Autowired
 	private WaitingChargeNewMapper waitingChargeNewDao;
 	@Override
-	public List<HashMap<String, Object>> getLoanCustList() {
+	public List<HashMap<String, Object>> getLoanCustList(QueryParamLoanVo queryParam,String queryAcctId) {
 		// TODO Auto-generated method stub
-		return loanQueryDao.selectLoanCustList();
+		return loanQueryDao.selectLoanCustList(queryParam,"");
 	}
 	@Override
 	public HashMap<String,Object> getLoanCustApplyInfo(String appId) {

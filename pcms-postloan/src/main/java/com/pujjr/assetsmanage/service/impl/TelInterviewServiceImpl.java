@@ -25,7 +25,7 @@ import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class TelInterviewServiceImpl implements ITelInterviewService {
 
 	@Autowired

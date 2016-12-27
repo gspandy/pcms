@@ -25,6 +25,10 @@
  <dubbo:service interface="com.pujjr.message_api.service.IMessageCallbackService" ref="messageCallbackService" />
  
  <!-- 征信测试配置 -->
+   <!-- 
  <dubbo:registry id="credit_registry" address="zookeeper://172.18.13.112:2181" />
+  -->
+  <dubbo:registry id="credit_registry" address="zookeeper://172.18.10.76:2181" />
  <dubbo:reference interface="com.pujjr.pcci.api.service.CreditApi" id="creditService" check="false"  registry="credit_registry" timeout="60000" retries="0" group="pcci"/>
+	
 </beans>

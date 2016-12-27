@@ -48,7 +48,7 @@ import com.pujjr.jbpm.vo.WorkflowNodeParamVo;
 import com.pujjr.jbpm.vo.WorkflowNodeVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class ConfigWorkflowServiceImpl implements IConfigWorkflowService {
 
 	@Autowired

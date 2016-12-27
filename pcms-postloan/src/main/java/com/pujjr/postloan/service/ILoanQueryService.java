@@ -5,16 +5,19 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.vo.QueryParamLoanVo;
 
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface ILoanQueryService 
 {
 	/**
 	 * 查询贷款客户列表
 	 */
-	public List<HashMap<String,Object>> getLoanCustList();
+	public List<HashMap<String,Object>> getLoanCustList(QueryParamLoanVo queryParam,String queryAcctId);
 	/**
 	 * 查询贷款客户申请信息
 	 * @param appId

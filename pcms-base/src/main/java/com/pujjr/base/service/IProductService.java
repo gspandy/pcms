@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.FormField;
 import com.pujjr.base.domain.Product;
@@ -12,6 +13,7 @@ import com.pujjr.base.domain.ProductRule;
 import com.pujjr.base.domain.ProductSettle;
 import com.pujjr.base.domain.ProductType;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IProductService 
 {
 	public List<ProductType> getProductTypeList();

@@ -17,7 +17,7 @@ import com.pujjr.postloan.vo.ApproveResultVo;
  * 变更还款日处理服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IAlterRepayDateService 
 {
 	/**

@@ -3,12 +3,14 @@ package com.pujjr.file.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.file.domain.Directory;
 import com.pujjr.file.domain.DirectoryCategory;
 import com.pujjr.file.domain.DirectoryTemplate;
 import com.pujjr.file.vo.TemplateCategoryVo;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface ITemplateService 
 {
 	List<DirectoryTemplate> getTemplateList(boolean enabled);

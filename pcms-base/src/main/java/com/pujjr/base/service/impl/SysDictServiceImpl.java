@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.dao.SysDictDataMapper;
 import com.pujjr.base.dao.SysDictTypeMapper;
@@ -12,6 +13,7 @@ import com.pujjr.base.domain.SysDictType;
 import com.pujjr.base.service.ISysDictService;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class SysDictServiceImpl implements ISysDictService {
 
 	@Autowired

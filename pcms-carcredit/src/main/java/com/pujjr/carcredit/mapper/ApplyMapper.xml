@@ -317,5 +317,11 @@
   	<if test="status !=null and status!=''">
   		and a.STATUS =#{status}
   	</if>
+  	<if test="queryParam.appId!=null and queryParam.appId!=''">
+			and a.APP_ID like CONCAT('%',CONCAT(#{queryParam.appId},'%'))
+		</if>
+		<if test="queryParam.name!=null and queryParam.name!=''">
+			and b.NAME like CONCAT('%',CONCAT(#{queryParam.name},'%'))
+		</if>
   </select>
 </mapper>

@@ -46,7 +46,7 @@ import com.pujjr.postloan.vo.OtherFeeDetailVo;
 import com.pujjr.postloan.vo.OtherFeeTaskVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class OtherFeeServiceImpl implements IOtherFeeService 
 {
 	@Autowired

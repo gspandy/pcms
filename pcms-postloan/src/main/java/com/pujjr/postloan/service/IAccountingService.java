@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
@@ -16,6 +17,7 @@ import com.pujjr.postloan.vo.RepayingFeeItemVo;
  * 账务核心服务
  * **/
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IAccountingService 
 {
 	/**

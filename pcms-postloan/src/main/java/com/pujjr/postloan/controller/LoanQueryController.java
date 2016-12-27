@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.QueryParamPageVo;
@@ -34,11 +35,12 @@ import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.ILoanQueryService;
 import com.pujjr.postloan.service.IPublicRepayService;
+import com.pujjr.postloan.vo.QueryParamLoanVo;
 import com.pujjr.postloan.vo.RepayFeeItemVo;
 
 @RestController
 @RequestMapping(value="/loanquery")
-public class LoanQueryController 
+public class LoanQueryController extends BaseController
 {
 	@Autowired
 	private ILoanQueryService loanQueryService;
@@ -56,11 +58,11 @@ public class LoanQueryController
 	private ITaskService taskService;
 	
 	@RequestMapping(value="/getLoanCustList",method=RequestMethod.GET)
-	public PageVo getLoanCustList(QueryParamPageVo param,HttpServletRequest request)
+	public PageVo getLoanCustList(QueryParamLoanVo queryParam,HttpServletRequest request)
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
-		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
-		List<HashMap<String,Object>> list = loanQueryService.getLoanCustList();
+		PageHelper.startPage(Integer.parseInt(queryParam.getCurPage()), Integer.parseInt(queryParam.getPageSize()),true);
+		List<HashMap<String,Object>> list = loanQueryService.getLoanCustList(queryParam,account.getAccountId());
 		PageVo page=new PageVo();
 		page.setTotalItem(((Page)list).getTotal());
 		page.setData(list);

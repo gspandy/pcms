@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.postloan.service.ILoanService;
 
 @RestController
-public class LoanController 
+public class LoanController extends BaseController
 {
 	@Autowired
 	private ILoanService loanService;

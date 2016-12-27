@@ -16,7 +16,7 @@ import com.pujjr.postloan.vo.RepayFeeItemVo;
  * 减免处理服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IRemissionService 
 {/**
 	 * 功能：查询指定客户应还项

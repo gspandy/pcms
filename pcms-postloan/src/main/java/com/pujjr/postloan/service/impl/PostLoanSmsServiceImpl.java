@@ -18,7 +18,7 @@ import com.pujjr.sms.service.ISmsService;
 import com.pujjr.sms.vo.SmsMessageVo;
 import com.pujjr.utils.Utils;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class PostLoanSmsServiceImpl implements IPostLoanSmsService {
 
 	@Autowired

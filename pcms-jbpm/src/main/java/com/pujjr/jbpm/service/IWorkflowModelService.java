@@ -5,11 +5,13 @@ import java.util.HashMap;
 
 import org.apache.batik.transcoder.TranscoderException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.pujjr.jbpm.domain.ActGeBytearray;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IWorkflowModelService 
 {
 	/**

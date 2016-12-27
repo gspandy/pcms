@@ -35,7 +35,7 @@ import com.pujjr.carcredit.vo.SignContractVo;
 import com.pujjr.carcredit.vo.TaskLoanApproveVo;
 import com.pujjr.carcredit.vo.ToDoTaskVo;
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface ITaskService 
 {
 	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param);

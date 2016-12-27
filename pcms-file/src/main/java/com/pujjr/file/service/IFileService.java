@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.pujjr.file.domain.DirectoryFile;
 import com.pujjr.file.po.CategoryDirectoryPo;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public interface IFileService 
 {
 	List<CategoryDirectoryPo> getTemplateCategoryDirectoryList(String templateId,String categoryKey,String businessId);

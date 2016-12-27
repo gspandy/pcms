@@ -17,7 +17,7 @@ import com.pujjr.postloan.vo.RemissionFeeItemVo;
  * 展期处理服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IExtendPeriodService 
 {
 	/**

@@ -31,7 +31,7 @@ import com.pujjr.jbpm.domain.ActGeBytearray;
 import com.pujjr.jbpm.service.IWorkflowModelService;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class WorkflowModelServiceImpl implements ModelDataJsonConstants,IWorkflowModelService
 {
 	@Autowired

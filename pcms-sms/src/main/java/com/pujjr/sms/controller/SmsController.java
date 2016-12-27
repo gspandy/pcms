@@ -22,6 +22,7 @@ import com.pujjr.base.vo.QueryParamPageVo;
 import com.pujjr.sms.domain.SmsHis;
 import com.pujjr.sms.domain.SmsTemplate;
 import com.pujjr.sms.service.ISmsService;
+import com.pujjr.sms.vo.SmsHisQueryParamVo;
 import com.pujjr.sms.vo.SmsMessageVo;
 import com.pujjr.utils.Utils;
 
@@ -58,10 +59,10 @@ public class SmsController extends BaseController
 	}
 	
 	@RequestMapping(value="/history",method=RequestMethod.GET)
-	public PageVo getSmsHistoryList(QueryParamPageVo param)
+	public PageVo getSmsHistoryList(SmsHisQueryParamVo queryParam)
 	{
-		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
-		List<SmsHis> list = smsService.getSmsHisList();
+		PageHelper.startPage(Integer.parseInt(queryParam.getCurPage()), Integer.parseInt(queryParam.getPageSize()),true);
+		List<SmsHis> list = smsService.getSmsHisList(queryParam);
 		PageVo page=new PageVo();
 		page.setTotalItem(((Page)list).getTotal());
 		page.setData(list);

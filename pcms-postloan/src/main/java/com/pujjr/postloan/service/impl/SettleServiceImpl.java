@@ -66,7 +66,7 @@ import com.pujjr.utils.Utils;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class SettleServiceImpl implements ISettleService{
 	@Autowired
 	private IAccountingService accountingServiceImpl;

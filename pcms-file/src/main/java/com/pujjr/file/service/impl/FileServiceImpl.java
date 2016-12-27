@@ -14,6 +14,7 @@ import org.apache.poi.poifs.crypt.dsig.facets.OOXMLSignatureFacet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.ClientException;
@@ -29,6 +30,7 @@ import com.pujjr.file.service.IFileService;
 import com.pujjr.utils.ImageUtil;
 import com.pujjr.utils.Utils;
 @Service
+@Transactional(rollbackFor=Exception.class)
 public class FileServiceImpl implements IFileService 
 {
 	@Autowired

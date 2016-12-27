@@ -18,9 +18,47 @@
   		from T_APPLY a 
   		left join T_APPLY_TENANT b on a.APP_ID  = b.APP_ID
   		left join T_GENERAL_LEDGER c on a.APP_ID = c.APP_ID
+  		left join T_SIGN_CONTRACT sign on a.APP_ID = sign.APP_ID
   		left join SYS_DICT_DATA d1 on c.REPAY_STATUS = d1.DICT_DATA_CODE
   		left join SYS_DICT_DATA d2 on c.PROCESS_STATUS = d2.DICT_DATA_CODE
   		where 1=1 and a.STATUS = 'sqdzt13'
+  		<if test="queryParam.appId!=null and queryParam.appId!=''">
+			and a.APP_ID like CONCAT('%',CONCAT(#{queryParam.appId},'%'))
+		</if>
+		<if test="queryParam.name!=null and queryParam.name!=''">
+			and b.NAME like CONCAT('%',CONCAT(#{queryParam.name},'%'))
+		</if>
+		<if test="queryParam.productCode!=null and queryParam.productCode!=''">
+			and a.PRODUCT_CODE = #{queryParam.productCode}
+		</if>
+		<if test="queryParam.idNo!=null and queryParam.idNo!=''">
+			and b.ID_NO like CONCAT('%',CONCAT(#{queryParam.idNo},'%'))
+		</if>
+		<if test="queryParam.mobile!=null and queryParam.mobile!=''">
+			and b.MOBILE like CONCAT('%',CONCAT(#{queryParam.mobile},'%'))
+		</if>
+		<if test="queryParam.contractNo!=null and queryParam.contractNo!=''">
+			and sign.CONTRACT_NO like CONCAT('%',CONCAT(#{queryParam.contractNo},'%'))
+		</if>
+		<if test="queryParam.sysBranchCode!=null and queryParam.sysBranchCode!=''">
+			and a.CREATE_BRANCH_CODE = #{queryParam.sysBranchCode}
+		</if>
+		<if test="queryParam.loanStartDate!=null">
+			<![CDATA[
+				and date_format(a.CREATE_TIME,'%Y-%m-%d') >= #{queryParam.loanStartDate}
+			]]>
+		</if>
+		<if test="queryParam.loanEndDate!=null">
+			<![CDATA[
+				and date_format(a.CREATE_TIME,'%Y-%m-%d') <= #{queryParam.loanEndDate}
+			]]>
+		</if>
+		<if test="queryParam.repayStatus!=null and queryParam.repayStatus!=''">
+			and c.REPAY_STATUS = #{queryParam.repayStatus}
+		</if>
+		<if test="queryParam.overdueDay!=null and queryParam.overdueDay!=''">
+			and c.ADDUP_OVERDUE_DAY = #{queryParam.overdueDay}
+		</if>
   	</select>
   	
   	<select id="selectLoanCustApplyInfo" resultType="HashMap">

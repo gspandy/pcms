@@ -20,7 +20,7 @@
 		left join T_PRODUCT product on apply.PRODUCT_CODE = product.PRODUCT_CODE
 		left join SYS_BRANCH branch on apply.CREATE_BRANCH_CODE = branch.BRANCH_CODE
 		left join T_SIGN_CONTRACT sign on apply.APP_ID = sign.APP_ID
-
+		left join T_GENERAL_LEDGER ledger on apply.APP_ID = ledger.APP_ID
 		left join SYS_DICT_DATA dict on apply.status = dict.DICT_DATA_CODE
 		where 1=1 
 		<if test="param.appId!=null and param.appId!=''">
@@ -46,22 +46,32 @@
 		</if>
 		<if test="param.applyStartDate!=null">
 			<![CDATA[
-				and date_format(apply.CREATE_TIME,'%Y-%m-%d') <= #{param.applyStartDate}
+				and date_format(apply.CREATE_TIME,'%Y-%m-%d') >= #{param.applyStartDate}
 			]]>
 		</if>
 		<if test="param.applyEndDate!=null">
 			<![CDATA[
-				and date_format(apply.CREATE_TIME,'%Y-%m-%d') >= #{param.applyEndDate}
+				and date_format(apply.CREATE_TIME,'%Y-%m-%d') <= #{param.applyEndDate}
 			]]>
 		</if>
 		<if test="param.approveStartDate!=null">
 			<![CDATA[
-				and  date_format(apply.APPROVE_DATE,'%Y-%m-%d')  <= #{param.approveStartDate}
+				and  date_format(apply.APPROVE_DATE,'%Y-%m-%d')  >= #{param.approveStartDate}
 			]]>
 		</if>
 		<if test="param.approveEndDate!=null">
 			<![CDATA[
-				and date_format(apply.APPROVE_DATE,'%Y-%m-%d') >= #{param.approveEndDate}
+				and date_format(apply.APPROVE_DATE,'%Y-%m-%d') <= #{param.approveEndDate}
+			]]>
+		</if>
+		<if test="param.loanStartDate!=null">
+			<![CDATA[
+				and  date_format(ledger.LOAN_DATE,'%Y-%m-%d')  >= #{param.loanStartDate}
+			]]>
+		</if>
+		<if test="param.loanEndDate!=null">
+			<![CDATA[
+				and date_format(ledger.LOAN_DATE,'%Y-%m-%d') <= #{param.loanEndDate}
 			]]>
 		</if>
 		<if test="param.applyStatus!=null and param.applyStatus!=''">

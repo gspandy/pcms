@@ -15,7 +15,7 @@ import com.pujjr.utils.Utils;
  * 扣款服务
  * **/
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IChargeService 
 {
 	/**

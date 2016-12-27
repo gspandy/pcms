@@ -14,7 +14,7 @@ import com.pujjr.postloan.vo.OtherFeeTaskVo;
  *
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public interface IOtherFeeService 
 {
 	/**
