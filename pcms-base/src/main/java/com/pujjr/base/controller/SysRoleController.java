@@ -68,10 +68,4 @@ public class SysRoleController extends BaseController
 	{
 		return sysRoleService.getAccountRoleList(accountId);
 	}
-	@RequestMapping(value="/{accountId}/saveAccountRoleList",method=RequestMethod.POST)
-	public void saveAccountRoleList(@PathVariable String accountId,@RequestBody List<SysRole> roles)
-	{
-		sysRoleService.saveAccountRoleList(accountId, roles);
-	}
-	
 }

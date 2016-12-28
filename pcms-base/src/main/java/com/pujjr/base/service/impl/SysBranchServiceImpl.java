@@ -1,5 +1,6 @@
 package com.pujjr.base.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -123,6 +124,32 @@ public class SysBranchServiceImpl implements ISysBranchService {
 	public SysBranchDealer getDealerByBranchId(String id) {
 		// TODO Auto-generated method stub
 		return sysBranchDealerDao.selectByBranchId(id);
+	}
+
+	@Override
+	public List<SysBranch> getDealerList() {
+		// TODO Auto-generated method stub
+		return sysBranchDao.selectListByBranchType("JGLX02");
+	}
+
+	@Override
+	public List<SysBranch> getChildBranchList(String branchId,String branchCode, boolean includeSelf) {
+		// TODO Auto-generated method stub
+		List<SysBranch> list = new ArrayList<SysBranch>();
+		SysBranch parentBranch = sysBranchDao.selectSysBranch(branchId, branchCode);
+		if(includeSelf)
+		{
+			list.add(parentBranch);
+		}
+		List<SysBranch> childBranchs = sysBranchDao.selectListByParentId(parentBranch.getId());
+		if(childBranchs.size()>0)
+		{
+			for(SysBranch childBranch : childBranchs)
+			{
+				list.addAll(getChildBranchList(childBranch.getId(),childBranch.getBranchCode(),true));
+			}
+		}
+		return list;
 	}
 
 }

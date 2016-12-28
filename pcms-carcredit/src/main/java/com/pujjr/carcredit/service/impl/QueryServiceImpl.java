@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.github.pagehelper.PageHelper;
+import com.pujjr.base.service.ISysAccountService;
+import com.pujjr.base.vo.QueryAuthVo;
 import com.pujjr.carcredit.dao.FraudInnerResultMapper;
 import com.pujjr.carcredit.dao.HisOperMapper;
 import com.pujjr.carcredit.dao.QueryMapper;
@@ -32,10 +36,15 @@ public class QueryServiceImpl implements IQueryService
 	private HisOperMapper hisOperMapper;
 	@Autowired
 	private FraudInnerResultMapper fraudInnerResultDao;
+	@Autowired
+	private ISysAccountService sysAccountService;
 	
 	@Override
 	public List<HashMap<String, Object>> queryApplyList(QueryParamApplyVo param) {
 		// TODO Auto-generated method stub
+		QueryAuthVo authVo = sysAccountService.getAccountQueryAuth(param.getQueryAccountId());
+		param.setQueryAuth(authVo);
+		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
 		List<HashMap<String,Object>> list =  queryDao.selectApplyList(param);
 		for(int i = 0;i<list.size();i++)
 		{

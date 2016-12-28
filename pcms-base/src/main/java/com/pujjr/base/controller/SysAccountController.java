@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pujjr.base.domain.SysAccount;
+import com.pujjr.base.domain.SysAccountQueryAuthKey;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.service.ISysAccountService;
+import com.pujjr.base.vo.AccountAuthVo;
 import com.pujjr.base.vo.PageVo;
 
 @RestController
@@ -66,5 +68,22 @@ public class SysAccountController  extends BaseController
 	public List<HashMap<String,Object>> getSysAccountAuthMenuList(@PathVariable String accountId)
 	{
 		return sysAccountService.getAccountAuthMenu(accountId);
+	}
+	
+	@RequestMapping(value="/saveAccountAuth/{accountId}",method=RequestMethod.POST)
+	public void saveAccountAuth(@PathVariable String accountId,@RequestBody AccountAuthVo authVo)
+	{
+		sysAccountService.saveAccountAuth(accountId, authVo);
+	}
+	
+	@RequestMapping(value="/getAccountQueryAuthList/{accountId}",method=RequestMethod.GET)
+	HashMap<String,Object> getAccountQueryAuthList(@PathVariable String accountId)
+	{
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		SysAccount account = sysAccountService.getSysAccountById(accountId);
+		List<SysAccountQueryAuthKey> list = sysAccountService.getAccountQueryAuthList(account.getAccountId());
+		map.put("queryAuthLvl", account.getReserver1());
+		map.put("queryAuthList", list);
+		return map;
 	}
 }

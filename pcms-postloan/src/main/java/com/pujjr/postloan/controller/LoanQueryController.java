@@ -61,8 +61,8 @@ public class LoanQueryController extends BaseController
 	public PageVo getLoanCustList(QueryParamLoanVo queryParam,HttpServletRequest request)
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
-		PageHelper.startPage(Integer.parseInt(queryParam.getCurPage()), Integer.parseInt(queryParam.getPageSize()),true);
-		List<HashMap<String,Object>> list = loanQueryService.getLoanCustList(queryParam,account.getAccountId());
+		queryParam.setQueryAccountId(account.getAccountId());
+		List<HashMap<String,Object>> list = loanQueryService.getLoanCustList(queryParam);
 		PageVo page=new PageVo();
 		page.setTotalItem(((Page)list).getTotal());
 		page.setData(list);

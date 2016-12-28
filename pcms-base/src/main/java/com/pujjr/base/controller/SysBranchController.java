@@ -106,5 +106,12 @@ public class SysBranchController  extends BaseController
 		return page;
 	}
 	
-	
+	@RequestMapping(value="/getDealerList",method=RequestMethod.GET)
+	public List<SysBranch> getDealerList()
+	{
+		List<SysBranch> list = sysBranchService.getDealerList();
+		SysBranch root = sysBranchService.getSysBranch("", "0001");
+		list.add(root);
+		return list;
+	}
 }

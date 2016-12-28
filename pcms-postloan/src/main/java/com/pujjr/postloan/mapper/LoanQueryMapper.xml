@@ -59,6 +59,18 @@
 		<if test="queryParam.overdueDay!=null and queryParam.overdueDay!=''">
 			and c.ADDUP_OVERDUE_DAY = #{queryParam.overdueDay}
 		</if>
+		<!-- 是否进行查询权限检查 -->
+		<if test="queryParam.queryAuth.needCheckAuth==true">
+			<!-- 按照机构过滤 -->
+			<if test='queryParam.queryAuth.checkAuthType=="0"'>
+				<foreach close=")" collection="queryParam.queryAuth.authBranch" index="index" item="item" open="and (" separator=" or ">
+					a.CREATE_BRANCH_CODE  = #{item.branchCode}
+				</foreach>
+			</if>
+			<if test='queryParam.queryAuth.checkAuthType=="1"'>
+				and a.CREATE_ACCOUNT_ID = #{queryParam.queryAuth.authAcctId}
+			</if>
+		</if>
   	</select>
   	
   	<select id="selectLoanCustApplyInfo" resultType="HashMap">

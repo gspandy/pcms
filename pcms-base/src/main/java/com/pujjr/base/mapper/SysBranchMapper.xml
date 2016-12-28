@@ -248,4 +248,12 @@
     </if>
     
   </select>
+  <select id="selectListByBranchType" resultMap="BaseResultMap">
+  	select * from sys_branch 
+  	where BRANCH_TYPE = #{branchType}
+  </select>
+  <select id="selectListByParentId" resultMap="BaseResultMap">
+  	select * from sys_branch
+  	where  PARENT_ID = #{parentId,jdbcType=VARCHAR},
+  </select>
 </mapper>

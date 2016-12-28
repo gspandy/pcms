@@ -22,4 +22,8 @@ public interface SysBranchMapper {
     List<SysBranch> selectAll();
     
     SysBranch selectSysBranch(@Param("id")String id,@Param("branchCode")String branchCode);
+    
+    List<SysBranch> selectListByBranchType(@Param("branchType")String branchType);
+    
+    List<SysBranch> selectListByParentId(@Param("parentId")String parentId);
 }

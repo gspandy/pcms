@@ -24,5 +24,15 @@ public interface ISysBranchService
 	public void modifySysBranch(SysBranchVo record);
 	
 	public SysBranchDealer getDealerByBranchId(String id);
+	/**查询经销商列表**/
+	List<SysBranch> getDealerList();
+	/**
+	 * 根据机构编码查询下级机构列表
+	 * @param branchId 机构ID
+	 * @param branchCode 机构编码
+	 * @param includeSelf 是否包含自身
+	 * @return
+	 */
+	public List<SysBranch> getChildBranchList(String branchId,String branchCode, boolean includeSelf);
 	
 }

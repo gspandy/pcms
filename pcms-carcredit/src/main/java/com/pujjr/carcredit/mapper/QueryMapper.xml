@@ -77,6 +77,19 @@
 		<if test="param.applyStatus!=null and param.applyStatus!=''">
 			and apply.STATUS = #{param.applyStatus}
 		</if>
+		<!-- 是否进行查询权限检查 -->
+		<if test="param.queryAuth.needCheckAuth==true">
+			<!-- 按照机构过滤 -->
+			<if test='param.queryAuth.checkAuthType=="0"'>
+				<foreach close=")" collection="param.queryAuth.authBranch" index="index" item="item" open="and (" separator=" or ">
+					apply.CREATE_BRANCH_CODE  = #{item.branchCode}
+				</foreach>
+			</if>
+			<if test='param.queryAuth.checkAuthType=="1"'>
+				and apply.CREATE_ACCOUNT_ID = #{param.queryAuth.authAcctId}
+			</if>
+		</if>
+		order by apply.CREATE_TIME desc
 	</select>
 	<select id="selectTaskInfoByProcInstId" resultType="HashMap">
 		SELECT 

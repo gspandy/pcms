@@ -24,6 +24,4 @@ public interface ISysRoleService
 	public void saveRoleMenuList(String roleId,List<SysMenu> menus);
 	
 	public List<SysRole> getAccountRoleList(String accountId);
-	
-	public void saveAccountRoleList(String accountId,List<SysRole> roles);
 }

@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.pujjr.base.service.ISysAccountService;
+import com.pujjr.base.vo.QueryAuthVo;
 import com.pujjr.postloan.dao.LoanQueryMapper;
 import com.pujjr.postloan.dao.WaitingChargeNewMapper;
 import com.pujjr.postloan.domain.WaitingChargeNew;
@@ -19,10 +22,15 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 	private LoanQueryMapper loanQueryDao; 
 	@Autowired
 	private WaitingChargeNewMapper waitingChargeNewDao;
+	@Autowired
+	private ISysAccountService sysAccountService;
 	@Override
-	public List<HashMap<String, Object>> getLoanCustList(QueryParamLoanVo queryParam,String queryAcctId) {
+	public List<HashMap<String, Object>> getLoanCustList(QueryParamLoanVo queryParam) {
 		// TODO Auto-generated method stub
-		return loanQueryDao.selectLoanCustList(queryParam,"");
+		QueryAuthVo authVo = sysAccountService.getAccountQueryAuth(queryParam.getQueryAccountId());
+		queryParam.setQueryAuth(authVo);
+		PageHelper.startPage(Integer.parseInt(queryParam.getCurPage()), Integer.parseInt(queryParam.getPageSize()),true);
+		return loanQueryDao.selectLoanCustList(queryParam);
 	}
 	@Override
 	public HashMap<String,Object> getLoanCustApplyInfo(String appId) {

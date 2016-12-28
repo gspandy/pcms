@@ -19,7 +19,7 @@ public interface LoanQueryMapper
 	 * 查询贷款客户列表
 	 * @return
 	 */
-	public List<HashMap<String,Object>> selectLoanCustList(@Param("queryParam")QueryParamLoanVo queryParam,@Param("authFilter")String authFilter);
+	public List<HashMap<String,Object>> selectLoanCustList(@Param("queryParam")QueryParamLoanVo queryParam);
 	/**
 	 * 查询贷款客户申请基本信息
 	 * @param appId

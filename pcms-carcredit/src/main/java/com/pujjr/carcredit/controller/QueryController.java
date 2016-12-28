@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.pujjr.base.controller.BaseController;
+import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.domain.Apply;
 import com.pujjr.carcredit.domain.FraudInnerResult;
@@ -48,9 +51,10 @@ public class QueryController extends BaseController
    	}
 	
 	@RequestMapping(value="/applyList",method=RequestMethod.GET)
-	public PageVo queryApplyList(QueryParamApplyVo param) throws ParseException
+	public PageVo queryApplyList(QueryParamApplyVo param,HttpServletRequest request) throws ParseException
 	{
-		PageHelper.startPage(Integer.parseInt(param.getCurPage()), Integer.parseInt(param.getPageSize()),true);
+		SysAccount sysAccount = (SysAccount)request.getAttribute("account");
+		param.setQueryAccountId(sysAccount.getAccountId());
 		List<HashMap<String,Object>> list = queryService.queryApplyList(param);
 		PageVo page=new PageVo();
 		page.setTotalItem(((Page)list).getTotal());

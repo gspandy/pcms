@@ -338,7 +338,7 @@
   </select>
   <select id="selectNotSettleRepayPlanList" resultMap="BaseResultMap">
   	select * from t_repay_plan
-  	where REPAY_STATUS != 'hkzt02'
+  	where REPAY_STATUS != 'hkzt02' and APP_ID = #{appId}
   </select>
   
   <resultMap id="WaitingChargeResultMap" type="com.pujjr.postloan.domain.WaitingCharge" >

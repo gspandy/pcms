@@ -57,7 +57,7 @@ public class SmsServiceImpl implements ISmsService{
 	@Override
 	public String genWelcomeNotice(String custName, String repayDay, double monthRepayAmt,String repayCardNo, String repayBankName) throws Exception {
 		// TODO Auto-generated method stub
-		SmsTemplate tpl = smsTemplateDao.selectByPrimaryKey("welcomeNotice");
+		SmsTemplate tpl = smsTemplateDao.selectByTplKey("welcomeNotice");
 		if(tpl == null)
 		{
 			throw new Exception("未定义欢迎短信提醒模板");
@@ -74,7 +74,7 @@ public class SmsServiceImpl implements ISmsService{
 	@Override
 	public String genRepayDayNormalNotice( String custName, String repayDate,double repayAmt) throws Exception {
 		// TODO Auto-generated method stub
-		SmsTemplate tpl = smsTemplateDao.selectByPrimaryKey("repayDayNormalNotice");
+		SmsTemplate tpl = smsTemplateDao.selectByTplKey("repayDayNormalNotice");
 		if(tpl == null)
 		{
 			throw new Exception("未定义还款日前常规提醒短信模板");
@@ -89,7 +89,7 @@ public class SmsServiceImpl implements ISmsService{
 	@Override
 	public String genRepayDayFailNotice(String custName, String repayDate,double repayAmt) throws Exception {
 		// TODO Auto-generated method stub
-		SmsTemplate tpl = smsTemplateDao.selectByPrimaryKey("repayDayFailNotice");
+		SmsTemplate tpl = smsTemplateDao.selectByTplKey("repayDayFailNotice");
 		if(tpl == null)
 		{
 			throw new Exception("未定义还款当天扣款失败提醒短信模板");
@@ -216,7 +216,7 @@ public class SmsServiceImpl implements ISmsService{
 	public void sendInsuranceContinueNotice(String appId, String sendUserId, String mobile, String custName,
 			String carNo, String endDate) throws Exception {
 		// TODO Auto-generated method stub
-		SmsTemplate tpl = smsTemplateDao.selectByPrimaryKey("insuranceContinue");
+		SmsTemplate tpl = smsTemplateDao.selectByTplKey("insuranceContinue");
 		if(tpl == null)
 		{
 			throw new Exception("未定义保险续保提醒短信模板");

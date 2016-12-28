@@ -77,17 +77,4 @@ public class SysRoleServiceImpl implements ISysRoleService {
 		return sysRoleDao.selectAccountRoleList(accountId);
 	}
 
-	@Override
-	public void saveAccountRoleList(String accountId, List<SysRole> roles) {
-		// TODO Auto-generated method stub
-		sysRoleDao.deleteAccountRole(accountId);
-		for(SysRole role : roles)
-		{
-			SysAccountRoleKey key = new SysAccountRoleKey();
-			key.setAccountId(accountId);
-			key.setRoleId(role.getId());
-			sysAccountRoleDao.insert(key);
-		}
-	}
-
 }

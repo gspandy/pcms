@@ -17,7 +17,7 @@ public interface ILoanQueryService
 	/**
 	 * 查询贷款客户列表
 	 */
-	public List<HashMap<String,Object>> getLoanCustList(QueryParamLoanVo queryParam,String queryAcctId);
+	public List<HashMap<String,Object>> getLoanCustList(QueryParamLoanVo queryParam);
 	/**
 	 * 查询贷款客户申请信息
 	 * @param appId
