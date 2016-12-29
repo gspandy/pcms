@@ -8190,7 +8190,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			
 			new Ajax.Request(ACTIVITI.CONFIG.contextRoot + '/editor/stencilset?version=' + Date.now(), {
 	            asynchronous: false,
-	            requestHeaders:{'Authorization':window.localStorage.Authorization},
+	            requestHeaders:{'Authorization':authToken},
 	            method: 'get',
 	            onSuccess: this._init.bind(this),
 	            onFailure: this._cancelInit.bind(this)

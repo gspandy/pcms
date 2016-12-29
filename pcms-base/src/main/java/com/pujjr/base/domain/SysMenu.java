@@ -5,81 +5,91 @@ import java.util.Date;
 public class SysMenu {
     private String id;
 
-    private String menuName;
+	private Integer seq;
 
-    private String menuId;
+	private String menuName;
 
-    private String parentId;
+	private String menuId;
 
-    private String createId;
+	private String parentId;
 
-    private Date createTime;
+	private String createId;
 
-    private String updateId;
+	private Date createTime;
 
-    private Date updateTime;
+	private String updateId;
 
-    public String getId() {
-        return id;
-    }
+	private Date updateTime;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getMenuName() {
-        return menuName;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
+	public Integer getSeq() {
+		return seq;
+	}
 
-    public String getMenuId() {
-        return menuId;
-    }
+	public void setSeq(Integer seq) {
+		this.seq = seq;
+	}
 
-    public void setMenuId(String menuId) {
-        this.menuId = menuId;
-    }
+	public String getMenuName() {
+		return menuName;
+	}
 
-    public String getParentId() {
-        return parentId;
-    }
+	public void setMenuName(String menuName) {
+		this.menuName = menuName;
+	}
 
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
+	public String getMenuId() {
+		return menuId;
+	}
 
-    public String getCreateId() {
-        return createId;
-    }
+	public void setMenuId(String menuId) {
+		this.menuId = menuId;
+	}
 
-    public void setCreateId(String createId) {
-        this.createId = createId;
-    }
+	public String getParentId() {
+		return parentId;
+	}
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
+	}
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	public String getCreateId() {
+		return createId;
+	}
 
-    public String getUpdateId() {
-        return updateId;
-    }
+	public void setCreateId(String createId) {
+		this.createId = createId;
+	}
 
-    public void setUpdateId(String updateId) {
-        this.updateId = updateId;
-    }
+	public Date getCreateTime() {
+		return createTime;
+	}
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	public String getUpdateId() {
+		return updateId;
+	}
+
+	public void setUpdateId(String updateId) {
+		this.updateId = updateId;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 }

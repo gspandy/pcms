@@ -538,7 +538,7 @@ public class TaskServiceImpl implements ITaskService
 		if(!commitType.equals(TaskCommitType.LOANCHECK_SUPPLY_INFO))
 		{
 			ApplyVo applyVo = applyService.getApplyDetail(signContractVo.getAppId());
-			checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.LOANCHECK.getKey(), applyVo.getAppId());
+			//checkTaskHasUploadFile(applyVo.getProduct().getDirectoryTemplateId(), DirectoryCategoryEnum.LOANCHECK.getKey(), applyVo.getAppId());
 			//删除之前保存的保险信息
 			insuranceHisDao.deleteByAppId(signContractVo.getAppId());
 			for(SignFinanceDetailVo item : signContractVo.getSignFinanceList())

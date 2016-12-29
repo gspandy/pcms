@@ -26,6 +26,7 @@
     <result column="MAX_TASK_CNT" jdbcType="INTEGER" property="assigneeTaskCnt" />
     <association column="POST_ID" property="sysJob" select="selectSysJob" />
     <association column="STATUS" property="statusDict" select="selectSysDictData" />
+    <association column="BRANCH_ID" property="sysBranch" select="selectSysBranch" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, ACCOUNT_ID, ACCOUNT_NAME, PASSWORD, BRANCH_ID, POST_ID, MOBILE, WEIXIN_ID, EMAIL, 
@@ -372,5 +373,29 @@
 			)
       		 )
 	)   order by sysmenu.MENU_ID asc
+  </select>
+  
+  <resultMap id="SysBranchResultMap" type="com.pujjr.base.domain.SysBranch" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="BRANCH_CODE" property="branchCode" jdbcType="VARCHAR" />
+    <result column="BRANCH_NAME" property="branchName" jdbcType="VARCHAR" />
+    <result column="BRANCH_FULLNAME" property="branchFullname" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="BRANCH_TYPE" property="branchType" jdbcType="VARCHAR" />
+    <result column="AREA_ID" property="areaId" jdbcType="VARCHAR" />
+    <result column="ENABLED" property="enabled" jdbcType="BIT" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="CREATE_ID" property="createId" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="UPDATE_ID" property="updateId" jdbcType="VARCHAR" />
+    <result column="RESERVER1" property="reserver1" jdbcType="VARCHAR" />
+    <result column="RESERVER2" property="reserver2" jdbcType="VARCHAR" />
+    <result column="RESERVER3" property="reserver3" jdbcType="VARCHAR" />
+    <result column="RESERVER4" property="reserver4" jdbcType="VARCHAR" />
+    <result column="RESERVER5" property="reserver5" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectSysBranch" parameterType="String" resultMap="SysBranchResultMap">
+  	select * from SYS_BRANCH where ID = #{BRANCH_ID}
   </select>
 </mapper>

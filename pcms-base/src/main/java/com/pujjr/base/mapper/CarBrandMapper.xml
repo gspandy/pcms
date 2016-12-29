@@ -76,6 +76,7 @@
  			and BRAND_NAME like CONCAT('%',CONCAT(#{params.brandName},'%'))
  		</if>
  	</if>
+ 	order by PREFIX_LETTER 
 
   </select>
   <select id="selectBrandBySerialId" resultMap="BaseResultMap">
@@ -88,5 +89,6 @@
   	from T_CAR_TEMPLATE a 
   	inner join T_CAR_TEMPLATE_CHOICE b on (a.id = b.TPL_ID and a.id=#{templateId} and b.CAR_DATA_TYPE ='brand') 
   	left join T_CAR_BRAND c  on b.CAR_DATA_ID = c.id
+  	order by  c.PREFIX_LETTER 
   </select>
 </mapper>

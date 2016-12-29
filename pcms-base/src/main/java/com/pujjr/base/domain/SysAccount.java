@@ -219,6 +219,8 @@ public class SysAccount {
 	
 	private int assigneeTaskCnt;
 	
+	private SysBranch sysBranch;
+	
 	public int getAssigneeTaskCnt() {
 		return assigneeTaskCnt;
 	}
@@ -241,6 +243,14 @@ public class SysAccount {
 
 	public void setSysJob(SysJob sysJob) {
 		this.sysJob = sysJob;
+	}
+
+	public SysBranch getSysBranch() {
+		return sysBranch;
+	}
+
+	public void setSysBranch(SysBranch sysBranch) {
+		this.sysBranch = sysBranch;
 	}
 
 }

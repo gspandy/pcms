@@ -472,6 +472,7 @@ public class Utils {
 	public static Date getDateAfterDay(Date date,int interval){
 		String afterYear = "";
 		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
 		calender.add(Calendar.DAY_OF_MONTH, interval);
 		return calender.getTime();
 	}
@@ -495,6 +496,7 @@ public class Utils {
 	public static Date getDateAfterYear(Date date,int interval){
 		String afterYear = "";
 		Calendar calender = Calendar.getInstance();
+		calender.setTime(date);
 		calender.add(Calendar.YEAR, interval);
 		return calender.getTime();
 	}

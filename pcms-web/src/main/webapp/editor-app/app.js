@@ -33,6 +33,8 @@ var activitiModeler = angular.module('activitiModeler', [
 
 var activitiModule = activitiModeler;
 
+var authToken = "";
+
 activitiModeler
   // Initialize routes
   .config(['$selectProvider', '$translateProvider', function ($selectProvider, $translateProvider) {
@@ -53,9 +55,6 @@ activitiModeler
         // remember language
         $translateProvider.useCookieStorage();
         
-  }])
-  .config(['$httpProvider',function($httpProvider){
-	  $httpProvider.defaults.headers.common['Authorization']=window.localStorage.Authorization;
   }])
   .run(['$rootScope', '$timeout', '$modal', '$translate', '$location', '$window', '$http', '$q',
         function($rootScope, $timeout, $modal, $translate, $location, $window, $http, $q) {
@@ -184,7 +183,7 @@ activitiModeler
 	
 	                var modelId = EDITOR.UTIL.getParameterByName('modelId');	
 	                var token = EDITOR.UTIL.getParameterByName('token');
-	                window.localStorage.Authorization = token;
+	                authToken = token;
 	                fetchModel(modelId);
 	                $rootScope.window = {};
 	                var updateWindowSize = function() {
@@ -420,7 +419,11 @@ activitiModeler
           
         }
   ])
-
+  .config(['$httpProvider',function($httpProvider){
+	  var token = EDITOR.UTIL.getParameterByName('token');
+	  authToken = token;
+	  $httpProvider.defaults.headers.common['Authorization']=authToken;
+  }])
     // Moment-JS date-formatting filter
     .filter('dateformat', function() {
         return function(date, format) {

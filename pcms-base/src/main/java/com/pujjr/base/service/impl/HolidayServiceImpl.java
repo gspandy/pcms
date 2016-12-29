@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.pujjr.base.dao.HolidayMapper;
 import com.pujjr.base.domain.Holiday;
 import com.pujjr.base.service.IHolidayService;
+import com.pujjr.base.vo.HolidayAddVo;
 import com.pujjr.utils.Utils;
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -33,13 +34,25 @@ public class HolidayServiceImpl implements IHolidayService {
 	}
 
 	@Override
-	public void addHoliday(Holiday record) throws Exception {
+	public void addHoliday(Date holidayStartDate,Date holidayEndDate,String holidayDesc,String createId) throws Exception {
 		// TODO Auto-generated method stub
-		if(holidayDao.seleteByHolidayDate(record.getHolidayDate())!=null)
+		int spaceDay = Utils.getSpaceDay(holidayStartDate, holidayEndDate);
+		if(spaceDay<0)
 		{
-			throw new Exception("已设置当前日期为节假日");
+			throw new Exception("结束日期小于开始日期");
 		}
-		holidayDao.insert(record);
+		holidayDao.deleteHoliday(holidayStartDate, holidayEndDate);
+		while(Utils.getSpaceDay(holidayStartDate, holidayEndDate)>=0)
+		{
+			Holiday holiday = new Holiday();
+			holiday.setId(Utils.get16UUID());
+			holiday.setHolidayDate(holidayStartDate);
+			holiday.setHolidayDesc(holidayDesc);
+			holiday.setCreateId(createId);
+			holiday.setCreateTime(new Date());
+			holidayDao.insert(holiday);
+			holidayStartDate = Utils.getDateAfterDay(holidayStartDate, 1);
+		}
 	}
 
 	@Override

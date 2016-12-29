@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.base.domain.Holiday;
+import com.pujjr.base.vo.HolidayAddVo;
 /**
  * 节假日管理
  * **/
@@ -20,7 +21,7 @@ public interface IHolidayService
 	//根据日期查询节假日信息
 	public Holiday getHolidayByDate(String id);
 	//增加节假日
-	public void addHoliday(Holiday record) throws Exception;
+	public void addHoliday(Date holidayStartDate,Date holidayEndDate,String holidayDesc,String createId) throws Exception;
 	//修改节假日
 	public void modifyHoliday(Holiday record);
 	//删除节假日
