@@ -6,7 +6,8 @@ public enum RepayStatus
 {
 	Repaying("hkzt01","还款中"),
 	Settled("hkzt02","已结清"),
-	Overdue("hkzt03","逾期");
+	Overdue("hkzt03","逾期"),
+	WaitingRepay("hkzt04","待还款");
 	
 	private String name;
 	private String text;

@@ -334,7 +334,7 @@
   </select>
   <select id="selectNeedChargeRepayPlanList" resultMap="BaseResultMap">
   	select * from t_repay_plan
-  	where CLOSING_DATE = #{curDate}
+  	where CLOSING_DATE = #{curDate} and REPAY_STATUS ='hkzt04'
   </select>
   <select id="selectNotSettleRepayPlanList" resultMap="BaseResultMap">
   	select * from t_repay_plan

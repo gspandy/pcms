@@ -12,10 +12,11 @@
     <result column="OTHER_FEE" jdbcType="DOUBLE" property="otherFee" />
     <result column="OTHER_OVERDUE_AMOUNT" jdbcType="DOUBLE" property="otherOverdueAmount" />
     <result column="LATE_FEE" jdbcType="DOUBLE" property="lateFee" />
+    <result column="REMISSION_COMMENT" jdbcType="VARCHAR" property="remissionComment" />
   </resultMap>
   <sql id="Base_Column_List">
     ID, APPLY_TYPE, APPLY_REF_ID, REMISSION_DATE, CAPITAL, INTEREST, OVERDUE_AMOUNT, 
-    OTHER_FEE, OTHER_OVERDUE_AMOUNT, LATE_FEE
+    OTHER_FEE, OTHER_OVERDUE_AMOUNT, LATE_FEE, REMISSION_COMMENT
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -31,11 +32,11 @@
     insert into t_remission_item (ID, APPLY_TYPE, APPLY_REF_ID, 
       REMISSION_DATE, CAPITAL, INTEREST, 
       OVERDUE_AMOUNT, OTHER_FEE, OTHER_OVERDUE_AMOUNT, 
-      LATE_FEE)
+      LATE_FEE, REMISSION_COMMENT)
     values (#{id,jdbcType=VARCHAR}, #{applyType,jdbcType=VARCHAR}, #{applyRefId,jdbcType=VARCHAR}, 
       #{remissionDate,jdbcType=DATE}, #{capital,jdbcType=DOUBLE}, #{interest,jdbcType=DOUBLE}, 
       #{overdueAmount,jdbcType=DOUBLE}, #{otherFee,jdbcType=DOUBLE}, #{otherOverdueAmount,jdbcType=DOUBLE}, 
-      #{lateFee,jdbcType=DOUBLE})
+      #{lateFee,jdbcType=DOUBLE}, #{remissionComment,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.pujjr.postloan.domain.RemissionItem">
     insert into t_remission_item
@@ -70,6 +71,9 @@
       <if test="lateFee != null">
         LATE_FEE,
       </if>
+      <if test="remissionComment != null">
+        REMISSION_COMMENT,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -101,6 +105,9 @@
       </if>
       <if test="lateFee != null">
         #{lateFee,jdbcType=DOUBLE},
+      </if>
+      <if test="remissionComment != null">
+        #{remissionComment,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -134,6 +141,9 @@
       <if test="lateFee != null">
         LATE_FEE = #{lateFee,jdbcType=DOUBLE},
       </if>
+      <if test="remissionComment != null">
+        REMISSION_COMMENT = #{remissionComment,jdbcType=VARCHAR},
+      </if>
     </set>
     where ID = #{id,jdbcType=VARCHAR}
   </update>
@@ -147,7 +157,8 @@
       OVERDUE_AMOUNT = #{overdueAmount,jdbcType=DOUBLE},
       OTHER_FEE = #{otherFee,jdbcType=DOUBLE},
       OTHER_OVERDUE_AMOUNT = #{otherOverdueAmount,jdbcType=DOUBLE},
-      LATE_FEE = #{lateFee,jdbcType=DOUBLE}
+      LATE_FEE = #{lateFee,jdbcType=DOUBLE},
+      REMISSION_COMMENT = #{remissionComment,jdbcType=VARCHAR}
     where ID = #{id,jdbcType=VARCHAR}
   </update>
   <select id="selectByApplyId" resultMap="BaseResultMap">

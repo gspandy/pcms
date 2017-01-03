@@ -64,6 +64,16 @@ public interface IAccountingService
 	 * **/
 	public RepayingFeeItemVo getRepayingFeeItems(String appId,boolean isCalOverdueAmount,Date overdueEndDate,boolean isReduceStayAmount,boolean isContainCurPeriod);
 	/**
+	 * 功能：获取结清应还费用项信息
+	 * @param appId 申请单号
+	 * @param isCalOverdueAmount 是否计算逾期金额
+	 * @param overdueEndDate 计算逾期截止日期
+	 * @param isReduceStayAmount 是否扣除挂账金额
+	 * @param isContainCurPeriod 是否包含当期结清信息
+	 * @return
+	 */
+	public RepayingFeeItemVo getSettleRepayingFeeItems(String appId,boolean isCalOverdueAmount,Date overdueEndDate,boolean isReduceStayAmount,boolean isContainCurPeriod);
+	/**
 	 * 功能：查询当前正在扣款中的计划还款信息
 	 * @param
 	 * 	appId-申请单号

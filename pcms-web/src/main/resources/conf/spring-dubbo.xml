@@ -11,16 +11,16 @@
  <!-- 消费者名称 -->
  <dubbo:application name="consumer_sms_message" />
  <!-- 消费地址 -->
- <dubbo:registry address="zookeeper://172.18.10.76:2181"/>
+ <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
  <!-- 消费时间 -->
- <dubbo:consumer timeout="5000" />
+ <dubbo:consumer timeout="5000"/>
  <!-- 消费接口 -->
- <dubbo:reference id="messageService" check="false" interface="com.pujjr.message_api.service.IMessageService" />
+ <dubbo:reference id="messageService" check="false" interface="com.pujjr.message_api.service.IMessageService"/>
  
  <!-- 短信发送回调服务配置 -->
  <bean id="messageCallbackService"  class="com.pujjr.sms.service.impl.MessageCallbackServiceImpl" />
   <!-- 用dubbo协议在30880端口暴露服务 -->
- <dubbo:protocol name="dubbo" port="30881" />
+ <dubbo:protocol name="dubbo" port="30881"/>
  <!-- 声明需要暴露的服务接口 -->
  <dubbo:service interface="com.pujjr.message_api.service.IMessageCallbackService" ref="messageCallbackService" />
  
@@ -28,7 +28,7 @@
    <!-- 
  <dubbo:registry id="credit_registry" address="zookeeper://172.18.13.112:2181" />
   -->
-  <dubbo:registry id="credit_registry" address="zookeeper://172.18.10.76:2181" />
- <dubbo:reference interface="com.pujjr.pcci.api.service.CreditApi" id="creditService" check="false"  registry="credit_registry" timeout="60000" retries="0" group="pcci"/>
+  <dubbo:registry id="credit_registry" address="zookeeper://127.0.0.1:2181"/>
+ <dubbo:reference interface="com.pujjr.pcci.api.service.CreditApi" id="creditService" check="false"    registry="credit_registry" timeout="60000" retries="0" group="pcci"/>
 	
 </beans>

@@ -1,5 +1,10 @@
 package com.pujjr.utils;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -30,8 +35,9 @@ public class AppTest
 
     /**
      * Rigourous Test :-)
+     * @throws IOException 
      */
-    public void testApp()
+    public void testApp() throws IOException
     {
         assertTrue( true );
     }

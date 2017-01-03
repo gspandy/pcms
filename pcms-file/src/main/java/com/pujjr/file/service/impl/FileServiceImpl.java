@@ -22,11 +22,13 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.pujjr.enumeration.PrevImgBase64;
 import com.pujjr.file.dao.DirectoryFileMapper;
 import com.pujjr.file.dao.FileMapper;
 import com.pujjr.file.domain.DirectoryFile;
 import com.pujjr.file.po.CategoryDirectoryPo;
 import com.pujjr.file.service.IFileService;
+import com.pujjr.utils.Base64;
 import com.pujjr.utils.ImageUtil;
 import com.pujjr.utils.Utils;
 @Service
@@ -87,12 +89,41 @@ public class FileServiceImpl implements IFileService
 			//上传原始文件至OSS
 			String ossKey = "resource/"+businessId+"/"+fileId+fileSuffix;
 			ossClient.putObject(bucketName, ossKey, file.getInputStream());
-			//上传缩略图至OSS
-			String ossKeyPreview = "resource/"+businessId+"/"+fileId+"-preview"+fileSuffix;
+			//上传缩略图至OSS,如后缀为PDF则生产PDF，否则按照图片格式生产
+			String ossKeyPreview = "resource/"+businessId+"/"+fileId+"-preview";
 			ByteArrayOutputStream bOutput = new ByteArrayOutputStream();
-			ImageUtil imgUtil = new ImageUtil();
-			imgUtil.thumbnailImage(file.getInputStream(), file.getOriginalFilename(),bOutput, 100, 100, "preview", false);
-			ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream(bOutput.toByteArray()));
+			//PDF缩略图
+			if(".pdf".equals(fileSuffix))
+			{
+				ossKeyPreview+=PrevImgBase64.PDF.getSuffix();
+				//Base64转图片byteArray
+				ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream( Base64.decode(PrevImgBase64.PDF.getData())));
+			}
+			else if(".doc".equals(fileSuffix) || ".docx".equals(fileSuffix))
+			{
+				ossKeyPreview+=PrevImgBase64.Word.getSuffix();
+				//Base64转图片byteArray
+				ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream( Base64.decode(PrevImgBase64.Word.getData())));
+			}
+			else if(".xlsx".equals(fileSuffix) || ".xls".equals(fileSuffix))
+			{
+				ossKeyPreview+=PrevImgBase64.Xlsx.getSuffix();
+				//Base64转图片byteArray
+				ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream( Base64.decode(PrevImgBase64.Xlsx.getData())));
+			}
+			else if(".ppt".equals(fileSuffix) || ".pptx".equals(fileSuffix))
+			{
+				ossKeyPreview+=PrevImgBase64.PPT.getSuffix();
+				//Base64转图片byteArray
+				ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream( Base64.decode(PrevImgBase64.PPT.getData())));
+			}
+			else
+			{
+				ossKeyPreview+=fileSuffix;
+				ImageUtil imgUtil = new ImageUtil();
+				imgUtil.thumbnailImage(file.getInputStream(), file.getOriginalFilename(),bOutput, 100, 100, "preview", false);
+				ossClient.putObject(bucketName, ossKeyPreview, new ByteArrayInputStream(bOutput.toByteArray()));
+			}
 			//保存文件信息
 			DirectoryFile fileMetaInfo = new DirectoryFile();
 			fileMetaInfo.setId(fileId);

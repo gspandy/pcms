@@ -55,9 +55,9 @@
 	  <!-- 审核自动分单 -->
 	  <task:scheduled ref="autoAssigneeService" method="autoAssigneeCheckTask" cron="${checktask_assignee_scheduler.timeCronExpression}"/>
 	  <!-- 账务日切 -->
-	  <task:scheduled ref="cutOffService" method="accountingCutOff" cron="${accountingCutOff.timeCronExpression}"/>
+	  <task:scheduled ref="cutOffService" method="runNormalCutOff" cron="${runNormalCutOff.timeCronExpression}"/>
 	  <!-- 其他日切 -->
-	  <task:scheduled ref="cutOffService" method="otherCutOff" cron="${otherCutOff.timeCronExpression}"/>
+	  <task:scheduled ref="cutOffService" method="runOtherCutOff" cron="${runOtherCutOff.timeCronExpression}"/>
 	  <!-- 短信发送 -->
 	  <task:scheduled ref="sendSmsService" method="send" cron="${smsSend.timeCronExpression}"/>
 	</task:scheduled-tasks>

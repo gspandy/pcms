@@ -241,6 +241,7 @@ public class SettleController extends BaseController {
 			remissionFeeItemVo.setOtherOverdueAmount(po.getRemissionItem().getOtherOverdueAmount());
 			remissionFeeItemVo.setLateFee(po.getRemissionItem().getLateFee());
 			remissionFeeItemVo.setRemissionDate(po.getRemissionItem().getRemissionDate());
+			remissionFeeItemVo.setRemissionComment(po.getRemissionItem().getRemissionComment());
 			vo.setRemissionFeeItemVo(remissionFeeItemVo);
 		}
 		//获取结清申请产生的新还款计划

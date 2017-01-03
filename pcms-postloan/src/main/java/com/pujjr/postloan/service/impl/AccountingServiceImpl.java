@@ -153,8 +153,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
 		double dayLateRate = ledgerRecord.getDayLateRate();
 		
-		//获取代扣明细表计划还款明细
-		List<WaitingCharge> waitingChargePlanList = this.getWaitingChargeTypePlan(appId, isContainCurPeriod);
+		//获取代扣明细表计划还款明细(不包含当期)
+		List<WaitingCharge> waitingChargePlanList = this.getWaitingChargeTypePlan(appId, true);
 		for(WaitingCharge item : waitingChargePlanList)
 		{
 			repayTotalCapital += item.getRepayCapital();
@@ -747,24 +747,24 @@ public class AccountingServiceImpl implements IAccountingService {
 		 * 获取挂账金额，为减少循环直接在减免处理后如果剩余本金、利息、罚息的金额大于0并且为提前结清的情况下，直接用挂账金额处理
 		 * 先冲账其他费用罚息、本金，再冲账计划还款罚息、利息、本金，最后冲账手续费
 		 */
-		double remissionCapital = 0.00;
-		double remissionInterest = 0.00;
-		double remissionOverdueAmt = 0.00;
-		double remissionOtherFee = 0.00;
-		double remissionOtherOverdueAmt = 0.00;
-		double remissionLateFee = 0.00;
+		double totalRemissionCapital = 0.00,remissionCapital = 0.00;
+		double totalRemissionInterest = 0.00,remissionInterest = 0.00;
+		double totalRemissionOverdueAmt = 0.00,remissionOverdueAmt = 0.00;
+		double totalRemissionOtherFee = 0.00,remissionOtherFee = 0.00;
+		double totalRemissionOtherOverdueAmt = 0.00,remissionOtherOverdueAmt = 0.00;
+		double totalRemissionLateFee = 0.00,remissionLateFee = 0.00;
 		Date remissionDate = new Date();
 		double totalRemissionAmt = 0.00;
 		boolean isDoRemission = false;
 		RemissionItem remissionItem = remissionItemDao.selectByApplyId(applyType.getName(), applyId);
 		if(remissionItem!=null)
 		{
-			remissionCapital = remissionItem.getCapital();
-			remissionInterest = remissionItem.getInterest();
-			remissionOverdueAmt = remissionItem.getOverdueAmount();
-			remissionOtherFee = remissionItem.getOtherFee();
-			remissionOtherOverdueAmt = remissionItem.getOtherOverdueAmount();
-			remissionLateFee = remissionItem.getLateFee();
+			totalRemissionCapital =remissionCapital = remissionItem.getCapital();
+			totalRemissionInterest =remissionInterest = remissionItem.getInterest();
+			totalRemissionOverdueAmt =remissionOverdueAmt = remissionItem.getOverdueAmount();
+			totalRemissionOtherFee =remissionOtherFee = remissionItem.getOtherFee();
+			totalRemissionOtherOverdueAmt =remissionOtherOverdueAmt = remissionItem.getOtherOverdueAmount();
+			totalRemissionLateFee =remissionLateFee = remissionItem.getLateFee();
 			remissionDate = remissionItem.getRemissionDate();
 			totalRemissionAmt = remissionCapital+remissionInterest+remissionOverdueAmt+remissionOtherFee+remissionOtherOverdueAmt+remissionLateFee;
 		}
@@ -1107,24 +1107,24 @@ public class AccountingServiceImpl implements IAccountingService {
 			repayLog.setId(remissionRepayLogId);
 			repayLog.setAppId(appId);
 			int cnt = repayLogDao.selectRepayLogCntByAppId(appId);
-			repayLog.setSeq(cnt++);
+			repayLog.setSeq(++cnt);
 			repayLog.setRepayMode(RepayMode.Remission.getName());
 			repayLog.setRepayAmount(totalRemissionAmt);
 			repayLog.setRepayTime(chargeDate);
 			repayLog.setLogStatus(RepayLogStatus.Normal.getName());
-			repayLog.setCapital(remissionCapital);
-			repayLog.setInterest(remissionInterest);
-			repayLog.setOverdueAmount(remissionOverdueAmt);
-			repayLog.setOtherFee(remissionOtherFee);
-			repayLog.setOtherOverdueAmount(remissionOtherOverdueAmt);
+			repayLog.setCapital(totalRemissionCapital);
+			repayLog.setInterest(totalRemissionInterest);
+			repayLog.setOverdueAmount(totalRemissionOverdueAmt);
+			repayLog.setOtherFee(totalRemissionOtherFee);
+			repayLog.setOtherOverdueAmount(totalRemissionOtherOverdueAmt);
 			if(applyType.equals(LoanApplyTaskType.Settle))
 			{
-				repayLog.setLateFee(remissionLateFee);
+				repayLog.setLateFee(totalRemissionLateFee);
 				repayLog.setExtendFee(0.00);
 			}
 			else
 			{
-				repayLog.setExtendFee(remissionLateFee);
+				repayLog.setExtendFee(totalRemissionLateFee);
 				repayLog.setLateFee(0.00);
 			}
 			repayLog.setStageAmount(0.00);
@@ -1137,7 +1137,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			repayLog.setId(stayRepayLogId);
 			repayLog.setAppId(appId);
 			int cnt = repayLogDao.selectRepayLogCntByAppId(appId);
-			repayLog.setSeq(cnt++);
+			repayLog.setSeq(++cnt);
 			repayLog.setRepayMode(RepayMode.StayAccounting.getName());
 			double totalStayAmt = totalStayCaptial + totalStayInterest+totalStayOverdueAmt+totalStayOtherOverdueAmt+totalStayOtherFee+totalStayLateFee;
 			repayLog.setRepayAmount(totalStayAmt);
@@ -1168,7 +1168,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			repayLog.setId(repayLogId);
 			repayLog.setAppId(appId);
 			int cnt = repayLogDao.selectRepayLogCntByAppId(appId);
-			repayLog.setSeq(cnt++);
+			repayLog.setSeq(++cnt);
 			repayLog.setRepayMode(RepayMode.PublicRepay.getName());
 			double totalRepayAmt = totalRepayCapital + totalRepayInterest+totalRepayOverdueAmt+totalRepayOtherOverdueAmt+totalRepayOtherFee+totalRepayLateFee;
 			repayLog.setRepayAmount(totalRepayAmt);
@@ -1571,6 +1571,207 @@ public class AccountingServiceImpl implements IAccountingService {
 		}
 	}
 
-	
-
+	@Override
+	public RepayingFeeItemVo getSettleRepayingFeeItems(String appId, boolean isCalOverdueAmount, Date overdueEndDate,
+			boolean isReduceStayAmount, boolean isContainCurPeriod) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				double repayTotalCapital = 0.00;
+				double repayTotalInterest = 0.00;
+				double repayTotalOverdueAmt = 0.00;
+				double otherTotalFee = 0.00;
+				double otherTotalOverdueAmt = 0.00;
+				
+				//获取截止日期与当前日期间隔天数
+				if(overdueEndDate ==null)
+				{
+					overdueEndDate = new Date();
+				}
+				int spaceDay = Utils.getSpaceDay(new Date(), overdueEndDate);
+				//获取日罚息率
+				GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
+				double dayLateRate = ledgerRecord.getDayLateRate();
+				
+				//获取代扣明细表计划还款明细(不包含当期)
+				List<WaitingCharge> waitingChargePlanList = this.getWaitingChargeTypePlan(appId, false);
+				for(WaitingCharge item : waitingChargePlanList)
+				{
+					repayTotalCapital += item.getRepayCapital();
+					repayTotalInterest += item.getRepayInterest();
+					//判断是否计算额外罚息
+					if(isCalOverdueAmount)
+					{
+						//计算罚息 = 应还罚息+截止天数产生的额外罚息
+						repayTotalOverdueAmt += item.getRepayOverdueAmount()+(Math.round((item.getRepayCapital()+item.getRepayInterest())*dayLateRate*spaceDay*100)*0.01d);
+					}
+					else
+					{
+						repayTotalOverdueAmt += item.getRepayOverdueAmount();
+					}
+				}
+				//获取当期还款信息，如果当前结清日期不是还款日，则结清的当期本金+利息从还款计划获取，反之则从待扣款记录获取
+				if(isContainCurPeriod)
+				{
+					RepayPlan curRepayPlan = this.getCurrentPeriodRepayPlan(appId);
+					if(curRepayPlan.getWatingCharge()==null)
+					{
+						repayTotalCapital += curRepayPlan.getRepayCapital();
+						repayTotalInterest += curRepayPlan.getRepayInterest();	
+					}
+					else
+					{
+						repayTotalCapital += curRepayPlan.getWatingCharge().getRepayCapital();
+						repayTotalInterest += curRepayPlan.getWatingCharge().getRepayInterest();
+					}
+						
+				}
+					
+				//获取代扣明细表其他费用明细
+				List<WaitingCharge> waitingChargeOtherList = this.getWaitingChargeTypeOther(appId);
+				for(WaitingCharge item : waitingChargeOtherList)
+				{
+					otherTotalFee += item.getRepayCapital();
+					//判断是否计算额外罚息
+					if(isCalOverdueAmount)
+					{
+						//计算罚息 = 应还罚息+截止天数产生的额外罚息
+						otherTotalOverdueAmt += item.getRepayOverdueAmount()+(Math.round((item.getRepayCapital()+item.getRepayInterest())*dayLateRate*spaceDay*100)*0.01d);
+					}
+					else
+					{
+						otherTotalOverdueAmt += item.getRepayOverdueAmount();
+					}
+				}
+				
+				double remainCapital = this.getRemainCaptial(appId);
+				
+				StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
+				double stayAmount; 
+				if(stayAccount != null)
+				{
+					stayAmount = stayAccount.getStayAmount();
+				}
+				else
+				{
+					stayAmount = 0;
+				}
+					
+				//挂账金额的处理
+				if(isReduceStayAmount)
+				{
+					//有挂账，减其他费用罚息
+					if(stayAmount>0)
+					{
+						if(otherTotalOverdueAmt>0)
+						{
+							if(Double.compare(otherTotalOverdueAmt, stayAmount)>=0)
+							{
+								otherTotalOverdueAmt=otherTotalOverdueAmt-stayAmount;
+								stayAmount=0.00;
+							}
+							else
+							{
+								stayAmount = stayAmount - otherTotalOverdueAmt;
+								otherTotalOverdueAmt = 0.00;
+							}
+						}
+					}
+					//有挂账减其他费用
+					if(stayAmount>0)
+					{
+						if(otherTotalFee>0)
+						{
+							if(Double.compare(otherTotalFee, stayAmount)>=0)
+							{
+								otherTotalFee -=stayAmount;
+								stayAmount = 0.00;
+							}
+							else
+							{
+								stayAmount-=otherTotalFee;
+								otherTotalFee=0.00;
+							}
+						}
+					}
+					//有挂账减应还罚息
+					if(stayAmount>0)
+					{
+						if(repayTotalOverdueAmt>0)
+						{
+							if(Double.compare(repayTotalOverdueAmt, stayAmount)>=0)
+							{
+								repayTotalOverdueAmt-=stayAmount;
+								stayAmount = 0.00;
+							}
+							else
+							{
+								stayAmount-=repayTotalOverdueAmt;
+								otherTotalFee=0.00;
+							}
+						}
+					}
+					//有挂账减应还利息
+					if(stayAmount>0)
+					{
+						if(repayTotalInterest>0)
+						{
+							if(Double.compare(repayTotalInterest, stayAmount)>=0)
+							{
+								repayTotalInterest-=stayAmount;
+								stayAmount = 0.00;
+							}
+							else
+							{
+								stayAmount-=repayTotalInterest;
+								otherTotalFee=0.00;
+							}
+						}
+					}
+					//有挂账减应还本金
+					if(stayAmount>0)
+					{
+						if(repayTotalCapital>0)
+						{
+							if(Double.compare(repayTotalCapital, stayAmount)>=0)
+							{
+								repayTotalCapital-=stayAmount;
+								stayAmount = 0.00;
+							}
+							else
+							{
+								stayAmount-=repayTotalCapital;
+								otherTotalFee=0.00;
+							}
+						}
+					}
+					//有挂账减本金
+					if(stayAmount>0)
+					{
+						if(remainCapital>0)
+						{
+							if(Double.compare(remainCapital, stayAmount)>=0)
+							{
+								remainCapital-=stayAmount;
+								stayAmount = 0.00;
+							}
+							else
+							{
+								stayAmount-=remainCapital;
+								otherTotalFee=0.00;
+							}
+						}
+					}
+				}
+				
+				RepayingFeeItemVo vo = new RepayingFeeItemVo();
+				vo.setRepayCapital(repayTotalCapital);
+				vo.setRepayInterest(repayTotalInterest);
+				vo.setRepayOverdueAmount(repayTotalOverdueAmt);
+				vo.setOtherAmount(otherTotalFee);
+				vo.setOtherOverdueAmount(otherTotalOverdueAmt);
+				vo.setRemainCapital(remainCapital);
+				vo.setStayAmount(stayAmount);
+				
+				return vo;
+			}
 }

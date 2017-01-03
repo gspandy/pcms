@@ -35,7 +35,7 @@ public class BaseController
 		response.setData(obj);
 		return response;
 	}
-	
+	/**表单提交日期格式转换为本地时区**/
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z"); //yyyy-MM-dd'T'HH:mm:ssZ example

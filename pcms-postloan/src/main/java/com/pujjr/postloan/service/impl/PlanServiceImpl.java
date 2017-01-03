@@ -67,7 +67,7 @@ public class PlanServiceImpl implements IPlanService {
 		for (RepayPlan repayPlan : repayPlanList) {
 			repayPlan.setId(Utils.get16UUID());
 			repayPlan.setAppId(appId);
-			repayPlan.setRepayStatus(RepayStatus.Repaying.getName());
+			repayPlan.setRepayStatus(RepayStatus.WaitingRepay.getName());
 			repayPlan.setAddupOverdueDay(0);
 			repayPlan.setAddupOverdueAmount(0.00);
 			repayPlanMapper.insert(repayPlan);

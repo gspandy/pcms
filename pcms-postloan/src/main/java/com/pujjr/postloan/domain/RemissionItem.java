@@ -23,6 +23,8 @@ public class RemissionItem {
 
 	private Double lateFee;
 
+	private String remissionComment;
+
 	public String getId() {
 		return id;
 	}
@@ -101,5 +103,13 @@ public class RemissionItem {
 
 	public void setLateFee(Double lateFee) {
 		this.lateFee = lateFee;
+	}
+
+	public String getRemissionComment() {
+		return remissionComment;
+	}
+
+	public void setRemissionComment(String remissionComment) {
+		this.remissionComment = remissionComment;
 	}
 }

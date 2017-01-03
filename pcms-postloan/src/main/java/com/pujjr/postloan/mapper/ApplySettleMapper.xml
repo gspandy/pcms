@@ -311,7 +311,9 @@
   	left join SYS_DICT_DATA e on a.APPLY_STATUS = e.DICT_DATA_CODE
   	left join SYS_ACCOUNT f on c.ASSIGNEE_ = f.ACCOUNT_ID
   	where a.CREATE_ID = #{createId}
-  	and a.SETTLE_TYPE = #{settleType}
+  	<if test="settleType != null and settleType !=''">
+  		and a.SETTLE_TYPE = #{settleType}
+  	</if>
   </select>
   <resultMap id="RemissionItemResultMap" type="com.pujjr.postloan.domain.RemissionItem" >
     <id column="ID" jdbcType="VARCHAR" property="id" />
@@ -324,6 +326,7 @@
     <result column="OTHER_FEE" jdbcType="DOUBLE" property="otherFee" />
     <result column="OTHER_OVERDUE_AMOUNT" jdbcType="DOUBLE" property="otherOverdueAmount" />
     <result column="LATE_FEE" jdbcType="DOUBLE" property="lateFee" />
+    <result column="REMISSION_COMMENT" jdbcType="VARCHAR" property="remissionComment" />
   </resultMap>
   <select id="selectRemissionItem" parameterType="String" resultMap="RemissionItemResultMap">
   	select * from T_REMISSION_ITEM where APPLY_REF_ID = #{ID}

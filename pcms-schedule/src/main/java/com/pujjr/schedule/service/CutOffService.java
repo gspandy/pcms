@@ -13,10 +13,13 @@ import com.pujjr.assetsmanage.service.ITelInterviewService;
 import com.pujjr.base.dao.ArchiveTaskMapper;
 import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.Holiday;
 import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.domain.Sequence;
+import com.pujjr.base.domain.SysParam;
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.base.service.ISequenceService;
+import com.pujjr.base.service.ISysParamService;
 import com.pujjr.carcredit.constant.InsuranceType;
 import com.pujjr.carcredit.domain.ApplyTenant;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
@@ -80,16 +83,18 @@ public class CutOffService
 	private IApplyService applyService;
 	@Autowired
 	private ISignContractService signService;
+	@Autowired
+	private ISysParamService sysParamService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
 	 */
-	private void handleAccounting() throws ParseException 
+	private void handleAccounting(Date execDate) throws ParseException 
 	{
 		// TODO Auto-generated method stub
 		//获取当前日期及下一个工作日
 		System.out.println("开始日切处理");
-		Date curDate = Utils.str82date(Utils.getFormatDate(new Date(), "yyyyMMdd"));
+		Date curDate = Utils.str82date(Utils.getFormatDate(execDate, "yyyyMMdd"));
 		Date workDate =  holidayService.getWorkDate(curDate);
 		/**
 		 * 应还处理阶段
@@ -111,7 +116,7 @@ public class CutOffService
 			//还款日设置为下一个工作日期
 			waitingChargePo.setRepayDate(workDate);
 			waitingChargePo.setOfferStatus(OfferStatus.WaitOffer.getName());
-			waitingChargePo.setGenTime(new Date());
+			waitingChargePo.setGenTime(execDate);
 			waitingChargePo.setVersionId(1);
 			waitingChargePo.setBatchTaskId("1");
 			waitingChargeDao.insert(waitingChargePo);
@@ -302,9 +307,9 @@ public class CutOffService
 		}
 	}
 	//计算归档任务逾期
-	private void checkArchiveTaskOverdue()
+	private void checkArchiveTaskOverdue(Date execDate)
 	{
-		Date beforeDay = Utils.getDateAfterDay(new Date(), -1);
+		Date beforeDay = Utils.getDateAfterDay(execDate, -1);
 		List<ArchiveTask> overdueTasks = archiveTaskDao.selectArchiveTaskOverdueList(ArchiveType.LoanComplete.getName(), beforeDay);
 		for(ArchiveTask item : overdueTasks)
 		{
@@ -313,9 +318,9 @@ public class CutOffService
 		}
 	}
 	//放款完成后15天自动生成电话回访任务
-	private  void generateTelInterviewTask()
+	private  void generateTelInterviewTask(Date execDate)
 	{
-		Date beforeDay = Utils.getDateAfterDay(new Date(), -15);
+		Date beforeDay = Utils.getDateAfterDay(execDate, -15);
 		List<GeneralLedger> list = ledgerDao.selectByLoanDate(beforeDay);
 		for(GeneralLedger item : list)
 		{
@@ -323,9 +328,9 @@ public class CutOffService
 		}
 	}
 	//商业保险到期前30天生成保险续保任务
-	private void checkNeedInsuranceContinue()
+	private void checkNeedInsuranceContinue(Date execDate)
 	{
-		Date afterDay = Utils.getDateAfterDay(new Date(), 30);
+		Date afterDay = Utils.getDateAfterDay(execDate, 30);
 		List<String> list = insHisDao.selectNeedContinueAppList(InsuranceType.SYX.getName(), afterDay);
 		for(String appId : list)
 		{
@@ -348,9 +353,9 @@ public class CutOffService
 		
 	}
 	//还款日前短信通知
-	private void repayDayNotice()
+	private void repayDayNotice(Date execDate)
 	{
-		Date before1day = Utils.getDateAfterDay(new Date(), 1);
+		Date before1day = Utils.getDateAfterDay(execDate, 1);
 		List<RepayPlan> next1DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before1day);
 		for(RepayPlan item : next1DayPlanList)
 		{
@@ -364,7 +369,7 @@ public class CutOffService
 				System.out.println(e.getMessage());
 			}
 		}
-		Date before7day = Utils.getDateAfterDay(new Date(), 7);
+		Date before7day = Utils.getDateAfterDay(execDate, 7);
 		List<RepayPlan> next7DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before7day);
 		for(RepayPlan item : next7DayPlanList)
 		{
@@ -379,7 +384,7 @@ public class CutOffService
 			}
 			
 		}
-		Date before10day = Utils.getDateAfterDay(new Date(), 10);
+		Date before10day = Utils.getDateAfterDay(execDate, 10);
 		List<RepayPlan> next10DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before10day);
 		for(RepayPlan item : next10DayPlanList)
 		{
@@ -394,24 +399,66 @@ public class CutOffService
 			}
 		}
 	}
-	public void accountingCutOff() throws ParseException {
+	private void execCutOff(Date execDate) throws ParseException {
 		// TODO Auto-generated method stub
 		//日切账务处理
-		handleAccounting();
+		handleAccounting(execDate);
+		//计算归档任务逾期
+		checkArchiveTaskOverdue(execDate);
+		//创建放款电话回访任务
+		generateTelInterviewTask(execDate);
+		//创建商业保险续保任务
+		checkNeedInsuranceContinue(execDate);
+		//还款日前短信提醒
+		repayDayNotice(execDate);
+		//保存最后执行批处理日期
+		SysParam sysParam = sysParamService.getSysParamByParamName("lastBatchExecDate");
+		if(sysParam==null)
+		{
+			sysParam = new SysParam();
+			sysParam.setId(Utils.get16UUID());
+			sysParam.setParamName("lastBatchExecDate");
+			sysParam.setParamValue(Utils.formateDate2String(execDate, "yyyy-MM-dd"));
+			sysParam.setParamDesc("日切批处理最后成功执行日期");
+			sysParam.setCreateId("admin");
+			sysParam.setCreateTime(new Date());
+			sysParam.setUpdateId("admin");
+			sysParam.setUpdateTime(new Date());
+			sysParamService.addSysParam(sysParam);
+		}
+		else
+		{
+			sysParam.setParamValue(Utils.formateDate2String(execDate, "yyyy-MM-dd"));
+			sysParam.setUpdateId("admin");
+			sysParam.setUpdateTime(new Date());
+			sysParamService.modifySysParam(sysParam);
+		}
 	}
-	
-	public void otherCutOff()
+	public void runNormalCutOff() throws ParseException
+	{
+		//默认开始运行批处理日期为当前日期
+		Date startRunDate = new Date();
+		//默认结束运行批处理日期为当前日期
+		Date endRunDate = new Date();
+		//获取最后日切批处理任务执行日期
+		SysParam sysParam = sysParamService.getSysParamByParamName("lastBatchExecDate");
+		//如果没有则默认当前日期
+		if(sysParam!=null)
+		{
+			startRunDate = Utils.formateString2Date(sysParam.getParamValue(), "yyyy-MM-dd");
+			startRunDate = Utils.getDateAfterDay(startRunDate, 1);
+		}
+		while(Utils.getSpaceDay(startRunDate, endRunDate)>=0)
+		{
+			execCutOff(startRunDate);
+			startRunDate = Utils.getDateAfterDay(startRunDate, 1);
+		}
+	}
+	public void runOtherCutOff()
 	{
 		//重置序列号
 		resetSequence();
-		//计算归档任务逾期
-		checkArchiveTaskOverdue();
-		//创建放款电话回访任务
-		generateTelInterviewTask();
-		//创建商业保险续保任务
-		checkNeedInsuranceContinue();
-		//还款日前短信提醒
-		repayDayNotice();
+		
 	}
 
 }

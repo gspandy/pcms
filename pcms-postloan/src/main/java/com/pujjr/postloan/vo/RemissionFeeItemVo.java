@@ -21,6 +21,8 @@ public class RemissionFeeItemVo
 	private double lateFee;
 	//减免日期
 	private Date remissionDate;
+	//减免备注
+	private String remissionComment;
 	
 	public RemissionFeeItemVo()
 	{
@@ -73,6 +75,14 @@ public class RemissionFeeItemVo
 	}
 	public void setLateFee(double lateFee) {
 		this.lateFee = lateFee;
+	}
+
+	public String getRemissionComment() {
+		return remissionComment;
+	}
+
+	public void setRemissionComment(String remissionComment) {
+		this.remissionComment = remissionComment;
 	}
 	
 	
