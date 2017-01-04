@@ -148,12 +148,6 @@ public class LoanServiceImpl implements ILoanService {
 		vars.put("appId", appId);
 		runWorkflowService.startProcess("YFKDAZL", archiveKey, vars);
 		
-		//发送放款完成短信
-		RepayPlanVo repayPlan = planService.selectRepayPlay(appId, 1);
-		Date repayDate = repayPlan.getClosingDate();
-		SignContract signInfo = signService.getSignContractByAppId(appId);
-		BankInfo bankInfo = bankService.getBankInfoById(signInfo.getRepayBankId());
-		smsService.sendWelcomNotice(appId, "admin", applyVo.getTenant().getMobile(), applyVo.getTenant().getName(), String.valueOf(Utils.getDateDay(repayDate)), repayPlan.getRepayTotalAmount(), signInfo.getRepayAcctNo(), bankInfo.getBankName());
 		
 		//提交放款完成任务
 		runWorkflowService.completeTask(taskId, "提交任务", null, CommandType.COMMIT);

@@ -25,4 +25,6 @@ public interface GeneralLedgerMapper {
 	
 	List<GeneralLedger> selectByLoanDate(@Param("loanDate")Date loanDate);
 	
+	List<GeneralLedger> selectByOverdueDay(@Param("overdueDay")int overdueDay);
+	
 }

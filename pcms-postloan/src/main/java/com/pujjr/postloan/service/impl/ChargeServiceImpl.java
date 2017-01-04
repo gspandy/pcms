@@ -325,6 +325,7 @@ public class ChargeServiceImpl implements IChargeService {
 			{
 				OfferSummaryHis item = listOffer.get(0);
 				ApplyTenant tenant = applyService.getApplyTenant(appId);
+				//还款当天扣款失败提醒短信（当日新增扣款第一次扣款失败后系统自动发送）
 				smsService.sendRepayDayFailNotice(appId, "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(new Date(), "yyyy年MM月dd日"), item.getOfferAmount());
 			}
 		}

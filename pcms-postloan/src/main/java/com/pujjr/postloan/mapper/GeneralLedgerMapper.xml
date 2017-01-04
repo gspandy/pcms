@@ -368,4 +368,7 @@
   <select id="selectByLoanDate" resultMap="BaseResultMap">
   	select * from t_general_ledger where LOAN_DATE = #{loanDate}
   </select>
+  <select id="selectByOverdueDay" resultMap="BaseResultMap">
+  	select * from t_general_ledger where ADDUP_OVERDUE_DAY = #{overdueDay}
+  </select>
 </mapper>

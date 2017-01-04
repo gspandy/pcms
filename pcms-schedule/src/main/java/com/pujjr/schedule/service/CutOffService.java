@@ -13,15 +13,18 @@ import com.pujjr.assetsmanage.service.ITelInterviewService;
 import com.pujjr.base.dao.ArchiveTaskMapper;
 import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.domain.ArchiveTask;
+import com.pujjr.base.domain.BankInfo;
 import com.pujjr.base.domain.Holiday;
 import com.pujjr.base.domain.InsuranceHis;
 import com.pujjr.base.domain.Sequence;
 import com.pujjr.base.domain.SysParam;
+import com.pujjr.base.service.IBankService;
 import com.pujjr.base.service.IHolidayService;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysParamService;
 import com.pujjr.carcredit.constant.InsuranceType;
 import com.pujjr.carcredit.domain.ApplyTenant;
+import com.pujjr.carcredit.domain.SignContract;
 import com.pujjr.carcredit.domain.SignFinanceDetail;
 import com.pujjr.carcredit.service.IApplyService;
 import com.pujjr.carcredit.service.ISignContractService;
@@ -44,7 +47,11 @@ import com.pujjr.postloan.enumeration.OfferStatus;
 import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.enumeration.RepayStatus;
 import com.pujjr.postloan.service.IAccountingService;
+import com.pujjr.postloan.service.IPlanService;
+import com.pujjr.postloan.service.IPostLoanSmsService;
+import com.pujjr.postloan.vo.RepayPlanVo;
 import com.pujjr.sms.service.ISmsService;
+import com.pujjr.sms.vo.SmsMessageVo;
 import com.pujjr.utils.Utils;
 
 public class CutOffService
@@ -85,6 +92,12 @@ public class CutOffService
 	private ISignContractService signService;
 	@Autowired
 	private ISysParamService sysParamService;
+	@Autowired
+	private IPlanService planService;
+	@Autowired
+	private IBankService bankService;
+	@Autowired
+	private IPostLoanSmsService postLoanSmsService;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
@@ -355,6 +368,7 @@ public class CutOffService
 	//还款日前短信通知
 	private void repayDayNotice(Date execDate)
 	{
+		//还款日前1天提醒
 		Date before1day = Utils.getDateAfterDay(execDate, 1);
 		List<RepayPlan> next1DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before1day);
 		for(RepayPlan item : next1DayPlanList)
@@ -369,6 +383,22 @@ public class CutOffService
 				System.out.println(e.getMessage());
 			}
 		}
+		//还款日前2天提醒
+		Date before2day = Utils.getDateAfterDay(execDate, 2);
+		List<RepayPlan> next10DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before2day);
+		for(RepayPlan item : next10DayPlanList)
+		{
+			try
+			{
+				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+			}
+			catch(Exception e)
+			{
+				System.out.println(e.getMessage());
+			}
+		}
+		//还款日前7天提醒
 		Date before7day = Utils.getDateAfterDay(execDate, 7);
 		List<RepayPlan> next7DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before7day);
 		for(RepayPlan item : next7DayPlanList)
@@ -384,22 +414,86 @@ public class CutOffService
 			}
 			
 		}
-		Date before10day = Utils.getDateAfterDay(execDate, 10);
-		List<RepayPlan> next10DayPlanList =repayPlanDao.selectNeedChargeRepayPlanList(before10day);
-		for(RepayPlan item : next10DayPlanList)
+		
+	}
+	//欢迎短信提醒（在放款后15天，系统向客户自动发送）
+	private void welcomeNotice(Date execDate) throws Exception
+	{
+		Date beforeDay = Utils.getDateAfterDay(execDate, -15);
+		List<GeneralLedger> list = ledgerDao.selectByLoanDate(beforeDay);
+		for(GeneralLedger item : list)
 		{
-			try
-			{
-				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
-				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
-			}
-			catch(Exception e)
-			{
-				System.out.println(e.getMessage());
-			}
+			//发送放款完成短信
+			RepayPlanVo repayPlan = planService.selectRepayPlay(item.getAppId(), 1);
+			Date repayDate = repayPlan.getClosingDate();
+			SignContract signInfo = signService.getSignContractByAppId(item.getAppId());
+			BankInfo bankInfo = bankService.getBankInfoById(signInfo.getRepayBankId());
+			ApplyTenant tenant  = applyService.getApplyTenant(item.getAppId());
+			smsService.sendWelcomNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), String.valueOf(Utils.getDateDay(repayDate)), repayPlan.getRepayTotalAmount(), signInfo.getRepayAcctNo(), bankInfo.getBankName());
 		}
 	}
-	private void execCutOff(Date execDate) throws ParseException {
+	//发送逾期通知短信
+	private void overdueNotice(Date execDate) throws Exception
+	{
+		//逾期1-7天告知逾期天数及金额短信提醒（逾期第2、5、7天系统自动发送）
+		List<GeneralLedger> listOverdueDay2 = ledgerDao.selectByOverdueDay(2);
+		for(GeneralLedger item : listOverdueDay2)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue1to7", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue1to7", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay5 = ledgerDao.selectByOverdueDay(5);
+		for(GeneralLedger item : listOverdueDay5)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue1to7", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue1to7", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay7 = ledgerDao.selectByOverdueDay(7);
+		for(GeneralLedger item : listOverdueDay7)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue1to7", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue1to7", vo.getMessage());
+		}
+		//逾期8-15天告知逾期天数及金额短信提醒（逾期第9、12、15天系统自动发送）
+		List<GeneralLedger> listOverdueDay9 = ledgerDao.selectByOverdueDay(9);
+		for(GeneralLedger item : listOverdueDay9)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue8to15", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue8to15", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay12 = ledgerDao.selectByOverdueDay(12);
+		for(GeneralLedger item : listOverdueDay12)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue8to15", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue8to15", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay15 = ledgerDao.selectByOverdueDay(15);
+		for(GeneralLedger item : listOverdueDay15)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue8to15", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue8to15", vo.getMessage());
+		}
+		//逾期16-30天告知逾期天数及金额短信提醒（逾期第17、24、30天系统自动发送）
+		List<GeneralLedger> listOverdueDay17 = ledgerDao.selectByOverdueDay(15);
+		for(GeneralLedger item : listOverdueDay17)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue16to30", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue16to30", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay24 = ledgerDao.selectByOverdueDay(24);
+		for(GeneralLedger item : listOverdueDay24)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue16to30", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue16to30", vo.getMessage());
+		}
+		List<GeneralLedger> listOverdueDay30 = ledgerDao.selectByOverdueDay(30);
+		for(GeneralLedger item : listOverdueDay30)
+		{
+			SmsMessageVo vo = postLoanSmsService.genPostLoanSms("overdue16to30", item.getAppId());
+			smsService.sendMessage(item.getAppId(), "admin",vo.getMobile(), "overdue16to30", vo.getMessage());
+		}
+	}
+	private void execCutOff(Date execDate) throws Exception {
 		// TODO Auto-generated method stub
 		//日切账务处理
 		handleAccounting(execDate);
@@ -411,6 +505,10 @@ public class CutOffService
 		checkNeedInsuranceContinue(execDate);
 		//还款日前短信提醒
 		repayDayNotice(execDate);
+		//欢迎短信提醒
+		welcomeNotice(execDate);
+		//逾期短信通知
+		overdueNotice(execDate);
 		//保存最后执行批处理日期
 		SysParam sysParam = sysParamService.getSysParamByParamName("lastBatchExecDate");
 		if(sysParam==null)
@@ -434,7 +532,7 @@ public class CutOffService
 			sysParamService.modifySysParam(sysParam);
 		}
 	}
-	public void runNormalCutOff() throws ParseException
+	public void runNormalCutOff() throws Exception
 	{
 		//默认开始运行批处理日期为当前日期
 		Date startRunDate = new Date();
