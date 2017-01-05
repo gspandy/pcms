@@ -208,6 +208,7 @@
   		left join SYS_ACCOUNT c on a.CREATE_ID = c.ACCOUNT_ID
   		left join SYS_DICT_DATA d on a.REPAY_STATUS  = d.DICT_DATA_CODE
   		where a.APP_ID  = #{appId} and a.APPLY_STATUS = 'dhsqzt03'
+  		order by a.CREATE_DATE
   	</select>
   	<select id="selectProcessingLoanTaskCnt" resultType="Integer">
   		select count(*) 

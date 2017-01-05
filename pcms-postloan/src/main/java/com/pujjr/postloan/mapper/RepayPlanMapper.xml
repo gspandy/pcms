@@ -372,4 +372,9 @@
   <select id="selectWaitingChargeInfo" parameterType="String" resultMap="WaitingChargeResultMap">
   	select * from t_waiting_charge where FEE_REF_ID =#{ID}
   </select>
+  
+  <select id="selectSettleRepayPlanList" resultMap="BaseResultMap">
+  	select * from t_repay_plan
+  	where REPAY_STATUS = 'hkzt02' and APP_ID = #{appId}
+  </select>
 </mapper>

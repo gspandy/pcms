@@ -316,7 +316,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		vo.setRemainCapital(remainCapital);
 		vo.setStayAmount(stayAmount);
 		
-		return vo;
+		return (RepayingFeeItemVo)Utils.formateDoubleOfObject(vo, 2);
 	}
 
 	@Override
@@ -511,104 +511,126 @@ public class AccountingServiceImpl implements IAccountingService {
 			planItem.setRepayOverdueAmount(overdueAmt);
 			planRepayList.set(i, planItem);
 		}
-		/**
-		 * 冲还款计划利息、本金
-		 */
-		double repayInterest  = repayOverdueAmt;
-		if(repayMode.equals(RepayMode.Remission))
-		{
-			repayInterest = refundItem.getInterest();
-		}
 		
+		//如果是减免，则用对应减免项减免，否则按照正常还款顺序进行还款
 		double repayCapital  = 0.00;
 		if(repayMode.equals(RepayMode.Remission))
 		{
+			//减免利息
+			double repayInterest = refundItem.getInterest();
+			for(int i = 0 ; i<planRepayList.size() ; i++)
+			{
+				WaitingCharge planItem = planRepayList.get(i);
+				if(Double.compare(repayInterest,0.00)<=0)
+					break;
+				double interest  = planItem.getRepayInterest();
+				if(Double.compare(repayInterest,0.00)>0  && Double.compare(interest,0.00)>0)
+				{
+					if(Double.compare(interest, repayInterest)>=0)
+					{
+						interest-=repayInterest;
+						totalInterest+=repayInterest;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, repayInterest);
+						repayInterest=0.00;
+					}
+					else
+					{
+						repayInterest-=interest;
+						totalInterest+=interest;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, interest);
+						interest=0.00;
+					}
+				}
+				planItem.setRepayInterest(interest);
+				planRepayList.set(i, planItem);
+			}
+			//减免本金
 			repayCapital = refundItem.getCapital();
-		}
-		for(int i = 0 ; i<planRepayList.size() ; i++)
-		{
-			WaitingCharge planItem = planRepayList.get(i);
-			if(Double.compare(repayInterest,0.00)<=0)
-				break;
-			double interest  = planItem.getRepayInterest();
-			if(Double.compare(repayInterest,0.00)>0  && Double.compare(interest,0.00)>0)
+			for(int i = 0 ; i<planRepayList.size() ; i++)
 			{
-				if(Double.compare(interest, repayInterest)>=0)
+				WaitingCharge planItem = planRepayList.get(i);
+				if(Double.compare(repayCapital,0.00)<=0)
+					break;
+				double capital  = planItem.getRepayCapital();
+				if(Double.compare(repayCapital,0.00)>0  && Double.compare(capital,0.00)>0)
 				{
-					interest-=repayInterest;
-					totalInterest+=repayInterest;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, repayInterest);
-					repayInterest=0.00;
+					if(Double.compare(capital, repayCapital)>=0)
+					{
+						capital-=repayCapital;
+						totalCapital+=repayCapital;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, repayCapital);
+						repayCapital=0.00;
+					}
+					else
+					{
+						repayCapital-=capital;
+						totalCapital+=capital;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, capital);
+						capital=0.00;
+					}
 				}
-				else
-				{
-					repayInterest-=interest;
-					totalInterest+=interest;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, interest);
-					interest=0.00;
-				}
+				planItem.setRepayCapital(capital);
+				planRepayList.set(i, planItem);
 			}
-			planItem.setRepayInterest(interest);
-			planRepayList.set(i, planItem);
-			
-			//这里冲本金
-			repayCapital = repayInterest;
-			if(Double.compare(repayCapital,0.00)<=0)
-				break;
-			double capital  = planItem.getRepayCapital();
-			if(Double.compare(repayCapital,0.00)>0  && Double.compare(capital,0.00)>0)
-			{
-				if(Double.compare(capital, repayCapital)>=0)
-				{
-					capital-=repayCapital;
-					totalCapital+=repayCapital;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, repayCapital);
-					repayCapital=0.00;
-				}
-				else
-				{
-					repayCapital-=capital;
-					totalCapital+=capital;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, capital);
-					capital=0.00;
-				}
-			}
-			planItem.setRepayCapital(capital);
-			planRepayList.set(i, planItem);
 		}
-		/**
-		 * 冲还款计划本金
-		 */
-		double repayCapital  = repayInterest;
-		if(repayMode.equals(RepayMode.Remission))
+		else
 		{
-			repayCapital = refundItem.getCapital();
-		}
-		for(int i = 0 ; i<planRepayList.size() ; i++)
-		{
-			WaitingCharge planItem = planRepayList.get(i);
-			if(Double.compare(repayCapital,0.00)<=0)
-				break;
-			double capital  = planItem.getRepayCapital();
-			if(Double.compare(repayCapital,0.00)>0  && Double.compare(capital,0.00)>0)
+			//这里是冲了其他费用逾期、其他费用本金、计划还款罚息后剩余的还款金额，先用来冲利息
+			double repayInterest  = repayOverdueAmt;
+			for(int i = 0 ; i<planRepayList.size() ; i++)
 			{
-				if(Double.compare(capital, repayCapital)>=0)
+				//先用还款金额减免利息
+				WaitingCharge planItem = planRepayList.get(i);
+				if(Double.compare(repayInterest,0.00)<=0)
+					break;
+				double interest  = planItem.getRepayInterest();
+				if(Double.compare(repayInterest,0.00)>0  && Double.compare(interest,0.00)>0)
 				{
-					capital-=repayCapital;
-					totalCapital+=repayCapital;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, repayCapital);
-					repayCapital=0.00;
+					if(Double.compare(interest, repayInterest)>=0)
+					{
+						interest-=repayInterest;
+						totalInterest+=repayInterest;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, repayInterest);
+						repayInterest=0.00;
+					}
+					else
+					{
+						repayInterest-=interest;
+						totalInterest+=interest;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.INTEREST, interest);
+						interest=0.00;
+					}
 				}
-				else
+				planItem.setRepayInterest(interest);
+				planRepayList.set(i, planItem);
+				
+				//再用剩余还款金额冲本金
+				repayCapital = repayInterest;
+				if(Double.compare(repayCapital,0.00)<=0)
+					break;
+				double capital  = planItem.getRepayCapital();
+				if(Double.compare(repayCapital,0.00)>0  && Double.compare(capital,0.00)>0)
 				{
-					repayCapital-=capital;
-					totalCapital+=capital;
-					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, capital);
-					capital=0.00;
+					if(Double.compare(capital, repayCapital)>=0)
+					{
+						capital-=repayCapital;
+						totalCapital+=repayCapital;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, repayCapital);
+						repayCapital=0.00;
+					}
+					else
+					{
+						repayCapital-=capital;
+						totalCapital+=capital;
+						this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, capital);
+						capital=0.00;
+					}
 				}
+				planItem.setRepayCapital(capital);
+				planRepayList.set(i, planItem);
+				//再用剩余还款金额冲罚息
+				repayInterest = repayCapital;
 			}
-			planItem.setRepayCapital(capital);
-			planRepayList.set(i, planItem);
 		}
 		/**
 		 * 检查还款计划是否已结清，并更新状态

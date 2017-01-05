@@ -282,61 +282,39 @@ public class CutOffService
 			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 			//获取最近逾期记录
 			OverdueLog latesetOverdueLog = overdueLogDao.selectLatesetLog(appId);
-			
-		}
-		List<String> overdueAppList = waitingChargeDao.selectHasOverdueAppIdList(curDate);
-		for(String appId : overdueAppList)
-		{
-			//更新总账逾期天数
-			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
-			ledgerPo.setAddupOverdueDay(ledgerPo.getAddupOverdueDay()+1);
-			
-			//总账已经处于逾期状态，则获取最近逾期记录，更新最后逾期日期和逾期次数，否则新增逾期记录
-			OverdueLog latesetOverdueLog = overdueLogDao.selectLatesetLog(appId);
-			if(ledgerPo.getRepayStatus().equals(RepayStatus.Overdue.getName()))
+			//如果没有预期记录或者最近一次逾期记录的结束日期与今日产生逾期的开始日期间隔超过1天，则可判断当前不为逾期，应为新的逾期次数
+			if(latesetOverdueLog==null || Utils.getSpaceDay(latesetOverdueLog.getEndDate(), item.getStartDate())>1)
+			{
+				OverdueLog newOverdueLog = new OverdueLog();
+				newOverdueLog.setId(Utils.get16UUID());
+				newOverdueLog.setAppId(appId);
+				newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
+				newOverdueLog.setStartDate(item.getStartDate());
+				newOverdueLog.setEndDate(item.getEndDate());
+				newOverdueLog.setAddupOverdueDay(item.getOverdueDay());
+				overdueLogDao.insert(newOverdueLog);
+				//更新总账为逾期状态
+				ledgerPo.setRepayStatus(RepayStatus.Overdue.getName());
+				//逾期次数加1
+				ledgerPo.setAddupOverdueTime(ledgerPo.getAddupOverdueTime()+1);
+				//逾期天数
+				ledgerPo.setAddupOverdueDay(item.getOverdueDay());
+				
+			}
+			//否则之前的扣款状态为已经逾期，逾期天数+1即可，次数不需要累加
+			else
 			{
 				latesetOverdueLog.setEndDate(curDate);
 				latesetOverdueLog.setAddupOverdueDay(latesetOverdueLog.getAddupOverdueDay()+1);
 				overdueLogDao.updateByPrimaryKey(latesetOverdueLog);
-			}
-			else
-			{
-				//总账之前未逾期，则设置扣款状态为逾期，逾期次数+1
-				ledgerPo.setRepayStatus(RepayStatus.Overdue.getName());
-				ledgerPo.setAddupOverdueTime(ledgerPo.getAddupOverdueTime()+1);
-				if(latesetOverdueLog!=null)
-				{
-					//逾期记录不是第一次则新的序号为最近一次+1
-					OverdueLog newOverdueLog = new OverdueLog();
-					newOverdueLog.setId(Utils.get16UUID());
-					newOverdueLog.setAppId(appId);
-					newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
-					newOverdueLog.setStartDate(curDate);
-					newOverdueLog.setEndDate(curDate);
-					newOverdueLog.setAddupOverdueDay(1);
-					overdueLogDao.insert(newOverdueLog);
-				}
-				else
-				{
-					//第一次逾期创建新的逾期记录
-					OverdueLog newOverdueLog = new OverdueLog();
-					newOverdueLog.setId(Utils.get16UUID());
-					newOverdueLog.setSeq(1);
-					newOverdueLog.setAppId(appId);
-					newOverdueLog.setStartDate(curDate);
-					newOverdueLog.setEndDate(curDate);
-					newOverdueLog.setAddupOverdueDay(1);
-					overdueLogDao.insert(newOverdueLog);
-				}
+				ledgerPo.setAddupOverdueDay(ledgerPo.getAddupOverdueDay()+1);
 			}
 			ledgerDao.updateByPrimaryKey(ledgerPo);
-			
 			//判断是否已经发起催收任务，如果没有则发起电话催收任务
 			if(collectionService.checkHasCollectionTask(appId)==false)
 			{
 				collectionService.createPhoneCollectionTask("admin", appId, "系统提示：客户已逾期，请进行电话催收");
 			}
-			
 		}
 		System.out.println("结束日切处理");
 	}

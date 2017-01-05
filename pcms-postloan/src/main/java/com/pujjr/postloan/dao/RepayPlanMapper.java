@@ -64,5 +64,11 @@ public interface RepayPlanMapper {
      * @return
      */
     List<RepayPlan> selectNotSettleRepayPlanList(@Param("appId")String appId);
+    /**
+     * 查询已结清期数
+     * @param appId
+     * @return
+     */
+    List<RepayPlan> selectSettleRepayPlanList(@Param("appId")String appId);
 
 }

@@ -10,7 +10,9 @@ import com.github.pagehelper.PageHelper;
 import com.pujjr.base.service.ISysAccountService;
 import com.pujjr.base.vo.QueryAuthVo;
 import com.pujjr.postloan.dao.LoanQueryMapper;
+import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.WaitingChargeNewMapper;
+import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingChargeNew;
 import com.pujjr.postloan.service.ILoanQueryService;
 import com.pujjr.postloan.vo.QueryParamLoanVo;
@@ -24,6 +26,8 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 	private WaitingChargeNewMapper waitingChargeNewDao;
 	@Autowired
 	private ISysAccountService sysAccountService;
+	@Autowired
+	private RepayPlanMapper repayPlanDao;
 	@Override
 	public List<HashMap<String, Object>> getLoanCustList(QueryParamLoanVo queryParam) {
 		// TODO Auto-generated method stub
@@ -35,7 +39,12 @@ public class LoanQueryServiceImpl implements ILoanQueryService {
 	@Override
 	public HashMap<String,Object> getLoanCustApplyInfo(String appId) {
 		// TODO Auto-generated method stub
-		return loanQueryDao.selectLoanCustApplyInfo(appId);
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map =  loanQueryDao.selectLoanCustApplyInfo(appId);
+		//获取已还期数
+		List<RepayPlan> settleRepayPlan = repayPlanDao.selectSettleRepayPlanList(appId);
+		map.put("settlePeriod", settleRepayPlan.size());
+		return map;
 	}
 	@Override
 	public List<HashMap<String,Object>> getLoanCustRepayLog(String appId)
