@@ -108,14 +108,14 @@ public class CollectionServiceImpl implements ICollectionService
 		po.setCreateTime(new Date());
 		po.setApplyComment(applyComment);
 		po.setApplyStatus(LoanApplyStatus.WaitingApprove.getName());
-		
+		collectionTaskDao.insert(po);
 		//启动流程
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("appId", appId);
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, createId);
 		ProcessInstance instance = runWorkflowService.startProcess(CollectionTaskType.PhoneCollection.getTaskKey(), businessKey, vars);
 		po.setProcInstId(instance.getProcessInstanceId());
-		collectionTaskDao.insert(po);
+		collectionTaskDao.updateByPrimaryKey(po);
 	}
 
 	@Override

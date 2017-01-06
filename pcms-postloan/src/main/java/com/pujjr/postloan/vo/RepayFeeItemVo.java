@@ -18,7 +18,28 @@ public class RepayFeeItemVo
 	private double remainCapital;
 	//挂账金额
 	private double stayAmount;
+	//应还总额
+	private double totalRepayAmount;
 	
+	public RepayFeeItemVo()
+	{
+		this.remainCapital=0.00;
+		this.repayInterest=0.00;
+		this.repayOverdueAmount=0.00;
+		this.otherAmount= 0.00;
+		this.otherOverdueAmount = 0.00;
+		this.stayAmount=0.00;
+		this.totalRepayAmount=0.00;
+	}
+	
+	public double getTotalRepayAmount() {
+		return totalRepayAmount;
+	}
+
+	public void setTotalRepayAmount(double totalRepayAmount) {
+		this.totalRepayAmount = totalRepayAmount;
+	}
+
 	public double getRepayCapital() {
 		return repayCapital;
 	}

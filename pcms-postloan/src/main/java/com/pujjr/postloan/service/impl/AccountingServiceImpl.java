@@ -315,6 +315,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		vo.setOtherOverdueAmount(otherTotalOverdueAmt);
 		vo.setRemainCapital(remainCapital);
 		vo.setStayAmount(stayAmount);
+		double totalRepayAmt = repayTotalCapital + repayTotalInterest + repayTotalOverdueAmt + otherTotalFee+ otherTotalOverdueAmt;
+		vo.setTotalRepayAmount(totalRepayAmt);
 		
 		return (RepayingFeeItemVo)Utils.formateDoubleOfObject(vo, 2);
 	}
