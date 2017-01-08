@@ -25,8 +25,10 @@ import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
 import com.pujjr.jbpm.core.command.StartProcessCommand;
 import com.pujjr.jbpm.core.ProcessHandleHelper;
+import com.pujjr.jbpm.dao.ActRuTaskMapper;
 import com.pujjr.jbpm.dao.WorkflowDefineMapper;
 import com.pujjr.jbpm.dao.WorkflowGlobalParamMapper;
+import com.pujjr.jbpm.domain.ActRuTask;
 import com.pujjr.jbpm.domain.WorkflowDefine;
 import com.pujjr.jbpm.domain.WorkflowGlobalParam;
 import com.pujjr.jbpm.domain.WorkflowNodeParam;
@@ -56,6 +58,8 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 	private IRunPathService runPathService;
 	@Autowired
 	private IConfigWorkflowService  configWorkflowService;
+	@Autowired
+	private ActRuTaskMapper actRuTaskDao;
 	
 	
 	public ProcessInstance startProcess(String workflowKey,String businessKey,Map<String,Object> vars)
@@ -262,5 +266,11 @@ public class RunWorkflowServiceImpl implements IRunWorkflowService
 		processNextCommand.setVars(vars);
 		processNextCommand.setMessage(message);
 		completeTask(processNextCommand);
+	}
+
+	@Override
+	public List<ActRuTask> getRunningTaskList(String assignee) {
+		// TODO Auto-generated method stub
+		return actRuTaskDao.selectList(assignee);
 	}
 }

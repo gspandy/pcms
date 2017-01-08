@@ -1,15 +1,18 @@
 package com.pujjr.jbpm.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.activiti.engine.runtime.ProcessInstance;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.jbpm.core.command.CommandType;
 import com.pujjr.jbpm.core.command.ProcessNextCommand;
 import com.pujjr.jbpm.core.command.StartProcessCommand;
+import com.pujjr.jbpm.domain.ActRuTask;
 
 @Service
 @Transactional(rollbackFor=Exception.class)
@@ -20,5 +23,7 @@ public interface IRunWorkflowService
 	public void completeTask(ProcessNextCommand processNextCommand);
 	
 	public void completeTask(String taskId,String message,HashMap<String,Object> vars,CommandType commandType);
+	
+	List<ActRuTask> getRunningTaskList(@Param("assignee")String assignee);
 	
 }

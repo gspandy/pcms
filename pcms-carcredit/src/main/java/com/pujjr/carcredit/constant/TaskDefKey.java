@@ -4,6 +4,8 @@ public class TaskDefKey
 {
 	//录入申请单
 	public final static String APPLY = "lrsqd";
+	//申请反欺诈
+	public final static String APPLY_FRAUD = "sqfqz";
 	//初审
 	public final static String PRE_CHECK ="chushen";
 	//审核

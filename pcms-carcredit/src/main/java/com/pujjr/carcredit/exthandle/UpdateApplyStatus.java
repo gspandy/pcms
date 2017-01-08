@@ -51,6 +51,7 @@ public class UpdateApplyStatus implements ITaskCreatePreHandle {
 			//进入初审或审核节点时，申请状态为待审核	
 			case TaskDefKey.PRE_CHECK:
 			case TaskDefKey.CHECK:
+			case TaskDefKey.APPLY_FRAUD:
 				apply.setStatus(ApplyStatus.WAIT_CHECK);
 				break;
 			//进入一级审批节点时：申请单状态为待审批

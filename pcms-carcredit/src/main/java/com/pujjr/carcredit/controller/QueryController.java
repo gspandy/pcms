@@ -21,6 +21,7 @@ import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.carcredit.domain.Apply;
+import com.pujjr.carcredit.domain.FraudHisResult;
 import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.po.WorkflowProcessResultPo;
 import com.pujjr.carcredit.service.IApplyService;
@@ -90,5 +91,11 @@ public class QueryController extends BaseController
 	public List<FraudInnerResult> queryFraudInnerResult(@PathVariable String appId)
 	{
 		return queryService.queryFraudInnerResult(appId);
+	}
+
+	@RequestMapping(value="/queryFraudHisResult/{appId}/{taskNodeName}")
+	public List<FraudHisResult> queryFraudHisResult(@PathVariable String appId,@PathVariable String taskNodeName)
+	{
+		return queryService.queryFraudHisResult(appId, taskNodeName);
 	}
 }

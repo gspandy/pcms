@@ -1,5 +1,6 @@
 package com.pujjr.carcredit.service.impl;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,11 +10,14 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.pujjr.base.dao.InsuranceHisMapper;
 import com.pujjr.base.dao.SysWorkgroupMapper;
 import com.pujjr.base.domain.InsuranceHis;
@@ -78,6 +82,7 @@ import com.pujjr.jbpm.domain.WorkflowRunPath;
 import com.pujjr.jbpm.service.IRunPathService;
 import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
+import com.pujjr.utils.PuspSocketClient;
 import com.pujjr.utils.Utils;
 @Service
 @Transactional(rollbackFor=Exception.class) 

@@ -46,4 +46,5 @@ public interface SysWorkgroupMapper {
 																@Param("taskType")String taskType,
 																@Param("groups")List<SysWorkgroup> groups,
 																@Param("candidateAccounts")List<String> candidateAccounts);
+    
 }

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pujjr.carcredit.dao.FraudHisResultMapper">
+  <resultMap id="BaseResultMap" type="com.pujjr.carcredit.domain.FraudHisResult">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="TASK_NODE_NAME" jdbcType="VARCHAR" property="taskNodeName" />
+    <result column="SEQ" jdbcType="INTEGER" property="seq" />
+    <result column="APP_ID" jdbcType="VARCHAR" property="appId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="IS_BLACK" jdbcType="BIT" property="isBlack" />
+    <result column="NEW_FIELD_NAME" jdbcType="VARCHAR" property="newFieldName" />
+    <result column="NEW_FIELD_VALUE" jdbcType="VARCHAR" property="newFieldValue" />
+    <result column="OLD_APP_ID" jdbcType="VARCHAR" property="oldAppId" />
+    <result column="OLD_FIELD_NAME" jdbcType="VARCHAR" property="oldFieldName" />
+    <result column="OLD_FIELD_VALUE" jdbcType="VARCHAR" property="oldFieldValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, TASK_NODE_NAME, SEQ, APP_ID, NAME, IS_BLACK, NEW_FIELD_NAME, NEW_FIELD_VALUE, 
+    OLD_APP_ID, OLD_FIELD_NAME, OLD_FIELD_VALUE
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_fraud_his_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from t_fraud_his_result
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pujjr.carcredit.domain.FraudHisResult">
+    insert into t_fraud_his_result (ID, TASK_NODE_NAME, SEQ, 
+      APP_ID, NAME, IS_BLACK, NEW_FIELD_NAME, 
+      NEW_FIELD_VALUE, OLD_APP_ID, OLD_FIELD_NAME, 
+      OLD_FIELD_VALUE)
+    values (#{id,jdbcType=VARCHAR}, #{taskNodeName,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER}, 
+      #{appId,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{isBlack,jdbcType=BIT}, #{newFieldName,jdbcType=VARCHAR}, 
+      #{newFieldValue,jdbcType=VARCHAR}, #{oldAppId,jdbcType=VARCHAR}, #{oldFieldName,jdbcType=VARCHAR}, 
+      #{oldFieldValue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.pujjr.carcredit.domain.FraudHisResult">
+    insert into t_fraud_his_result
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="taskNodeName != null">
+        TASK_NODE_NAME,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="appId != null">
+        APP_ID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="isBlack != null">
+        IS_BLACK,
+      </if>
+      <if test="newFieldName != null">
+        NEW_FIELD_NAME,
+      </if>
+      <if test="newFieldValue != null">
+        NEW_FIELD_VALUE,
+      </if>
+      <if test="oldAppId != null">
+        OLD_APP_ID,
+      </if>
+      <if test="oldFieldName != null">
+        OLD_FIELD_NAME,
+      </if>
+      <if test="oldFieldValue != null">
+        OLD_FIELD_VALUE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="taskNodeName != null">
+        #{taskNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isBlack != null">
+        #{isBlack,jdbcType=BIT},
+      </if>
+      <if test="newFieldName != null">
+        #{newFieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="newFieldValue != null">
+        #{newFieldValue,jdbcType=VARCHAR},
+      </if>
+      <if test="oldAppId != null">
+        #{oldAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="oldFieldName != null">
+        #{oldFieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldFieldValue != null">
+        #{oldFieldValue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pujjr.carcredit.domain.FraudHisResult">
+    update t_fraud_his_result
+    <set>
+      <if test="taskNodeName != null">
+        TASK_NODE_NAME = #{taskNodeName,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="appId != null">
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="isBlack != null">
+        IS_BLACK = #{isBlack,jdbcType=BIT},
+      </if>
+      <if test="newFieldName != null">
+        NEW_FIELD_NAME = #{newFieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="newFieldValue != null">
+        NEW_FIELD_VALUE = #{newFieldValue,jdbcType=VARCHAR},
+      </if>
+      <if test="oldAppId != null">
+        OLD_APP_ID = #{oldAppId,jdbcType=VARCHAR},
+      </if>
+      <if test="oldFieldName != null">
+        OLD_FIELD_NAME = #{oldFieldName,jdbcType=VARCHAR},
+      </if>
+      <if test="oldFieldValue != null">
+        OLD_FIELD_VALUE = #{oldFieldValue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pujjr.carcredit.domain.FraudHisResult">
+    update t_fraud_his_result
+    set TASK_NODE_NAME = #{taskNodeName,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      IS_BLACK = #{isBlack,jdbcType=BIT},
+      NEW_FIELD_NAME = #{newFieldName,jdbcType=VARCHAR},
+      NEW_FIELD_VALUE = #{newFieldValue,jdbcType=VARCHAR},
+      OLD_APP_ID = #{oldAppId,jdbcType=VARCHAR},
+      OLD_FIELD_NAME = #{oldFieldName,jdbcType=VARCHAR},
+      OLD_FIELD_VALUE = #{oldFieldValue,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteByAppId">
+  	delete from t_fraud_his_result where APP_ID = #{appId} and TASK_NODE_NAME = #{taskNodeName}
+  </delete>
+  <select id="selectListByAppId" resultMap="BaseResultMap">
+  	select * from t_fraud_his_result where APP_ID = #{appId} and TASK_NODE_NAME = #{taskNodeName} order by seq
+  </select>
+</mapper>

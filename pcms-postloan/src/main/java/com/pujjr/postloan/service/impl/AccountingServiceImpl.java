@@ -579,6 +579,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		{
 			//这里是冲了其他费用逾期、其他费用本金、计划还款罚息后剩余的还款金额，先用来冲利息
 			double repayInterest  = repayOverdueAmt;
+			repayCapital = repayOverdueAmt;
 			for(int i = 0 ; i<planRepayList.size() ; i++)
 			{
 				//先用还款金额减免利息
@@ -664,18 +665,18 @@ public class AccountingServiceImpl implements IAccountingService {
 		 * 如果还款金额还大于0，挂账处理,如果本身就是挂账冲账，则剩余挂账金额为0
 		 * **/
 		double remainRepayAmount = repayCapital;
-		if(remainRepayAmount>0)
+		if(repayMode.equals(RepayMode.StayAccounting))
 		{
 			StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
-			//如果是挂账还款则更新挂账表记录,否则将多余的余额挂账处理并做挂账记录
-			if(repayMode.equals(RepayMode.StayAccounting))
+			stayAccount.setStayAmount(remainRepayAmount);
+			stayAccountDao.updateByPrimaryKey(stayAccount);
+			remainRepayAmount=0.00;
+		}
+		else
+		{
+			if(remainRepayAmount>0)
 			{
-				stayAccount.setStayAmount(remainRepayAmount);
-				stayAccountDao.updateByPrimaryKey(stayAccount);
-				remainRepayAmount=0.00;
-			}
-			else
-			{
+				StayAccount stayAccount = stayAccountDao.selectByAppId(appId);
 				if(stayAccount!=null)
 				{
 					stayAccount.setStayAmount(stayAccount.getStayAmount()+remainRepayAmount);
@@ -698,6 +699,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				stayAccountLogDao.insert(stayLog);
 			}
 		}
+		
 		/**
 		 * 记录还款记录
 		 */

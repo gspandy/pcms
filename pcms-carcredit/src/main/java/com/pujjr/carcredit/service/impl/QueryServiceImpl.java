@@ -15,9 +15,11 @@ import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.pujjr.base.service.ISysAccountService;
 import com.pujjr.base.vo.QueryAuthVo;
+import com.pujjr.carcredit.dao.FraudHisResultMapper;
 import com.pujjr.carcredit.dao.FraudInnerResultMapper;
 import com.pujjr.carcredit.dao.HisOperMapper;
 import com.pujjr.carcredit.dao.QueryMapper;
+import com.pujjr.carcredit.domain.FraudHisResult;
 import com.pujjr.carcredit.domain.FraudInnerResult;
 import com.pujjr.carcredit.po.HisOperPo;
 import com.pujjr.carcredit.service.IQueryService;
@@ -38,6 +40,8 @@ public class QueryServiceImpl implements IQueryService
 	private FraudInnerResultMapper fraudInnerResultDao;
 	@Autowired
 	private ISysAccountService sysAccountService;
+	@Autowired
+	private FraudHisResultMapper fraudHisResultDao;
 	
 	@Override
 	public List<HashMap<String, Object>> queryApplyList(QueryParamApplyVo param) {
@@ -106,5 +110,11 @@ public class QueryServiceImpl implements IQueryService
 	public List<FraudInnerResult> queryFraudInnerResult(String appId) {
 		// TODO Auto-generated method stub
 		return fraudInnerResultDao.selectByAppId(appId);
+	}
+
+	@Override
+	public List<FraudHisResult> queryFraudHisResult(String appId, String taskNodeName) {
+		// TODO Auto-generated method stub
+		return fraudHisResultDao.selectListByAppId(appId, taskNodeName);
 	}
 }

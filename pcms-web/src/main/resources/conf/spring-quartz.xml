@@ -9,34 +9,6 @@
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd              
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
             http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd">
-	<!--  
-	<bean id="resetSeqJobDetail"
-		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-		<property name="targetObject">
-			<ref bean="crontabService" />
-		</property>
-		<property name="targetMethod">
-			<value>resetSequence</value>
-		</property>
-	</bean>
-
-	<bean id="resetSeqJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
-		<property name="jobDetail">
-			<ref bean="resetSeqJobDetail" />
-		</property>
-		<property name="cronExpression">
-			<value>59 36 23 * * ?</value>
-		</property>
-	</bean>
-
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-		<property name="triggers">
-			<list>
-				<ref bean="resetSeqJobTrigger"/>
-			</list>
-		</property>
-	</bean>
--->
 	<!-- 定时任务-消息推送扫描 -->
 	<bean id="pushScanSchedulerImpl" class="com.pujjr.push.scheduler.impl.PushScanSchedulerImpl"></bean>
 	
@@ -48,6 +20,13 @@
 	
 	<!-- 定时任务-短信发送 -->
 	<bean id ="sendSmsService" class="com.pujjr.schedule.service.SendSmsService"></bean>
+	
+	<!-- 历史反欺诈处理服务 -->
+	<bean id ="hisAntiFraudService" class="com.pujjr.schedule.service.HisAntiFraudService">
+		<property name="maxThreadPoolSize" value="100"></property>
+	    <property name="maxThreadProcessSize" value="2"></property>
+	    <property name="scanIntervalTime" value="60"></property>
+	</bean>
 	
 	<task:scheduled-tasks>
 	  <!-- 消息推送 -->	
