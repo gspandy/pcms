@@ -26,6 +26,7 @@ import com.pujjr.base.domain.SysDictData;
 import com.pujjr.base.domain.SysWorkgroup;
 import com.pujjr.base.service.ISequenceService;
 import com.pujjr.base.service.ISysAccountService;
+import com.pujjr.base.service.ISysAreaService;
 import com.pujjr.base.service.ISysDictService;
 import com.pujjr.base.service.ISysWorkgroupService;
 import com.pujjr.carcredit.bo.ProcessTaskUserBo;
@@ -62,6 +63,7 @@ import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.carcredit.service.ITaskService;
 import com.pujjr.carcredit.vo.ApplyApproveVo;
 import com.pujjr.carcredit.vo.ApplyCheckVo;
+import com.pujjr.carcredit.vo.ApplyFinanceVo;
 import com.pujjr.carcredit.vo.ApplyVo;
 import com.pujjr.carcredit.vo.CancelApplyInfoVo;
 import com.pujjr.carcredit.vo.ChangeApplyInfoVo;
@@ -132,6 +134,7 @@ public class TaskServiceImpl implements ITaskService
 	private ISysAccountService sysAccountService;
 	@Autowired
 	private ISysDictService sysDictService;
+
 	
 	public List<ToDoTaskPo> getToDoTaskList(QueryParamToDoTaskPo param)
 	{
@@ -991,6 +994,8 @@ public class TaskServiceImpl implements ITaskService
 		//处理结果放入流程变量,完成任务
 		runWorkflowService.completeTask(taskId, "", null, CommandType.COMMIT);
 	}
+
+	
 
 
 }

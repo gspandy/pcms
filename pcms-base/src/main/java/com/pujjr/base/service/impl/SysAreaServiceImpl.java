@@ -69,7 +69,15 @@ public class SysAreaServiceImpl implements ISysAreaService {
 	@Override
 	public String getAreaNameById(String id) {
 		// TODO Auto-generated method stub
-		return sysAreaDao.selectByPrimaryKey(id).getAreaName();
+		SysArea sysArea = sysAreaDao.selectByPrimaryKey(id);
+		if(sysArea == null)
+		{
+			return "";
+		}
+		else
+		{
+			return sysArea.getAreaName();
+		}
 	}
 
 	@Override

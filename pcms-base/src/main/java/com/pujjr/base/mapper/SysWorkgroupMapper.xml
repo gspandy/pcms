@@ -147,7 +147,7 @@
 	inner join sys_account f on e.sysaccount_id = f.id
 	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
 	where 
-	<![CDATA[d.min_amount<=#{financeAmount} and d.max_amount>#{financeAmount}]]>
+	<![CDATA[d.min_amount<#{financeAmount} and d.max_amount>=#{financeAmount}]]>
 	and b.product_code = #{productCode}
 	and c.sys_branch_id = #{dealerId}
 	<if test="groups !=null and groups.size()!=0">

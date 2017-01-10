@@ -775,4 +775,16 @@ public class Utils {
 		a.setTime(date);
 		return a.get(Calendar.DATE);
 	}
+	
+	public static boolean doubleIsZero(double val)
+	{
+		if(Math.abs(val-0.00)<0.001)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }

@@ -466,7 +466,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		for(int i=0 ; i<otherFeeList.size();i++)
 		{
 			WaitingCharge otherFeeItem = otherFeeList.get(i);
-			if(Double.compare(otherFeeItem.getRepayCapital(), 0.00)==0 && Double.compare(otherFeeItem.getRepayOverdueAmount(), 0.00)==0)
+			if(Utils.doubleIsZero(otherFeeItem.getRepayCapital()) && Utils.doubleIsZero(otherFeeItem.getRepayOverdueAmount()))	
 			{
 				OtherFee otherFeePo = otherFeeDao.selectByPrimaryKey(otherFeeItem.getFeeRefId());
 				otherFeePo.setRepayStatus(RepayStatus.Settled.getName());
@@ -651,7 +651,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		for(int i = 0 ; i<planRepayList.size() ; i++)
 		{
 			WaitingCharge planItem = planRepayList.get(i);
-			if(Double.compare(planItem.getRepayCapital(),0.00)==0 && Double.compare(planItem.getRepayInterest(),0.00)==0 && Double.compare(planItem.getRepayOverdueAmount(),0.00) ==0)
+			if(Utils.doubleIsZero(planItem.getRepayCapital()) && Utils.doubleIsZero(planItem.getRepayInterest())&& Utils.doubleIsZero(planItem.getRepayOverdueAmount()))	
 			{
 				RepayPlan repayPlanPo = repayPlanDao.selectByPrimaryKey(planItem.getFeeRefId());
 				repayPlanPo.setRepayStatus(RepayStatus.Settled.getName());
@@ -738,16 +738,30 @@ public class AccountingServiceImpl implements IAccountingService {
 		ledgerPo.setRemainCapital(ledgerPo.getRemainCapital()-totalCapital);
 		List<WaitingCharge> waitingChargeList = waitingChargeDao.selectListOrderByGentimeAsc(appId, null);
 		List<RepayPlan> repayPlanList = repayPlanDao.selectNotSettleRepayPlanList(appId);
+		//如果待扣款明细和还款计划都结清，则此时客户按照正常方式结清
 		if(waitingChargeList.size()==0 && repayPlanList.size()==0)
 		{
 			ledgerPo.setRepayStatus(RepayStatus.Settled.getName());
+			ledgerPo.setSettleDate(repayDate);
 			//创建正常结清归档任务
 			archiveService.createAutoArchiveTask(appId, ArchiveType.NormalSettle.getName(), "admin");
-			
 		}
+		//如果待扣款明细记录未0，并且待还款计划大于0 
 		if(waitingChargeList.size()==0 && repayPlanList.size()>0)
 		{
 			ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
+		}
+		/**
+		 * 如果当前待扣明细记录条数为1并且还款日小于等于当前日期则总账状态为还款中，不应作为逾期
+		 * 这种情况主要出现在之前有逾期，客户还的款项不足以还完当期，会导致总账状态不正确
+		 */
+		if(waitingChargeList.size()==1)
+		{
+			WaitingCharge item = waitingChargeList.get(0);
+			if(Utils.getSpaceDay(item.getRepayDate(), new Date())<=0)
+			{
+				ledgerPo.setRepayStatus(RepayStatus.Repaying.getName());
+			}
 		}
 		ledgerDao.updateByPrimaryKey(ledgerPo);
 	}

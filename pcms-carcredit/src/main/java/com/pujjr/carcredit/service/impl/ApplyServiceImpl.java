@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.formula.functions.Finance;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,7 @@ import com.pujjr.base.domain.Product;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.domain.SysBranch;
 import com.pujjr.base.service.ISequenceService;
+import com.pujjr.base.service.ISysAreaService;
 import com.pujjr.base.service.ISysBranchService;
 import com.pujjr.carcredit.annotion.ApplyOperHisAnnotation;
 import com.pujjr.carcredit.constant.ApplyStatus;
@@ -109,6 +111,8 @@ public class ApplyServiceImpl implements IApplyService {
 	private ISysBranchService sysBranchService;
 	@Autowired
 	private IRunWorkflowService runWorkflowService ;
+	@Autowired
+	private ISysAreaService sysAreaService;
 	public void tempSaveApply() {
 		// TODO Auto-generated method stub
 
@@ -417,78 +421,57 @@ public class ApplyServiceImpl implements IApplyService {
 	 * @author pujjr 2016-09-18
 	 * @throws Exception 
 	 */
-	public String saveApply(ApplyVo applyVo,String accountId){
+	public String saveApply(ApplyVo applyVo,String accountId)
+	{
 		System.out.println("ApplyServiceImpl->savApply："+sysMode);
 		IApplyService currentProxy = (IApplyService) AopContext.currentProxy();
 		String id = applyVo.getId();
 		String appId = applyVo.getAppId();
 		Apply applyExist = null;
 		Apply applyToDao = new Apply();
-		if("debug".equals(sysMode)){
-			//测试
-			// TODO Auto-generated method stub
-			String productCode = applyVo.getProduct().getProductCode();
-			applyExist = applyMapper.selectByPrimaryKey(id);
-			System.out.println("applyExist:"+applyExist);
-			//基本信息
-			Apply apply = new Apply();
-			apply.setId(Utils.get16UUID());//主键随机数
-			if(appId == null)
-				appId = "000116092831231001";
-			id = Utils.get16UUID();//主键随机数
-			applyToDao.setId(id);
-			applyToDao.setAppId(appId);
-			applyToDao.setProductCode(productCode);
-			applyToDao.setPeriod(applyVo.getPeriod());
-			applyToDao.setComment(applyVo.getComment());
-			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
-			applyToDao.setCreateBranchCode("1");
-			applyToDao.setCreateAccountId(accountId);
-			applyToDao.setCustType(applyVo.getCustType());
-			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
-			applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
-			applyToDao.setMonthRent(applyVo.getMonthRent());
-			applyToDao.setApproveDate(applyVo.getApproveDate());
-			applyToDao.setProcInstId(applyVo.getProcInstId());
-			
-		}else{
-			//生产
-			String productCode = applyVo.getProduct().getProductCode();
-			SysAccount sysAccount = sysAccountMapper.selectByAccountId(accountId);
-			SysBranch branch = sysBranchService.getSysBranch(sysAccount.getBranchId(), "");
-			String branchId = branch.getBranchCode();
-			String dataNow = Utils.getFormatDate(Calendar.getInstance().getTime(), "YYMMdd");
-			String sequence=String.format("%04d", sequenceService.getNextVal("appid"));
-			if("".equals(appId) || appId == null)
-				appId = branchId+""+dataNow+""+sequence+""+productCode;//订单编号
-			applyExist = applyMapper.selectByPrimaryKey(id);
-			if(applyExist == null){
-				applyToDao.setCreateBranchCode(branchId);
-				applyToDao.setCreateAccountId(sysAccount.getAccountId());
-				//只有不存在时申请单才是未提交状态
-				applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
-			}
-//			System.out.println("applyList.size():"+applyList.size());
-			//基本信息
-			id = Utils.get16UUID();//主键随机数
-			applyToDao.setId(id);
-			applyToDao.setAppId(appId);		
-			applyToDao.setProductCode(productCode);
-			applyToDao.setPeriod(applyVo.getPeriod());
-			applyToDao.setComment(applyVo.getComment());
-			
-			applyToDao.setCustType(applyVo.getCustType());
-			applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
-			applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
-			applyToDao.setMonthRent(applyVo.getMonthRent());
-			applyToDao.setApproveDate(applyVo.getApproveDate());
-			applyToDao.setProcInstId(applyVo.getProcInstId());
+		//计算客户等级
+		String custLvl = this.calCustomLevel(applyVo);
+		applyVo.setCustType(custLvl);
+		String productCode = applyVo.getProduct().getProductCode();
+		SysAccount sysAccount = sysAccountMapper.selectByAccountId(accountId);
+		SysBranch branch = sysBranchService.getSysBranch(sysAccount.getBranchId(), "");
+		String branchId = branch.getBranchCode();
+		String dataNow = Utils.getFormatDate(Calendar.getInstance().getTime(), "YYMMdd");
+		String sequence=String.format("%04d", sequenceService.getNextVal("appid"));
+		if("".equals(appId) || appId == null)
+		{
+			appId = branchId+""+dataNow+""+sequence+""+productCode;//订单编号
 		}
-		if(applyExist == null){
-			
-			applyToDao.setCreateTime(Calendar.getInstance().getTime());//录入时间
+		applyExist = applyMapper.selectByPrimaryKey(id);
+		if(applyExist == null)
+		{
+			applyToDao.setCreateBranchCode(branchId);
+			applyToDao.setCreateAccountId(sysAccount.getAccountId());
+			//只有不存在时申请单才是未提交状态
+			applyToDao.setStatus(ApplyStatus.UNCOMMIT);	
+		}
+		//基本信息
+		//主键随机数
+		id = Utils.get16UUID();
+		applyToDao.setId(id);
+		applyToDao.setAppId(appId);		
+		applyToDao.setProductCode(productCode);
+		applyToDao.setPeriod(applyVo.getPeriod());
+		applyToDao.setComment(applyVo.getComment());
+		applyToDao.setCustType(applyVo.getCustType());
+		applyToDao.setTotalFinanceAmt(applyVo.getTotalFinanceAmt());
+		applyToDao.setTotalLoanAmt(applyVo.getTotalLoanAmt());
+		applyToDao.setMonthRent(applyVo.getMonthRent());
+		applyToDao.setApproveDate(applyVo.getApproveDate());
+		applyToDao.setProcInstId(applyVo.getProcInstId());
+		if(applyExist == null)
+		{
+			//录入时间
+			applyToDao.setCreateTime(Calendar.getInstance().getTime());
 			applyDao.insertApply(applyToDao, accountId);
-		}else{
+		}
+		else
+		{
 			id = applyVo.getId();
 			appId = applyVo.getAppId();
 			applyToDao.setId(id);
@@ -542,5 +525,306 @@ public class ApplyServiceImpl implements IApplyService {
 	public List<ApplyTenantCar> getApplyTenantCarList(String appId) {
 		// TODO Auto-generated method stub
 		return applyTenantCarMapper.selectByAppId(appId);
+	}
+	@Override
+	public String calCustomLevel(ApplyVo applyVo) {
+		// TODO Auto-generated method stub
+		String custLvl ="B";
+		/**
+		 * A级客户判断
+		 */
+		//产品代码
+		String productCode = applyVo.getProduct().getProductCode();
+		if("N20".equals(productCode)||"N30".equals(productCode)||"N40".equals(productCode))
+		{
+			return "A";
+		};
+		//承租人单位电话
+		String tenantUnitTel = applyVo.getTenant().getUnitTel();
+		//承租人先住址省份
+		String tenantAddrProvince = applyVo.getTenant().getAddrProvince();
+		String tenantArea = sysAreaService.getAreaNameById(tenantAddrProvince);
+		//承租人单位类型
+		String unitType = applyVo.getTenant().getUnitType();
+		//承租人所属行业
+		String unitIndustry = applyVo.getTenant().getUnitIndustry();
+		//承租人户籍
+		String houseHold = applyVo.getTenant().getHouseHold();
+		//承租人职级
+		String rank = applyVo.getTenant().getRank();
+		
+		boolean flagA = true;
+		for(ApplyFinanceVo item : applyVo.getFinances())
+		{
+			if(!item.select)
+			{
+				continue;
+			}
+			//首付比例
+			double initPayPercent = item.getInitPayPercent()/100;
+			//融资金额
+			double finAmt = item.getFinanceAmount();
+			//裸车价
+			double salePrice = item.getSalePrice();
+			//购置税
+			double purchaseTax = item.getPurchaseTax();
+			//服务费
+			double serviceFee = item.getServiceFee();
+			//保险费
+			double insuranceFee = item.getInsuranceFee();
+			//延保费
+			double delayInsuranceFee = item.getDelayInsuranceFee();
+			//过户费
+			double transferFee = item.getTransferFee();
+			//加装费
+			double addonFee = item.getAddonFee();
+			//费用合计
+			double feeTotal = purchaseTax+serviceFee+insuranceFee+delayInsuranceFee+transferFee+addonFee;
+			//判断融资金额<=155000，大于则不是A
+			boolean checkFinance = Double.compare(finAmt, 155000)<=0;
+			if(!checkFinance)
+			{
+				flagA = false;
+				break;
+			}
+			//判断“购置税+服务费+保险费+延保费+过户费+加装费”≤裸车价*20%，大于则不是A
+			boolean checkFee = Double.compare(feeTotal, salePrice*0.2)<=0;
+			if(!checkFee)
+			{
+				flagA = false;
+				break;
+			}
+			/**
+			 * (首付比例>=20% )
+			 * and (承租人工作信息---单位电话：位数大于等于8位且第一位不为1) 
+			 * and (承租人单位类型为国家机关/事业单位/国企 or 学校/教育机构)
+			 */
+			if(Double.compare(initPayPercent, 0.2)<0)
+			{
+				flagA = false;
+				break;
+			}
+			if(!(tenantUnitTel!=null && tenantUnitTel.length()>=8 && tenantUnitTel.charAt(0)!='1'))
+			{
+				flagA = false;
+				break;
+			}
+			if(!"dwlx05".equals(unitType) && !"dwlx07".equals(unitType))
+			{
+				flagA = false;
+				break;
+			}
+		}
+		if(flagA)
+		{
+			return "A";
+		}
+		flagA = true;
+		for(ApplyFinanceVo item : applyVo.getFinances())
+		{
+			if(!item.select)
+			{
+				continue;
+			}
+			//首付比例
+			double initPayPercent = item.getInitPayPercent()/100;
+			//融资金额
+			double finAmt = item.getFinanceAmount();
+			//裸车价
+			double salePrice = item.getSalePrice();
+			//购置税
+			double purchaseTax = item.getPurchaseTax();
+			//服务费
+			double serviceFee = item.getServiceFee();
+			//保险费
+			double insuranceFee = item.getInsuranceFee();
+			//延保费
+			double delayInsuranceFee = item.getDelayInsuranceFee();
+			//过户费
+			double transferFee = item.getTransferFee();
+			//加装费
+			double addonFee = item.getAddonFee();
+			//费用合计
+			double feeTotal = purchaseTax+serviceFee+insuranceFee+delayInsuranceFee+transferFee+addonFee;
+			//判断融资金额<=155000，大于则不是A
+			boolean checkFinance = Double.compare(finAmt, 155000)<=0;
+			if(!checkFinance)
+			{
+				flagA = false;
+				break;
+			}
+			//判断“购置税+服务费+保险费+延保费+过户费+加装费”≤裸车价*20%，大于则不是A
+			boolean checkFee = Double.compare(feeTotal, salePrice*0.2)<=0;
+			if(!checkFee)
+			{
+				flagA = false;
+				break;
+			}
+			/**
+			 * 首付比例>=40%
+			 * and “GPS费用、购置税、服务费、保险费、延保费、过户费、加装费”中只有GPS费用；
+			 */
+			if(Double.compare(initPayPercent, 0.4)<0)
+			{
+				flagA = false;
+				break;
+			}
+			if(
+					!(Utils.doubleIsZero(item.getPurchaseTax())&&
+					Utils.doubleIsZero(item.getServiceFee()) &&
+					Utils.doubleIsZero(item.getInsuranceFee())&&
+					Utils.doubleIsZero(item.getDelayInsuranceFee())&&
+					Utils.doubleIsZero(item.getTransferFee())&&
+					Utils.doubleIsZero(item.getAddonFee())&&
+					!Utils.doubleIsZero(item.getGpsFee()))
+			)
+			{
+				flagA = false;
+				break;
+			}
+		}
+		if(flagA)
+		{
+			return "A";
+		}
+		flagA = true;
+		for(ApplyFinanceVo item : applyVo.getFinances())
+		{
+			if(!item.select)
+			{
+				continue;
+			}
+			//首付比例
+			double initPayPercent = item.getInitPayPercent()/100;
+			//融资金额
+			double finAmt = item.getFinanceAmount();
+			//裸车价
+			double salePrice = item.getSalePrice();
+			//购置税
+			double purchaseTax = item.getPurchaseTax();
+			//服务费
+			double serviceFee = item.getServiceFee();
+			//保险费
+			double insuranceFee = item.getInsuranceFee();
+			//延保费
+			double delayInsuranceFee = item.getDelayInsuranceFee();
+			//过户费
+			double transferFee = item.getTransferFee();
+			//加装费
+			double addonFee = item.getAddonFee();
+			//费用合计
+			double feeTotal = purchaseTax+serviceFee+insuranceFee+delayInsuranceFee+transferFee+addonFee;
+			//判断融资金额<=155000，大于则不是A
+			boolean checkFinance = Double.compare(finAmt, 155000)<=0;
+			if(!checkFinance)
+			{
+				flagA = false;
+				break;
+			}
+			//判断“购置税+服务费+保险费+延保费+过户费+加装费”≤裸车价*20%，大于则不是A
+			boolean checkFee = Double.compare(feeTotal, salePrice*0.2)<=0;
+			if(!checkFee)
+			{
+				flagA = false;
+				break;
+			}
+			/**
+			 * 承租人基本信息---现详细住址=北京市（全部）
+			 * and 承租人基本信息---户籍所属=本地
+			 */
+			if(!"北京市".equals(tenantArea)||!"hjss01".equals(houseHold))
+			{
+				flagA = false;
+				break;
+			}
+		}
+		if(flagA)
+		{
+			return "A";
+		}
+		/**
+		 * C级客户判断
+		 * 承租人工作信息---所属行业 = 房地产开发经营 or 钢材生产及贸易 or 建筑/工程/劳务/施工 or 煤炭开采/洗选/商贸 or 水泥、瓦砖、玻璃、陶瓷建筑材料生产制造/石矿开采 or 融资租赁、财务公司、汽车金融等金融公司 or 小贷、担保、典当、P2P、理财投资等融资机构
+		 * and 承租人工作信息---职级=法人/股东 or 经营者 or 自雇人士
+		 * and “购置税、服务费、保险费、延保费、过户费、加装费”只有任意 1项；或零项
+		 */
+		if(unitIndustry!=null && !StringUtils.isBlank(unitIndustry))
+		{
+			if(
+				"hy01".equals(unitIndustry)	||
+				"hy02".equals(unitIndustry)	||
+				"hy03".equals(unitIndustry)	||
+				"hy04".equals(unitIndustry)	||
+				"hy17".equals(unitIndustry)	||
+				"hy45".equals(unitIndustry)	||
+				"hy46".equals(unitIndustry)	)
+			{
+				if("zwjb07".equals(rank)||"zwjb04".equals(rank)||"zwjb02".equals(rank))
+				{
+					boolean flag = false;
+					for(ApplyFinanceVo item : applyVo.getFinances())
+					{
+						int i=0;
+						//裸车价
+						double salePrice = item.getSalePrice();
+						if(Double.compare(salePrice, 0.00)>0)
+						{
+							i++;
+						}
+						//购置税
+						double purchaseTax = item.getPurchaseTax();
+						if(Double.compare(purchaseTax, 0.00)>0)
+						{
+							i++;
+						}
+						//服务费
+						double serviceFee = item.getServiceFee();
+						if(Double.compare(serviceFee, 0.00)>0)
+						{
+							i++;
+						}
+						//保险费
+						double insuranceFee = item.getInsuranceFee();
+						if(Double.compare(insuranceFee, 0.00)>0)
+						{
+							i++;
+						}
+						//延保费
+						double delayInsuranceFee = item.getDelayInsuranceFee();
+						if(Double.compare(delayInsuranceFee, 0.00)>0)
+						{
+							i++;
+						}
+						//过户费
+						double transferFee = item.getTransferFee();
+						if(Double.compare(transferFee, 0.00)>0)
+						{
+							i++;
+						}
+						//加装费
+						double addonFee = item.getAddonFee();
+						if(Double.compare(addonFee, 0.00)>0)
+						{
+							i++;
+						}
+						if(i>1)
+						{
+							flag=true;
+							break;
+						}
+					}
+					if(flag)
+					{
+						custLvl =  "B";
+					}
+					else
+					{
+						custLvl =  "C";
+					}
+				}
+			}
+			
+		}
+		return custLvl;
 	}
 }

@@ -97,4 +97,10 @@ public interface IApplyService {
 	 * @return
 	 */
 	public List<ApplyTenantCar> getApplyTenantCarList(String appId);
+	/**
+	 * 通过申请数据计算客户等级
+	 * @param applyVo 申请数据对象
+	 * @return
+	 */
+	public String calCustomLevel(ApplyVo applyVo);
 }
