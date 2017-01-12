@@ -137,23 +137,30 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		double extendRate = generalledger.getDayExtendRate();//日展期费率
 		double lateRate = generalledger.getDayLateRate();//日罚息率
 		//代扣明细表：计划还款汇总
+		//应还本金
 		double overDueCapital = 0.00;
+		//应还利息
 		double overDueInterest = 0.00;
+		//应还罚息
 		double overDueFine = 0.00;
 		for (WaitingCharge waitingCharge : waitingChargePlanList) {
 			overDueCapital += waitingCharge.getRepayCapital();
 			overDueInterest += waitingCharge.getRepayInterest();
 			overDueFine += waitingCharge.getRepayOverdueAmount();
 		}
-		//当期
+		//当期本金
 		double currCaptital = currRepayPlan.getRepayCapital();
+		//当期利息
 		double currInterest = currRepayPlan.getRepayInterest();
 		RepayFeeItemVo repayFeeItemVo = accountingServiceImpl.getRepayingFeeItems(appId, true, currDate, false, true);
+		//剩余本金
 		double remainCapital = repayFeeItemVo.getRemainCapital();//剩余本金
 		int currPeriod = currRepayPlan.getPeriod();
 		//代扣明细表：其他费用汇总
+		//其他费用本金
 		double otherCapital = 0.00;
 		double otherInterest = 0.00;
+		//其他费用罚息
 		double otherFine = 0.00;
 		for (WaitingCharge waitingCharge : waitingChargesOtherList) {
 			otherCapital += waitingCharge.getRepayCapital();
@@ -163,12 +170,15 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		double extendFee = (remainCapital - overDueCapital) * extendRate * this.getLastDateInterval(currDate, lastRepayPlan.getClosingDate(), currPeriod, lastRepayPlan.getPeriod(), extendPeriod);
 		//新旧还款利息（当前期数期初本金余额（当期所有剩余本金-逾期本金）  * 日利息* （展期后新起息日-当前期数起息日））
 		double newOldInterest = (remainCapital - overDueCapital) * dayRate * Utils.getTimeInterval(currRepayPlan.getValueDate(), currDate, EIntervalMode.DAYS);
-		//新计息本金(其他费用本金+其他费用罚息+逾期本金+逾期罚息+当期利息+新旧还款日利息+当前剩余本金)
+		//剩余待还本金
+		double remainWaitCapital = remainCapital - overDueCapital;
+		//新计息本金(其他费用本金+其他费用罚息+应还本金+应还罚息+应还利息+新旧还款日利息+当前剩余本金)
 		double newCapital = otherCapital + otherFine 
-				+ overDueInterest + overDueFine 
-				+ currInterest
+				+ overDueInterest 
+				+ overDueFine 
+				+ overDueCapital
 				+ newOldInterest
-				+ remainCapital;
+				+ remainWaitCapital;
 		//新还款计划
 		int newPeriodCnt = lastRepayPlan.getPeriod() - (currPeriod - 1) + extendPeriod;//新生成还款计划期数(展期期数：当期至原还款计划最后一期+展期期数)
 		List<RepayPlan> repayPlanList = planServiceImpl.selectRefreshRepayPlanListExtendPeriod(appId, newCapital, monthRate, newPeriodCnt, currDate, EInterestMode.CPM, currPeriod - 1);//currPeriod - 1：展期过程中，当前周期同样参与展期，展期后，新还款计划还款周期数从当前周期开始编码

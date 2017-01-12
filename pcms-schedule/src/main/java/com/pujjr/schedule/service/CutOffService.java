@@ -285,8 +285,8 @@ public class CutOffService
 			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 			//获取最近逾期记录
 			OverdueLog latesetOverdueLog = overdueLogDao.selectLatesetLog(appId);
-			//如果没有预期记录或者最近一次逾期记录的结束日期与今日产生逾期的开始日期间隔超过1天，则可判断当前不为逾期，应为新的逾期次数
-			if(latesetOverdueLog==null || Utils.getSpaceDay(latesetOverdueLog.getEndDate(), item.getStartDate())>1)
+			//如果没有预期记录、当前总账状态为还款中、最近一次逾期记录的结束日期与今日产生逾期的开始日期间隔超过1天，则可判断当前不为逾期，应为新的逾期次数
+			if(latesetOverdueLog==null || Utils.getSpaceDay(latesetOverdueLog.getEndDate(), item.getStartDate())>1 || ledgerPo.getRepayStatus().equals(RepayStatus.Repaying.getName()))
 			{
 				OverdueLog newOverdueLog = new OverdueLog();
 				newOverdueLog.setId(Utils.get16UUID());

@@ -13,9 +13,9 @@ public class SpringBeanUtils implements ApplicationContextAware {
 			ctx = applicationcontext;
 	}
 	/**
-     * Í¨¹ıspringÅäÖÃÎÄ¼şÖĞÅäÖÃµÄbean idÈ¡µÃbean¶ÔÏó
-     * @param id spring bean IDÖµ
-     * @return spring bean¶ÔÏó
+     * é€šè¿‡springé…ç½®æ–‡ä»¶ä¸­é…ç½®çš„bean idå–å¾—beanå¯¹è±¡
+     * @param id spring bean IDå€¼
+     * @return spring beanå¯¹è±¡
      */
 	
 	public static Object getBean(String beanId)

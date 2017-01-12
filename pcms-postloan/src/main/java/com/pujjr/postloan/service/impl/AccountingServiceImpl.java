@@ -346,7 +346,8 @@ public class AccountingServiceImpl implements IAccountingService {
 	@Override
 	public List<RepayPlan> getAfterCurrentPeriodRepayPlan(String appId, int queryPeriod) {
 		// TODO Auto-generated method stub
-		return repayPlanDao.selectSpecialRepayPlanList(appId, queryPeriod+1,0);
+		RepayPlan currentRepayPlan = this.getCurrentPeriodRepayPlan(appId);
+		return repayPlanDao.selectSpecialRepayPlanList(appId, currentRepayPlan.getPeriod()+1,0);
 
 	}
 

@@ -467,7 +467,7 @@ public class CollectionServiceImpl implements ICollectionService
 	@Override
 	public void applyRecoverCollectionTask(String appId, String createId, CollectionApplyVo vo) throws Exception {
 		// TODO Auto-generated method stub
-		if(this.checkHasCollectionTask(appId)==false)
+		if(this.checkHasCollectionTask(appId))
 		{
 			throw new Exception("已存在催收任务，请勿重复发起");
 		}

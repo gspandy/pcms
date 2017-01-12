@@ -700,8 +700,11 @@ public class SettleServiceImpl implements ISettleService{
 		
 		//当前还款费项
 		RepayPlan currRepayPlan = accountingServiceImpl.getCurrentPeriodRepayPlan(appId);
+		//当期本金
 		double currCapital = currRepayPlan.getRepayCapital();
+		//当期利息
 		double currInterest = currRepayPlan.getRepayInterest();
+		//当期期数
 		currPeriod = currRepayPlan.getPeriod();
 		
 		//最后期还款费项
