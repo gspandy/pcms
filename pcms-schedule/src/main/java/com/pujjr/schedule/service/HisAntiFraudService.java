@@ -108,6 +108,7 @@ public class HisAntiFraudService
 			{
 				try
 				{
+					System.out.println(this.vmId);
 					QueryParamToDoTaskPo queryParam = new QueryParamToDoTaskPo();
 					queryParam.setAssignee(vmId);
 					List<ToDoTaskPo> todoList = taskService.getToDoTaskList(queryParam);
@@ -127,7 +128,7 @@ public class HisAntiFraudService
 						WorkflowRunPath parentUserTaskRunPath = runPathService.getRunPathById(runpath.getParentUsertaskPathId());
 						PuspSocketClient sc = new PuspSocketClient();
 						Socket sk = sc.doConnect("172.18.10.41", 5000);
-						String rsp = "";
+						String rsp = "[]";
 						//查询申请提交后反欺诈信息
 						if("lrsqd".equals(parentUserTaskRunPath.getActId()))
 						{

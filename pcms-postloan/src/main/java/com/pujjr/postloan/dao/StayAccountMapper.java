@@ -26,7 +26,12 @@ public interface StayAccountMapper {
      */
     StayAccount selectByAppId(@Param("appId")String appId);
     /**
-     * 查找存在挂账并需要冲账的挂账记录，需满足挂账金额大于0，并且总账处理状态为对公还款或为空的情况下才能做挂账冲账处理
+     * 查找存在挂账并需要冲账的挂账记录，
+     * 满足挂账冲账的条件是
+     * 1、挂账金额大于0
+     * 2、存在应还项
+     * 3、总账处理状态为对公还款或为空的情况下才能做挂账冲账处理
+     *    如果正在做减免、结清、展期、变更还款日则不能做冲账处理
      * @return
      */
     List<StayAccount> selectNeedReserveList();

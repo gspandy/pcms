@@ -171,8 +171,6 @@ public class CutOffService
 			double capital = item.getRepayCapital();
 			//应还利息
 			double interest = item.getRepayInterest();
-			//应还罚息
-			double overdueAmount = item.getRepayOverdueAmount();
 			//获取日罚息率
 			GeneralLedger ledgerPo = ledgerDao.selectByAppId(item.getAppId());
 			double dayLateFee = ledgerPo.getDayLateRate();
@@ -186,15 +184,20 @@ public class CutOffService
 			{
 				overdueDays = Utils.getSpaceDay(item.getClosingDate(), curDate);
 			}
+			//上一次逾期罚息
 			double lastOverdueAmt = 0.00;
-			//罚息值保留6位精度
+			//由于精度原因保留上一次罚息值6位精度，次日产生罚息时累计以此为值
 			if(item.getReserver5()!=null)
 			{
 				lastOverdueAmt=item.getReserver5();
 			}
+			//新产生的罚息
 			double newOverdueAmount = (capital+interest)*dayLateFee*overdueDays;
+			//当前应还罚息=新产生罚息+历史应还罚息
 			double genOverdueAmount = newOverdueAmount+lastOverdueAmt;
+			//保留当前罚息计算临时值
 			item.setReserver5(Utils.formateDouble2Double(genOverdueAmount,6));
+			//扣款罚息精确到分
 			double s2OverdueAmount = Utils.formateDouble2Double(genOverdueAmount, 2);
 			item.setRepayOverdueAmount(s2OverdueAmount);
 			//更新待扣款明细表为新的逾期数据

@@ -141,6 +141,7 @@
   <select id="selectByAppId" resultMap="BaseResultMap">
   		select * from t_stay_account where APP_ID = #{appId}
   </select>
+
   <select id="selectNeedReserveList" resultMap="BaseResultMap">
   	select distinct a.* from t_stay_account a 
   	inner join t_waiting_charge b on a.APP_ID = b.APP_ID
