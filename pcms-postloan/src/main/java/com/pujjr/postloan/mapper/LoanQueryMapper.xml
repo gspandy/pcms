@@ -145,7 +145,6 @@
   		left join SYS_DICT_DATA d1 on d1.DICT_DATA_CODE = a.CHARGE_MODE
   		where a.APP_ID = #{appId}
   	</select>
-  	
   	<select id="selectLoanToDoTaskList" resultType="HashMap">
   	select * from
   	(

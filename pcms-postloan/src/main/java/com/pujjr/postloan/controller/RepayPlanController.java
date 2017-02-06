@@ -25,7 +25,8 @@ public class RepayPlanController {
 	@RequestMapping(value="/select/list/{appId}/{period}",method=RequestMethod.GET)
 	public List<RepayPlanVo> selectRepayPlanList(@PathVariable("appId") String appId,@PathVariable("period") int period){
 		System.out.println("appId:"+appId+"|period:"+period);
-		return planServiceImpl.selectRepayPlanList(appId, period);
+		List<RepayPlanVo> list = planServiceImpl.selectRepayPlanList(appId, period);
+		return list;
 	}
 	
 	@ResponseBody

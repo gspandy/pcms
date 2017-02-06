@@ -31,12 +31,14 @@ import com.pujjr.carcredit.service.ISignContractService;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
 import com.pujjr.postloan.dao.OtherFeeMapper;
 import com.pujjr.postloan.dao.OverdueLogMapper;
+import com.pujjr.postloan.dao.OverdueTodayMapper;
 import com.pujjr.postloan.dao.RepayPlanMapper;
 import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.dao.WaitingChargeMapper;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.OtherFee;
 import com.pujjr.postloan.domain.OverdueLog;
+import com.pujjr.postloan.domain.OverdueToday;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingCharge;
@@ -98,6 +100,8 @@ public class CutOffService
 	private IBankService bankService;
 	@Autowired
 	private IPostLoanSmsService postLoanSmsService;
+	@Autowired
+	private OverdueTodayMapper overdueTodayDao;
 	/**
 	 * 日切账务处理
 	 * @throws ParseException 
@@ -132,6 +136,8 @@ public class CutOffService
 			waitingChargePo.setGenTime(execDate);
 			waitingChargePo.setVersionId(1);
 			waitingChargePo.setBatchTaskId("1");
+			//上一次罚息
+			waitingChargePo.setReserver5(0.00);
 			waitingChargeDao.insert(waitingChargePo);
 			
 			//修改还款计划为还款中
@@ -155,6 +161,8 @@ public class CutOffService
 		/**
 		 * 罚息计算阶段
 		 */
+		//清空当日逾期信息
+		overdueTodayDao.deleteAll();
 		//获取待扣款明细表需要计算罚息的待扣款明细
 		List<WaitingCharge> calOverdueAmountList = waitingChargeDao.selectNeedCalOverdueAmountList(curDate);
 		for(WaitingCharge item : calOverdueAmountList)
@@ -178,8 +186,17 @@ public class CutOffService
 			{
 				overdueDays = Utils.getSpaceDay(item.getClosingDate(), curDate);
 			}
-			double genOverdueAmount = Math.round((capital+interest)*dayLateFee*100*overdueDays)*0.01d;
-			item.setRepayOverdueAmount(overdueAmount+genOverdueAmount);
+			double lastOverdueAmt = 0.00;
+			//罚息值保留6位精度
+			if(item.getReserver5()!=null)
+			{
+				lastOverdueAmt=item.getReserver5();
+			}
+			double newOverdueAmount = (capital+interest)*dayLateFee*overdueDays;
+			double genOverdueAmount = newOverdueAmount+lastOverdueAmt;
+			item.setReserver5(Utils.formateDouble2Double(genOverdueAmount,6));
+			double s2OverdueAmount = Utils.formateDouble2Double(genOverdueAmount, 2);
+			item.setRepayOverdueAmount(s2OverdueAmount);
 			//更新待扣款明细表为新的逾期数据
 			waitingChargeDao.updateByPrimaryKey(item);
 			
@@ -192,15 +209,16 @@ public class CutOffService
 				{
 					tmpAddupOverdueDay=planPo.getAddupOverdueDay();
 				}
-				planPo.setAddupOverdueDay(tmpAddupOverdueDay+1);
+				planPo.setAddupOverdueDay(tmpAddupOverdueDay+overdueDays);
 				double tmpAddupOverdueAmount = 0.00;
 				if(planPo.getAddupOverdueAmount()!=null)
 				{
 					tmpAddupOverdueAmount = planPo.getAddupOverdueAmount();
 				}
-				planPo.setAddupOverdueAmount(tmpAddupOverdueAmount+genOverdueAmount);
+				planPo.setAddupOverdueAmount(Utils.formateDouble2Double(tmpAddupOverdueAmount+newOverdueAmount,6));
 				planPo.setRepayStatus(RepayStatus.Overdue.getName());
 				repayPlanDao.updateByPrimaryKey(planPo);
+				
 			}
 			if(item.getFeeType().equals(FeeType.Other.getName()))
 			{
@@ -215,16 +233,54 @@ public class CutOffService
 				{
 					tmpAddupOverdueAmount = otherFeePo.getAddupOverdueAmount();
 				}
-				otherFeePo.setAddupOverdueDay(tmpAddupOverdueDay+1);
-				otherFeePo.setAddupOverdueAmount(tmpAddupOverdueAmount+genOverdueAmount);
+				otherFeePo.setAddupOverdueDay(tmpAddupOverdueDay+overdueDays);
+				otherFeePo.setAddupOverdueAmount(Utils.formateDouble2Double(tmpAddupOverdueAmount+newOverdueAmount,6));
 				otherFeePo.setRepayStatus(RepayStatus.Overdue.getName());
 				otherFeeDao.updateByPrimaryKey(otherFeePo);
+			}
+			
+			//记录申请单单日逾期信息，如果存在申请单逾期记录，则以逾期天数最大为准
+			OverdueToday ot = overdueTodayDao.selectByAppId(item.getAppId());
+			if(ot==null)
+			{
+				ot = new OverdueToday();
+				ot.setId(Utils.get16UUID());
+				ot.setAppId(item.getAppId());
+				ot.setOverdueDay(overdueDays);
+				if(overdueDays>1)
+				{
+					ot.setStartDate(item.getClosingDate());
+					ot.setEndDate(curDate);
+				}
+				else
+				{
+					ot.setStartDate(curDate);
+					ot.setEndDate(curDate);
+				}
+				overdueTodayDao.insert(ot);
+			}
+			else
+			{
+				if(ot.getOverdueDay()<overdueDays)
+				{
+					ot.setStartDate(item.getClosingDate());
+					ot.setEndDate(curDate);
+					ot.setOverdueDay(overdueDays);
+					overdueTodayDao.updateByPrimaryKey(ot);
+				}
 			}
 		}
 		
 		/**
 		 * 总账逾期状态刷新及逾期日志记录
 		 */
+		List<OverdueToday> overdueTodayList = overdueTodayDao.selectList();
+		for(OverdueToday item : overdueTodayList)
+		{
+			String appId = item.getAppId();
+			//获取总账
+			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+		}
 		List<String> overdueAppList = waitingChargeDao.selectHasOverdueAppIdList(curDate);
 		for(String appId : overdueAppList)
 		{

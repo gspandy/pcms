@@ -468,11 +468,13 @@ public class AccountingServiceImpl implements IAccountingService {
 			{
 				otherFeeItem.setRepayCapital(otherFeeItem.getRepayCapital());
 				otherFeeItem.setRepayOverdueAmount(otherFeeItem.getRepayOverdueAmount());
+				//新的计算罚息值设置为冲账后的值
+				otherFeeItem.setReserver5(otherFeeItem.getRepayOverdueAmount());
 				waitingChargeDao.updateByPrimaryKey(otherFeeItem);
 			}
 		}
 		/**
-		 * 第二阶段冲还款计划，先冲罚息，再冲利息，最后冲本金
+		 * 第二阶段冲还款计划，先竖着冲罚息，再横冲利息、本金
 		 */
 		List<WaitingCharge> planRepayList = waitingChargeDao.selectListOrderByGentimeAsc(appId, FeeType.Plan.getName());
 		/**
@@ -510,12 +512,18 @@ public class AccountingServiceImpl implements IAccountingService {
 			planRepayList.set(i, planItem);
 		}
 		/**
-		 * 冲还款计划利息
+		 * 冲还款计划利息、本金
 		 */
 		double repayInterest  = repayOverdueAmt;
 		if(repayMode.equals(RepayMode.Remission))
 		{
 			repayInterest = refundItem.getInterest();
+		}
+		
+		double repayCapital  = 0.00;
+		if(repayMode.equals(RepayMode.Remission))
+		{
+			repayCapital = refundItem.getCapital();
 		}
 		for(int i = 0 ; i<planRepayList.size() ; i++)
 		{
@@ -541,6 +549,31 @@ public class AccountingServiceImpl implements IAccountingService {
 				}
 			}
 			planItem.setRepayInterest(interest);
+			planRepayList.set(i, planItem);
+			
+			//这里冲本金
+			repayCapital = repayInterest;
+			if(Double.compare(repayCapital,0.00)<=0)
+				break;
+			double capital  = planItem.getRepayCapital();
+			if(Double.compare(repayCapital,0.00)>0  && Double.compare(capital,0.00)>0)
+			{
+				if(Double.compare(capital, repayCapital)>=0)
+				{
+					capital-=repayCapital;
+					totalCapital+=repayCapital;
+					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, repayCapital);
+					repayCapital=0.00;
+				}
+				else
+				{
+					repayCapital-=capital;
+					totalCapital+=capital;
+					this.saveRepayLogItem(repayLogId, FeeType.Plan, planItem.getFeeRefId(), RepayItem.CAPITAL, capital);
+					capital=0.00;
+				}
+			}
+			planItem.setRepayCapital(capital);
 			planRepayList.set(i, planItem);
 		}
 		/**
@@ -598,6 +631,7 @@ public class AccountingServiceImpl implements IAccountingService {
 				planItem.setRepayCapital(planItem.getRepayCapital());
 				planItem.setRepayInterest(planItem.getRepayInterest());
 				planItem.setRepayOverdueAmount(planItem.getRepayOverdueAmount());
+				planItem.setReserver5(planItem.getRepayOverdueAmount());
 				waitingChargeDao.updateByPrimaryKey(planItem);
 			}
 		}	

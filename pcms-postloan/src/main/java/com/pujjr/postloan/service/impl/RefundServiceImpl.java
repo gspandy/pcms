@@ -22,10 +22,12 @@ import com.pujjr.jbpm.service.IRunWorkflowService;
 import com.pujjr.jbpm.vo.ProcessGlobalVariable;
 import com.pujjr.postloan.dao.ApplyRefundMapper;
 import com.pujjr.postloan.dao.GeneralLedgerMapper;
+import com.pujjr.postloan.dao.RepayLogMapper;
 import com.pujjr.postloan.dao.StayAccountMapper;
 import com.pujjr.postloan.domain.ApplyAlterRepayDate;
 import com.pujjr.postloan.domain.ApplyRefund;
 import com.pujjr.postloan.domain.GeneralLedger;
+import com.pujjr.postloan.domain.RepayLog;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.WaitingChargeNew;
@@ -33,6 +35,8 @@ import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
+import com.pujjr.postloan.enumeration.RepayLogStatus;
+import com.pujjr.postloan.enumeration.RepayMode;
 import com.pujjr.postloan.service.IAccountingService;
 import com.pujjr.postloan.service.IRefundService;
 import com.pujjr.postloan.vo.ApplyRefundVo;
@@ -63,6 +67,8 @@ public class RefundServiceImpl implements IRefundService {
 	private ApplyRefundMapper applyRefundDao;
 	@Autowired
 	private StayAccountMapper stayAccountDao;
+	@Autowired
+	private RepayLogMapper repayLogDao;
 	
 	@Override
 	public RepayFeeItemVo getRefundFeeItem(String appId) {
@@ -210,6 +216,26 @@ public class RefundServiceImpl implements IRefundService {
 		double stayAmount = Double.compare(stayAccount.getStayAmount(),po.getRefundAmount())>0?stayAccount.getStayAmount()-po.getRefundAmount():0.00;
 		stayAccount.setStayAmount(stayAmount);
 		stayAccountDao.updateByPrimaryKey(stayAccount);
+		
+		//记录退款日志
+		RepayLog repayLog = new RepayLog();
+		repayLog.setId(Utils.get16UUID());
+		repayLog.setAppId(po.getAppId());
+		int cnt = repayLogDao.selectRepayLogCntByAppId(po.getAppId());
+		repayLog.setSeq(++cnt);
+		repayLog.setRepayMode(RepayMode.Refund.getName());
+		repayLog.setRepayAmount(po.getRefundAmount());
+		repayLog.setRepayTime(po.getRefundDate());
+		repayLog.setLogStatus(RepayLogStatus.Normal.getName());
+		repayLog.setCapital(0.00);
+		repayLog.setInterest(0.00);
+		repayLog.setOverdueAmount(0.00);
+		repayLog.setOtherFee(0.00);
+		repayLog.setOtherOverdueAmount(0.00);
+		repayLog.setExtendFee(0.00);
+		repayLog.setLateFee(0.00);
+		repayLog.setStageAmount(po.getRefundAmount());
+		repayLogDao.insert(repayLog);
 		
 		//释放总账状态
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(po.getAppId());
