@@ -280,6 +280,9 @@ public class CutOffService
 			String appId = item.getAppId();
 			//获取总账
 			GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
+			//获取最近逾期记录
+			OverdueLog latesetOverdueLog = overdueLogDao.selectLatesetLog(appId);
+			
 		}
 		List<String> overdueAppList = waitingChargeDao.selectHasOverdueAppIdList(curDate);
 		for(String appId : overdueAppList)
