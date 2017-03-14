@@ -251,4 +251,10 @@ public class PlanServiceImpl implements IPlanService {
 		}
 		return repayPlanList;
 	}
+
+	@Override
+	public RepayPlan getRepayPlanById(String id) {
+		// TODO Auto-generated method stub
+		return repayPlanMapper.selectByPrimaryKey(id);
+	}
 }

@@ -118,7 +118,8 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		int nextPeriod = currPeriod + 1;
 		Date newLastValueDate = Utils.getDateAfterMonth(nextValueDate, newEndPeriod - nextPeriod);
 		Date newlastClosingDate = Utils.getDateAfterMonth(newLastValueDate, 1);
-		return Utils.getTimeInterval(lastRepayDate, newlastClosingDate, EIntervalMode.DAYS);
+		//return Utils.getTimeInterval(lastRepayDate, newlastClosingDate, EIntervalMode.DAYS);
+		return Utils.getSpaceDay(lastRepayDate, newlastClosingDate);
 	}
 	
 	@Override
@@ -169,7 +170,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		//展期费(当前期数期初本金余额（当期所有剩余本金-逾期本金）  * 展期率 * 展期天数)
 		double extendFee = (remainCapital - overDueCapital) * extendRate * this.getLastDateInterval(currDate, lastRepayPlan.getClosingDate(), currPeriod, lastRepayPlan.getPeriod(), extendPeriod);
 		//新旧还款利息（当前期数期初本金余额（当期所有剩余本金-逾期本金）  * 日利息* （展期后新起息日-当前期数起息日））
-		double newOldInterest = (remainCapital - overDueCapital) * dayRate * Utils.getTimeInterval(currRepayPlan.getValueDate(), currDate, EIntervalMode.DAYS);
+		double newOldInterest = (remainCapital - overDueCapital) * dayRate * Utils.getSpaceDay(currRepayPlan.getValueDate(), currDate);
 		//剩余待还本金
 		double remainWaitCapital = remainCapital - overDueCapital;
 		//新计息本金(其他费用本金+其他费用罚息+应还本金+应还罚息+应还利息+新旧还款日利息+当前剩余本金)
@@ -247,7 +248,10 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		//2、待扣明细表逾期计划待扣款、其他费用待扣款----》新待扣明细表
 		List<WaitingCharge> waitingChargeListPlan = accountingServiceImpl.getWaitingChargeTypePlan(appId, false);
 		List<WaitingCharge> waitingChargeListOther = accountingServiceImpl.getWaitingChargeTypeOther(appId);
-		for (WaitingCharge waitingCharge : waitingChargeListPlan) {
+		for (WaitingCharge waitingCharge : waitingChargeListPlan) 
+		{
+			//获取对应还款计划
+			RepayPlan repayPlan = planServiceImpl.getRepayPlanById(waitingCharge.getFeeRefId());
 			WaitingChargeNew waitingChargeNew = new WaitingChargeNew();
 			waitingChargeNew.setId(Utils.get16UUID());
 			waitingChargeNew.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
@@ -255,18 +259,20 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 			waitingChargeNew.setAppId(appId);
 			waitingChargeNew.setFeeType(FeeType.Plan.getName());
 			waitingChargeNew.setFeeRefId(waitingCharge.getFeeRefId());
+			waitingChargeNew.setPeriod(repayPlan.getPeriod());
 			waitingChargeNew.setDoSettle(true);
 			waitingChargeNew.setRepayCapital(0.00);
 			waitingChargeNew.setRepayInterest(0.00);
 			waitingChargeNew.setRepayOverdueAmount(0.00);
-			RepayPlan repayPlan = repayPlanMapper.selectByPrimaryKey(waitingCharge.getFeeRefId());
+			waitingChargeNew.setRemainCapitao(ledgerPo.getRemainCapital());
 			waitingChargeNew.setValueDate(repayPlan.getValueDate());
 			waitingChargeNew.setClosingDate(repayPlan.getClosingDate());
 			waitingChargeNew.setAddupOverdueAmount(0.00);
 			waitingChargeNew.setAddupOverdueDay(repayPlan.getAddupOverdueDay());
 			waitingChargeNewMapper.insert(waitingChargeNew);
 		}
-		for (WaitingCharge waitingCharge : waitingChargeListOther) {
+		for (WaitingCharge waitingCharge : waitingChargeListOther) 
+		{
 			WaitingChargeNew waitingChargeNew = new WaitingChargeNew();
 			waitingChargeNew.setId(Utils.get16UUID());
 			waitingChargeNew.setApplyType(LoanApplyTaskType.ExtendPeriod.getName());
@@ -302,6 +308,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 			wcn.setRepayCapital(repayPlan.getRepayCapital());
 			wcn.setRepayInterest(repayPlan.getRepayInterest());
 			wcn.setRepayOverdueAmount(0.00);
+			wcn.setRemainCapitao(repayPlan.getRemainCapital());
 			wcn.setValueDate(repayPlan.getValueDate());
 			wcn.setClosingDate(repayPlan.getClosingDate());
 			wcn.setAddupOverdueDay(0);
@@ -472,7 +479,8 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 			remissionItem.setOtherFee(0.00);
 			remissionItem.setOtherOverdueAmount(0.00);
 			remissionItem.setLateFee(vo.getLateFee());
-			remissionItem.setRemissionDate(vo.getRemissionDate());
+			remissionItem.setRemissionDate(new Date());
+			remissionItem.setRemissionComment(vo.getRemissionComment());
 			remissionItemMapper.insert(remissionItem);
 		}
 		
@@ -555,7 +563,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 			plan.setPeriod(item.getPeriod());
 			plan.setRepayCapital(item.getRepayCapital());
 			plan.setRepayInterest(item.getRepayInterest());
-			plan.setRepayTotalAmount(item.getRepayCapital()+item.getRepayInterest());
+			plan.setRepayTotalAmount(Utils.formateDouble2Double(item.getRepayCapital()+item.getRepayInterest(),2));
 			plan.setValueDate(item.getValueDate());
 			plan.setClosingDate(item.getClosingDate());
 			plan.setRemainCapital(item.getRemainCapitao());

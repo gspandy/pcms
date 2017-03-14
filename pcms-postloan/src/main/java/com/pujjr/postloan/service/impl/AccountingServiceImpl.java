@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pujjr.assetsmanage.service.IArchiveService;
+import com.pujjr.base.domain.SysParam;
 import com.pujjr.base.service.IProductService;
+import com.pujjr.base.service.ISysParamService;
 import com.pujjr.postloan.dao.ApplyAlterRepayDateMapper;
 import com.pujjr.postloan.dao.ApplyExtendPeriodMapper;
 import com.pujjr.postloan.dao.ApplySettleMapper;
@@ -93,6 +96,8 @@ public class AccountingServiceImpl implements IAccountingService {
 	private OfferSummaryMapper offerSummaryDao;
 	@Autowired
 	private IArchiveService archiveService;
+	@Autowired
+	private ISysParamService sysParamService;
 	
 	@Override
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
@@ -1290,7 +1295,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 获取所有还款计划信息，刷新新的还款信息
 		 */
-		List<WaitingChargeNew> otherNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Other.getName(),false);
+		List<WaitingChargeNew> otherNewWaitingCharge = waitingchargeNewDao.selectAllList(applyType.getName(), applyId, FeeType.Other.getName());
 		for(WaitingChargeNew item : otherNewWaitingCharge)
 		{
 			//获取对应其他费用信息
@@ -1325,7 +1330,7 @@ public class AccountingServiceImpl implements IAccountingService {
 			otherFeeDao.updateByPrimaryKey(otherFee);
 		}
 		
-		List<WaitingChargeNew> planNewWaitingCharge = waitingchargeNewDao.selectList(applyType.getName(), applyId, FeeType.Plan.getName(),false);
+		List<WaitingChargeNew> planNewWaitingCharge = waitingchargeNewDao.selectAllList(applyType.getName(), applyId, FeeType.Plan.getName());
 		for(WaitingChargeNew item : planNewWaitingCharge)
 		{
 			RepayPlan oldPlan = repayPlanDao.selectRepayPlan(appId, item.getPeriod());
@@ -1389,7 +1394,7 @@ public class AccountingServiceImpl implements IAccountingService {
 					oldPlan.setAddupOverdueDay(item.getAddupOverdueDay());
 					oldPlan.setValueDate(item.getValueDate());
 					oldPlan.setClosingDate(item.getClosingDate());
-					oldPlan.setRepayStatus(RepayStatus.Repaying.getName());
+					oldPlan.setRepayStatus(RepayStatus.WaitingRepay.getName());
 					repayPlanDao.updateByPrimaryKey(oldPlan);
 				}
 				else
@@ -1402,11 +1407,11 @@ public class AccountingServiceImpl implements IAccountingService {
 					newPlan.setRepayInterest(item.getRepayInterest());
 					newPlan.setValueDate(item.getValueDate());
 					newPlan.setClosingDate(item.getClosingDate());
-					newPlan.setRemainCapital(0.00);
-					newPlan.setRepayTotalAmount(0.00);
+					newPlan.setRemainCapital(item.getRemainCapitao());
+					newPlan.setRepayTotalAmount(Utils.formateDouble2Double(item.getRepayCapital()+item.getRepayInterest(), 2));
 					newPlan.setAddupOverdueAmount(0.00);
 					newPlan.setAddupOverdueDay(0);
-					newPlan.setRepayStatus(RepayStatus.Repaying.getName());
+					newPlan.setRepayStatus(RepayStatus.WaitingRepay.getName());
 					repayPlanDao.insert(newPlan);
 				}
 			}
@@ -1448,6 +1453,7 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 在对公还款时涉及到对应还项进行操作的交易情况下都不能执行
 		 */
+		
 		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
 		{
 			throw new Exception("正在申请结清，不能执行对公还款");
@@ -1480,6 +1486,8 @@ public class AccountingServiceImpl implements IAccountingService {
 		/**
 		 * 结清时不能有任何对账务有影响的交易
 		 */
+		checkClosingDate(appId);
+		
 		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
 		{
 			throw new Exception("正在申请结清，不能执行结清");
@@ -1546,6 +1554,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	@Override
 	public void checkCandoExtendPeriod(String appId) throws Exception {
 		// TODO Auto-generated method stub
+		checkClosingDate(appId);
 		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
 		{
 			throw new Exception("正在申请结清，不能执行展期");
@@ -1579,6 +1588,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	@Override
 	public void checkCandoAlterRepayDate(String appId) throws Exception {
 		// TODO Auto-generated method stub
+		checkClosingDate(appId);
 		if(loanQueryDao.selectProcessingLoanTaskCnt(appId, LoanApplyTaskType.Settle.getWorkflowKey())>0)
 		{
 			throw new Exception("正在申请结清，不能执行变更还款日");
@@ -1862,4 +1872,40 @@ public class AccountingServiceImpl implements IAccountingService {
 				
 				return vo;
 			}
+
+	@Override
+	public void checkClosingDate(String appId) throws Exception {
+		// TODO Auto-generated method stub
+		//获取系统参数
+		SysParam param = sysParamService.getSysParamByParamName("beforeClosingDate");
+		//默认为结账日前3天
+		int beforeClosingDate = 3;
+		//如果参数不存在则自动创建结账日判断参数
+		if(param == null)
+		{
+			param = new SysParam();
+			param.setId(Utils.get16UUID());
+			param.setParamName("beforeClosingDate");
+			param.setParamValue("3");
+			param.setParamDesc("在操作提前结清、展期、还款日变更功能只能在当期结账日的前几天");
+			param.setCreateId("admin");
+			param.setCreateTime(new Date());
+			param.setUpdateId("admin");
+			param.setUpdateTime(new Date());
+			sysParamService.addSysParam(param);
+		}
+		else
+		{
+			if(StringUtils.isNotBlank(param.getParamValue()))
+			{
+				beforeClosingDate = Integer.valueOf(param.getParamValue());
+			}
+		}
+		//获取当期还款计划
+		RepayPlan curRepayPlan = this.getCurrentPeriodRepayPlan(appId);
+		if(Utils.getSpaceDay(new Date(), curRepayPlan.getClosingDate())<beforeClosingDate)
+		{
+			throw new Exception("此功能在当期结账日前"+beforeClosingDate+"天不能操作");
+		}
+	}
 }

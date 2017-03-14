@@ -84,7 +84,8 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 		AlterRepayDateFeeItemVo vo = new AlterRepayDateFeeItemVo();
 		
 		//变更天数
-		int alterDay = new Long(Utils.getTimeInterval(oldClosingDate, newClosingDate, EIntervalMode.DAYS)).intValue();
+		//int alterDay = new Long(Utils.getTimeInterval(oldClosingDate, newClosingDate, EIntervalMode.DAYS)).intValue();
+		int alterDay = Utils.getSpaceDay(oldClosingDate, newClosingDate);
 		vo.setAlterDay(alterDay);
 		GeneralLedger ledgerPo = ledgerDao.selectByAppId(appId);
 		DecimalFormat  nf = new DecimalFormat("#.00");
@@ -119,11 +120,12 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 			tempVo.setRepayCapital(item.getRepayCapital());
 			tempVo.setRepayCnterest(item.getRepayInterest());
 			tempVo.setRemainCapital(item.getRemainCapital());
-			tempVo.setRepayTotalAmount(item.getRepayTotalAmount());
+			tempVo.setRepayTotalAmount(Utils.formateDouble2Double(item.getRepayTotalAmount(),2));
 			tempVo.setValueDate(newValueDate);
 			tempVo.setClosingDate(Utils.getDateAfterMonth(newClosingDate, i));
 			newValueDate = Utils.getDateAfterMonth(newClosingDate, i);
 			i++;
+			tempVo = (NewRepayPlanVo)Utils.formateDoubleOfObject(tempVo, 2);
 			newRepayPlanList.add(tempVo);
 			
 		}

@@ -177,4 +177,12 @@ public interface IAccountingService
 	 * @throws Exception 
 	 */
 	public void checkCandoOtherFee(String appId) throws Exception;
+	/**
+	 * 检查当前日期是否当期结账日前3天，其中3天通过参数beforeClosingDate
+	 * @param appId
+	 * @return
+	 * @throws Exception 
+	 */
+	public void checkClosingDate(String appId) throws Exception;
+	
 }

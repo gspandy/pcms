@@ -231,39 +231,28 @@ public class SettleServiceImpl implements ISettleService{
 		generalLedgerMapper.updateByPrimaryKey(ledgerPo);
 		
 		RepayPlan lastRepayPlan = accountingServiceImpl.getLatestPeriodRepayPlan(appId);
-		SettleFeeItemVo settleFeeItemVo = new SettleFeeItemVo();
-		int endPeriod = vo.getEndPeriod();
-		int beginPeriod = vo.getBeginPeriod();
-		Date settleEffectDate = vo.getApplyEffectDate();
 		
 		ApplySettle as = new ApplySettle();
 		String businessKey = Utils.get16UUID();
 		as.setId(businessKey);
 		as.setAppId(appId);
-		if(settleType.equals(SettleType.PartSettle.getName())){
+		if(settleType.equals(SettleType.PartSettle.getName()))
+		{
 			as.setSettleType(settleType);
-			settleFeeItemVo = this.getPartSettleFeeItem(appId, beginPeriod, endPeriod, settleEffectDate);
-		}else{
-			as.setSettleType(settleType);
-			settleFeeItemVo = this.getAllSettleFeeItem(appId, settleEffectDate);
 		}
-		as.setRepayCapital(settleFeeItemVo.getRepayCapital());
-		as.setRepayInterest(settleFeeItemVo.getRepayInterest());
-		as.setRepayOverdueAmount(settleFeeItemVo.getRepayOverdueAmount());
-		as.setOtherFee(settleFeeItemVo.getOtherAmount());
-		as.setOtherOverdueAmount(settleFeeItemVo.getOtherOverdueAmount());
-		as.setLateFee(settleFeeItemVo.getLateFee());
+		else
+		{
+			as.setSettleType(settleType);
+		}
+		as.setRepayCapital(vo.getFeeItem().getRepayCapital());
+		as.setRepayInterest(vo.getFeeItem().getRepayInterest());
+		as.setRepayOverdueAmount(vo.getFeeItem().getRepayOverdueAmount());
+		as.setOtherFee(vo.getFeeItem().getOtherAmount());
+		as.setOtherOverdueAmount(vo.getFeeItem().getOtherOverdueAmount());
+		as.setLateFee(vo.getFeeItem().getLateFee());
 		as.setSettleCapital(vo.getFeeItem().getSettleCapital());
-		
-		//结清金额
-//		double settleTotalAmt = as.getRepayCapital() + as.getRepayInterest() + as.getOtherOverdueAmount()
-//				+ as.getOtherFee()+ as.getOtherOverdueAmount()
-//				+ as.getSettleCapital()
-//				+ as.getLateFee();
-		as.setSettleTotalAmount(settleFeeItemVo.getSettleTotalAmount());
-		//结清后剩余本金
-//		double settleAfterCapital = settleFeeItemVo.getRemainCapital() - settleFeeItemVo.getRepayCapital() - settleFeeItemVo.getSettleTotalAmount();
-		as.setSettleAfterCapital(settleFeeItemVo.getSettleAfterAmount());
+		as.setSettleTotalAmount(vo.getFeeItem().getSettleTotalAmount());
+		as.setSettleAfterCapital(vo.getFeeItem().getSettleAfterAmount());
 		as.setSettleStartPeriod(vo.getBeginPeriod());
 		as.setSettleEndPeriod(vo.getEndPeriod());
 		as.setApplyComment(vo.getApplyComment());
@@ -272,7 +261,6 @@ public class SettleServiceImpl implements ISettleService{
 		as.setCreateId(operId);
 		as.setCreateDate(Utils.getDate());
 		applySettleMapper.insert(as);
-		
 		
 		/*******当期+逾期-》还款计划-》入待扣计划表（新）********/
 		//2、还款计划入临时代扣明细表
@@ -285,13 +273,15 @@ public class SettleServiceImpl implements ISettleService{
 		List<OtherFee> otherFeeList = otherFeeMapper.selectListByAppId(appId);
 		double yearRate = generalLedgerMapper.selectByAppId(appId).getYearRate();
 		//转移当期+逾期至WatingChargeNew表
-		for (WaitingCharge waitingCharge : waitingChargePlanList) {
+		for (WaitingCharge waitingCharge : waitingChargePlanList) 
+		{
 			//获取关联还款计划
 			RepayPlan repayPlan = repayPlanMapper.selectByPrimaryKey(waitingCharge.getFeeRefId());
 			//获取当前应还总额
 			double curRepayTotal = waitingCharge.getRepayCapital()+waitingCharge.getRepayInterest();
 			//计算截止申请有效期之前的罚息
-			int intervalDays = new Long(Utils.getTimeInterval(new Date(), vo.getApplyEffectDate(), EIntervalMode.DAYS)).intValue();
+			//int intervalDays = new Long(Utils.getTimeInterval(new Date(), vo.getApplyEffectDate(), EIntervalMode.DAYS)).intValue();这段代码有问题
+			int intervalDays = Utils.getSpaceDay(new Date(), vo.getApplyEffectDate());
 			double tmpOverdueAmount = curRepayTotal * intervalDays * ledgerPo.getDayLateRate();
 			//保存信息
 			WaitingChargeNew po = new WaitingChargeNew();
@@ -313,7 +303,8 @@ public class SettleServiceImpl implements ISettleService{
 				po.setRepayCapital(waitingCharge.getRepayCapital());
 			}
 			po.setRepayInterest(waitingCharge.getRepayInterest());
-			po.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount());
+			//提前结清的罚息应加上当前日期至有效期的罚息
+			po.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount()+tmpOverdueAmount);
 			po.setValueDate(repayPlan.getValueDate());
 			po.setClosingDate(repayPlan.getClosingDate());
 			po.setRemainCapitao(repayPlan.getRemainCapital());
@@ -322,7 +313,7 @@ public class SettleServiceImpl implements ISettleService{
 			waitingChargeNewMapper.insert(po);
 		}
 		//如果当前日期是当期结账日，上一步已经处理，否则需单独处理当期还款计划
-		if( new Long(Utils.getTimeInterval(new Date(),currRepayPlan.getClosingDate(), EIntervalMode.DAYS)).intValue()!=0)
+		if( Utils.getSpaceDay(new Date(), vo.getApplyEffectDate())!=0)
 		{
 			//保存信息
 			WaitingChargeNew po = new WaitingChargeNew();
@@ -353,13 +344,14 @@ public class SettleServiceImpl implements ISettleService{
 			waitingChargeNewMapper.insert(po);
 		}
 		//其他费用
-		for (WaitingCharge waitingCharge : waitingChargeOtherList) {
+		for (WaitingCharge waitingCharge : waitingChargeOtherList) 
+		{
 			//获取其他费用申请信息
 			OtherFee otherFee = otherFeeMapper.selectByPrimaryKey(waitingCharge.getFeeRefId());
 			//获取当前应还总额
 			double curRepayTotal = waitingCharge.getRepayCapital()+waitingCharge.getRepayInterest();
 			//计算截止申请有效期之前的罚息
-			int intervalDays = new Long(Utils.getTimeInterval(new Date(), vo.getApplyEffectDate(), EIntervalMode.DAYS)).intValue();
+			int intervalDays = Utils.getSpaceDay(new Date(), vo.getApplyEffectDate());
 			double tmpOverdueAmount = curRepayTotal * intervalDays * ledgerPo.getDayLateRate();
 			//保存信息
 			WaitingChargeNew po = new WaitingChargeNew();
@@ -372,7 +364,7 @@ public class SettleServiceImpl implements ISettleService{
 			po.setDoSettle(true);
 			po.setRepayCapital(waitingCharge.getRepayCapital());
 			po.setRepayInterest(waitingCharge.getRepayInterest());
-			po.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount());
+			po.setRepayOverdueAmount(waitingCharge.getRepayOverdueAmount()+tmpOverdueAmount);
 			po.setValueDate(otherFee.getValueDate());
 			po.setClosingDate(otherFee.getClosingDate());
 			po.setRemainCapitao(otherFee.getFeeTotalAmount());
@@ -406,12 +398,16 @@ public class SettleServiceImpl implements ISettleService{
 		}
 		//新还款计划数据
 		List<RepayPlan> willRpayPlanList = new LinkedList<RepayPlan>();
-		if(settleType.equals(SettleType.PartSettle.getName())){
+		if(settleType.equals(SettleType.PartSettle.getName()))
+		{
 			willRpayPlanList = planServiceImpl.selectRefreshRepayPlanList(appId, financeAmt, monthRate, lastPeriod-currPeriod, valueDate, currPeriod);
-		}else{
+		}
+		else
+		{
 			willRpayPlanList = accountingServiceImpl.getAfterCurrentPeriodRepayPlan(appId, currPeriod);
 		}
-		for (RepayPlan repayPlan : willRpayPlanList) {
+		for (RepayPlan repayPlan : willRpayPlanList) 
+		{
 			WaitingChargeNew wcn = new WaitingChargeNew();
 			wcn.setId(Utils.get16UUID());
 			wcn.setApplyType(LoanApplyTaskType.Settle.getName());//提前结清

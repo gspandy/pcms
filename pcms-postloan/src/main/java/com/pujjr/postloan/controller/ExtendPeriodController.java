@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.pujjr.base.controller.BaseController;
 import com.pujjr.base.domain.SysAccount;
 import com.pujjr.base.vo.PageVo;
 import com.pujjr.base.vo.QueryParamPageVo;
@@ -32,7 +33,7 @@ import com.pujjr.postloan.vo.RemissionFeeItemVo;
  */
 @RestController
 @RequestMapping("/extendperiod")
-public class ExtendPeriodController 
+public class ExtendPeriodController extends BaseController
 {
 	@Autowired
 	private IExtendPeriodService extendPeriodImpl;

@@ -299,9 +299,18 @@
   	<if test="containSettleRecord == true">
   		and DO_SETTLE = true
   	</if>
+  	<if test="containSettleRecord == false">
+  		and DO_SETTLE = false
+  	</if>
   	order by VALUE_DATE
   </select>
-  
+  <select id="selectAllList" resultMap="BaseResultMap">
+  	select * from t_waiting_charge_new 
+  	where APPLY_TYPE = #{applyType}
+  	and APPLY_REF_ID  = #{applyRefId}
+  	and FEE_TYPE = #{feeType}
+  	order by VALUE_DATE
+  </select>
   <delete id="deleteByAppId" parameterType="java.lang.String">
     delete from t_waiting_charge_new
     where APP_ID = #{appId,jdbcType=VARCHAR}

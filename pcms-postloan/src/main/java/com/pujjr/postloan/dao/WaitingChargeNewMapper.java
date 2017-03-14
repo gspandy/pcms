@@ -20,6 +20,8 @@ public interface WaitingChargeNewMapper {
 	int updateByPrimaryKey(WaitingChargeNew record);
     
     List<WaitingChargeNew> selectList(@Param("applyType")String applyType,@Param("applyRefId")String applyRefId,@Param("feeType")String feeType,@Param("containSettleRecord")boolean containSettleRecord);
+    
+    List<WaitingChargeNew> selectAllList(@Param("applyType")String applyType,@Param("applyRefId")String applyRefId,@Param("feeType")String feeType);
 
     int deleteByAppId(String appId);
     

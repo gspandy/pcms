@@ -145,6 +145,12 @@ public interface IPlanService {
 	 * @return 计息方式枚举对象
 	 */
 	public EInterestMode getInterestMode(@Param("appId") String appId);
+	/**
+	 * 通过ID查询还款计划
+	 * @param id
+	 * @return
+	 */
+	public RepayPlan getRepayPlanById(String id);
 	
 	
 }
