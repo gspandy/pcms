@@ -87,9 +87,10 @@ public interface ISmsService
 	 * @param custName 客户姓名
 	 * @param repayDate 还款日期
 	 * @param repayAmt 还款金额
+	 * @param curDate 当前日期
 	 * @throws Exception 
 	 */
-	public String genRepayDayNormalNotice(String custName,String repayDate,double repayAmt) throws Exception;
+	public String genRepayDayNormalNotice(String custName,String repayDate,double repayAmt,String curDate) throws Exception;
 	/**
 	 * 发送还款日前常规提醒短信
 	 * @param appId 申请单号
@@ -98,9 +99,10 @@ public interface ISmsService
 	 * @param custName 客户姓名
 	 * @param repayDate 还款日期
 	 * @param repayAmt 还款金额
+	 * @param curDate 当前日期
 	 * @throws Exception 
 	 */
-	public void sendRepayDayNormalNotice(String appId,String sendUserId,String mobile,String custName,String repayDate,double repayAmt) throws Exception;
+	public void sendRepayDayNormalNotice(String appId,String sendUserId,String mobile,String custName,String repayDate,double repayAmt,String curDate) throws Exception;
 	/**
 	 * 还款日当天扣款失败提醒短信
 	 * @param custName 客户姓名

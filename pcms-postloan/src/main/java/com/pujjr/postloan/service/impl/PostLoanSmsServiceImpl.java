@@ -68,7 +68,6 @@ public class PostLoanSmsServiceImpl implements IPostLoanSmsService {
 			String date = Utils.formateDate2String(new Date(), "yyyy年MM月dd日");
 			//获取应还金额
 			RepayingFeeItemVo feeItem = accountingService.getRepayingFeeItems(appId, false, null, false, true);
-			double totalAmt = feeItem.getRepayCapital()+feeItem.getRepayInterest()+feeItem.getRepayOverdueAmount()+feeItem.getOtherAmount()+feeItem.getOtherOverdueAmount();
 			
 			String tplContent = "";
 			if(tplKey.equals("custom"))
@@ -85,7 +84,7 @@ public class PostLoanSmsServiceImpl implements IPostLoanSmsService {
 				tplContent = smsTpl.getTplContent();
 				tplContent=tplContent.replaceAll("#\\{custName\\}", custName);
 				tplContent=tplContent.replaceAll("#\\{overdueDay\\}", String.valueOf(overdueDay));
-				tplContent=tplContent.replaceAll("#\\{repayAmt\\}", String.valueOf(totalAmt));
+				tplContent=tplContent.replaceAll("#\\{repayAmt\\}", String.valueOf(feeItem.getTotalRepayAmount()));
 			}
 			vo.setMessage(tplContent);
 			vo.setMobile(tenant.getMobile());

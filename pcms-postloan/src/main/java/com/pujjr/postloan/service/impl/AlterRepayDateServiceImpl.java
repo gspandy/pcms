@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
 import com.pujjr.carcredit.domain.TaskProcessResult;
 import com.pujjr.carcredit.vo.TaskCommitType;
@@ -33,6 +34,7 @@ import com.pujjr.postloan.domain.ApplySettle;
 import com.pujjr.postloan.domain.GeneralLedger;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
@@ -73,6 +75,8 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 	private RuntimeService runtimeService;
 	@Autowired
 	private IRunWorkflowService runWorkflowServiceImpl;
+	@Autowired
+	private IArchiveService archiveService;
 	
 	@Override
 	public AlterRepayDateFeeItemVo getAlterRepayDateFeeItem(String appId, Date oldClosingDate,Date newClosingDate) {
@@ -261,6 +265,9 @@ public class AlterRepayDateServiceImpl implements IAlterRepayDateService {
 		
 		//提交任务
 		runWorkflowServiceImpl.completeTask(taskId, "", null, CommandType.COMMIT);
+		
+		//创建结清归档任务
+		archiveService.createAutoArchiveTask(po.getAppId(), ArchiveType.AlterRepayDate.getName(), "admin");
 	}
 
 	@Override

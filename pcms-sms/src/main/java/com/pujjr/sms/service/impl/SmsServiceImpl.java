@@ -72,7 +72,7 @@ public class SmsServiceImpl implements ISmsService{
 	}
 
 	@Override
-	public String genRepayDayNormalNotice( String custName, String repayDate,double repayAmt) throws Exception {
+	public String genRepayDayNormalNotice( String custName, String repayDate,double repayAmt,String curDate) throws Exception {
 		// TODO Auto-generated method stub
 		SmsTemplate tpl = smsTemplateDao.selectByTplKey("repayDayNormalNotice");
 		if(tpl == null)
@@ -82,6 +82,7 @@ public class SmsServiceImpl implements ISmsService{
 		String tplContent = tpl.getTplContent();
 		tplContent=tplContent.replaceAll("#\\{custName\\}", custName);
 		tplContent=tplContent.replaceAll("#\\{repayDate\\}", repayDate);
+		tplContent=tplContent.replaceAll("#\\{curDate\\}", curDate);
 		tplContent=tplContent.replaceAll("#\\{repayAmt\\}", String.valueOf(repayAmt));
 		return tplContent;
 	}
@@ -119,9 +120,9 @@ public class SmsServiceImpl implements ISmsService{
 
 	@Override
 	public void sendRepayDayNormalNotice(String appId, String sendUserId,String mobile, String custName, String repayDate,
-			double repayAmt) throws Exception {
+			double repayAmt,String curDate) throws Exception {
 		// TODO Auto-generated method stub
-		String msg = this.genRepayDayNormalNotice(custName, repayDate, repayAmt);
+		String msg = this.genRepayDayNormalNotice(custName, repayDate, repayAmt,curDate);
 		SmsWaitSend waitSendPo = new SmsWaitSend();
 		waitSendPo.setId(Utils.get16UUID());
 		waitSendPo.setAppId(appId);

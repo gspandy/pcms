@@ -20,6 +20,7 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
+import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.service.IRuleService;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
@@ -44,6 +45,7 @@ import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LedgerProcessStatus;
 import com.pujjr.postloan.enumeration.LoanApplyStatus;
@@ -96,6 +98,8 @@ public class SettleServiceImpl implements ISettleService{
 	private OtherFeeMapper otherFeeMapper;
 	@Autowired
 	private IRuleService ruleService;
+	@Autowired
+	private IArchiveService archiveService;
 	
 	@Override
 	public SettleFeeItemVo getAllSettleFeeItem(String appId, Date settleEffectDate) {
@@ -648,6 +652,8 @@ public class SettleServiceImpl implements ISettleService{
 		
 		//提交任务
 		runWorkflowServiceImpl.completeTask(taskId, "", null, CommandType.COMMIT);
+		//创建结清归档任务
+		archiveService.createAutoArchiveTask(po.getAppId(), ArchiveType.ForwardSettle.getName(), "admin");
 	}
 
 	@Override

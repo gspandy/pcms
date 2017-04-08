@@ -273,7 +273,10 @@ public class CollectionServiceImpl implements ICollectionService
 		CollectionTask po = collectionTaskDao.selectByPrimaryKey(businessKey);
 		String workflowKey = po.getWorkflowKey();
 		String collectionTaskNodeId = "";
-		
+		if(workflowKey.equals(CollectionTaskType.PhoneCollection.getTaskKey()))
+		{
+			collectionTaskNodeId = "node_dhcs";
+		}
 		if(workflowKey.equals(CollectionTaskType.VisitCollection.getTaskKey()))
 		{
 			collectionTaskNodeId = "node_smcs";
@@ -298,6 +301,7 @@ public class CollectionServiceImpl implements ICollectionService
 		{
 			collectionTaskNodeId = "node_ss";
 		}
+		
 		//获取流程版本信息
 		String workflowVersionId = runtimeService.getVariable(task.getProcessInstanceId(),ProcessGlobalVariable.WORKFLOW_VERSION_ID).toString();
 		//获取节点参数配置

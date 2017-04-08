@@ -291,7 +291,14 @@ public class CutOffService
 				OverdueLog newOverdueLog = new OverdueLog();
 				newOverdueLog.setId(Utils.get16UUID());
 				newOverdueLog.setAppId(appId);
-				newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
+				if(latesetOverdueLog!=null)
+				{
+					newOverdueLog.setSeq(latesetOverdueLog.getSeq()+1);
+				}
+				else
+				{
+					newOverdueLog.setSeq(1);
+				}
 				newOverdueLog.setStartDate(item.getStartDate());
 				newOverdueLog.setEndDate(item.getEndDate());
 				newOverdueLog.setAddupOverdueDay(item.getOverdueDay());
@@ -416,7 +423,8 @@ public class CutOffService
 			try
 			{
 				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
-				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+				Date beforeDate = Utils.getDateAfterDay(item.getClosingDate(), -1);
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount(),Utils.getFormatDate(beforeDate, "yyyy年MM月dd日"));
 			}
 			catch(Exception e)
 			{
@@ -431,7 +439,8 @@ public class CutOffService
 			try
 			{
 				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
-				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+				Date beforeDate = Utils.getDateAfterDay(item.getClosingDate(), -1);
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount(),Utils.getFormatDate(beforeDate, "yyyy年MM月dd日"));
 			}
 			catch(Exception e)
 			{
@@ -446,7 +455,8 @@ public class CutOffService
 			try
 			{
 				ApplyTenant tenant = applyService.getApplyTenant(item.getAppId());
-				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount());
+				Date beforeDate = Utils.getDateAfterDay(item.getClosingDate(), -1);
+				smsService.sendRepayDayNormalNotice(item.getAppId(), "admin", tenant.getMobile(), tenant.getName(), Utils.getFormatDate(item.getClosingDate(),"yyyy年MM月dd日"), item.getRepayTotalAmount(),Utils.getFormatDate(beforeDate, "yyyy年MM月dd日"));
 			}
 			catch(Exception e)
 			{

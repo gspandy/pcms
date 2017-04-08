@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.base.service.IProductService;
 import com.pujjr.postloan.dao.ApplyAlterRepayDateMapper;
 import com.pujjr.postloan.dao.ApplyExtendPeriodMapper;
@@ -39,6 +40,7 @@ import com.pujjr.postloan.domain.StayAccount;
 import com.pujjr.postloan.domain.StayAccountLog;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.FeeType;
 import com.pujjr.postloan.enumeration.LoanApplyTaskType;
 import com.pujjr.postloan.enumeration.RepayItem;
@@ -89,6 +91,8 @@ public class AccountingServiceImpl implements IAccountingService {
 	private LoanQueryMapper loanQueryDao;
 	@Autowired
 	private OfferSummaryMapper offerSummaryDao;
+	@Autowired
+	private IArchiveService archiveService;
 	
 	@Override
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
@@ -114,6 +118,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	public double getSettleRate(String appId) 
 	{
 		// TODO Auto-generated method stub
+		/**
 		//查询代扣明细表是否有逾期还款计划，有则以最早一期逾期期数获取对应的结清违约金率，否则以当前期数查询提前结清违约金率
 		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
 		List<WaitingCharge> waitingChargeList = this.getWaitingChargeTypePlan(appId,true);
@@ -129,7 +134,12 @@ public class AccountingServiceImpl implements IAccountingService {
 		{
 			RepayPlan currentPeriod = this.getCurrentPeriodRepayPlan(appId);
 			period = currentPeriod.getPeriod();
-		}
+		}**/
+		//违约金率以当期为准2017/1/9
+		GeneralLedger ledgerRecord = ledgerDao.selectByAppId(appId);
+		RepayPlan currentPeriod = this.getCurrentPeriodRepayPlan(appId);
+		int period = currentPeriod.getPeriod();
+		String productCode = ledgerRecord.getProductCode();
 		return productService.getProductSettleByPeriod(productCode, period);
 	}
 
@@ -731,6 +741,9 @@ public class AccountingServiceImpl implements IAccountingService {
 		if(waitingChargeList.size()==0 && repayPlanList.size()==0)
 		{
 			ledgerPo.setRepayStatus(RepayStatus.Settled.getName());
+			//创建正常结清归档任务
+			archiveService.createAutoArchiveTask(appId, ArchiveType.NormalSettle.getName(), "admin");
+			
 		}
 		if(waitingChargeList.size()==0 && repayPlanList.size()>0)
 		{

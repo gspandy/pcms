@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
+import com.pujjr.assetsmanage.service.IArchiveService;
 import com.pujjr.base.domain.RuleRemission;
 import com.pujjr.base.service.IRuleService;
 import com.pujjr.carcredit.dao.TaskProcessResultMapper;
@@ -47,6 +48,7 @@ import com.pujjr.postloan.domain.RemissionItem;
 import com.pujjr.postloan.domain.RepayPlan;
 import com.pujjr.postloan.domain.WaitingCharge;
 import com.pujjr.postloan.domain.WaitingChargeNew;
+import com.pujjr.postloan.enumeration.ArchiveType;
 import com.pujjr.postloan.enumeration.EInterestMode;
 import com.pujjr.postloan.enumeration.ERemissionType;
 import com.pujjr.postloan.enumeration.ETaskTag;
@@ -106,6 +108,9 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 	private RepayPlanMapper repayPlanMapper;
 	@Autowired
 	private OtherFeeMapper otherFeeMapper;
+	@Autowired
+	private IArchiveService archiveService;
+	
 	@Override
 	public long getLastDateInterval(Date currDate,Date lastRepayDate,int currPeriod,int lastPeriod,int extendPeriod){
 		int newEndPeriod = lastPeriod + extendPeriod;
@@ -493,7 +498,9 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 		
 		//提交任务
 		runWorkflowServiceImpl.completeTask(taskId, "", null, CommandType.COMMIT);
-
+		
+		//创建展期归档任务
+		archiveService.createAutoArchiveTask(po.getAppId(), ArchiveType.ExtendPriod.getName(), "admin");
 	}
 
 	@Override

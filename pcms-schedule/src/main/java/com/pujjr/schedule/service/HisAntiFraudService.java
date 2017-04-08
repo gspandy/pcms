@@ -125,10 +125,12 @@ public class HisAntiFraudService
 							throw new Exception("提交任务失败,任务ID"+item.getTaskId()+"对应路径不存在 ");
 						}
 						//获取上级人工任务节点名称
+						String rsp = "[]";
+						/**
 						WorkflowRunPath parentUserTaskRunPath = runPathService.getRunPathById(runpath.getParentUsertaskPathId());
 						PuspSocketClient sc = new PuspSocketClient();
 						Socket sk = sc.doConnect("172.18.10.41", 5000);
-						String rsp = "[]";
+						
 						//查询申请提交后反欺诈信息
 						if("lrsqd".equals(parentUserTaskRunPath.getActId()))
 						{
@@ -169,7 +171,7 @@ public class HisAntiFraudService
 							result.setTaskNodeName(parentUserTaskRunPath.getActId());
 							fraudHisResultDao.insert(result);
 							seq++;
-						}
+						}**/
 						//提交任务至下一节点
 						runWorkflowService.completeTask(item.getTaskId(), "",null, CommandType.COMMIT);
 					}

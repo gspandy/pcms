@@ -290,14 +290,15 @@ public class ArchiveServiceImpl implements IArchiveService {
 			dtlPo.setComment(item.getComment());
 			archiveDetailDao.insert(dtlPo);
 		}
+		archiveTaskDao.insert(archiveTask);
 		//启动归档任务流程
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("appId", appId);
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		ProcessInstance instance = runWorkflowService.startProcess("CSGD", archiveTask.getId(), vars);
-		
+		//更新任务关联流程信息
 		archiveTask.setProcInstId(instance.getProcessInstanceId());
-		archiveTaskDao.insert(archiveTask);
+		archiveTaskDao.updateByPrimaryKey(archiveTask);
 	}
 
 	@Override
@@ -330,15 +331,16 @@ public class ArchiveServiceImpl implements IArchiveService {
 				}
 			}
 		}
-		
+		archiveTaskDao.insert(archiveTask);
 		//启动任务
 		HashMap<String,Object> vars = new HashMap<String,Object>();
 		vars.put("appId", appId);
 		vars.put(ProcessGlobalVariable.WORKFLOW_OWNER, operId);
 		ProcessInstance instance = runWorkflowService.startProcess("ZDFQDAGD", archiveTask.getId(), vars);
 		
+		//更新任务关联流程信息
 		archiveTask.setProcInstId(instance.getProcessInstanceId());
-		archiveTaskDao.insert(archiveTask);
+		archiveTaskDao.updateByPrimaryKey(archiveTask);
 	}
 
 	@Override
