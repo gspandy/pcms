@@ -192,7 +192,7 @@ public class ExtendPeriodImpl implements IExtendPeriodService {
 //		ev.setOtherOverdueAmount(otherFine);
 		ev.setOtherOverdueAmount(repayFeeItemVo.getOtherOverdueAmount());
 		
-		ev.setRemainCapital(remainCapital);
+		ev.setRemainCapital(remainWaitCapital);
 		ev.setRepayCapital(repayFeeItemVo.getRepayCapital());
 		ev.setRepayInterest(repayFeeItemVo.getRepayInterest());
 		ev.setRepayOverdueAmount (repayFeeItemVo.getRepayOverdueAmount());
