@@ -43,8 +43,9 @@ public interface ICollectionService
 	 * @param appId申请单号
 	 * @param createId创建人
 	 * @param vo 申请信息
+	 * @throws Exception 
 	 */
-	public void applyRecoverCollectionTask(String appId,String createId,CollectionApplyVo vo);
+	public void applyRecoverCollectionTask(String appId,String createId,CollectionApplyVo vo) throws Exception;
 	/**
 	 * 申请重新分配任务执行人
 	 * @param taskId 任务ID

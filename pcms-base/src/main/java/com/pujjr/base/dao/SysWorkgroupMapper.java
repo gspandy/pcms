@@ -46,5 +46,15 @@ public interface SysWorkgroupMapper {
 																@Param("taskType")String taskType,
 																@Param("groups")List<SysWorkgroup> groups,
 																@Param("candidateAccounts")List<String> candidateAccounts);
+    /**
+     * 根据经销商ID查询符合条件的分配规则
+     * @param dealerId 经销商ID
+     * @param groups 过滤组列表
+     * @param candidateAccounts 过滤用户列表
+     * @return
+     */
+    List<HashMap> selectTaskMathcRuleByDealerId(@Param("dealerId")String dealerId,
+												@Param("groups")List<SysWorkgroup> groups,
+												@Param("candidateAccounts")List<String> candidateAccounts);
     
 }

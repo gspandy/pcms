@@ -239,4 +239,28 @@
 		</foreach>
 	</if>
   </select>
+  <select id="selectTaskMathcRuleByDealerId" resultType="HashMap">
+  	select distinct g.id as taskCntRuleId
+	from 
+	sys_workgroup  a
+	inner join t_rule_dealer c on a.id = c.workgroup_id
+	inner join sys_workgroup_account e on a.id = e.workgroup_id
+	inner join sys_account f on e.sysaccount_id = f.id
+	inner join t_rule_member_taskcnt g on (g.workgroup_id = a.id and g.account_id = f.id)
+	where 
+	c.sys_branch_id = #{dealerId}
+	<if test="groups !=null and groups.size()!=0">
+		and a.id in 
+		<foreach close=")" collection="groups" index="index" item="item" open="(" separator=",">
+				#{item.id}
+		</foreach>
+	</if>
+	<if test="candidateAccounts !=null and candidateAccounts.size()!=0">
+		and f.account_id in 
+		<foreach close=")" collection="candidateAccounts" index="index" item="item" open="(" separator=",">
+				#{item}
+		</foreach>
+		
+	</if>
+  </select>
 </mapper>

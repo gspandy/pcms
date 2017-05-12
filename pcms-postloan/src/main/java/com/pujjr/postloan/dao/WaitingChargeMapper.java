@@ -34,7 +34,7 @@ public interface WaitingChargeMapper {
      * @param curDate 当前日期
      * @return
      */
-    List<WaitingCharge> selectListTypePlanOrderByGentimeAsc(@Param("appId")String appId,@Param("isContainCurPeriod")boolean isContainCurPeriod,@Param("curDate")Date curDate);
+    List<WaitingCharge> selectListTypePlanOrderByGentimeAsc(@Param("appId")String appId,@Param("isContainCurPeriod")boolean isContainCurPeriod,@Param("curDate")String curDate);
     /**
      * 查询当前已逾期的申请单列表
      * @param curDate 当前日期

@@ -44,7 +44,8 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 	}
 	
 	@Override
-	public RepaySchedulePo cpmInterest(double fianceAmt, double monthRate, int period, Date valueDate) {
+	public RepaySchedulePo cpmInterest(double fianceAmt, double monthRate, int period, Date valueDate) 
+	{
 		RepaySchedulePo rsp = new RepaySchedulePo();
 		List<RepayPlan> repayPlanList = new LinkedList<RepayPlan>();
 		Date firstClosingDate = this.getFirstRepayDate(valueDate);
@@ -57,49 +58,66 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 		BigDecimal fenmu = new BigDecimal(Math.pow(1+monthRate, period)-1);
 		System.out.println("分子："+fenzi);
 		System.out.println("分母："+fenmu);
-		BigDecimal monthRepay = fenzi.divide(fenmu,RoundingMode.HALF_UP);
+		//当月应还总额做四舍五入
+		BigDecimal monthRepay = fenzi.divide(fenmu,RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
 		BigDecimal repayAmt = monthRepay.multiply(new BigDecimal(period));//总还款金额
 		BigDecimal interestAmt = new BigDecimal(0);//总利息
-		for (int i = 0; i < period; i++) {
+		for (int i = 0; i < period; i++) 
+		{
 			RepayPlan repayPlan = new RepayPlan();
 			Calendar valueCl = Calendar.getInstance();//起息日日历
 			Calendar closingCl = Calendar.getInstance();//到期还款日日历
-			if(i == 0){
+			if(i == 0)
+			{
 				valueCl.setTime(valueDate);
 				closingCl.setTime(firstClosingDate);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
-//				System.out.println("结账日:"+Utils.formateDate2String(firstClosingDate, "yyyy-MM-dd"));
-			}else{
+			}
+			else
+			{
 				closingCl.setTime(firstClosingDate);
 				closingCl.add(Calendar.MONTH, i);
 				BeanUtils.copyProperties(closingCl, valueCl);
 				valueCl.add(Calendar.MONTH, -1);
-//				valueCl.add(Calendar.DAY_OF_MONTH, 1);
 				repayPlan.setValueDate(Utils.formateDate(valueCl.getTime(), "yyyy-MM-dd"));
 				repayPlan.setClosingDate(Utils.formateDate(closingCl.getTime(), "yyyy-MM-dd"));
-//				System.out.println(Utils.formateDate2String(valueCl.getTime(), "yyyy-MM-dd")+"|"+Utils.formateDate2String(closingCl.getTime(), "yyyy-MM-dd"));
 			}
-			BigDecimal currInterest = remainCapital.multiply(new BigDecimal(monthRate));//当月利息
-			BigDecimal currCapital = monthRepay.subtract(currInterest);//当月本金
-			remainCapital = remainCapital.subtract(currCapital);
+			//当月利息做四舍五入
+			BigDecimal currInterest = remainCapital.multiply(new BigDecimal(monthRate)).setScale(2, RoundingMode.HALF_UP);
 			interestAmt = interestAmt.add(currInterest);
-			repayPlan.setPeriod(i+1);
-		
-			repayPlan.setRepayTotalAmount(Utils.formateDouble2Double(monthRepay, 2));
-			repayPlan.setRepayInterest(Utils.formateDouble2Double(currInterest, 2));
-			repayPlan.setRepayCapital(Utils.formateDouble2Double(repayPlan.getRepayTotalAmount() - repayPlan.getRepayInterest(), 2));
-			repayPlan.setRemainCapital(Utils.formateDouble2Double(remainCapital, 2));
+			repayPlan.setPeriod(i+1);	
+			//等额本息最后一期本金存在之前期数做了四舍五入后，导致总的本金与融资金额不符，做特殊处理,最后一期本金为上一期的剩余本金
+			if((i+1)==period)
+			{
+				//当月本金=上一期剩余本金
+				BigDecimal currCapital = remainCapital;
+				repayPlan.setRepayTotalAmount(Utils.formateDouble2Double(monthRepay, 2));
+				repayPlan.setRepayInterest(Utils.formateDouble2Double(monthRepay.subtract(currCapital), 2));
+				repayPlan.setRepayCapital(Utils.formateDouble2Double(currCapital, 2));
+				repayPlan.setRemainCapital(Utils.formateDouble2Double(0.00, 2));
+			}
+			else
+			{
+				//当月本金=月还款总额-当月应还利息
+				BigDecimal currCapital = monthRepay.subtract(currInterest).setScale(2, RoundingMode.HALF_UP);;//当月本金
+				remainCapital = remainCapital.subtract(currCapital);
+				repayPlan.setRepayTotalAmount(Utils.formateDouble2Double(monthRepay, 2));
+				repayPlan.setRepayInterest(Utils.formateDouble2Double(currInterest, 2));
+				repayPlan.setRepayCapital(Utils.formateDouble2Double(repayPlan.getRepayTotalAmount() - repayPlan.getRepayInterest(), 2));
+				repayPlan.setRemainCapital(Utils.formateDouble2Double(remainCapital, 2));
+			}
 			repayPlanList.add(repayPlan);
 			rsp.setRepayPlanList(repayPlanList);
-			
+			/*
 			System.out.println(Utils.formateDate2String(repayPlan.getValueDate(), "yyyy-MM-dd")
 					+"|"+Utils.formateDate2String(repayPlan.getClosingDate(), "yyyy-MM-dd")
 					+"|第"+repayPlan.getPeriod()+"期"
 					+"|归还本金："+repayPlan.getRepayCapital()
 					+"|归还利息："+repayPlan.getRepayInterest()
 					+"|月供："+repayPlan.getRepayTotalAmount()
-					+"|剩余本金："+repayPlan.getRemainCapital());
+					+"|剩余本金："+repayPlan.getRemainCapital());*/
+			System.out.println(repayPlan.getRepayCapital()+","+repayPlan.getRepayInterest()+","+repayPlan.getRepayTotalAmount()+","+repayPlan.getRemainCapital());
 		}
 		rsp.setInterestAmt(Utils.formateDouble2Double(interestAmt, 2));
 		rsp.setMonthRepay(Utils.formateDouble2Double(monthRepay, 2));
@@ -318,5 +336,11 @@ public class InterestAlgorithmImpl implements IInterestAlgorithm {
 		rsp.setRepayPlanList(repayPlanList);
 		return rsp;
 	}
+	
+	public static void main(String args[]) 
+	{ 
+		InterestAlgorithmImpl alg = new InterestAlgorithmImpl();
+		alg.cpmInterest(78644, 0.138/12, 36, Utils.formateString2Date("2017-01-11", "yyyy-MM-dd"));
+	} 
 
 }

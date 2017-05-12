@@ -190,16 +190,6 @@ public class CollectionServiceImpl implements ICollectionService
 			refundPo.setBackComment(vo.getBackComment());
 			collectionRefundDao.insert(refundPo);
 		}
-		if(taskType.equals(CollectionTaskType.RecoverCollection))
-		{
-			CollectionRecover recoverPo = new CollectionRecover();
-			recoverPo.setId(Utils.get16UUID());
-			recoverPo.setApplyId(businessKey);
-			recoverPo.setRecoverReason(vo.getRecoverReason());
-			recoverPo.setRecoverComment(vo.getRecoverComment());
-			recoverPo.setRecoverUnitId(vo.getRecoverUnitId());
-			collectionRecoverDao.insert(recoverPo);
-		}
 		if(taskType.equals(CollectionTaskType.DisposeCollection))
 		{
 			CollectionDispose disposePo = new CollectionDispose();
@@ -475,8 +465,12 @@ public class CollectionServiceImpl implements ICollectionService
 	}
 
 	@Override
-	public void applyRecoverCollectionTask(String appId, String createId, CollectionApplyVo vo) {
+	public void applyRecoverCollectionTask(String appId, String createId, CollectionApplyVo vo) throws Exception {
 		// TODO Auto-generated method stub
+		if(this.checkHasCollectionTask(appId)==false)
+		{
+			throw new Exception("已存在催收任务，请勿重复发起");
+		}
 		//保存申请信息
 		CollectionTask po = new CollectionTask();
 		String businessKey = Utils.get16UUID();

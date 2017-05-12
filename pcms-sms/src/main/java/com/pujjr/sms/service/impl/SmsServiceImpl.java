@@ -66,7 +66,8 @@ public class SmsServiceImpl implements ISmsService{
 		tplContent=tplContent.replaceAll("#\\{custName\\}", custName);
 		tplContent=tplContent.replaceAll("#\\{repayDay\\}", repayDay);
 		tplContent=tplContent.replaceAll("#\\{monthRepayAmt\\}", String.valueOf(monthRepayAmt));
-		tplContent=tplContent.replaceAll("#\\{repayCardNo\\}", repayCardNo.substring(repayCardNo.length()-4));
+		String shortCardNo = repayCardNo.length()>=4?repayCardNo.substring(repayCardNo.length()-4):repayCardNo;
+		tplContent=tplContent.replaceAll("#\\{repayCardNo\\}", shortCardNo);
 		tplContent=tplContent.replaceAll("#\\{repayBankName\\}", repayBankName);
 		return tplContent;
 	}

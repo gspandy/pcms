@@ -3,6 +3,7 @@ package com.pujjr.base.service;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,4 +60,14 @@ public interface ISysWorkgroupService
 	public SysWorkgroup getWorkgroupByName(String workgroupName);
 	
 	public List<SysWorkgroup> getChildWorkgroup(String workgroupId,boolean includeSelf );
+	/**
+     * 根据经销商ID查询符合条件的分配规则
+     * @param dealerId 经销商ID
+     * @param groups 过滤组列表
+     * @param candidateAccounts 过滤用户列表
+     * @return
+     */
+    List<HashMap> getTaskMathcRuleByDealerId(@Param("dealerId")String dealerId,
+												@Param("groups")List<SysWorkgroup> groups,
+												@Param("candidateAccounts")List<String> candidateAccounts);
 }

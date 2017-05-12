@@ -8,16 +8,16 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityFunc{
 	//3DES
-	private static final String Algorithm = "DESede"; //¶¨Òå ¼ÓÃÜËã·¨,¿ÉÓÃ DES,DESede,Blowfish
+	private static final String Algorithm = "DESede"; //å®šä¹‰ åŠ å¯†ç®—æ³•,å¯ç”¨ DES,DESede,Blowfish
 	
 	
 	private static byte[] encryptMode(byte[] keybyte, byte[] src) 
 	{
 	       try {
-	            //Éú³ÉÃÜÔ¿
+	            //ç”Ÿæˆå¯†é’¥
 	            SecretKey deskey = new SecretKeySpec(keybyte, Algorithm);
 
-	            //¼ÓÃÜ
+	            //åŠ å¯†
 	            Cipher c1 = Cipher.getInstance(Algorithm);
 	            c1.init(Cipher.ENCRYPT_MODE, deskey);
 	            return c1.doFinal(src);
@@ -30,14 +30,14 @@ public class SecurityFunc{
 	        }
 	        return null;
 	 }
-	 //keybyteÎª¼ÓÃÜÃÜÔ¿£¬³¤¶ÈÎª24×Ö½Ú
-    //srcÎª¼ÓÃÜºóµÄ»º³åÇø
+	 //keybyteä¸ºåŠ å¯†å¯†é’¥ï¼Œé•¿åº¦ä¸º24å­—èŠ‚
+    //srcä¸ºåŠ å¯†åçš„ç¼“å†²åŒº
     private  static byte[] decryptMode(byte[] keybyte, byte[] src) {      
     try {
-            //Éú³ÉÃÜÔ¿
+            //ç”Ÿæˆå¯†é’¥
             SecretKey deskey = new SecretKeySpec(keybyte, Algorithm);
 
-            //½âÃÜ
+            //è§£å¯†
             Cipher c1 = Cipher.getInstance(Algorithm);
             c1.init(Cipher.DECRYPT_MODE, deskey);
             return c1.doFinal(src);
@@ -57,7 +57,7 @@ public class SecurityFunc{
 
         final byte[] keyBytes = {0x11, 0x22, 0x4F, 0x58, (byte)0x88, 0x10, 0x40, 0x38
                                , 0x28, 0x25, 0x79, 0x51, (byte)0xCB, (byte)0xDD, 0x55, 0x66
-                               , 0x77, 0x29, 0x74, (byte)0x98, 0x30, 0x40, 0x36, (byte)0xE2};    //24×Ö½ÚµÄÃÜÔ¿
+                               , 0x77, 0x29, 0x74, (byte)0x98, 0x30, 0x40, 0x36, (byte)0xE2};    //24å­—èŠ‚çš„å¯†é’¥
         
         byte[] encoded = encryptMode(keyBytes, src.getBytes());     
         
@@ -70,7 +70,7 @@ public class SecurityFunc{
 
         final byte[] keyBytes = {0x11, 0x22, 0x4F, 0x58, (byte)0x88, 0x10, 0x40, 0x38
                                , 0x28, 0x25, 0x79, 0x51, (byte)0xCB, (byte)0xDD, 0x55, 0x66
-                               , 0x77, 0x29, 0x74, (byte)0x98, 0x30, 0x40, 0x36, (byte)0xE2};    //24×Ö½ÚµÄÃÜÔ¿
+                               , 0x77, 0x29, 0x74, (byte)0x98, 0x30, 0x40, 0x36, (byte)0xE2};    //24å­—èŠ‚çš„å¯†é’¥
         
         byte[] srcBytes = decryptMode(keyBytes, Utils.hexStringToBytes(src));     
         

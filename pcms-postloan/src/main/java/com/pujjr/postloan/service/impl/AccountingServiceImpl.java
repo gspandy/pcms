@@ -98,7 +98,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	public RepayPlan getCurrentPeriodRepayPlan(String appId) 
 	{
 		// TODO Auto-generated method stub
-		return repayPlanDao.selectCurrentPeriodRepayPlan(appId, new Date());
+		return repayPlanDao.selectCurrentPeriodRepayPlan(appId, Utils.formateDate2String(new Date(), "yyyy-MM-dd"));
 	}	
 
 	@Override
@@ -334,7 +334,7 @@ public class AccountingServiceImpl implements IAccountingService {
 	@Override
 	public List<WaitingCharge> getWaitingChargeTypePlan(String appId,boolean isContainCurPeriod) {
 		// TODO Auto-generated method stub
-		return waitingChargeDao.selectListTypePlanOrderByGentimeAsc(appId, isContainCurPeriod, new Date());
+		return waitingChargeDao.selectListTypePlanOrderByGentimeAsc(appId, isContainCurPeriod, Utils.formateDate2String(new Date(),"yyyy-MM-dd"));
 	}
 
 	@Override

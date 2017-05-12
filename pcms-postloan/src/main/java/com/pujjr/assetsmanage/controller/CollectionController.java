@@ -132,7 +132,7 @@ public class CollectionController extends BaseController
 	}
 	
 	@RequestMapping(value="/applyRecoverCollectionTask/{appId}",method=RequestMethod.POST)
-	public void applyRecoverCollectionTask(@PathVariable String appId, @RequestBody CollectionApplyVo vo,HttpServletRequest request)
+	public void applyRecoverCollectionTask(@PathVariable String appId, @RequestBody CollectionApplyVo vo,HttpServletRequest request) throws Exception
 	{
 		SysAccount account = (SysAccount)request.getAttribute("account");
 		collectionService.applyRecoverCollectionTask(appId, account.getAccountId(), vo);
@@ -163,7 +163,7 @@ public class CollectionController extends BaseController
 	}
 	
 	@RequestMapping(value="/commitSettleApprove/{taskId}",method=RequestMethod.POST)
-	public void commitSettleApprove(String taskId) throws Exception
+	public void commitSettleApprove(@PathVariable String taskId) throws Exception
 	{
 		collectionService.commitSettleApprove(taskId);
 	}

@@ -150,4 +150,11 @@ public class SysWorkgroupServiceImpl implements ISysWorkgroupService {
 		return workgroupDao.selectCollectionDeployTaskMatchRuleAccountList(productCode, dealerId, overdueDay, taskType, groups, candidateAccounts);
 	}
 
+	@Override
+	public List<HashMap> getTaskMathcRuleByDealerId(String dealerId, List<SysWorkgroup> groups,
+			List<String> candidateAccounts) {
+		// TODO Auto-generated method stub
+		return workgroupDao.selectTaskMathcRuleByDealerId(dealerId, groups, candidateAccounts);
+	}
+
 }
